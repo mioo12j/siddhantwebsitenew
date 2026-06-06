@@ -1,0 +1,14 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+
+# Tool logs / scratch
+data/
+_preview_server.js
+.claude/
+
+# Node (the generator uses no node_modules, but just in case)
+node_modules/
+npm-debug.log*

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://guardians.siddhantkumar.in/sitemap.xml

@@ -1,0 +1,19 @@
+{
+  "name": "Siddhant Kumar — Author, Poet & Developer",
+  "short_name": "Siddhant Kumar",
+  "description": "The official site of Siddhant Kumar — author of Guardians in the Gale, poet, and developer.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0f1e",
+  "theme_color": "#0a0f1e",
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230a0f1e'/><text x='50' y='70' text-anchor='middle' font-family='serif' font-size='56' font-weight='700' fill='%23c9a84c'>SK</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
