@@ -621,3 +621,30 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     img.addEventListener('error', done, { once: true });
   });
 })();
+/* ── 3D TILT — mouse-driven perspective on cards ─────────────── */
+(function () {
+  function tilt3D(selector, opts) {
+    opts = opts || {};
+    var max = opts.max || 9, depth = opts.depth || 8;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll(selector).forEach(function (el) {
+      el.style.willChange = 'transform';
+      el.style.transition = 'transform 0.3s cubic-bezier(0.22,1,0.36,1)';
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform = 'perspective(900px) rotateY(' + (px * max) + 'deg) rotateX(' + (-py * max) + 'deg) translateZ(' + depth + 'px)';
+      });
+      el.addEventListener('mouseleave', function () { el.style.transform = ''; });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    tilt3D('.hero__book-frame', { max: 14, depth: 14 });
+    tilt3D('.featured__cover-frame', { max: 12, depth: 10 });
+    tilt3D('.poem-card', { max: 8 });
+    tilt3D('.review-card', { max: 6, depth: 5 });
+    tilt3D('.gallery__item', { max: 7 });
+  });
+})();

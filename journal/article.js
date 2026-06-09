@@ -16,3 +16,27 @@
   var yr = document.getElementById('yr');
   if (yr) yr.textContent = new Date().getFullYear();
 })();
+
+/* ── 3D TILT on article media + cards ───────────────────────── */
+(function () {
+  function tilt3D(selector, opts) {
+    opts = opts || {};
+    var max = opts.max || 8, depth = opts.depth || 7;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll(selector).forEach(function (el) {
+      el.style.willChange = 'transform';
+      el.style.transition = 'transform 0.3s cubic-bezier(0.22,1,0.36,1)';
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform = 'perspective(1000px) rotateY(' + (px * max) + 'deg) rotateX(' + (-py * max) + 'deg) translateZ(' + depth + 'px)';
+      });
+      el.addEventListener('mouseleave', function () { el.style.transform = ''; });
+    });
+  }
+  tilt3D('.hero-fig', { max: 6, depth: 8 });
+  tilt3D('figure.inline', { max: 5, depth: 6 });
+  tilt3D('.related-links a', { max: 8, depth: 6 });
+})();

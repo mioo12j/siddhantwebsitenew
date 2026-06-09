@@ -951,3 +951,167 @@ document.addEventListener('DOMContentLoaded', () => {
     img.addEventListener('error', done, { once: true });
   });
 })();
+/* ════════════════════════════════════════════════════════════
+   3D HERO — Three.js particle constellation + wireframe core
+════════════════════════════════════════════════════════════ */
+(function initHero3D() {
+  const canvas = qs('#hero3d');
+  if (!canvas || typeof THREE === 'undefined') return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const mobile = window.innerWidth < 768;
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x060c1a, 0.05);
+
+  const camera = new THREE.PerspectiveCamera(55, 1, 0.1, 120);
+  camera.position.set(0, 0, 14);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  // ── Modern metallic lighting ──
+  scene.add(new THREE.AmbientLight(0x4a5880, 0.75));
+  const keyLight = new THREE.PointLight(0xffd98b, 1.5, 80); keyLight.position.set(9, 7, 12); scene.add(keyLight);
+  const rimLight = new THREE.PointLight(0x5a7cff, 1.2, 80); rimLight.position.set(-11, -5, 7); scene.add(rimLight);
+  const topLight = new THREE.DirectionalLight(0xffffff, 0.35); topLight.position.set(0, 12, 3); scene.add(topLight);
+
+  // ── A pool of geometries + materials ──
+  const GOLD = 0xc9a84c, GOLD_LT = 0xe8c87a, DARK = 0x131d3a;
+  const geos = [
+    new THREE.IcosahedronGeometry(1, 0),
+    new THREE.OctahedronGeometry(1, 0),
+    new THREE.DodecahedronGeometry(1, 0),
+    new THREE.TetrahedronGeometry(1.1, 0),
+    new THREE.TorusGeometry(0.72, 0.27, 16, 44),
+    new THREE.TorusKnotGeometry(0.6, 0.2, 90, 14),
+    new THREE.BoxGeometry(1.25, 1.25, 1.25),
+    new THREE.ConeGeometry(0.85, 1.5, 6)
+  ];
+  function makeMaterial(i) {
+    const m = i % 3;
+    if (m === 0) return new THREE.MeshStandardMaterial({ color: GOLD, metalness: 0.95, roughness: 0.22, flatShading: true });
+    if (m === 1) return new THREE.MeshStandardMaterial({ color: DARK, metalness: 0.85, roughness: 0.35, flatShading: true });
+    return new THREE.MeshBasicMaterial({ color: GOLD_LT, wireframe: true, transparent: true, opacity: 0.45 });
+  }
+
+  // ── Lots of floating 3D figures ──
+  const group = new THREE.Group();
+  const shapes = [];
+  const N = mobile ? 16 : 30;
+  for (let i = 0; i < N; i++) {
+    const mesh = new THREE.Mesh(geos[(Math.random() * geos.length) | 0], makeMaterial(i));
+    const s = 0.3 + Math.random() * 0.95;
+    mesh.scale.set(s, s, s);
+    mesh.position.set((Math.random() - 0.5) * 22, (Math.random() - 0.5) * 13, (Math.random() - 0.5) * 13 - 2);
+    mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
+    mesh.userData = {
+      rx: (Math.random() - 0.5) * 0.012,
+      ry: (Math.random() - 0.5) * 0.012,
+      amp: 0.25 + Math.random() * 0.7,
+      spd: 0.25 + Math.random() * 0.7,
+      ph: Math.random() * Math.PI * 2,
+      baseY: mesh.position.y
+    };
+    group.add(mesh);
+    shapes.push(mesh);
+  }
+  scene.add(group);
+
+  // ── Central feature: gold icosahedron + wireframe halo ──
+  const feature = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(2.2, 0),
+    new THREE.MeshStandardMaterial({ color: GOLD, metalness: 1, roughness: 0.17, flatShading: true })
+  );
+  scene.add(feature);
+  const halo = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(2.6, 0),
+    new THREE.MeshBasicMaterial({ color: GOLD_LT, wireframe: true, transparent: true, opacity: 0.28 })
+  );
+  scene.add(halo);
+
+  // ── Star dust for depth ──
+  const COUNT = mobile ? 500 : 1100;
+  const positions = new Float32Array(COUNT * 3);
+  for (let i = 0; i < COUNT; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 44;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 32;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 30 - 5;
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const points = new THREE.Points(pGeo, new THREE.PointsMaterial({
+    color: 0xa9c4f5, size: 0.05, transparent: true, opacity: 0.5, depthWrite: false
+  }));
+  scene.add(points);
+
+  let mx = 0, my = 0, tx = 0, ty = 0;
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX / window.innerWidth - 0.5;
+    my = e.clientY / window.innerHeight - 0.5;
+  }, { passive: true });
+
+  function resize() {
+    const parent = canvas.parentElement;
+    const w = canvas.clientWidth || canvas.offsetWidth || (parent && parent.clientWidth) || window.innerWidth || 1;
+    const h = canvas.clientHeight || canvas.offsetHeight || (parent && parent.clientHeight) || window.innerHeight || 1;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(resize).observe(canvas.parentElement || canvas);
+  window.addEventListener('resize', resize, { passive: true });
+  canvas.classList.add('ready');
+
+  let t = 0;
+  (function animate() {
+    t += 0.016;
+    tx += (mx - tx) * 0.05;
+    ty += (my - ty) * 0.05;
+    for (let i = 0; i < shapes.length; i++) {
+      const m = shapes[i], u = m.userData;
+      m.rotation.x += u.rx;
+      m.rotation.y += u.ry;
+      m.position.y = u.baseY + Math.sin(t * u.spd + u.ph) * u.amp;
+    }
+    group.rotation.y = tx * 0.4 + t * 0.02;
+    group.rotation.x = ty * 0.2;
+    feature.rotation.y += 0.004; feature.rotation.x += 0.002;
+    halo.rotation.y -= 0.006; halo.rotation.x -= 0.003;
+    points.rotation.y = t * 0.01;
+    camera.position.x += (tx * 4 - camera.position.x) * 0.05;
+    camera.position.y += (-ty * 3 - camera.position.y) * 0.05;
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  })();
+})();
+
+/* ════════════════════════════════════════════════════════════
+   3D TILT — mouse-driven perspective on cards
+════════════════════════════════════════════════════════════ */
+function tilt3D(selector, opts) {
+  opts = opts || {};
+  const max = opts.max || 9, depth = opts.depth || 8;
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  qsa(selector).forEach(el => {
+    el.classList.add('tilt3d');
+    el.style.transition = 'transform 0.3s cubic-bezier(0.22,1,0.36,1)';
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform =
+        `perspective(900px) rotateY(${px * max}deg) rotateX(${-py * max}deg) translateZ(${depth}px)`;
+    });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  tilt3D('.trait-card', { max: 9 });
+  tilt3D('.stat-item', { max: 12, depth: 4 });
+  tilt3D('.timeline-content', { max: 5, depth: 3 });
+  tilt3D('.home-journal-card', { max: 8 });
+});

@@ -2340,3 +2340,30 @@ textarea:focus-visible,
 .faq-a { padding: 0 1.5rem 1.4rem; }
 .faq-a p { color: var(--c-slate); font-size: 1.02rem; line-height: 1.7; }
 .faq-a a { color: var(--c-gold-light); border-bottom: 1px solid rgba(201,168,76,0.4); }
+
+/* ── UPGRADE 5: 3D animations (appended) ──────────────────── */
+#hero3d {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;            /* above gradient, below hero content */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease 0.6s;
+}
+#hero3d.ready { opacity: 1; }
+
+/* Generic 3D tilt target */
+.tilt3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.tilt3d-deep { transform-style: preserve-3d; }
+
+@media (prefers-reduced-motion: reduce) {
+  #hero3d { display: none; }
+}
+@media (max-width: 768px) {
+  #hero3d { opacity: 0.55; }   /* lighter on mobile */
+}
