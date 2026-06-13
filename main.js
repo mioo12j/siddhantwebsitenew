@@ -412,7 +412,7 @@ const rand  = (min, max) => Math.random() * (max - min) + min;
   const el = qs('#typewriter');
   if (!el) return;
 
-  const roles = ['Student', 'Writer', 'Thinker', 'Poet', 'Author', 'Developer'];
+  const roles = ['Writer', 'Poet', 'Author', 'Developer', 'Founder', 'Innovator', 'Builder', 'Thinker'];
   let ri = 0, ci = 0, deleting = false, pause = 0;
 
   function tick() {
@@ -468,7 +468,36 @@ const rand  = (min, max) => Math.random() * (max - min) + min;
   }, { threshold: 0.5 });
 
   counters.forEach(c => observer.observe(c));
-})()
+})();
+
+/* ────────────────────────────────────────
+   PROJECT COUNTER ANIMATION (.count — no suffix; "+" is rendered separately)
+──────────────────────────────────────── */
+(function initProjectCounters() {
+  const counters = qsa('.count[data-target]');
+  if (!counters.length) return;
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el     = entry.target;
+      const target = +el.dataset.target || 0;
+      const dur    = 1600;
+      const start  = performance.now();
+      observer.unobserve(el);
+
+      function step(now) {
+        const p = clamp((now - start) / dur, 0, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(ease * target);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(c => observer.observe(c));
+})();
 
 /* ────────────────────────────────────────
    PREMIUM TESTIMONIALS CAROUSEL
