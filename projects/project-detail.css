@@ -1,0 +1,111 @@
+/* ============================================================
+   Supplementary stylesheet for individual project detail pages
+   (/projects/p/<slug>.html). Loaded alongside projects.css, which
+   already provides :root tokens, nav, footer, hero, buttons, cta-band
+   and reveal-up. This file adds the report-style components needed
+   for long-form educational project documentation.
+   ============================================================ */
+
+/* meta chip row under the hero title */
+.meta-chips{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.6rem}
+.meta-chip{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;letter-spacing:.06em;color:var(--acc-light);border:1px solid rgba(var(--acc-rgb),.32);background:rgba(var(--acc-rgb),.07);padding:.42rem .9rem;border-radius:100px}
+.meta-chip.level-Beginner{color:#a3e635;border-color:rgba(163,230,53,.35);background:rgba(163,230,53,.08)}
+.meta-chip.level-Intermediate{color:#fbbf24;border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.08)}
+.meta-chip.level-Advanced{color:#fb923c;border-color:rgba(251,146,60,.35);background:rgba(251,146,60,.08)}
+
+/* table of contents */
+.toc-bar{display:flex;flex-wrap:wrap;gap:.5rem;padding:1.1rem 0;margin:1.6rem 0 0;border-top:1px solid var(--glass-bd);border-bottom:1px solid var(--glass-bd)}
+.toc-bar a{font-size:.72rem;letter-spacing:.05em;color:var(--slate);border:1px solid var(--glass-bd);background:rgba(255,255,255,.02);padding:.4rem .85rem;border-radius:100px;transition:color .3s,border-color .3s}
+.toc-bar a:hover{color:var(--acc-light);border-color:rgba(var(--acc-rgb),.4)}
+
+/* section rhythm */
+.pd-section{padding:3.6rem 0;border-top:1px solid var(--glass-bd)}
+.pd-section:first-of-type{border-top:0}
+.pd-section .shead{margin-bottom:1.6rem}
+.pd-prose{max-width:76ch}
+.pd-prose p{color:#c7d0e6;font-size:1.02rem;line-height:1.85;margin-bottom:1.25rem}
+.pd-prose p:last-child{margin-bottom:0}
+.pd-prose strong{color:var(--ivory);font-weight:600}
+.pd-prose em{font-style:italic;color:var(--acc-light)}
+.pd-prose ul,.pd-prose ol{margin:0 0 1.3rem 1.35rem;color:#c7d0e6}
+.pd-prose ul:last-child,.pd-prose ol:last-child{margin-bottom:0}
+.pd-prose li{margin-bottom:.6rem;line-height:1.75}
+.pd-prose li::marker{color:var(--acc)}
+.pd-prose h3{font-family:var(--f-display);font-weight:600;font-size:1.3rem;color:var(--ivory);margin:2.2rem 0 .9rem}
+.pd-prose h3:first-child{margin-top:0}
+.pd-prose h4{font-family:var(--f-sans);font-weight:600;font-size:.95rem;letter-spacing:.04em;color:var(--acc-light);margin:1.6rem 0 .6rem;text-transform:uppercase}
+
+/* diagram / placeholder boxes */
+.diagram-box{margin:1.6rem 0 2rem;padding:clamp(2.4rem,6vw,4rem) 1.6rem;border-radius:18px;border:1.5px dashed rgba(var(--acc-rgb),.35);background:linear-gradient(165deg,rgba(255,255,255,.03),rgba(255,255,255,.005));text-align:center}
+.diagram-box .db-icon{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 1.1rem;border-radius:14px;background:rgba(var(--acc-rgb),.1);border:1px solid rgba(var(--acc-rgb),.28);color:var(--acc-light)}
+.diagram-box h4{font-family:var(--f-display);font-size:1.15rem;color:var(--ivory);margin-bottom:.5rem}
+.diagram-box p{color:var(--slate);font-size:.86rem;max-width:46ch;margin-inline:auto}
+
+/* resource placeholder grid (gallery / video / github / docs / download) */
+.resource-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-top:1.8rem}
+.resource-card{padding:1.8rem 1.6rem;border-radius:16px;border:1px dashed var(--glass-bd);background:rgba(255,255,255,.02);text-align:left}
+.resource-card .rc-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:rgba(var(--acc-rgb),.1);border:1px solid rgba(var(--acc-rgb),.25);color:var(--acc-light);margin-bottom:1rem}
+.resource-card h4{font-size:1rem;color:var(--ivory);margin-bottom:.4rem;font-family:var(--f-display)}
+.resource-card p{font-size:.82rem;color:var(--slate);margin:0}
+
+/* gallery placeholder tiles */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1.6rem}
+.gallery-tile{aspect-ratio:4/3;border-radius:14px;border:1.5px dashed var(--glass-bd);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;color:var(--slate-dim);background:linear-gradient(165deg,rgba(255,255,255,.025),rgba(255,255,255,.005))}
+.gallery-tile span{font-size:.72rem;letter-spacing:.05em;color:var(--slate);text-align:center;padding:0 1rem}
+
+/* tables: BOM / specs / troubleshooting */
+.table-wrap{overflow-x:auto;margin:1.6rem 0 2rem;border-radius:14px;border:1px solid var(--glass-bd)}
+table.data-table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:520px}
+table.data-table thead th{text-align:left;font-family:var(--f-sans);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--acc-light);background:rgba(var(--acc-rgb),.07);padding:.85rem 1.1rem;border-bottom:1px solid rgba(var(--acc-rgb),.2)}
+table.data-table td{padding:.85rem 1.1rem;border-bottom:1px solid var(--glass-bd);color:#c7d0e6;vertical-align:top}
+table.data-table tr:last-child td{border-bottom:0}
+table.data-table tr:hover td{background:rgba(255,255,255,.015)}
+table.data-table td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+table.data-table tfoot td{font-weight:600;color:var(--ivory);border-top:1px solid rgba(var(--acc-rgb),.25)}
+
+/* numbered step list (assembly / implementation) */
+.steps{display:grid;gap:1rem;margin:1.6rem 0 2rem;counter-reset:step}
+.step-card{position:relative;display:flex;gap:1.1rem;padding:1.3rem 1.5rem 1.3rem 1.1rem;border-radius:14px;border:1px solid var(--glass-bd);background:linear-gradient(165deg,rgba(255,255,255,.03),rgba(255,255,255,.005))}
+.step-card .sn{flex:0 0 auto;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid rgba(var(--acc-rgb),.4);color:var(--acc-light);font-family:var(--f-display);font-weight:700;font-size:.95rem}
+.step-card p{margin:0;color:#c7d0e6;font-size:.95rem;line-height:1.7;padding-top:.35rem}
+
+/* pill lists (objectives / applications / advantages / limitations / mistakes / safety) */
+.pill-list{display:grid;gap:.7rem;margin:1.4rem 0 0}
+.pill-list li{list-style:none;display:flex;gap:.7rem;align-items:flex-start;padding:.9rem 1.1rem;border-radius:12px;border:1px solid var(--glass-bd);background:rgba(255,255,255,.02);color:#c7d0e6;font-size:.92rem;line-height:1.65}
+.pill-list li::before{content:'';flex:0 0 auto;width:7px;height:7px;margin-top:.55rem;border-radius:50%;background:var(--acc)}
+.pill-list.warn li::before{background:var(--orange,#fb923c)}
+.pill-list.good li::before{background:var(--lime,#a3e635)}
+
+/* two-column pro/con */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:1.6rem}
+@media(max-width:760px){.two-col{grid-template-columns:1fr}}
+.two-col h4{font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.9rem}
+.two-col.advantages h4{color:var(--lime,#a3e635)}
+.two-col.limitations h4{color:var(--orange,#fb923c)}
+
+/* FAQ accordion (native details/summary, no JS needed) */
+.faq-list{margin-top:1.6rem;display:grid;gap:.8rem}
+.faq-item{border:1px solid var(--glass-bd);border-radius:12px;background:rgba(255,255,255,.02);overflow:hidden}
+.faq-item summary{cursor:pointer;list-style:none;padding:1.1rem 1.3rem;font-family:var(--f-display);font-size:1.02rem;color:var(--ivory);display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:'+';font-size:1.3rem;color:var(--acc-light);transition:transform .3s var(--ease);flex:0 0 auto}
+.faq-item[open] summary::after{transform:rotate(45deg)}
+.faq-item .faq-a{padding:0 1.3rem 1.2rem;color:var(--slate);font-size:.92rem;line-height:1.75}
+
+/* related projects mini-cards (static, no JS) */
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;margin-top:1.6rem}
+.related-card{display:flex;flex-direction:column;gap:.5rem;padding:1.4rem 1.4rem;border-radius:14px;border:1px solid var(--glass-bd);background:linear-gradient(165deg,rgba(255,255,255,.04),rgba(255,255,255,.01));transition:transform .35s var(--ease),border-color .35s}
+.related-card:hover{transform:translateY(-5px);border-color:rgba(var(--acc-rgb),.4)}
+.related-card .rc-cat{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--acc-light)}
+.related-card h4{font-size:1.02rem;color:var(--ivory)}
+.related-card p{font-size:.82rem;color:var(--slate);margin:0}
+.related-card .rc-more{font-size:.76rem;color:var(--acc-light);margin-top:.2rem}
+
+/* references list */
+.ref-list{margin-top:1.4rem;padding-left:1.3rem;color:var(--slate);font-size:.85rem;line-height:1.9}
+.ref-list li{margin-bottom:.4rem}
+
+/* breadcrumb line (reuses .crumbs from projects.css but scoped for detail pages with 4 levels) */
+.pd-hero .lead{max-width:66ch}
+
+@media(prefers-reduced-motion:reduce){.pd-section{transition:none}}

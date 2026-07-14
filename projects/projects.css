@@ -169,3 +169,22 @@ body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:22px;height:22px}
   html{scroll-behavior:auto}
   .reveal-up,.pcard{opacity:1;transform:none}
 }
+
+/* ── category / hub page prose additions ────────────────────── */
+.cat-intro{max-width:72ch;margin-top:1.4rem}
+.cat-intro p{color:var(--slate);font-size:1rem;margin-bottom:1.1rem;line-height:1.75}
+.cat-intro p strong{color:var(--ivory)}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;margin-top:2rem}
+.why-card{padding:1.4rem 1.5rem;border-radius:16px;border:1px solid var(--glass-bd);background:linear-gradient(165deg,rgba(255,255,255,.04),rgba(255,255,255,.01));transition:transform .4s var(--ease),border-color .4s}
+.why-card:hover{transform:translateY(-5px);border-color:rgba(var(--acc-rgb),.35)}
+.why-card h4{font-size:1rem;color:var(--ivory);margin-bottom:.5rem;font-family:var(--f-display)}
+.why-card p{font-size:.85rem;color:var(--slate);margin:0}
+.related-cats{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.related-cats a{font-size:.74rem;letter-spacing:.08em;color:var(--slate);border:1px solid var(--glass-bd);padding:.5rem 1.1rem;border-radius:100px;transition:color .3s,border-color .3s}
+.related-cats a:hover{color:var(--acc-light);border-color:rgba(var(--acc-rgb),.4)}
+.hub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;margin-top:1.8rem}
+.hub-card{display:flex;flex-direction:column;gap:.5rem;padding:1.7rem 1.6rem;border-radius:18px;border:1px solid var(--glass-bd);background:linear-gradient(165deg,rgba(255,255,255,.05),rgba(255,255,255,.012));transition:transform .4s var(--ease),border-color .4s,box-shadow .4s}
+.hub-card:hover{transform:translateY(-6px);border-color:rgba(var(--acc-rgb),.4);box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.hub-card .hc-count{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-light)}
+.hub-card h3{font-size:1.15rem;color:var(--ivory)}
+.hub-card p{font-size:.85rem;color:var(--slate)}
