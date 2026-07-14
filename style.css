@@ -2691,11 +2691,42 @@ textarea:focus-visible,
 /* name — bigger + animated gold shimmer */
 .hero-name { font-size: clamp(3.6rem, 9.5vw, 7.6rem); letter-spacing: -0.035em; }
 .name-last {
+  display: inline-block;
   position: relative;
-  background: linear-gradient(110deg, var(--c-gold-dim) 0%, var(--c-gold) 28%, #fff6df 50%, var(--c-gold) 72%, var(--c-gold-dim) 100%);
-  background-size: 220% auto;
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  animation: nameShimmer 6.5s linear infinite;
+  
+  /* Symmetrical gradient for a flawless loop */
+  background: linear-gradient(
+    to right,
+    var(--c-gold-dim) 0%,
+    var(--c-gold) 15%,
+    #fff6df 25%,
+    var(--c-gold) 35%,
+    var(--c-gold-dim) 50%,
+    var(--c-gold) 65%,
+    #fff6df 75%,
+    var(--c-gold) 85%,
+    var(--c-gold-dim) 100%
+  );
+  
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text; 
+  background-clip: text; 
+  -webkit-text-fill-color: transparent;
+  
+  animation: nameShimmer 6.5s linear infinite; 
+}
+
+@keyframes nameShimmer {
+  /* Shifts exactly half the background width safely across the text */
+  0% { background-position: 0% center; }
+  100% { background-position: 100% center; }
+}
+
+/* Example of what the keyframes should look like for a shimmer effect */
+@keyframes nameShimmer {
+  0% { background-position: 220% center; }
+  100% { background-position: -220% center; }
 }
 @keyframes nameShimmer { to { background-position: 220% center; } }
 
@@ -2735,3 +2766,38 @@ textarea:focus-visible,
 
 /* Buttons never wrap their label (keeps "View All Projects" etc. on one line) */
 .btn{white-space:nowrap;}
+/* ════════════════════════════════════════════════════════
+   FINAL NAME GRADIENT OVERRIDE (BOTH NAMES)
+════════════════════════════════════════════════════════ */
+.name-first,
+.name-last {
+  display: block !important;
+  width: fit-content; /* Keeps the gradient tightly wrapped to the text length */
+  
+  /* Symmetrical gold gradient */
+  background-image: linear-gradient(
+    to right,
+    var(--c-gold-dim) 0%,
+    var(--c-gold) 15%,
+    #fff6df 25%,
+    var(--c-gold) 35%,
+    var(--c-gold-dim) 50%,
+    var(--c-gold) 65%,
+    #fff6df 75%,
+    var(--c-gold) 85%,
+    var(--c-gold-dim) 100%
+  ) !important;
+  
+  background-size: 200% auto !important;
+  color: transparent !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  
+  animation: nameShimmerFixed 6s linear infinite !important;
+}
+
+@keyframes nameShimmerFixed {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}

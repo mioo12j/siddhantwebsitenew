@@ -748,36 +748,30 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.5 });
   labels.forEach(l => { l.style.opacity = '0'; l.style.transition = 'opacity 0.8s 0.2s'; observer.observe(l); });
 })();
-
 /* ────────────────────────────────────────
-   HERO NAME — LETTER STAGGER
+   HERO NAME — UNIFIED FADE IN
 ──────────────────────────────────────── */
-(function initHeroNameStagger() {
+(function initHeroNameFade() {
   const nameFirst = qs('.name-first');
   const nameLast  = qs('.name-last');
 
-  function wrapLetters(el) {
+  // 1. Set the initial hidden state for both names
+  [nameFirst, nameLast].forEach(el => {
     if (!el) return;
-    const text = el.textContent;
-    el.innerHTML = [...text].map((ch, i) =>
-      ch === ' '
-        ? ' '
-        : `<span class="letter" style="display:inline-block;opacity:0;transform:translateY(30px);transition:opacity 0.5s ${(i * 0.04 + 2.0).toFixed(2)}s ease,transform 0.5s ${(i * 0.04 + 2.0).toFixed(2)}s ease">${ch}</span>`
-    ).join('');
-  }
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  });
 
-  wrapLetters(nameFirst);
-  wrapLetters(nameLast);
-
-  // Trigger after loader
+  // 2. Trigger the slide-up animation for both at the exact same time after the loader finishes
   setTimeout(() => {
-    qsa('.letter').forEach(l => {
-      l.style.opacity   = '1';
-      l.style.transform = 'translateY(0)';
+    [nameFirst, nameLast].forEach(el => {
+      if (!el) return;
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
     });
-  }, 2000);
+  }, 2000); 
 })();
-
 /* ────────────────────────────────────────
    TIMELINE — GLOW DOT ON HOVER
 ──────────────────────────────────────── */

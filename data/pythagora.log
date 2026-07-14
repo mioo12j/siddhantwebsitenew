@@ -1,0 +1,285 @@
+2026-04-22T17:32:07.648Z INFO Is remote: false
+2026-04-22T17:32:07.649Z INFO Starting Local. Installation path: undefined
+2026-04-22T17:32:07.649Z INFO [MainProvider] Creating new MainProvider instance...
+2026-04-22T17:32:07.650Z INFO [TabsManager] Code view listener set up at initialization
+2026-04-22T17:32:07.651Z INFO Installation path exists: c:\Users\siddh\Downloads\SIDDHANT\book 1
+2026-04-22T17:32:07.651Z INFO Initializing database with URL: file:C:\Users\siddh\AppData\Local\Temp\pythagora-temp\pythagora.db
+2026-04-22T17:32:07.654Z INFO New database detected, running full prisma setup...
+2026-04-22T17:32:07.654Z INFO [c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19] Project root:
+2026-04-22T17:32:07.655Z INFO [c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma] Schema path:
+2026-04-22T17:32:07.655Z INFO [file:C:\Users\siddh\AppData\Local\Temp\pythagora-temp\pythagora.db] Database URL:
+2026-04-22T17:32:07.656Z INFO [true] Schema exists:
+2026-04-22T17:32:07.656Z INFO Running prisma generate first...
+2026-04-22T17:32:07.681Z ERROR Database initialization error
+Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+Stack: Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+	at genericNodeError (node:internal/errors:983:15)
+	at wrappedFn (node:internal/errors:537:14)
+	at checkExecSyncError (node:child_process:949:11)
+	at execSync (node:child_process:1021:15)
+	at node:electron/js2c/node_init:2:17346
+	at PrismaSession.ensureDatabaseSync (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:91:65)
+	at new PrismaSession (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:17:18)
+	at PrismaSession.getInstance (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:28:38)
+	at initializeDatabase (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:45:45)
+	at activate (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:107:15)
+	at async wb._activate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15965)
+	at async wb._waitForDepsThenActivate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15907)
+	at async wb._initialize (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15274)
+Extra context: {
+  "stdout": "",
+  "stderr": "'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
+  "signal": null,
+  "message": "Command failed: node \"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\node_modules\\prisma\\build\\index.js\" generate --schema=\"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\prisma\\schema.prisma\"\n'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+}
+2026-04-22T17:32:07.691Z ERROR Failed to ensure database
+Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+Stack: Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+	at genericNodeError (node:internal/errors:983:15)
+	at wrappedFn (node:internal/errors:537:14)
+	at checkExecSyncError (node:child_process:949:11)
+	at execSync (node:child_process:1021:15)
+	at node:electron/js2c/node_init:2:17346
+	at PrismaSession.ensureDatabaseSync (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:91:65)
+	at new PrismaSession (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:17:18)
+	at PrismaSession.getInstance (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:28:38)
+	at initializeDatabase (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:45:45)
+	at activate (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:107:15)
+	at async wb._activate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15965)
+	at async wb._waitForDepsThenActivate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15907)
+	at async wb._initialize (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15274)
+Extra context: {
+  "stdout": "",
+  "stderr": "'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
+  "signal": null,
+  "message": "Command failed: node \"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\node_modules\\prisma\\build\\index.js\" generate --schema=\"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\prisma\\schema.prisma\"\n'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+}
+2026-04-22T17:32:07.693Z INFO Database initialized successfully
+2026-04-22T17:32:07.746Z INFO [Migration] Checking for database migration...
+2026-04-22T17:32:07.747Z INFO [Migration] No migration needed
+2026-04-22T17:33:20.059Z INFO [TabsManager] First file opened, triggering split view
+2026-04-22T17:33:20.059Z INFO [MainProvider] First file opened, creating split view
+2026-04-22T17:33:39.374Z INFO [TabsManager] First file opened, triggering split view
+2026-04-22T17:33:39.374Z INFO [MainProvider] First file opened, creating split view
+2026-04-22T17:34:04.791Z INFO Closing entire Pythagora extension...
+2026-04-22T17:34:04.794Z ERROR Error closing extension
+Error: Canceled
+Stack: Canceled: Canceled
+    at new QI (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:407:151698)
+    at i._remoteCall (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:407:157750)
+    at r.<computed>.s.charCodeAt.r.<computed> (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:407:154545)
+    at xg._doExecuteCommand (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:48120)
+    at xg.executeCommand (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:47567)
+    at Object.executeCommand (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:639:135747)
+    at closeEntirePythagoraExtension (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:542:31)
+    at Object.deactivate (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:409:15)
+    at uP._deactivate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:505:14479)
+    at file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:505:12006
+    at Array.map (<anonymous>)
+    at uP._deactivateAll (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:505:11994)
+    at uP.terminate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:505:12345)
+    at i.terminate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:507:1072)
+    at js (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:831:11700)
+    at rp.value (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:831:9847)
+    at E._deliver (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:403:3043)
+    at E.fire (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:403:3361)
+    at as.fire (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:405:8437)
+    at MessagePortMain.<anonymous> (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/560a9dba96/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:831:8082)
+    at MessagePortMain.emit (node:events:519:28)
+    at MessagePortMain.emit (node:domain:489:12)
+    at MessagePortMain._internalPort.emit (node:electron/js2c/utility_init:2:2959)
+    at Object.topLevelDomainCallback (node:domain:161:15)
+    at Object.callbackTrampoline (node:internal/async_hooks:128:24)
+Extra context: {
+  "message": "Canceled"
+}
+2026-04-22T17:34:18.581Z INFO Is remote: false
+2026-04-22T17:34:18.581Z INFO Starting Local. Installation path: undefined
+2026-04-22T17:34:18.582Z INFO [MainProvider] Creating new MainProvider instance...
+2026-04-22T17:34:18.583Z INFO [TabsManager] Code view listener set up at initialization
+2026-04-22T17:34:18.583Z INFO Installation path exists: c:\Users\siddh\Downloads\SIDDHANT\book 1
+2026-04-22T17:34:18.584Z INFO Initializing database with URL: file:C:\Users\siddh\AppData\Local\Temp\pythagora-temp\pythagora.db
+2026-04-22T17:34:18.586Z INFO New database detected, running full prisma setup...
+2026-04-22T17:34:18.586Z INFO [c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19] Project root:
+2026-04-22T17:34:18.587Z INFO [c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma] Schema path:
+2026-04-22T17:34:18.587Z INFO [file:C:\Users\siddh\AppData\Local\Temp\pythagora-temp\pythagora.db] Database URL:
+2026-04-22T17:34:18.588Z INFO [true] Schema exists:
+2026-04-22T17:34:18.588Z INFO Running prisma generate first...
+2026-04-22T17:34:18.617Z ERROR Database initialization error
+Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+Stack: Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+	at genericNodeError (node:internal/errors:983:15)
+	at wrappedFn (node:internal/errors:537:14)
+	at checkExecSyncError (node:child_process:949:11)
+	at execSync (node:child_process:1021:15)
+	at node:electron/js2c/node_init:2:17346
+	at PrismaSession.ensureDatabaseSync (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:91:65)
+	at new PrismaSession (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:17:18)
+	at PrismaSession.getInstance (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:28:38)
+	at initializeDatabase (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:45:45)
+	at activate (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:107:15)
+	at async Mb._activate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15965)
+	at async Mb._waitForDepsThenActivate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15907)
+	at async Mb._initialize (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15274)
+Extra context: {
+  "stdout": "",
+  "stderr": "'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
+  "signal": null,
+  "message": "Command failed: node \"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\node_modules\\prisma\\build\\index.js\" generate --schema=\"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\prisma\\schema.prisma\"\n'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+}
+2026-04-22T17:34:18.624Z ERROR Failed to ensure database
+Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+Stack: Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+	at genericNodeError (node:internal/errors:983:15)
+	at wrappedFn (node:internal/errors:537:14)
+	at checkExecSyncError (node:child_process:949:11)
+	at execSync (node:child_process:1021:15)
+	at node:electron/js2c/node_init:2:17346
+	at PrismaSession.ensureDatabaseSync (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:91:65)
+	at new PrismaSession (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:17:18)
+	at PrismaSession.getInstance (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:28:38)
+	at initializeDatabase (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:45:45)
+	at activate (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:107:15)
+	at async Mb._activate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15965)
+	at async Mb._waitForDepsThenActivate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15907)
+	at async Mb._initialize (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15274)
+Extra context: {
+  "stdout": "",
+  "stderr": "'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
+  "signal": null,
+  "message": "Command failed: node \"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\node_modules\\prisma\\build\\index.js\" generate --schema=\"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\prisma\\schema.prisma\"\n'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+}
+2026-04-22T17:34:18.625Z INFO Database initialized successfully
+2026-04-22T17:34:18.627Z INFO [Migration] Checking for database migration...
+2026-04-22T17:34:18.627Z INFO [Migration] No migration needed
+2026-04-22T17:34:28.903Z INFO Closing entire Pythagora extension...
+2026-04-22T17:34:28.908Z ERROR Error closing extension
+Error: Canceled
+Stack: Canceled: Canceled
+    at new ox (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:407:150727)
+    at i._remoteCall (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:407:156779)
+    at r.<computed>.s.charCodeAt.r.<computed> (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:407:153574)
+    at Eg._doExecuteCommand (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:48120)
+    at Eg.executeCommand (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:47567)
+    at Object.executeCommand (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:639:135762)
+    at closeEntirePythagoraExtension (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:542:31)
+    at Object.deactivate (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:409:15)
+    at yP._deactivate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:505:14479)
+    at file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:505:12006
+    at Array.map (<anonymous>)
+    at yP._deactivateAll (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:505:11994)
+    at yP.terminate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:505:12345)
+    at i.terminate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:507:1072)
+    at js (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:831:11700)
+    at ap.value (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:831:9847)
+    at E._deliver (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:403:3126)
+    at E.fire (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:403:3444)
+    at as.fire (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:405:8437)
+    at MessagePortMain.<anonymous> (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:831:8082)
+    at MessagePortMain.emit (node:events:519:28)
+    at MessagePortMain.emit (node:domain:489:12)
+    at MessagePortMain._internalPort.emit (node:electron/js2c/utility_init:2:2959)
+    at Object.topLevelDomainCallback (node:domain:161:15)
+    at Object.callbackTrampoline (node:internal/async_hooks:128:24)
+Extra context: {
+  "message": "Canceled"
+}
+2026-04-22T17:38:59.933Z INFO Is remote: false
+2026-04-22T17:38:59.934Z INFO Starting Local. Installation path: undefined
+2026-04-22T17:38:59.935Z INFO [MainProvider] Creating new MainProvider instance...
+2026-04-22T17:38:59.935Z INFO [TabsManager] Code view listener set up at initialization
+2026-04-22T17:38:59.936Z INFO Installation path exists: c:\Users\siddh\Downloads\SIDDHANT\book 1
+2026-04-22T17:38:59.937Z INFO Initializing database with URL: file:C:\Users\siddh\AppData\Local\Temp\pythagora-temp\pythagora.db
+2026-04-22T17:38:59.939Z INFO New database detected, running full prisma setup...
+2026-04-22T17:38:59.939Z INFO [c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19] Project root:
+2026-04-22T17:38:59.940Z INFO [c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma] Schema path:
+2026-04-22T17:38:59.940Z INFO [file:C:\Users\siddh\AppData\Local\Temp\pythagora-temp\pythagora.db] Database URL:
+2026-04-22T17:38:59.941Z INFO [true] Schema exists:
+2026-04-22T17:38:59.941Z INFO Running prisma generate first...
+2026-04-22T17:38:59.971Z ERROR Database initialization error
+Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+Stack: Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+	at genericNodeError (node:internal/errors:983:15)
+	at wrappedFn (node:internal/errors:537:14)
+	at checkExecSyncError (node:child_process:949:11)
+	at execSync (node:child_process:1021:15)
+	at node:electron/js2c/node_init:2:17346
+	at PrismaSession.ensureDatabaseSync (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:91:65)
+	at new PrismaSession (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:17:18)
+	at PrismaSession.getInstance (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:28:38)
+	at initializeDatabase (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:45:45)
+	at activate (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:107:15)
+	at async Mb._activate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15965)
+	at async Mb._waitForDepsThenActivate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15907)
+	at async Mb._initialize (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15274)
+Extra context: {
+  "stdout": "",
+  "stderr": "'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
+  "signal": null,
+  "message": "Command failed: node \"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\node_modules\\prisma\\build\\index.js\" generate --schema=\"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\prisma\\schema.prisma\"\n'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+}
+2026-04-22T17:38:59.981Z ERROR Failed to ensure database
+Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+Stack: Error: Command failed: node "c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\node_modules\prisma\build\index.js" generate --schema="c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\prisma\schema.prisma"
+'node' is not recognized as an internal or external command,
+operable program or batch file.
+
+	at genericNodeError (node:internal/errors:983:15)
+	at wrappedFn (node:internal/errors:537:14)
+	at checkExecSyncError (node:child_process:949:11)
+	at execSync (node:child_process:1021:15)
+	at node:electron/js2c/node_init:2:17346
+	at PrismaSession.ensureDatabaseSync (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:91:65)
+	at new PrismaSession (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:17:18)
+	at PrismaSession.getInstance (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\core\CustomPrismaSession.js:28:38)
+	at initializeDatabase (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:45:45)
+	at activate (c:\Users\siddh\.vscode\extensions\pythagoratechnologies.pythagora-vs-code-2.6.19\out\extension.js:107:15)
+	at async Mb._activate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15965)
+	at async Mb._waitForDepsThenActivate (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15907)
+	at async Mb._initialize (file:///c:/Users/siddh/AppData/Local/Programs/Microsoft%20VS%20Code/10c8e557c8/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:501:15274)
+Extra context: {
+  "stdout": "",
+  "stderr": "'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n",
+  "signal": null,
+  "message": "Command failed: node \"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\node_modules\\prisma\\build\\index.js\" generate --schema=\"c:\\Users\\siddh\\.vscode\\extensions\\pythagoratechnologies.pythagora-vs-code-2.6.19\\prisma\\schema.prisma\"\n'node' is not recognized as an internal or external command,\r\noperable program or batch file.\r\n"
+}
+2026-04-22T17:38:59.982Z INFO Database initialized successfully
+2026-04-22T17:39:00.036Z INFO [Migration] Checking for database migration...
+2026-04-22T17:39:00.037Z INFO [Migration] No migration needed
+2026-04-22T17:39:34.868Z INFO [TabsManager] First file opened, triggering split view
+2026-04-22T17:39:34.869Z INFO [MainProvider] First file opened, creating split view
+2026-04-22T17:40:12.129Z INFO [TabsManager] First file opened, triggering split view
+2026-04-22T17:40:12.129Z INFO [MainProvider] First file opened, creating split view
