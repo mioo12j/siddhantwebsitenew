@@ -1,6 +1,26 @@
 # SEO Log & Roadmap — siddhantkumar.in
 
-_Last updated: 2026-06-05_
+_Last updated: 2026-07-25_
+
+---
+
+## 🆕 Round 3 (2026-07-25) — Entity & AI-search hardening
+
+Goal: make the site the unambiguous, machine-readable source of truth for **this** Siddhant Kumar, for both classic search engines and AI answer engines (ChatGPT, Claude, Perplexity, Gemini, etc.).
+
+1. **New `/about/` page** — the canonical biography. Full prose bio, "At a Glance" fact table, milestones timeline, visible FAQ, and an explicit **name-disambiguation section** ("Which Siddhant Kumar?"). Ships `ProfilePage` + full `Person` + `FAQPage` + `BreadcrumbList` JSON-LD, all tied to the site-wide entity id `https://siddhantkumar.in/#person`.
+2. **Person schema hardened on home page** — added `givenName`/`familyName`, `alternateName`, `disambiguatingDescription`, and `mainEntityOfPage → /about/`. This is the single strongest signal search engines use to separate same-name entities.
+3. **`/llms.txt`** — machine-readable identity summary following the emerging llms.txt convention, including an explicit disambiguation instruction for AI systems.
+4. **`robots.txt`** — explicit `Allow: /` for AI/answer-engine crawlers (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot-Extended, Amazonbot, CCBot, etc.) and a pointer to llms.txt.
+5. **Proper 1200×630 share image** — `assets/og-image.png` (brand navy/gold banner: name, roles, domain). Home page `og:image`/`twitter:image` now use it, with width/height/alt. (Closes Round-2 action item #1.)
+6. **`humans.txt`**, sitemap entry for `/about/` (priority 0.9), and internal links to the biography from the home About section and footer.
+
+### Still open (needs your action, not code)
+- Replace social `href="#"` placeholders with real Instagram/LinkedIn/X profile URLs, then add them as `sameAs` in the Person schema — the #1 remaining entity signal.
+- Google Search Console + Bing Webmaster verification; submit sitemap.
+- Wikidata entry, Amazon Author Central, Goodreads author page — link them via `sameAs` too.
+- Ask outlets/institutions that covered the book to link to siddhantkumar.in (backlinks remain the biggest ranking lever).
+- Drop a real portrait at `assets/siddhant.jpg` (the About section shows it automatically) and add it as `image` in the Person schema.
 
 This file documents the SEO work done across the site and the steps left to climb on Google.
 
