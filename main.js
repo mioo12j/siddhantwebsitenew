@@ -288,18 +288,21 @@
   /* ── Letters lightbox ── */
   var lightbox = $('#lightbox');
   var lightboxImg = $('#lightboxImg');
-  var letterThumbs = $$('.letter-thumb');
   var letterIndex = 0;
 
+  /* query fresh each time — thumbs whose scan is missing remove themselves */
+  function letterThumbs() { return $$('.letter-thumb'); }
   function showLetter(i) {
-    letterIndex = (i + letterThumbs.length) % letterThumbs.length;
-    lightboxImg.src = letterThumbs[letterIndex].getAttribute('data-letter');
+    var thumbs = letterThumbs();
+    if (!thumbs.length) return;
+    letterIndex = (i + thumbs.length) % thumbs.length;
+    lightboxImg.src = thumbs[letterIndex].getAttribute('data-letter');
   }
-  letterThumbs.forEach(function (thumb, i) {
-    thumb.addEventListener('click', function () {
-      showLetter(i);
-      openModal(lightbox);
-    });
+  document.addEventListener('click', function (e) {
+    var thumb = e.target.closest && e.target.closest('.letter-thumb');
+    if (!thumb) return;
+    showLetter(letterThumbs().indexOf(thumb));
+    openModal(lightbox);
   });
   var lbPrev = $('#lbPrev');
   var lbNext = $('#lbNext');

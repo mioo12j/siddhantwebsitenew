@@ -1639,3 +1639,54 @@ textarea:focus-visible {
 .faq-a { padding: 0 1.5rem 1.3rem; }
 .faq-a p { color: var(--text-body); font-size: 1.05rem; line-height: 1.7; }
 .faq-a a { color: var(--gold-light); border-bottom: 1px solid rgba(201,168,76,0.4); }
+
+/* ── India Book of Records badge & inauguration line (hero) ── */
+.hero__record {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.1rem;
+  padding: 0.55rem 1.25rem 0.55rem 0.95rem;
+  border-radius: 100px;
+  border: 1px solid rgba(201, 168, 76, 0.5);
+  background: linear-gradient(120deg, rgba(201, 168, 76, 0.16), rgba(201, 168, 76, 0.05) 55%, rgba(201, 168, 76, 0.14));
+  box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.08), 0 8px 28px rgba(201, 168, 76, 0.16);
+  animation: record-float 6s ease-in-out infinite;
+}
+@keyframes record-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.hero__record-star {
+  color: var(--gold-bright);
+  font-size: 1.15rem;
+  filter: drop-shadow(0 0 8px rgba(201, 168, 76, 0.6));
+}
+.hero__record-text { display: flex; flex-direction: column; line-height: 1.3; text-align: left; }
+.hero__record-text b {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+.hero__record-text i {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--cream-faint);
+}
+.hero__honour {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--gold-light);
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(201, 168, 76, 0.25);
+}
+@media (max-width: 768px) {
+  .hero__record { margin-inline: auto; }
+}
