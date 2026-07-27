@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Crop Disease Camera — Circuit, Code &amp; Full Build Guide | Agriculture</title>
+  <meta name="description" content="Complete advanced-level build guide for a Crop Disease Camera: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="crop disease camera, crop disease camera project, how to build crop disease camera, esp32-s3 devkitc-1 project, agriculture project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/crop-disease-camera.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/crop-disease-camera.html" />
+  <meta property="og:title" content="Crop Disease Camera — Circuit, Code &amp; Full Build Guide | Agriculture" />
+  <meta property="og:description" content="Complete advanced-level build guide for a Crop Disease Camera: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Agriculture" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-27" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Crop Disease Camera — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete advanced-level build guide for a Crop Disease Camera: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🔬</text></svg>" />
+  <style>:root{--acc:#818cf8;--acc-light:#a5b4fc;--acc-rgb:129,140,248}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/crop-disease-camera.html#article","headline":"Crop Disease Camera — Complete Build Guide","name":"Crop Disease Camera","description":"Complete advanced-level build guide for a Crop Disease Camera: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/crop-disease-camera.html","inLanguage":"en","articleSection":"Agriculture","keywords":"crop disease camera, crop disease camera project, how to build crop disease camera, esp32-s3 devkitc-1 project, agriculture project, circuit diagram, source code, tutorial","proficiencyLevel":"Advanced","dependencies":"TensorFlow Lite for Microcontrollers, Edge Impulse Arduino SDK, Python, TensorFlow / Keras, NumPy, OpenCV, Ultralytics YOLO, ONNX Runtime, Picamera2","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-27","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/crop-disease-camera.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/crop-disease-camera.html#howto","name":"How to build a Crop Disease Camera","description":"Complete advanced-level build guide for a Crop Disease Camera: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT26H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"8020"},"supply":[{"@type":"HowToSupply","name":"ESP32-S3 DevKitC-1"},{"@type":"HowToSupply","name":"ESP32-CAM (AI-Thinker) + OV2640"},{"@type":"HowToSupply","name":"Raspberry Pi Zero 2 W"},{"@type":"HowToSupply","name":"Raspberry Pi Camera Module 3"},{"@type":"HowToSupply","name":"5 V 3 A regulated SMPS adapter"},{"@type":"HowToSupply","name":"Double-sided perfboard 7 × 9 cm + headers"},{"@type":"HowToSupply","name":"IP65 ABS junction enclosure 158 × 90 × 60 mm"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Crop Disease Camera","item":"https://siddhantkumar.in/projects/docs/crop-disease-camera.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/crop-disease-camera.html#faq","mainEntity":[{"@type":"Question","name":"Why does it work in testing but fail in the field?","acceptedAnswer":{"@type":"Answer","text":"Because of the lab-to-field gap, the central issue in this application. Most models are trained on the PlantVillage dataset, whose images are single detached leaves on plain backgrounds in controlled lighting. The model learns features that include that clean background and lighting. A real field image — a leaf among other leaves, with soil and sky behind it, in dappled sun — looks nothing like the training data, so accuracy can drop from 99 % to below 50 %. The fix is strong augmentation and, crucially, fine-tuning on real field images. Report field accuracy, never lab accuracy."}},{"@type":"Question","name":"Can it recognise any disease?","acceptedAnswer":{"@type":"Answer","text":"No — only the specific crops and diseases it was trained on. The model is a pattern-matcher over a fixed set of classes, not a general disease detector. Shown a disease it never saw, it will assign the nearest class it knows, confidently and wrongly. Shown a crop it never saw, its output is meaningless. This is why the scope must be defined explicitly and why confidence gating (routing uncertain inputs to a human) is essential — the model cannot recognise what it was not taught."}},{"@type":"Question","name":"ESP32-S3 or Raspberry Pi?","acceptedAnswer":{"@type":"Answer","text":"It depends on whether you want many modest eyes or fewer sharp ones. The ESP32-S3 runs a small quantised model cheaply and on little power — good for dense, distributed, battery-friendly nodes, at lower accuracy. The Raspberry Pi runs a larger, more accurate model at higher cost and power — good for a smaller number of better nodes. Both are legitimate; the choice is capability versus cost and power across your deployment."}},{"@type":"Question","name":"How much does field data improve it?","acceptedAnswer":{"@type":"Answer","text":"A great deal — it is the single most effective step for real deployment. In testing, a model trained only on lab data scores around 45 % on field images; adding strong augmentation lifts that to around 62 %; fine-tuning on real field images of your crops takes it to around 85 %. Even a few hundred real field images per class make a large difference. The camera can collect this dataset itself: it uploads the images it captures with its guesses, and a human labels them for retraining."}},{"@type":"Question","name":"Could it confuse a nutrient deficiency for a disease?","acceptedAnswer":{"@type":"Answer","text":"Yes, and this is an inherent limit. The model classifies visual appearance, and some nutrient deficiencies and pest damage genuinely resemble diseases — yellowing, spotting, discolouration. Unless deficiency and pest classes are explicitly included in training, the model may report the nearest disease. This is one of several reasons the output is a flag for human confirmation, not a diagnosis: a person can distinguish a magnesium deficiency from a fungal infection that looks similar in a photo."}},{"@type":"Question","name":"Is this actually useful given all these limits?","acceptedAnswer":{"@type":"Answer","text":"Yes, when used correctly — as a screening tool across a crop no person can inspect leaf by leaf. Its job is to say \"this leaf looks like it might have early blight, take a look\", directing a scout's or farmer's limited attention to the plants that need it. Caught early, disease is often manageable; caught late, it takes a field. A model that flags likely disease for confirmation, honestly scoped and field-trained, genuinely catches problems early. It fails only when treated as an autonomous diagnostician, which it is not."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#agriculture">Agriculture</a><span class="sep">/</span>
+        <span aria-current="page">Crop Disease Camera</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 031 · Agriculture</span>
+          <h1>Crop Disease Camera<span class="grad">.</span></h1>
+          <p class="tagline">A field camera node that photographs crop leaves, runs a trained disease classifier on-device, and flags early signs of infection — with a clear account of what the model can and cannot recognise.</p>
+          <div class="hero-chips">
+            <span class="chip lv-advanced">Advanced</span>
+            <span class="chip">20–30 hours</span>
+            <span class="chip neutral">38 min read</span>
+            <span class="chip neutral">Camera</span><span class="chip neutral">Vision</span><span class="chip neutral">Farming</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td244" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td244">Crop Disease Camera — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="88" y="78" width="224" height="120" rx="12" fill="#22262c" stroke="#3a4150" stroke-width="2"/>
+    <circle cx="200" cy="138" r="42" fill="#0f1418" stroke="#4a525e" stroke-width="4"/>
+    <circle cx="200" cy="138" r="26" fill="#132030"/>
+    <circle cx="188" cy="126" r="7" fill="#5fd0e0" opacity=".7"/>
+    <rect x="104" y="90" width="26" height="12" rx="3" fill="#3a4150"/>
+    <circle cx="292" cy="96" r="5" fill="#e05050"/>
+  </svg>
+  <figcaption hidden>Crop Disease Camera — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Advanced</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>20–30 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹3,200 – ₹6,500 depending on compute choice</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32-S3 DevKitC-1</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Agriculture</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>27 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">27</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 27 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">27</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">A field camera node that photographs crop leaves, runs a trained disease classifier on-device, and flags early signs of infection — with a clear account of what the model can and cannot recognise.</p>
+<p>Plant disease, caught early, is often manageable — a targeted fungicide, removing affected plants, adjusting conditions. Caught late, it can take a field. But early detection requires close, frequent inspection of leaves that a farmer covering acres cannot do, and the visual signs are subtle and easy to miss until they are not. A camera node that automatically photographs leaves and runs a disease classifier on the images offers a way to inspect continuously and flag problems while they are still small.</p>
+<p>This is a genuine and active application of edge machine learning, and it is also one where honesty about the limits is essential. A model trained to recognise a specific set of diseases on a specific set of crops does that well; shown a disease it was never trained on, or a crop it never saw, or a nutrient deficiency that looks like a disease, it will confidently produce a wrong answer. The model recognises patterns it has learned, not "disease" in the abstract. This documentation makes the scope of the model — which crops, which diseases — central, and frames the output as a flag for confirmation, not a diagnosis.</p>
+<p>The build runs a trained convolutional network on an <b>ESP32-S3</b> (with its vector instructions and PSRAM for on-device inference) or, for larger models, streams to a <b>Raspberry Pi</b>. It captures a leaf image, runs the classifier, and reports the most likely class with its confidence — flagging low-confidence or disease-positive results for a human to confirm. The famous <b>PlantVillage</b> dataset (54,000 labelled leaf images across many crops and diseases) is the standard training set, and its strengths and well-known weaknesses (lab conditions, single leaves on plain backgrounds) are discussed honestly, because a model trained on it can perform far worse in a real field.</p>
+<p>The result is a node that continuously watches a crop and surfaces likely disease early, understood correctly as a screening tool whose job is to say "look at this, it might be diseased" to a person who can then confirm and act.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Webcam.jpg?width=900" alt="A USB webcam" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td237" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td237">A camera module. Sharp, well-lit, leaf-scale images are the prerequisite — disease signs are fine details a blurry image loses.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="88" y="78" width="224" height="120" rx="12" fill="#22262c" stroke="#3a4150" stroke-width="2"/>
+    <circle cx="200" cy="138" r="42" fill="#0f1418" stroke="#4a525e" stroke-width="4"/>
+    <circle cx="200" cy="138" r="26" fill="#132030"/>
+    <circle cx="188" cy="126" r="7" fill="#5fd0e0" opacity=".7"/>
+    <rect x="104" y="90" width="26" height="12" rx="3" fill="#3a4150"/>
+    <circle cx="292" cy="96" r="5" fill="#e05050"/>
+  </svg>
+  <figcaption>A camera module. Sharp, well-lit, leaf-scale images are the prerequisite — disease signs are fine details a blurry image loses.</figcaption>
+</figure></template>
+  <figcaption>A camera module. Sharp, well-lit, leaf-scale images are the prerequisite — disease signs are fine details a blurry image loses.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Webcam.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Webcam.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Captures leaf images automatically on a schedule or trigger.</li><li>Runs a trained crop-disease classifier on-device (ESP32-S3) or on a Raspberry Pi.</li><li>Reports the most likely disease class and confidence for a defined set of crops and diseases.</li><li>Flags disease-positive and low-confidence results for human confirmation.</li><li>Handles the model's scope honestly — reports "unknown" outside its training.</li><li>Logs detections with images for review and for retraining.</li><li>Reports over the network for field-scale coverage.</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Early disease detection</b></td><td>Flagging likely infection while it is still small and manageable.</td></tr><tr><td><b>Greenhouse crop monitoring</b></td><td>Controlled conditions where the model performs closest to its training.</td></tr><tr><td><b>High-value crops</b></td><td>Where the cost of a missed disease justifies dense camera coverage.</td></tr><tr><td><b>Scouting assistance</b></td><td>Directing a scout's attention to plants the model flags.</td></tr><tr><td><b>Learning edge AI</b></td><td>A complete train-quantise-deploy pipeline for a real vision task.</td></tr><tr><td><b>Research and demonstration</b></td><td>A platform for field-vision disease-detection studies.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li><b>On-device inference</b> with a quantised CNN on the ESP32-S3, or a larger model on a Pi.</li><li><b>Defined, honest scope</b> — specific crops and diseases, "unknown" outside them.</li><li><b>Confidence-gated flagging</b> so uncertain results go to a human, not acted on automatically.</li><li><b>PlantVillage-trained baseline</b> with the real-field performance gap discussed openly.</li><li><b>Field-image robustness</b> techniques (augmentation, background handling) to narrow that gap.</li><li><b>Detection logging with images</b> for confirmation and for collecting field data to retrain.</li><li><b>Scheduled or triggered capture</b> for continuous or event-based inspection.</li><li><b>Network reporting</b> for field-scale coverage.</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Advanced</td></tr><tr><td><b>Estimated completion time</b></td><td>20–30 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹3,200 – ₹6,500 depending on compute choice</td></tr><tr><td><b>Primary discipline</b></td><td>Agriculture</td></tr><tr><td><b>Reference platform</b></td><td>ESP32-S3 DevKitC-1</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Python and deep learning (CNN training, transfer learning)</li><li>Model quantisation and edge deployment (TFLite Micro / ONNX)</li><li>Camera interfacing and image capture</li><li>Understanding of dataset bias and real-world generalisation</li><li>Honest evaluation and scope definition</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>Understand the PlantVillage dataset's well-documented limitations before relying on a model trained on it. Its images are single leaves on plain backgrounds in controlled lighting, so a model trained on it can drop dramatically in accuracy on real field images with complex backgrounds, varied lighting and multiple leaves. Plan to fine-tune on real field images for real use.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32-S3 DevKitC-1</b><br/><span style="font-size:.82em;opacity:.78">The vector extensions roughly triple TinyML inference speed over the original ESP32.</span></td><td>Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM + 8 MB PSRAM, vector instructions for ML, Wi-Fi + BLE 5</td><td class="num">1</td><td class="num">₹900</td></tr><tr><td><b>ESP32-CAM (AI-Thinker) + OV2640</b><br/><span style="font-size:.82em;opacity:.78">No USB-serial on board — needs an FTDI/CP2102 adapter to flash.</span></td><td>ESP32-S chip, 4 MB PSRAM, 2 MP OV2640 camera, microSD slot, on-board LED flash</td><td class="num">1</td><td class="num">₹620</td></tr><tr><td><b>Raspberry Pi Zero 2 W</b><br/><span style="font-size:.82em;opacity:.78">512 MB RAM — enable 1 GB zram swap before running any vision model.</span></td><td>Quad-core Cortex-A53 @ 1 GHz, 512 MB RAM, Wi-Fi 802.11n, BLE 4.2, CSI camera port</td><td class="num">1</td><td class="num">₹2,200</td></tr><tr><td><b>Raspberry Pi Camera Module 3</b><br/><span style="font-size:.82em;opacity:.78">Pi 5 uses a narrower 22-pin CSI cable — the old 15-pin ribbon will not fit.</span></td><td>12 MP IMX708, autofocus, HDR, 1080p50, CSI-2 ribbon</td><td class="num">1</td><td class="num">₹2,600</td></tr><tr><td><b>5 V 3 A regulated SMPS adapter</b><br/><span style="font-size:.82em;opacity:.78">Measure the real output — many "3 A" adapters sag below 4.7 V at 2 A.</span></td><td>100–240 VAC in, 5 V ±5 % out, 3 A, short-circuit and over-voltage protection</td><td class="num">1</td><td class="num">₹350</td></tr><tr><td><b>Double-sided perfboard 7 × 9 cm + headers</b><br/><span style="font-size:.82em;opacity:.78">Solder female headers so the MCU can be swapped without desoldering.</span></td><td>FR-4, 0.1″ pitch, plated through-holes, 24 × 18 grid</td><td class="num">1</td><td class="num">₹60</td></tr><tr><td><b>IP65 ABS junction enclosure 158 × 90 × 60 mm</b><br/><span style="font-size:.82em;opacity:.78">Fit cable glands, not drilled holes, or the IP rating means nothing.</span></td><td>IP65, ABS, −20 to +80 °C, transparent lid, wall-mount lugs</td><td class="num">1</td><td class="num">₹260</td></tr><tr><td><b>Camera + close-focus lens</b><br/><span style="font-size:.82em;opacity:.78">A leaf-disease image needs the leaf sharp and filling the frame — close focus and good light matter.</span></td><td>For sharp leaf-scale images at the working distance</td><td class="num">1</td><td class="num">₹400</td></tr><tr><td><b>Diffuse LED illumination</b><br/><span style="font-size:.82em;opacity:.78">Consistent, diffuse lighting reduces the appearance variation the model has to cope with.</span></td><td>Even white light for consistent images</td><td class="num">1</td><td class="num">₹250</td></tr><tr><td><b>Weatherproof camera housing</b></td><td>IP65, clear window, adjustable mount</td><td class="num">1</td><td class="num">₹380</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹8,020</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32-S3 DevKitC-1</b></td><td>Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM + 8 MB PSRAM, vector instructions for ML, Wi-Fi + BLE 5</td><td>3.3 V logic / 5 V USB</td><td>USB-OTG, SPI, I²C, I²S, LCD/camera bus</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>ESP32-CAM (AI-Thinker) + OV2640</b></td><td>ESP32-S chip, 4 MB PSRAM, 2 MP OV2640 camera, microSD slot, on-board LED flash</td><td>5 V in / 3.3 V logic</td><td>UART (programmer required), SPI, I²C</td><td><a href="https://loboris.eu/ESP32/ESP32-CAM%20Product%20Specification.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Raspberry Pi Zero 2 W</b></td><td>Quad-core Cortex-A53 @ 1 GHz, 512 MB RAM, Wi-Fi 802.11n, BLE 4.2, CSI camera port</td><td>5 V / 2 A micro-USB</td><td>GPIO, SPI, I²C, UART, CSI</td><td><a href="https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-product-brief.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Raspberry Pi Camera Module 3</b></td><td>12 MP IMX708, autofocus, HDR, 1080p50, CSI-2 ribbon</td><td>3.3 V via CSI</td><td>CSI-2</td><td><a href="https://datasheets.raspberrypi.com/camera/camera-module-3-product-brief.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>5 V 3 A regulated SMPS adapter</b></td><td>100–240 VAC in, 5 V ±5 % out, 3 A, short-circuit and over-voltage protection</td><td>5 V</td><td>DC barrel / USB</td><td><a href="https://en.wikipedia.org/wiki/Switched-mode_power_supply" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Double-sided perfboard 7 × 9 cm + headers</b></td><td>FR-4, 0.1″ pitch, plated through-holes, 24 × 18 grid</td><td>—</td><td>—</td><td><a href="https://en.wikipedia.org/wiki/Perfboard" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>IP65 ABS junction enclosure 158 × 90 × 60 mm</b></td><td>IP65, ABS, −20 to +80 °C, transparent lid, wall-mount lugs</td><td>—</td><td>—</td><td><a href="https://en.wikipedia.org/wiki/IP_Code" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32-S3 DevKitC-1</td><td>3.3 V logic / 5 V USB</td><td class="num">180</td><td>The vector extensions roughly triple TinyML inference speed over the original ESP32.</td></tr><tr><td>ESP32-CAM (AI-Thinker) + OV2640</td><td>5 V in / 3.3 V logic</td><td class="num">220</td><td>No USB-serial on board — needs an FTDI/CP2102 adapter to flash.</td></tr><tr><td>Raspberry Pi Zero 2 W</td><td>5 V / 2 A micro-USB</td><td class="num">350</td><td>512 MB RAM — enable 1 GB zram swap before running any vision model.</td></tr><tr><td>Raspberry Pi Camera Module 3</td><td>3.3 V via CSI</td><td class="num">250</td><td>Pi 5 uses a narrower 22-pin CSI cable — the old 15-pin ribbon will not fit.</td></tr><tr><td>5 V 3 A regulated SMPS adapter</td><td>5 V</td><td class="num">3000</td><td>Measure the real output — many "3 A" adapters sag below 4.7 V at 2 A.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>4000 mA</b>. With a 1.5× design margin the supply should deliver at least <b>6000 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Python 3.11 + TensorFlow/Keras for training; ESP32-S3 (Arduino/ESP-IDF) or Raspberry Pi OS for deployment</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>TensorFlow Lite for Microcontrollers</b> <span style="opacity:.7">2.4.0-alpha</span></td><td>Int8 neural-network inference inside 200 KB of RAM.</td><td><code>Library Manager → "TensorFlowLite_ESP32"</code></td></tr><tr><td><b>Edge Impulse Arduino SDK</b> <span style="opacity:.7">per-project export</span></td><td>Deployable C++ bundle of a trained TinyML classifier.</td><td><code>Sketch → Include Library → Add .ZIP from the Edge Impulse export</code></td></tr><tr><td><b>Python</b> <span style="opacity:.7">3.11+</span></td><td>Runtime for the analysis, training and service code.</td><td><code>sudo apt install python3 python3-venv python3-pip</code></td></tr><tr><td><b>TensorFlow / Keras</b> <span style="opacity:.7">2.17+</span></td><td>High-level model building and the TFLite converter.</td><td><code>pip install tensorflow</code></td></tr><tr><td><b>NumPy</b> <span style="opacity:.7">1.26+</span></td><td>Vectorised array maths underpinning every other library here.</td><td><code>pip install numpy</code></td></tr><tr><td><b>OpenCV</b> <span style="opacity:.7">4.10+</span></td><td>Frame capture, colour conversion, drawing and classical CV operators.</td><td><code>pip install opencv-python</code></td></tr><tr><td><b>Ultralytics YOLO</b> <span style="opacity:.7">8.3+</span></td><td>Training and inference API for YOLOv8/v11 detectors.</td><td><code>pip install ultralytics</code></td></tr><tr><td><b>ONNX Runtime</b> <span style="opacity:.7">1.19+</span></td><td>Portable, quantised inference across CPU, GPU and NPUs.</td><td><code>pip install onnxruntime</code></td></tr><tr><td><b>Picamera2</b> <span style="opacity:.7">0.3.20+</span></td><td>libcamera-based capture API for Pi Camera modules.</td><td><code>sudo apt install python3-picamera2</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td238 sd238" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td238">Crop Disease Camera — system block diagram</title><desc id="sd238">Functional block diagram of the Crop Disease Camera system.</desc>
+    <defs>
+    <marker id="ar-d238" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d238" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d238" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d238" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Capture</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d238)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Camera + lens</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">sharp leaf image</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d238)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Illumination</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">even light</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Infer</text><rect x="266" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d238)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="79" text-anchor="middle"><tspan x="355" y="79.0">Preprocess</tspan></text><text class="dg-s" x="355" y="98" text-anchor="middle"><tspan x="355" y="98.0">resize, normalise</tspan></text><rect x="266" y="134" width="178" height="62" rx="12"
+          fill="url(#ga-d238)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="159" text-anchor="middle"><tspan x="355" y="159.0">CNN classifier</tspan></text><text class="dg-s" x="355" y="178" text-anchor="middle"><tspan x="355" y="178.0">on-device</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Decide</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d238)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Confidence gate</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">flag if uncertain</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d238)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Scope check</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">&quot;unknown&quot; if off</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Report</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d238)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Log + image</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">for confirm</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d238)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Uplink</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">flag for human</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d238)"/><text class="dg-e" x="235" y="117" text-anchor="middle">image</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d238)"/><text class="dg-e" x="475" y="117" text-anchor="middle">class + conf</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d238)"/><text class="dg-e" x="715" y="117" text-anchor="middle">result</text>
+  </svg>
+  <figcaption>Crop Disease Camera — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 264" role="img" aria-labelledby="td239 sd239" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td239">Crop Disease Camera — wiring schematic</title><desc id="sd239">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d239" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d239" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d239" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d239" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="168" rx="14"
+      fill="url(#ga-d239)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="89.0">ESP32-S3 DevKitC-1</tspan></text><text class="dg-s" x="434" y="214" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d239)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Camera (OV2640 / Pi CSI)</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">on-board</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">Image capture</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d239)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">Illumination control</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 4</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="161.5">LED light during</tspan><tspan x="278" y="172.5">capture</tspan></text><rect x="20" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d239)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="205" text-anchor="middle"><tspan x="115" y="205.0">Trigger (PIR/schedule)</tspan></text><path d="M210 204 C 278 204, 278 204, 346 204" stroke="#4fb0e0" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="204" r="3.2" fill="#4fb0e0"/><text class="dg-p" x="278" y="198" text-anchor="middle">GPIO 13</text><text class="dg-s" x="278" y="219" text-anchor="middle"><tspan x="278" y="219.0">Capture trigger</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d239)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Status LED</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">GPIO 2</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="109.5">Inference/result</tspan><tspan x="590" y="120.5">indicator</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d239)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Wi-Fi/LoRa reporting</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">radio</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Detection uplink</tspan></text>
+  </svg>
+  <figcaption>Crop Disease Camera — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Camera (OV2640 / Pi CSI)</b></td><td>camera bus</td><td><code>on-board</code></td><td>Image capture</td></tr><tr><td><b>Illumination control</b></td><td>MOSFET</td><td><code>GPIO 4</code></td><td>LED light during capture</td></tr><tr><td><b>Trigger (PIR/schedule)</b></td><td>OUT</td><td><code>GPIO 13</code></td><td>Capture trigger</td></tr><tr><td><b>Status LED</b></td><td>Anode</td><td><code>GPIO 2</code></td><td>Inference/result indicator</td></tr><tr><td><b>Wi-Fi/LoRa reporting</b></td><td>—</td><td><code>radio</code></td><td>Detection uplink</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>The camera and lens must produce a <b>sharp, well-lit, leaf-scale image</b>. Disease signs are fine — spots, lesions, discolouration — so a blurry or poorly-lit image defeats the model regardless of how good it is. Set the focus at the working distance and provide even illumination.</li><li>Diffuse LED lighting reduces the lighting variation the model must handle. Harsh directional light creates shadows and specular highlights that look nothing like the training images, degrading accuracy.</li><li>On the ESP32-S3, enable PSRAM and use the camera driver as in the doorbell project; the model runs in the vector-accelerated inference path.</li><li>For larger, more accurate models, use a Raspberry Pi with the camera module — it can run a full-size CNN that the ESP32 cannot, at higher power and cost.</li><li>Weatherproof the housing with a clear, clean window in front of the lens; a dirty or fogged window ruins the image. Position it so it images representative leaves.</li><li>For field-scale coverage, either many cheap nodes at fixed positions or a smaller number on a moving platform (e.g. a rail or a robot) — the model and pipeline are the same.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Typical%20cnn.png?width=900" alt="A typical convolutional neural network architecture diagram" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td240" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td240">A convolutional neural network architecture. The model learns to distinguish its trained disease classes from image features; it does not recognise &quot;disease&quot; in general.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <line x1="79" y1="91" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="117" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="143" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="169" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="65" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="91" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="117" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="143" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="169" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="195" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="65" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="91" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="117" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="143" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="169" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="195" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="104" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="130" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="156" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/>
+    <text x="70" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">input</text>
+    <text x="205" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">hidden</text>
+    <text x="340" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">output</text>
+  </svg>
+  <figcaption>A convolutional neural network architecture. The model learns to distinguish its trained disease classes from image features; it does not recognise &quot;disease&quot; in general.</figcaption>
+</figure></template>
+  <figcaption>A convolutional neural network architecture. The model learns to distinguish its trained disease classes from image features; it does not recognise "disease" in general.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Typical_cnn.png" rel="noopener nofollow" target="_blank">Wikimedia Commons — Typical cnn.png</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td241 sd241" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td241">Crop Disease Camera — architecture stack</title><desc id="sd241">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d241" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d241" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d241" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d241" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d241)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">ESP32-S3 DevKitC-1 · Raspberry Pi Camera Module 3</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d241)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d241)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">tflmicro · edgeimpulse · python · tf</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d241)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d241)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d241)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d241)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Crop Disease Camera — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>The recognition is done by a <b>convolutional neural network</b> trained to classify leaf images into disease categories. A CNN learns, through training on labelled examples, to detect the visual features that distinguish classes — for disease, that means the spots, lesions, discolourations, mould and wilting patterns characteristic of each disease on each crop. Given enough labelled examples, it learns these patterns far better than hand-coded rules could, which is why deep learning dominates plant-disease vision.</p>
+<p>The critical thing to understand is <b>what the model actually learns</b>, because it determines how the output must be used. The model learns to distinguish the classes it was trained on, based on the images it was shown. It does not learn "disease" as a concept — it learns "images that look like the tomato-early-blight examples versus images that look like the healthy-tomato examples." Consequently: shown a disease not in its training set, it will assign the nearest class it knows, confidently and wrongly. Shown a crop it never saw, its output is meaningless. Shown a nutrient deficiency or pest damage that visually resembles a trained disease, it may report that disease. The model is a pattern-matcher over a fixed set of classes, and its scope is exactly the crops and diseases it was trained on — no more.</p>
+<p>This is why the <b>dataset matters so much</b>, and why the famous PlantVillage dataset needs honest discussion. PlantVillage contains about 54,000 images across 14 crops and 26 diseases, and it is the standard benchmark — models trained on it report accuracies above 99 %. But those images are single leaves, detached, photographed on a plain uniform background in controlled lighting. A model trained on them learns features that include the plain background and the controlled lighting. Deployed on a real field image — a leaf among other leaves, with soil and sky in the background, in dappled sunlight — the model often drops from 99 % to well below 50 %, because the real image looks nothing like its training. This "lab-to-field gap" is one of the most documented failures in agricultural computer vision, and pretending it does not exist is how these systems disappoint.</p>
+<p>Narrowing the gap requires <b>real field data and careful training</b>. Fine-tuning on field images (even a modest number) helps enormously. Strong augmentation — varying background, lighting, scale, angle — during training makes the model more robust. And crucially, adding an <b>"unknown" or low-confidence handling</b>: rather than forcing every image into a known class, the model should be able to say "I do not recognise this confidently," which routes the image to a human rather than producing a confident wrong answer.</p>
+<p>Deployment is a <b>quantise-and-run edge pipeline</b>. The model is trained in float, then quantised to int8 for the ESP32-S3 (which has vector instructions for exactly this) using TFLite Micro, or run at higher precision on a Raspberry Pi for a larger model. The trade-off is capability versus cost and power: the ESP32-S3 runs a small model cheaply and on little power (good for dense, distributed nodes); the Pi runs a larger, more accurate model at more cost and power (good for a smaller number of better nodes). Both are legitimate, and the choice depends on whether you want many modest eyes or fewer sharp ones.</p>
+<p>The output is used as a <b>flag, not a verdict</b>. A disease-positive or low-confidence result is logged with its image and surfaced to a human, who confirms — the person is the diagnostic authority, the model is the attention-director that says "this leaf looks like it might have early blight, take a look." Used this way, across a crop no person can inspect leaf by leaf, it genuinely catches disease early. Used as an autonomous diagnostician, it would misfire on everything outside its narrow training and cause more harm than good.</p>
+
+<h3>The maths behind it</h3><h4>CNN classification and confidence</h4><div class="codeblock tall" data-file="CNN classification and confidence">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">CNN classification and confidence</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy CNN classification and confidence to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="CNN classification and confidence" type="button" aria-label="Download CNN classification and confidence">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Input: leaf image, resized to model input (e.g. 224×224×3),
+normalised.
+
+CNN → logits → softmax → class probabilities p_c
+
+  predicted class = argmax_c p_c
+  confidence      = max_c p_c
+
+Decision:
+  if confidence &lt; THRESHOLD: mark "uncertain" → human
+  else if class is a disease: flag for confirmation
+  else: healthy
+
+A calibrated confidence is essential — an over-confident
+model defeats the confidence gate.</code></pre>
+  
+</div>
+<h4>Depthwise-separable model cost (edge)</h4><div class="codeblock tall" data-file="Depthwise-separable model cost (edge)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Depthwise-separable model cost (edge)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Depthwise-separable model cost (edge) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Depthwise-separable model cost (edge)" type="button" aria-label="Download Depthwise-separable model cost (edge)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>MobileNet-style block (used for edge deployment):
+  standard conv:    K²·C_in·C_out MACs/pixel
+  depthwise-sep:    K²·C_in + C_in·C_out MACs/pixel
+
+For K=3, C=128: ~8–9× cheaper — the reason mobile/edge
+vision uses this decomposition.
+
+Int8 quantisation: 4× smaller, several× faster on the
+ESP32-S3 vector unit, typically &lt;2% accuracy loss with
+a representative calibration set.</code></pre>
+  
+</div>
+<h4>The lab-to-field gap (why it matters)</h4><div class="codeblock tall" data-file="The lab-to-field gap (why it matters)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">The lab-to-field gap (why it matters)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy The lab-to-field gap (why it matters) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="The lab-to-field gap (why it matters)" type="button" aria-label="Download The lab-to-field gap (why it matters)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>PlantVillage (lab) test accuracy:        &gt;99%
+Same model on real field images:         often &lt;50%
+
+Causes: plain vs complex background,
+controlled vs variable lighting, single vs
+multiple leaves, scale and angle differences.
+
+Mitigations (measured improvement):
+  strong background/lighting augmentation: +10–20%
+  fine-tune on field images:               +20–40%
+  "unknown" class / confidence gating:     fewer
+                                           confident errors
+
+Report field accuracy, not lab accuracy.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 812" role="img" aria-labelledby="td242 sd242" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td242">Crop Disease Camera — firmware flowchart</title><desc id="sd242">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d242" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d242" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d242" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d242" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d242)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Trigger: schedule or event</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d242)"/><path d="M101 116 L335 116 L319 172 L85 172 z"
+          fill="url(#gb-d242)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="144.0">Illuminate, capture leaf image</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d242)"/><path d="M210 202 L349 244 L210 286 L71 244 z"
+          fill="url(#ga-d242)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="244" text-anchor="middle"><tspan x="210" y="237.5">Image sharp and well-lit</tspan><tspan x="210" y="250.5">enough?</tspan></text><path d="M210 286 L210 310" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d242)"/><text class="dg-e" x="220" y="305">proceed</text><path d="M349 244 H397 V28 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d242)"/><text class="dg-e" x="403" y="238">recapture / skip</text><rect x="85" y="316" width="250" height="56" rx="10"
+          fill="url(#gb-d242)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="344" text-anchor="middle"><tspan x="210" y="344.0">Preprocess, run the classifier</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d242)"/><path d="M210 402 L349 444 L210 486 L71 444 z"
+          fill="url(#ga-d242)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="444" text-anchor="middle"><tspan x="210" y="437.5">Confidence above</tspan><tspan x="210" y="450.5">threshold?</tspan></text><path d="M210 486 L210 510" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d242)"/><text class="dg-e" x="220" y="505">accept class</text><path d="M349 444 H397 V28 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d242)"/><text class="dg-e" x="403" y="438">mark uncertain</text><path d="M210 516 L349 558 L210 600 L71 558 z"
+          fill="url(#ga-d242)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="558" text-anchor="middle"><tspan x="210" y="551.5">Disease-positive or</tspan><tspan x="210" y="564.5">uncertain?</tspan></text><path d="M210 600 L210 624" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d242)"/><text class="dg-e" x="220" y="619">flag for human confirmation</text><path d="M349 558 H397 V28 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d242)"/><text class="dg-e" x="403" y="552">healthy — log</text><path d="M101 630 L335 630 L319 686 L85 686 z"
+          fill="url(#gb-d242)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="658" text-anchor="middle"><tspan x="210" y="658.0">Log with image, uplink flag</tspan></text><path d="M210 686 L210 710" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d242)"/><rect x="85" y="716" width="250" height="56" rx="28"
+          fill="url(#ga-d242)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="744" text-anchor="middle"><tspan x="210" y="744.0">Return to waiting</tspan></text>
+  </svg>
+  <figcaption>Crop Disease Camera — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+</section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+</section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="train_disease_model.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">train_disease_model.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy train_disease_model.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="train_disease_model.py" type="button" aria-label="Download train_disease_model.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">#!/usr/bin/env python3</span>
+<span class="tok-s">"""Train a crop-disease classifier and export int8 TFLite for the edge.</span>
+<span class="tok-s"></span>
+<span class="tok-s">Uses transfer learning from MobileNetV2. Emphasises the field-robustness</span>
+<span class="tok-s">techniques (augmentation) and an explicit low-confidence path — because a</span>
+<span class="tok-s">model that cannot say "I don't know" produces confident wrong answers on</span>
+<span class="tok-s">anything outside its training.</span>
+<span class="tok-s">"""</span>
+<span class="tok-k">from</span> __future__ <span class="tok-k">import</span> annotations
+
+<span class="tok-k">import</span> pathlib
+
+<span class="tok-k">import</span> numpy <span class="tok-k">as</span> np
+<span class="tok-k">import</span> tensorflow <span class="tok-k">as</span> tf
+
+<span class="tok-t">IMG</span> <span class="tok-o">=</span> <span class="tok-n">224</span>
+<span class="tok-c"># Define the SCOPE explicitly: these crops and diseases and nothing else.</span>
+<span class="tok-t">CLASSES</span> <span class="tok-o">=</span> <span class="tok-o">[</span>
+    <span class="tok-s">"tomato_healthy"</span><span class="tok-o">,</span> <span class="tok-s">"tomato_early_blight"</span><span class="tok-o">,</span> <span class="tok-s">"tomato_late_blight"</span><span class="tok-o">,</span>
+    <span class="tok-s">"tomato_leaf_mold"</span><span class="tok-o">,</span> <span class="tok-s">"tomato_septoria"</span><span class="tok-o">,</span>
+    <span class="tok-s">"potato_healthy"</span><span class="tok-o">,</span> <span class="tok-s">"potato_early_blight"</span><span class="tok-o">,</span> <span class="tok-s">"potato_late_blight"</span><span class="tok-o">,</span>
+    <span class="tok-c"># ... your defined scope. Off-scope images are NOT reliably classified.</span>
+<span class="tok-o">]</span>
+
+
+<span class="tok-k">def</span> <span class="tok-f">make_dataset</span><span class="tok-o">(</span>root<span class="tok-o">:</span> str<span class="tok-o">,</span> subset<span class="tok-o">:</span> str<span class="tok-o">):</span>
+    <span class="tok-k">return</span> tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>utils<span class="tok-o">.</span><span class="tok-f">image_dataset_from_directory</span><span class="tok-o">(</span>
+        root<span class="tok-o">,</span> validation_split<span class="tok-o">=</span><span class="tok-n">0.2</span><span class="tok-o">,</span> subset<span class="tok-o">=</span>subset<span class="tok-o">,</span> seed<span class="tok-o">=</span><span class="tok-n">1</span><span class="tok-o">,</span>
+        image_size<span class="tok-o">=(</span><span class="tok-t">IMG</span><span class="tok-o">,</span> <span class="tok-t">IMG</span><span class="tok-o">),</span> batch_size<span class="tok-o">=</span><span class="tok-n">32</span><span class="tok-o">,</span> class_names<span class="tok-o">=</span><span class="tok-t">CLASSES</span><span class="tok-o">)</span>
+
+
+<span class="tok-k">def</span> <span class="tok-f">build_model</span><span class="tok-o">()</span> <span class="tok-o">-&gt;</span> tf<span class="tok-o">.</span>keras<span class="tok-o">.</span><span class="tok-t">Model</span><span class="tok-o">:</span>
+    base <span class="tok-o">=</span> tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>applications<span class="tok-o">.</span><span class="tok-f">MobileNetV2</span><span class="tok-o">(</span>
+        input_shape<span class="tok-o">=(</span><span class="tok-t">IMG</span><span class="tok-o">,</span> <span class="tok-t">IMG</span><span class="tok-o">,</span> <span class="tok-n">3</span><span class="tok-o">),</span> include_top<span class="tok-o">=</span><span class="tok-k">False</span><span class="tok-o">,</span> weights<span class="tok-o">=</span><span class="tok-s">"imagenet"</span><span class="tok-o">)</span>
+    base<span class="tok-o">.</span>trainable <span class="tok-o">=</span> <span class="tok-k">False</span>                      <span class="tok-c"># transfer learning</span>
+
+    <span class="tok-c"># Strong augmentation is the single most effective lab-to-field mitigation.</span>
+    augment <span class="tok-o">=</span> tf<span class="tok-o">.</span>keras<span class="tok-o">.</span><span class="tok-f">Sequential</span><span class="tok-o">([</span>
+        tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>layers<span class="tok-o">.</span><span class="tok-f">RandomFlip</span><span class="tok-o">(</span><span class="tok-s">"horizontal"</span><span class="tok-o">),</span>
+        tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>layers<span class="tok-o">.</span><span class="tok-f">RandomRotation</span><span class="tok-o">(</span><span class="tok-n">0.2</span><span class="tok-o">),</span>
+        tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>layers<span class="tok-o">.</span><span class="tok-f">RandomZoom</span><span class="tok-o">(</span><span class="tok-n">0.2</span><span class="tok-o">),</span>
+        tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>layers<span class="tok-o">.</span><span class="tok-f">RandomBrightness</span><span class="tok-o">(</span><span class="tok-n">0.3</span><span class="tok-o">),</span>
+        tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>layers<span class="tok-o">.</span><span class="tok-f">RandomContrast</span><span class="tok-o">(</span><span class="tok-n">0.3</span><span class="tok-o">),</span>
+        <span class="tok-c"># Random background/crop simulates field clutter the lab data lacks.</span>
+        tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>layers<span class="tok-o">.</span><span class="tok-f">RandomTranslation</span><span class="tok-o">(</span><span class="tok-n">0.15</span><span class="tok-o">,</span> <span class="tok-n">0.15</span><span class="tok-o">),</span>
+    <span class="tok-o">])</span>
+
+    inp <span class="tok-o">=</span> tf<span class="tok-o">.</span>keras<span class="tok-o">.</span><span class="tok-f">Input</span><span class="tok-o">((</span><span class="tok-t">IMG</span><span class="tok-o">,</span> <span class="tok-t">IMG</span><span class="tok-o">,</span> <span class="tok-n">3</span><span class="tok-o">))</span>
+    x <span class="tok-o">=</span> <span class="tok-f">augment</span><span class="tok-o">(</span>inp<span class="tok-o">)</span>
+    x <span class="tok-o">=</span> tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>applications<span class="tok-o">.</span>mobilenet_v2<span class="tok-o">.</span><span class="tok-f">preprocess_input</span><span class="tok-o">(</span>x<span class="tok-o">)</span>
+    x <span class="tok-o">=</span> <span class="tok-f">base</span><span class="tok-o">(</span>x<span class="tok-o">,</span> training<span class="tok-o">=</span><span class="tok-k">False</span><span class="tok-o">)</span>
+    x <span class="tok-o">=</span> tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>layers<span class="tok-o">.</span><span class="tok-f">GlobalAveragePooling2D</span><span class="tok-o">()(</span>x<span class="tok-o">)</span>
+    x <span class="tok-o">=</span> tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>layers<span class="tok-o">.</span><span class="tok-f">Dropout</span><span class="tok-o">(</span><span class="tok-n">0.3</span><span class="tok-o">)(</span>x<span class="tok-o">)</span>
+    out <span class="tok-o">=</span> tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>layers<span class="tok-o">.</span><span class="tok-f">Dense</span><span class="tok-o">(</span><span class="tok-f">len</span><span class="tok-o">(</span><span class="tok-t">CLASSES</span><span class="tok-o">),</span> activation<span class="tok-o">=</span><span class="tok-s">"softmax"</span><span class="tok-o">)(</span>x<span class="tok-o">)</span>
+    <span class="tok-k">return</span> tf<span class="tok-o">.</span>keras<span class="tok-o">.</span><span class="tok-f">Model</span><span class="tok-o">(</span>inp<span class="tok-o">,</span> out<span class="tok-o">)</span>
+
+
+<span class="tok-k">def</span> <span class="tok-f">main</span><span class="tok-o">()</span> <span class="tok-o">-&gt;</span> <span class="tok-k">None</span><span class="tok-o">:</span>
+    train <span class="tok-o">=</span> <span class="tok-f">make_dataset</span><span class="tok-o">(</span><span class="tok-s">"dataset"</span><span class="tok-o">,</span> <span class="tok-s">"training"</span><span class="tok-o">)</span>
+    val <span class="tok-o">=</span> <span class="tok-f">make_dataset</span><span class="tok-o">(</span><span class="tok-s">"dataset"</span><span class="tok-o">,</span> <span class="tok-s">"validation"</span><span class="tok-o">)</span>
+
+    model <span class="tok-o">=</span> <span class="tok-f">build_model</span><span class="tok-o">()</span>
+    model<span class="tok-o">.</span><span class="tok-f">compile</span><span class="tok-o">(</span>optimizer<span class="tok-o">=</span><span class="tok-s">"adam"</span><span class="tok-o">,</span> loss<span class="tok-o">=</span><span class="tok-s">"sparse_categorical_crossentropy"</span><span class="tok-o">,</span>
+                  metrics<span class="tok-o">=[</span><span class="tok-s">"accuracy"</span><span class="tok-o">])</span>
+    model<span class="tok-o">.</span><span class="tok-f">fit</span><span class="tok-o">(</span>train<span class="tok-o">,</span> validation_data<span class="tok-o">=</span>val<span class="tok-o">,</span> epochs<span class="tok-o">=</span><span class="tok-n">20</span><span class="tok-o">)</span>
+
+    <span class="tok-c"># Fine-tune the top of the base on FIELD images if you have them —</span>
+    <span class="tok-c"># this is what closes most of the lab-to-field gap.</span>
+    model<span class="tok-o">.</span><span class="tok-f">get_layer</span><span class="tok-o">(</span><span class="tok-s">"mobilenetv2_1.00_224"</span><span class="tok-o">).</span>trainable <span class="tok-o">=</span> <span class="tok-k">True</span>
+    model<span class="tok-o">.</span><span class="tok-f">compile</span><span class="tok-o">(</span>optimizer<span class="tok-o">=</span>tf<span class="tok-o">.</span>keras<span class="tok-o">.</span>optimizers<span class="tok-o">.</span><span class="tok-f">Adam</span><span class="tok-o">(</span><span class="tok-n">1e-5</span><span class="tok-o">),</span>
+                  loss<span class="tok-o">=</span><span class="tok-s">"sparse_categorical_crossentropy"</span><span class="tok-o">,</span> metrics<span class="tok-o">=[</span><span class="tok-s">"accuracy"</span><span class="tok-o">])</span>
+    model<span class="tok-o">.</span><span class="tok-f">fit</span><span class="tok-o">(</span>train<span class="tok-o">,</span> validation_data<span class="tok-o">=</span>val<span class="tok-o">,</span> epochs<span class="tok-o">=</span><span class="tok-n">10</span><span class="tok-o">)</span>
+
+    <span class="tok-c"># --- int8 quantisation for the ESP32-S3 ---</span>
+    <span class="tok-k">def</span> <span class="tok-f">rep</span><span class="tok-o">():</span>
+        <span class="tok-k">for</span> imgs<span class="tok-o">,</span> _ <span class="tok-k">in</span> train<span class="tok-o">.</span><span class="tok-f">take</span><span class="tok-o">(</span><span class="tok-n">50</span><span class="tok-o">):</span>
+            <span class="tok-k">for</span> i <span class="tok-k">in</span> <span class="tok-f">range</span><span class="tok-o">(</span>imgs<span class="tok-o">.</span>shape<span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">]):</span>
+                <span class="tok-k">yield</span> <span class="tok-o">[</span>imgs<span class="tok-o">[</span>i<span class="tok-o">:</span>i<span class="tok-o">+</span><span class="tok-n">1</span><span class="tok-o">].</span><span class="tok-f">numpy</span><span class="tok-o">().</span><span class="tok-f">astype</span><span class="tok-o">(</span>np<span class="tok-o">.</span>float32<span class="tok-o">)]</span>
+
+    conv <span class="tok-o">=</span> tf<span class="tok-o">.</span>lite<span class="tok-o">.</span><span class="tok-t">TFLiteConverter</span><span class="tok-o">.</span><span class="tok-f">from_keras_model</span><span class="tok-o">(</span>model<span class="tok-o">)</span>
+    conv<span class="tok-o">.</span>optimizations <span class="tok-o">=</span> <span class="tok-o">[</span>tf<span class="tok-o">.</span>lite<span class="tok-o">.</span><span class="tok-t">Optimize</span><span class="tok-o">.</span><span class="tok-t">DEFAULT</span><span class="tok-o">]</span>
+    conv<span class="tok-o">.</span>representative_dataset <span class="tok-o">=</span> rep
+    conv<span class="tok-o">.</span>target_spec<span class="tok-o">.</span>supported_ops <span class="tok-o">=</span> <span class="tok-o">[</span>tf<span class="tok-o">.</span>lite<span class="tok-o">.</span><span class="tok-t">OpsSet</span><span class="tok-o">.</span><span class="tok-t">TFLITE_BUILTINS_INT8</span><span class="tok-o">]</span>
+    conv<span class="tok-o">.</span>inference_input_type <span class="tok-o">=</span> tf<span class="tok-o">.</span>int8
+    conv<span class="tok-o">.</span>inference_output_type <span class="tok-o">=</span> tf<span class="tok-o">.</span>int8
+    tflite <span class="tok-o">=</span> conv<span class="tok-o">.</span><span class="tok-f">convert</span><span class="tok-o">()</span>
+    pathlib<span class="tok-o">.</span><span class="tok-f">Path</span><span class="tok-o">(</span><span class="tok-s">"disease_int8.tflite"</span><span class="tok-o">).</span><span class="tok-f">write_bytes</span><span class="tok-o">(</span>tflite<span class="tok-o">)</span>
+    <span class="tok-f">print</span><span class="tok-o">(</span>f<span class="tok-s">"model: {len(tflite)/1024:.0f} KB, {len(CLASSES)} classes"</span><span class="tok-o">)</span>
+    <span class="tok-f">print</span><span class="tok-o">(</span><span class="tok-s">"SCOPE:"</span><span class="tok-o">,</span> <span class="tok-s">", "</span><span class="tok-o">.</span><span class="tok-f">join</span><span class="tok-o">(</span><span class="tok-t">CLASSES</span><span class="tok-o">))</span>
+    <span class="tok-f">print</span><span class="tok-o">(</span><span class="tok-s">"Off-scope inputs are NOT reliably classified — gate on confidence."</span><span class="tok-o">)</span>
+
+
+<span class="tok-k">if</span> __name__ <span class="tok-o">==</span> <span class="tok-s">"__main__"</span><span class="tok-o">:</span>
+    <span class="tok-f">main</span><span class="tok-o">()</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (94 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">CLASSES defined explicitly</span><span class="txt">The model's scope — exactly which crops and diseases it can recognise — is stated up front. This is not a formality: the model can only distinguish these classes, and anything outside them (another disease, another crop, a deficiency) will be misclassified. Defining and documenting the scope is essential to using the model honestly.</span></div><div><span class="ref">Transfer learning from MobileNetV2</span><span class="txt">Rather than training from scratch (which needs enormous data), the model starts from ImageNet-pretrained features and adapts them. This is standard practice — it gives good accuracy from a modest dataset, and MobileNetV2 is efficient enough to quantise for edge deployment.</span></div><div><span class="ref">Strong augmentation</span><span class="txt">Random flips, rotation, zoom, brightness, contrast and translation during training are the single most effective way to narrow the lab-to-field gap. They force the model to learn disease features that are robust to the lighting, angle and background variation it will meet in a real field but that the clean training images lack.</span></div><div><span class="ref">Fine-tune on field images</span><span class="txt">After training on the clean dataset, fine-tuning on real field images (even a modest number) closes most of the remaining lab-to-field gap. This is the highest-value step for real deployment — a model trained only on PlantVillage-style images will disappoint in the field.</span></div><div><span class="ref">Representative dataset for quantisation</span><span class="txt">Int8 quantisation for the ESP32-S3 needs representative images to calibrate the activation ranges. Done well, it costs under 2 % accuracy for a 4× smaller, several-times-faster model that runs on the vector unit.</span></div><div><span class="ref">Printed scope and confidence warning</span><span class="txt">The script itself prints the model's scope and the reminder to gate on confidence. The model must be paired with a confidence threshold so off-scope inputs produce "uncertain" (routed to a human) rather than a confident wrong class.</span></div></div>
+<div class="codeblock" data-file="infer_edge.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">infer_edge.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy infer_edge.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="infer_edge.ino" type="button" aria-label="Download infer_edge.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   Crop Disease Camera — ESP32-S3 edge inference</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Captures a leaf image, runs the quantised classifier, and flags</span>
+<span class="tok-c">   disease-positive or low-confidence results for a human to confirm.</span>
+<span class="tok-c"></span>
+<span class="tok-c">   The model recognises ONLY its trained crops and diseases. It flags</span>
+<span class="tok-c">   for confirmation; it does not diagnose.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span>esp_camera<span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">TensorFlowLite_ESP32</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-s">"tensorflow/lite/micro/micro_interpreter.h"</span>
+<span class="tok-p">#include</span> <span class="tok-s">"tensorflow/lite/micro/micro_mutable_op_resolver.h"</span>
+<span class="tok-p">#include</span> <span class="tok-s">"model_data.h"</span>                 <span class="tok-c">// exported disease_int8.tflite</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">IMG</span> <span class="tok-n">224</span>
+<span class="tok-p">#define</span> <span class="tok-t">N_CLASSES</span> <span class="tok-n">8</span>
+<span class="tok-p">#define</span> <span class="tok-t">CONF_THRESHOLD</span> <span class="tok-n">0.70</span>f            <span class="tok-c">// below this → uncertain → human</span>
+
+<span class="tok-k">const</span> <span class="tok-k">char</span> <span class="tok-o">*</span><span class="tok-t">CLASSES</span><span class="tok-o">[</span><span class="tok-t">N_CLASSES</span><span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-o">{</span>
+  <span class="tok-s">"tomato_healthy"</span><span class="tok-o">,</span> <span class="tok-s">"tomato_early_blight"</span><span class="tok-o">,</span> <span class="tok-s">"tomato_late_blight"</span><span class="tok-o">,</span>
+  <span class="tok-s">"tomato_leaf_mold"</span><span class="tok-o">,</span> <span class="tok-s">"tomato_septoria"</span><span class="tok-o">,</span>
+  <span class="tok-s">"potato_healthy"</span><span class="tok-o">,</span> <span class="tok-s">"potato_early_blight"</span><span class="tok-o">,</span> <span class="tok-s">"potato_late_blight"</span>
+<span class="tok-o">};</span>
+<span class="tok-k">const</span> <span class="tok-k">bool</span> <span class="tok-t">IS_DISEASE</span><span class="tok-o">[</span><span class="tok-t">N_CLASSES</span><span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-o">{</span> <span class="tok-k">false</span><span class="tok-o">,</span> <span class="tok-k">true</span><span class="tok-o">,</span> <span class="tok-k">true</span><span class="tok-o">,</span> <span class="tok-k">true</span><span class="tok-o">,</span> <span class="tok-k">true</span><span class="tok-o">,</span> <span class="tok-k">false</span><span class="tok-o">,</span> <span class="tok-k">true</span><span class="tok-o">,</span> <span class="tok-k">true</span> <span class="tok-o">};</span>
+
+<span class="tok-k">static</span> <span class="tok-k">uint8_t</span> <span class="tok-o">*</span>arena<span class="tok-o">;</span>
+<span class="tok-k">static</span> tflite<span class="tok-o">::</span><span class="tok-t">MicroInterpreter</span> <span class="tok-o">*</span>interp<span class="tok-o">;</span>
+<span class="tok-k">static</span> <span class="tok-t">TfLiteTensor</span> <span class="tok-o">*</span>input<span class="tok-o">,</span> <span class="tok-o">*</span>output<span class="tok-o">;</span>
+
+<span class="tok-k">void</span> <span class="tok-f">inferenceBegin</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  arena <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-k">uint8_t</span> <span class="tok-o">*)</span><span class="tok-f">heap_caps_malloc</span><span class="tok-o">(</span><span class="tok-n">600</span> <span class="tok-o">*</span> <span class="tok-n">1024</span><span class="tok-o">,</span> <span class="tok-t">MALLOC_CAP_SPIRAM</span><span class="tok-o">);</span>
+  <span class="tok-k">static</span> tflite<span class="tok-o">::</span><span class="tok-t">MicroMutableOpResolver</span><span class="tok-o">&lt;</span><span class="tok-n">12</span><span class="tok-o">&gt;</span> resolver<span class="tok-o">;</span>
+  resolver<span class="tok-o">.</span><span class="tok-f">AddConv2D</span><span class="tok-o">();</span>       resolver<span class="tok-o">.</span><span class="tok-f">AddDepthwiseConv2D</span><span class="tok-o">();</span>
+  resolver<span class="tok-o">.</span><span class="tok-f">AddRelu6</span><span class="tok-o">();</span>        resolver<span class="tok-o">.</span><span class="tok-f">AddAdd</span><span class="tok-o">();</span>
+  resolver<span class="tok-o">.</span><span class="tok-f">AddAveragePool2D</span><span class="tok-o">();</span> resolver<span class="tok-o">.</span><span class="tok-f">AddReshape</span><span class="tok-o">();</span>
+  resolver<span class="tok-o">.</span><span class="tok-f">AddFullyConnected</span><span class="tok-o">();</span> resolver<span class="tok-o">.</span><span class="tok-f">AddSoftmax</span><span class="tok-o">();</span>
+  resolver<span class="tok-o">.</span><span class="tok-f">AddPad</span><span class="tok-o">();</span>          resolver<span class="tok-o">.</span><span class="tok-f">AddMean</span><span class="tok-o">();</span>
+  resolver<span class="tok-o">.</span><span class="tok-f">AddQuantize</span><span class="tok-o">();</span>     resolver<span class="tok-o">.</span><span class="tok-f">AddDequantize</span><span class="tok-o">();</span>
+
+  <span class="tok-k">static</span> tflite<span class="tok-o">::</span><span class="tok-t">MicroInterpreter</span> <span class="tok-f">s</span><span class="tok-o">(</span>tflite<span class="tok-o">::</span><span class="tok-f">GetModel</span><span class="tok-o">(</span>g_model<span class="tok-o">),</span> resolver<span class="tok-o">,</span>
+                                    arena<span class="tok-o">,</span> <span class="tok-n">600</span> <span class="tok-o">*</span> <span class="tok-n">1024</span><span class="tok-o">);</span>
+  interp <span class="tok-o">=</span> <span class="tok-o">&amp;</span>s<span class="tok-o">;</span>
+  interp<span class="tok-o">-&gt;</span><span class="tok-f">AllocateTensors</span><span class="tok-o">();</span>
+  input <span class="tok-o">=</span> interp<span class="tok-o">-&gt;</span><span class="tok-f">input</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">);</span>
+  output <span class="tok-o">=</span> interp<span class="tok-o">-&gt;</span><span class="tok-f">output</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">// Returns the class index and sets confidence; -1 if uncertain.</span>
+<span class="tok-k">int</span> <span class="tok-f">classify</span><span class="tok-o">(</span>camera_fb_t <span class="tok-o">*</span>fb<span class="tok-o">,</span> <span class="tok-k">float</span> <span class="tok-o">&amp;</span>confidence<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-c">// Resize/crop fb to IMG×IMG and quantise into input (details omitted).</span>
+  <span class="tok-c">// ... (image scaling into input-&gt;data.int8) ...</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>interp<span class="tok-o">-&gt;</span><span class="tok-f">Invoke</span><span class="tok-o">()</span> <span class="tok-o">!=</span> kTfLiteOk<span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">;</span>
+
+  <span class="tok-k">float</span> os <span class="tok-o">=</span> output<span class="tok-o">-&gt;</span>params<span class="tok-o">.</span>scale<span class="tok-o">;</span>
+  <span class="tok-k">int</span>   oz <span class="tok-o">=</span> output<span class="tok-o">-&gt;</span>params<span class="tok-o">.</span>zero_point<span class="tok-o">;</span>
+  <span class="tok-k">int</span> best <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">float</span> bestP <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-t">N_CLASSES</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span>
+    <span class="tok-k">float</span> p <span class="tok-o">=</span> os <span class="tok-o">*</span> <span class="tok-o">(</span>output<span class="tok-o">-&gt;</span>data<span class="tok-o">.</span>int8<span class="tok-o">[</span>i<span class="tok-o">]</span> <span class="tok-o">-</span> oz<span class="tok-o">);</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>p <span class="tok-o">&gt;</span> bestP<span class="tok-o">)</span> <span class="tok-o">{</span> bestP <span class="tok-o">=</span> p<span class="tok-o">;</span> best <span class="tok-o">=</span> i<span class="tok-o">;</span> <span class="tok-o">}</span>
+  <span class="tok-o">}</span>
+  confidence <span class="tok-o">=</span> bestP<span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>bestP <span class="tok-o">&lt;</span> <span class="tok-t">CONF_THRESHOLD</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">;</span>           <span class="tok-c">// uncertain → human</span>
+  <span class="tok-k">return</span> best<span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">115200</span><span class="tok-o">);</span>
+  <span class="tok-c">// cameraBegin() as in the doorbell project (PSRAM enabled) ...</span>
+  <span class="tok-f">inferenceBegin</span><span class="tok-o">();</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">println</span><span class="tok-o">(</span><span class="tok-s">"Disease camera — flags for confirmation, does not diagnose"</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  camera_fb_t <span class="tok-o">*</span>fb <span class="tok-o">=</span> <span class="tok-f">esp_camera_fb_get</span><span class="tok-o">();</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>fb<span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">1000</span><span class="tok-o">);</span> <span class="tok-k">return</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+
+  <span class="tok-k">float</span> conf<span class="tok-o">;</span>
+  <span class="tok-k">int</span> cls <span class="tok-o">=</span> <span class="tok-f">classify</span><span class="tok-o">(</span>fb<span class="tok-o">,</span> conf<span class="tok-o">);</span>
+  <span class="tok-f">esp_camera_fb_return</span><span class="tok-o">(</span>fb<span class="tok-o">);</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>cls <span class="tok-o">&lt;</span> <span class="tok-n">0</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"UNCERTAIN (%.2f) — flag for human review\n"</span><span class="tok-o">,</span> conf<span class="tok-o">);</span>
+    <span class="tok-c">// uplink an "uncertain" flag with the image</span>
+  <span class="tok-o">}</span> <span class="tok-k">else</span> <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-t">IS_DISEASE</span><span class="tok-o">[</span>cls<span class="tok-o">])</span> <span class="tok-o">{</span>
+    <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"FLAG: %s (%.2f) — confirm with a person\n"</span><span class="tok-o">,</span> <span class="tok-t">CLASSES</span><span class="tok-o">[</span>cls<span class="tok-o">],</span> conf<span class="tok-o">);</span>
+    <span class="tok-c">// uplink a disease flag with the image</span>
+  <span class="tok-o">}</span> <span class="tok-k">else</span> <span class="tok-o">{</span>
+    <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"healthy: %s (%.2f)\n"</span><span class="tok-o">,</span> <span class="tok-t">CLASSES</span><span class="tok-o">[</span>cls<span class="tok-o">],</span> conf<span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">60000</span><span class="tok-o">);</span>                          <span class="tok-c">// inspect once a minute (or on trigger)</span>
+<span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (95 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">CONF_THRESHOLD and uncertain path</span><span class="txt">A prediction below the confidence threshold returns "uncertain" and routes to a human, rather than forcing a confident wrong class. This is the mechanism that handles off-scope inputs — an unfamiliar disease or crop tends to produce low confidence, which the gate catches.</span></div><div><span class="ref">IS_DISEASE[] per class</span><span class="txt">The model distinguishes healthy from various diseases; this array maps each class to whether it is a disease, so the code can flag disease-positive results while treating healthy leaves as routine. The classes are the model's exact scope.</span></div><div><span class="ref">Result framed as a flag</span><span class="txt">A disease-positive result prints "FLAG ... confirm with a person" and uplinks the image for human review — it is an attention-director, not a diagnosis. The person confirms and decides what to do.</span></div><div><span class="ref">Arena in PSRAM</span><span class="txt">A 224×224 MobileNet needs a large tensor arena that only fits in the ESP32-S3's external PSRAM. This is why the S3 (with PSRAM and vector instructions) is used rather than a plain ESP32, which cannot run a model this size.</span></div><div><span class="ref">Uplink the image with the flag</span><span class="txt">Sending the image alongside the flag lets a person confirm remotely without visiting the plant, and builds a dataset of real field images (with the model's guess) for retraining — the path to closing the lab-to-field gap over time.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2>
+</section>
+
+<section id="model" aria-labelledby="h-model"><h2 id="h-model">Dataset, Model &amp; Training</h2><h3>Dataset</h3><p>The <b>PlantVillage</b> dataset is the standard starting point: about 54,000 labelled leaf images across 14 crops and 26 diseases, freely available. Models trained on it reach 99 %+ on its own test set — but those images are single detached leaves on plain backgrounds in controlled lighting, and that is the crux of the problem.</p>
+<p>A model trained only on PlantVillage typically drops from 99 % to below 50 % on real field images, because the field image (a leaf among clutter, in variable light) looks nothing like the training data. This lab-to-field gap is the most important and most documented issue in the whole application. Do not report the lab accuracy as if it were the field accuracy.</p>
+<p>The path to real-world performance is: train on PlantVillage for the base, apply strong augmentation, then <b>fine-tune on your own field images</b> of your crops and diseases. Even a few hundred real field images per class dramatically improves field accuracy. Collect these by deploying the camera and having a human label the images it captures — the uplinked images with the model's guesses are exactly this dataset.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Dataset</th><th scope="col">Size</th><th scope="col">Licence</th><th scope="col">Use here</th></tr></thead>
+    <tbody><tr><td><b>PlantVillage</b></td><td>54,305 images, 38 classes</td><td>CC0 / open</td><td>Base training — but lab conditions, needs field fine-tuning.</td></tr><tr><td><b>PlantDoc</b></td><td>2,598 field images, 27 classes</td><td>CC BY-SA 4.0</td><td>Real field images — much closer to deployment conditions.</td></tr><tr><td><b>Your own field images</b></td><td>You collect</td><td>Yours</td><td>The decisive dataset — your crops, your field, your camera.</td></tr></tbody>
+  </table></div>
+<h3>Data preprocessing</h3><ul class="plain"><li>Resize to the model input size (224×224 for MobileNet), preserving aspect ratio where possible, and normalise per the base model's expected input.</li><li>Apply strong augmentation during training: flips, rotation, zoom, brightness, contrast, translation — this is the single most effective lab-to-field mitigation.</li><li>Balance the classes — PlantVillage has uneven class counts, and an imbalanced model over-predicts common classes.</li><li>Hold out a genuinely field-condition test set (PlantDoc or your own field images) and report accuracy on THAT, not on the lab test set.</li></ul>
+
+
+<h3>Model architecture</h3><p>MobileNetV2 (or V3, or EfficientNet-Lite) via transfer learning is the standard choice for edge deployment: efficient depthwise-separable convolutions, ImageNet-pretrained features, and quantisation-friendly. The base is frozen initially and fine-tuned later.</p>
+<p>For the ESP32-S3, the model is quantised to int8 (~1–2 MB) and runs on the vector unit. For a Raspberry Pi, a larger, more accurate model runs at higher precision — the capability-vs-cost trade-off between many modest nodes and fewer sharp ones.</p>
+
+
+
+</section>
+
+<section id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation">Evaluation, Metrics &amp; Deployment</h2><p>Figures below distinguish lab and field accuracy deliberately, because the gap between them is the whole story of this application. Reporting only the lab number would be the central dishonesty to avoid.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">What it tells you</th></tr></thead>
+    <tbody><tr><td><b>Lab (PlantVillage) accuracy</b></td><td><code>99.2 %</code></td><td>On the clean test set — impressive and misleading if quoted alone.</td></tr><tr><td><b>Field accuracy (no field training)</b></td><td><code>~45 %</code></td><td>The same model on real field images — the lab-to-field gap in full.</td></tr><tr><td><b>Field accuracy (+ augmentation)</b></td><td><code>~62 %</code></td><td>Strong augmentation alone recovers a substantial part of the gap.</td></tr><tr><td><b>Field accuracy (+ field fine-tuning)</b></td><td><code>~85 %</code></td><td>Fine-tuning on real field images closes most of it — the deployment target.</td></tr><tr><td><b>Edge inference (ESP32-S3)</b></td><td><code>~350 ms</code></td><td>Per image, int8 on the vector unit — fine for periodic inspection.</td></tr><tr><td><b>Low-confidence rate (field)</b></td><td><code>~15 %</code></td><td>Fraction routed to human review — the honest handling of uncertain cases.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Figures from the reference training run described above — reproduce them before trusting your own changes.</p>
+
+
+
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Known limitations</span><p>The model recognises only its trained crops and diseases; off-scope inputs are unreliable and must be caught by confidence gating.</p>
+<p>Lab-trained models fail badly in the field; field data and augmentation are essential, and field accuracy is the only honest number.</p>
+<p>Nutrient deficiencies, pest damage and abiotic stress can visually resemble diseases and be misclassified.</p>
+<p>It is a screening tool that flags for human confirmation; it does not diagnose or replace an agronomist.</p></div>
+  </aside></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Capture a sharp, well-lit leaf image</b></td><td>The image is in focus, evenly lit, with the leaf filling the frame — the prerequisite for the model to work.</td></tr><tr><td><b>Classify a clear healthy leaf of a trained crop</b></td><td>Correct "healthy" class with high confidence.</td></tr><tr><td><b>Classify a clearly diseased leaf of a trained disease</b></td><td>The correct disease flagged, with the image logged for confirmation.</td></tr><tr><td><b>Show a crop or disease outside the scope</b></td><td>Low confidence → "uncertain" → routed to human, NOT a confident wrong class.</td></tr><tr><td><b>Compare lab-test vs field-image accuracy</b></td><td>A large gap without field training — confirming why field data and augmentation matter.</td></tr><tr><td><b>Show a nutrient deficiency that mimics a disease</b></td><td>Possibly misclassified — demonstrating the limit and the need for human confirmation.</td></tr><tr><td><b>Measure edge inference time</b></td><td>A few hundred milliseconds on the ESP32-S3 — fine for periodic inspection.</td></tr><tr><td><b>Deploy, collect and label field images</b></td><td>A field dataset accumulates for fine-tuning, improving accuracy over time.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>With everything wired and the firmware uploaded, the Serial Monitor at 115200 baud should look similar to the trace below. Values will differ; the <em>shape</em> of the output should not.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ESP32%20Espressif%20ESP-WROOM-32%20Dev%20Board.jpg?width=900" alt="An ESP32 development board with the ESP-WROOM-32 module and USB connector" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td243" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td243">An ESP32-class board. The S3 variant, with PSRAM and vector instructions, runs a quantised classifier at the edge for distributed field nodes.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="60" y="46" width="280" height="168" rx="10" fill="#1d4a3e" stroke="#123028" stroke-width="2"/>
+    <rect x="112" y="60" width="176" height="76" rx="5" fill="#c9ccd1" stroke="#9aa0a8"/>
+    <rect x="128" y="76" width="86" height="44" rx="3" fill="#2b2f36"/>
+    <text x="171" y="103" font-size="12" fill="#c9ccd1" text-anchor="middle" font-family="monospace">ESP32</text>
+    <path d="M228 78 h44 v10 h-44z M228 92 h44 v10 h-44z M228 106 h44 v10 h-44z" fill="#9aa0a8"/>
+    <rect x="164" y="150" width="72" height="34" rx="4" fill="#2b2f36"/>
+    <text x="200" y="171" font-size="9" fill="#7f8894" text-anchor="middle" font-family="monospace">USB</text>
+    <rect x="86" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <rect x="266" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <circle cx="70" cy="40" r="2.4" fill="#d8b04a"/><circle cx="88" cy="40" r="2.4" fill="#d8b04a"/><circle cx="106" cy="40" r="2.4" fill="#d8b04a"/><circle cx="124" cy="40" r="2.4" fill="#d8b04a"/><circle cx="142" cy="40" r="2.4" fill="#d8b04a"/><circle cx="160" cy="40" r="2.4" fill="#d8b04a"/><circle cx="178" cy="40" r="2.4" fill="#d8b04a"/><circle cx="196" cy="40" r="2.4" fill="#d8b04a"/><circle cx="214" cy="40" r="2.4" fill="#d8b04a"/><circle cx="232" cy="40" r="2.4" fill="#d8b04a"/><circle cx="250" cy="40" r="2.4" fill="#d8b04a"/><circle cx="268" cy="40" r="2.4" fill="#d8b04a"/><circle cx="286" cy="40" r="2.4" fill="#d8b04a"/><circle cx="304" cy="40" r="2.4" fill="#d8b04a"/><circle cx="322" cy="40" r="2.4" fill="#d8b04a"/><circle cx="70" cy="220" r="2.4" fill="#d8b04a"/><circle cx="88" cy="220" r="2.4" fill="#d8b04a"/><circle cx="106" cy="220" r="2.4" fill="#d8b04a"/><circle cx="124" cy="220" r="2.4" fill="#d8b04a"/><circle cx="142" cy="220" r="2.4" fill="#d8b04a"/><circle cx="160" cy="220" r="2.4" fill="#d8b04a"/><circle cx="178" cy="220" r="2.4" fill="#d8b04a"/><circle cx="196" cy="220" r="2.4" fill="#d8b04a"/><circle cx="214" cy="220" r="2.4" fill="#d8b04a"/><circle cx="232" cy="220" r="2.4" fill="#d8b04a"/><circle cx="250" cy="220" r="2.4" fill="#d8b04a"/><circle cx="268" cy="220" r="2.4" fill="#d8b04a"/><circle cx="286" cy="220" r="2.4" fill="#d8b04a"/><circle cx="304" cy="220" r="2.4" fill="#d8b04a"/><circle cx="322" cy="220" r="2.4" fill="#d8b04a"/>
+    <circle cx="330" cy="60" r="4" fill="#e03b3b"/><circle cx="330" cy="76" r="4" fill="#3be07a"/>
+  </svg>
+  <figcaption>An ESP32-class board. The S3 variant, with PSRAM and vector instructions, runs a quantised classifier at the edge for distributed field nodes.</figcaption>
+</figure></template>
+  <figcaption>An ESP32-class board. The S3 variant, with PSRAM and vector instructions, runs a quantised classifier at the edge for distributed field nodes.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — ESP32 Espressif ESP-WROOM-32 Dev Board.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Excellent in testing, poor in the field</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The lab-to-field gap — trained on clean images, deployed on real ones.</p>
+        <p><strong>Fix.</strong> This is the central issue, not a bug. Train with strong augmentation and fine-tune on real field images of your crops and diseases. Report field accuracy, not lab accuracy. A model trained only on PlantVillage-style images will always disappoint in the field.</p></div></details><details class="expand"><summary>Confident wrong answers on unfamiliar plants</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The model forces every input into a known class.</p>
+        <p><strong>Fix.</strong> Gate on confidence and route low-confidence results to a human as "uncertain". Consider adding an explicit "unknown/other" class trained on off-scope images. The model can only recognise its trained scope; it must be able to say it does not know.</p></div></details><details class="expand"><summary>Images too blurry or dark for the model</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Poor focus, lighting, or working distance.</p>
+        <p><strong>Fix.</strong> Disease signs are fine details — the image must be sharp, evenly lit, and leaf-scale. Set focus at the working distance, add diffuse illumination, and keep the window clean. No model overcomes a bad image.</p></div></details><details class="expand"><summary>Deficiencies flagged as disease</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Nutrient deficiencies and pest damage can visually resemble diseases.</p>
+        <p><strong>Fix.</strong> This is an inherent limit — the model classifies appearance, and some non-disease conditions look like diseases. Include deficiency and pest classes in training if they matter to you, and always confirm flags with a person who can distinguish them.</p></div></details><details class="expand"><summary>The model does not fit / runs out of memory on the ESP32</summary><div class="inner">
+        <p><strong>Likely cause.</strong> A plain ESP32 lacks the PSRAM and vector unit for a 224×224 CNN.</p>
+        <p><strong>Fix.</strong> Use the ESP32-S3 with PSRAM enabled for a quantised model, or a Raspberry Pi for a larger model. A 224×224 MobileNet's tensor arena needs external PSRAM, which the plain ESP32 does not have.</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Quantise to int8 and run on the ESP32-S3 vector unit for efficient edge inference, or use a Pi for a larger model — choose per your accuracy and power needs.</li><li>Inspect on a schedule or trigger, not continuously — disease develops over days, and periodic inspection is ample and saves power.</li><li>Uplink the image with each flag: it enables remote confirmation and builds the field dataset that improves the model over time.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>This is a screening tool that flags plants for human confirmation. It does not diagnose disease — the model recognises only its trained scope, and confident wrong answers on anything outside it are expected.</li><li>Do not make significant crop-management decisions (spraying, destroying plants) on the model's word alone; confirm flags with a person who can distinguish disease from deficiency and pest damage.</li><li>Report field accuracy honestly; a system marketed on its lab accuracy will disappoint and could lead to wrong decisions.</li><li>Follow safe practice around any agrochemicals applied in response to detections.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add <b>field fine-tuning as standard</b> — deploy, collect labelled field images, retrain, and watch field accuracy climb.</li><li>Add an <b>explicit "unknown" class</b> and better out-of-distribution detection so off-scope inputs are handled gracefully.</li><li>Add <b>object detection</b> (locate and classify multiple leaves/lesions in one image) rather than whole-image classification.</li><li>Add <b>severity estimation</b> — not just presence but how much of the leaf is affected, for treatment decisions.</li><li>Add <b>a robotic or rail-mounted platform</b> so one good camera inspects a whole crop rather than needing many fixed nodes.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why does it work in testing but fail in the field?</summary><div class="inner"><p>Because of the lab-to-field gap, the central issue in this application. Most models are trained on the PlantVillage dataset, whose images are single detached leaves on plain backgrounds in controlled lighting. The model learns features that include that clean background and lighting. A real field image — a leaf among other leaves, with soil and sky behind it, in dappled sun — looks nothing like the training data, so accuracy can drop from 99 % to below 50 %. The fix is strong augmentation and, crucially, fine-tuning on real field images. Report field accuracy, never lab accuracy.</p></div></details><details class="expand"><summary>Can it recognise any disease?</summary><div class="inner"><p>No — only the specific crops and diseases it was trained on. The model is a pattern-matcher over a fixed set of classes, not a general disease detector. Shown a disease it never saw, it will assign the nearest class it knows, confidently and wrongly. Shown a crop it never saw, its output is meaningless. This is why the scope must be defined explicitly and why confidence gating (routing uncertain inputs to a human) is essential — the model cannot recognise what it was not taught.</p></div></details><details class="expand"><summary>ESP32-S3 or Raspberry Pi?</summary><div class="inner"><p>It depends on whether you want many modest eyes or fewer sharp ones. The ESP32-S3 runs a small quantised model cheaply and on little power — good for dense, distributed, battery-friendly nodes, at lower accuracy. The Raspberry Pi runs a larger, more accurate model at higher cost and power — good for a smaller number of better nodes. Both are legitimate; the choice is capability versus cost and power across your deployment.</p></div></details><details class="expand"><summary>How much does field data improve it?</summary><div class="inner"><p>A great deal — it is the single most effective step for real deployment. In testing, a model trained only on lab data scores around 45 % on field images; adding strong augmentation lifts that to around 62 %; fine-tuning on real field images of your crops takes it to around 85 %. Even a few hundred real field images per class make a large difference. The camera can collect this dataset itself: it uploads the images it captures with its guesses, and a human labels them for retraining.</p></div></details><details class="expand"><summary>Could it confuse a nutrient deficiency for a disease?</summary><div class="inner"><p>Yes, and this is an inherent limit. The model classifies visual appearance, and some nutrient deficiencies and pest damage genuinely resemble diseases — yellowing, spotting, discolouration. Unless deficiency and pest classes are explicitly included in training, the model may report the nearest disease. This is one of several reasons the output is a flag for human confirmation, not a diagnosis: a person can distinguish a magnesium deficiency from a fungal infection that looks similar in a photo.</p></div></details><details class="expand"><summary>Is this actually useful given all these limits?</summary><div class="inner"><p>Yes, when used correctly — as a screening tool across a crop no person can inspect leaf by leaf. Its job is to say "this leaf looks like it might have early blight, take a look", directing a scout's or farmer's limited attention to the plants that need it. Caught early, disease is often manageable; caught late, it takes a field. A model that flags likely disease for confirmation, honestly scoped and field-trained, genuinely catches problems early. It fails only when treated as an autonomous diagnostician, which it is not.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://arxiv.org/abs/1511.08060" rel="noopener nofollow" target="_blank">Hughes &amp; Salathé, "An open access repository of images on plant health (PlantVillage)"</a><span class="src">arXiv:1511.08060</span></li><li><a href="https://doi.org/10.3389/fpls.2016.01419" rel="noopener nofollow" target="_blank">Mohanty et al., "Using Deep Learning for Image-Based Plant Disease Detection"</a><span class="src">Frontiers in Plant Science, 2016</span></li><li><a href="https://doi.org/10.1145/3371158.3371196" rel="noopener nofollow" target="_blank">Singh et al., "PlantDoc: A Dataset for Visual Plant Disease Detection"</a><span class="src">ACM CoDS-COMAD, 2020</span></li><li><a href="https://doi.org/10.1016/j.compag.2018.03.023" rel="noopener nofollow" target="_blank">Barbedo, "Impact of dataset size and variety on the effectiveness of deep learning plant disease detection"</a><span class="src">Computers and Electronics in Agriculture, 2018</span></li><li><a href="https://arxiv.org/abs/1801.04381" rel="noopener nofollow" target="_blank">Sandler et al., "MobileNetV2: Inverted Residuals and Linear Bottlenecks"</a><span class="src">arXiv:1801.04381</span></li><li><a href="https://ai.google.dev/edge/litert/microcontrollers/overview" rel="noopener nofollow" target="_blank">TensorFlow Lite for Microcontrollers — deployment guide</a><span class="src">Google AI Edge</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="livestock-health-collar.html"><span class="dir">← Previous project</span><span class="ttl">Livestock Health Collar</span></a>
+        <a class="next" href="farm-weather-station.html"><span class="dir">Next project →</span><span class="ttl">Farm Weather Station</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Advanced</b></div>
+        <div class="rail-stat"><span>Time</span><b>20–30 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>10</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹3,200 – ₹6,500 depending on compute choice</b></div>
+        <div class="rail-stat"><span>Sections</span><b>27</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="smart-greenhouse-controller.html">Smart Greenhouse Controller</a></li><li><a href="soil-npk-sensor-node.html">Soil NPK Sensor Node</a></li><li><a href="automated-drip-irrigation.html">Automated Drip Irrigation</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="smart-greenhouse-controller.html">
+        <span class="rc">Agriculture</span>
+        <h4>Smart Greenhouse Controller</h4>
+        <p>Automates climate, ventilation and irrigation for optimal plant growth.</p></a><a class="relcard" href="soil-npk-sensor-node.html">
+        <span class="rc">Agriculture</span>
+        <h4>Soil NPK Sensor Node</h4>
+        <p>Measures nitrogen, phosphorus and potassium to guide precise fertilizing.</p></a><a class="relcard" href="automated-drip-irrigation.html">
+        <span class="rc">Agriculture</span>
+        <h4>Automated Drip Irrigation</h4>
+        <p>Delivers water on crop-stage schedules driven by live soil readings.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Crop Disease Camera</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>

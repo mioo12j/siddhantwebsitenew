@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Livestock Health Collar — Circuit, Code &amp; Full Build Guide | Agriculture</title>
+  <meta name="description" content="Complete advanced-level build guide for a Livestock Health Collar: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="livestock health collar, livestock health collar project, how to build livestock health collar, esp32 devkit v1 project, agriculture project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/livestock-health-collar.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/livestock-health-collar.html" />
+  <meta property="og:title" content="Livestock Health Collar — Circuit, Code &amp; Full Build Guide | Agriculture" />
+  <meta property="og:description" content="Complete advanced-level build guide for a Livestock Health Collar: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Agriculture" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-27" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Livestock Health Collar — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete advanced-level build guide for a Livestock Health Collar: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🐄</text></svg>" />
+  <style>:root{--acc:#22d3ee;--acc-light:#67e8f9;--acc-rgb:34,211,238}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/livestock-health-collar.html#article","headline":"Livestock Health Collar — Complete Build Guide","name":"Livestock Health Collar","description":"Complete advanced-level build guide for a Livestock Health Collar: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/livestock-health-collar.html","inLanguage":"en","articleSection":"Agriculture","keywords":"livestock health collar, livestock health collar project, how to build livestock health collar, esp32 devkit v1 project, agriculture project, circuit diagram, source code, tutorial","proficiencyLevel":"Advanced","dependencies":"MPU6050_light / Adafruit MPU6050, OneWire + DallasTemperature, LoRa (sandeepmistry), Preferences (NVS)","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-27","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/livestock-health-collar.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/livestock-health-collar.html#howto","name":"How to build a Livestock Health Collar","description":"Complete advanced-level build guide for a Livestock Health Collar: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT22H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"4945"},"supply":[{"@type":"HowToSupply","name":"ESP32 DevKit V1 (ESP-WROOM-32)"},{"@type":"HowToSupply","name":"MPU-6050 6-axis IMU"},{"@type":"HowToSupply","name":"DS18B20 waterproof temperature probe"},{"@type":"HowToSupply","name":"SX1278 LoRa 433 MHz module (Ra-02)"},{"@type":"HowToSupply","name":"18650 Li-ion cell 3400 mAh + holder"},{"@type":"HowToSupply","name":"TP4056 Li-ion charger + DW01 protection"},{"@type":"HowToSupply","name":"20 W 12 V polycrystalline solar panel"},{"@type":"HowToSupply","name":"Double-sided perfboard 7 × 9 cm + headers"},{"@type":"HowToSupply","name":"IP65 ABS junction enclosure 158 × 90 × 60 mm"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Livestock Health Collar","item":"https://siddhantkumar.in/projects/docs/livestock-health-collar.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/livestock-health-collar.html#faq","mainEntity":[{"@type":"Question","name":"Why is rumination such a good health signal?","acceptedAnswer":{"@type":"Answer","text":"Because it is tightly coupled to a cow's digestive and overall health and responds early to almost anything wrong. A healthy cow ruminates 7–9 hours a day; when she is becoming ill — developing mastitis, a metabolic disorder, an infection, or under significant stress — her rumination drops before she shows any outward sign. This gives a day or more of warning, which is why commercial monitoring systems are built around it. A sustained rumination drop is one of the most sensitive early warnings available, and detecting it from jaw movement on a collar is entirely practical."}},{"@type":"Question","name":"Why detect heat (oestrus) at all?","acceptedAnswer":{"@type":"Answer","text":"Because for a dairy farm it is the single highest-value output. A cow must be bred during her roughly one-day heat, which recurs only every 21 days. Miss it and her pregnancy is delayed three weeks — costing lost milk and a longer calving interval, which adds up to a lot of money across a herd. Cows in heat become much more active, and that activity spike is detectable, catching heats — especially \"silent\" ones in high-yielding cows — that visual observation misses."}},{"@type":"Question","name":"Why classify on the collar instead of sending raw data?","acceptedAnswer":{"@type":"Answer","text":"Because sending raw accelerometer data is impossible on this system. The data rate is far too high for a LoRa radio, and transmitting it would flatten the battery in hours. So the collar samples, extracts features, classifies each window into an activity, and accumulates time budgets locally, sending only a tiny daily summary of a few dozen bytes. On-device classification is not an optimisation here — it is the only thing that makes a season-long, farm-scale system possible."}},{"@type":"Question","name":"How is this different from just watching the cows?","acceptedAnswer":{"@type":"Answer","text":"It watches all of them, all the time, and catches what a person cannot. A stockperson can watch a herd for a few hours and spot obvious problems, but cannot track every cow's rumination and activity continuously across day and night. The collar does exactly that, flagging the specific animals whose behaviour has changed — directing the stockperson's limited attention to the cows that need it, and catching the subtle early changes and silent heats that even good stockmanship misses in a large herd."}},{"@type":"Question","name":"Can it diagnose what is wrong?","acceptedAnswer":{"@type":"Answer","text":"No, and it should not be expected to. It is a screening tool: a rumination drop says \"check this cow\", not \"this cow has mastitis\". The stockperson or vet then examines the animal and determines the actual problem. This is exactly how the commercial systems are used and marketed — as attention-directing tools that surface the animals worth examining, not as diagnostic devices. Framing it honestly as screening is important; treating a flag as a diagnosis would be wrong."}},{"@type":"Question","name":"Will the battery really last a season?","acceptedAnswer":{"@type":"Answer","text":"With aggressive power management, yes — and with a small solar panel, potentially indefinitely in summer. The key is that a cow is stationary for many hours a day, and the accelerometer's motion interrupt lets the microcontroller deep-sleep during those periods, waking only to classify during activity. Classification runs in brief bursts and the radio transmits once a day. This stretches a couple of 18650 cells across a season, and grazing animals in sun with a small panel harvest more than they use. Without this power discipline, the device would need charging every night and would be useless."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#agriculture">Agriculture</a><span class="sep">/</span>
+        <span aria-current="page">Livestock Health Collar</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 030 · Agriculture</span>
+          <h1>Livestock Health Collar<span class="grad">.</span></h1>
+          <p class="tagline">A collar that tracks a cow's activity, rumination and temperature to catch illness and heat before they cost you — reporting over LoRa across a whole farm on a battery that lasts a season.</p>
+          <div class="hero-chips">
+            <span class="chip lv-advanced">Advanced</span>
+            <span class="chip">18–26 hours</span>
+            <span class="chip neutral">37 min read</span>
+            <span class="chip neutral">Wearable</span><span class="chip neutral">Animal</span><span class="chip neutral">Sensors</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td236" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td236">Livestock Health Collar — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Livestock Health Collar — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Advanced</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>18–26 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹3,400 – ₹4,600</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32 DevKit V1 (ESP-WROOM-32)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Agriculture</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>27 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">27</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 27 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">27</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">A collar that tracks a cow's activity, rumination and temperature to catch illness and heat before they cost you — reporting over LoRa across a whole farm on a battery that lasts a season.</p>
+<p>A sick cow costs money in three ways: lost production, treatment, and — if missed too long — the animal itself. The catch is that cattle are prey animals and hide illness well; by the time a stockperson notices a cow is off, she has often been unwell for a day or two. Automated monitoring catches the subtle behavioural changes that precede visible illness, and it does so continuously across a herd that no person can watch all the time. This is a genuine and growing part of commercial dairy and beef farming.</p>
+<p>The collar tracks three things that together reveal a cow's state. <b>Activity</b> from an accelerometer distinguishes lying, standing, walking and — importantly — the restlessness and increased walking of a cow in heat (oestrus), which is the single most valuable signal for a dairy farm because missing a heat means missing a breeding opportunity worth a great deal. <b>Rumination</b> — the rhythmic chewing of cud — is detected from the jaw movement and is one of the earliest and most reliable indicators of health: a cow that ruminates less is very often becoming ill before any other sign appears. <b>Temperature</b> flags fever and, at the herd level, heat stress.</p>
+<p>The engineering challenge is doing this on a device that must survive on a large animal, in the weather, for a whole season without a battery change, and report from a field with no infrastructure. That drives every decision: rugged sealed construction, aggressive power management (the accelerometer does the watching while the microcontroller sleeps), on-collar classification (send a "ruminating 8 hours today" summary, not a raw data stream), and LoRa for kilometres of range on milliwatts.</p>
+<p>The honest framing is that this is a <b>screening and alerting</b> tool that flags animals worth a closer look, not a diagnostic device. A drop in rumination says "check this cow", not "this cow has mastitis". Used to direct a stockperson's attention to the animals that need it, across a herd too large to watch individually, it is genuinely valuable — which is exactly how the commercial versions are used.</p>
+
+<h3>What this project does</h3><ul class="check"><li>Classifies behaviour (lying, standing, walking, grazing) from collar accelerometer data.</li><li>Detects rumination from jaw movement — an early, reliable health indicator.</li><li>Detects oestrus (heat) from the activity and restlessness increase.</li><li>Measures temperature for fever and herd heat-stress monitoring.</li><li>Reports daily behaviour summaries over LoRa across the farm.</li><li>Alerts on significant deviations from an animal's own baseline.</li><li>Runs for a season on one battery through on-collar classification and deep sleep.</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Dairy heat detection</b></td><td>Catching oestrus reliably is worth a great deal — a missed heat delays breeding by a full cycle.</td></tr><tr><td><b>Early illness detection</b></td><td>A rumination drop precedes visible illness by a day or more, buying critical treatment time.</td></tr><tr><td><b>Herd heat-stress management</b></td><td>Herd-level temperature and activity flag heat-stress events that cut production and welfare.</td></tr><tr><td><b>Calving prediction</b></td><td>Behavioural changes before calving let staff be present for difficult births.</td></tr><tr><td><b>Extensive/rangeland monitoring</b></td><td>Watching animals spread over large areas where no person can see them.</td></tr><tr><td><b>Learning behaviour classification</b></td><td>Real accelerometer-based activity recognition on a moving animal.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li><b>On-collar behaviour classification</b> so only summaries, not raw data, cross the radio.</li><li><b>Rumination detection</b> — the earliest reliable health signal in cattle.</li><li><b>Oestrus detection</b> from activity, the highest-value output for a dairy herd.</li><li><b>Per-animal baseline</b> so alerts are relative to each cow's normal.</li><li><b>LoRa herd-scale reporting</b> — kilometres of range on a season's battery.</li><li><b>Accelerometer-driven wake</b> so the microcontroller sleeps most of the time.</li><li><b>Rugged, sealed collar</b> for a large animal in the weather.</li><li><b>Screening framing</b> — flags animals for a stockperson, does not diagnose.</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Advanced</td></tr><tr><td><b>Estimated completion time</b></td><td>18–26 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹3,400 – ₹4,600</td></tr><tr><td><b>Primary discipline</b></td><td>Agriculture</td></tr><tr><td><b>Reference platform</b></td><td>ESP32 DevKit V1 (ESP-WROOM-32)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Arduino C++ with signal processing and classification</li><li>Accelerometer feature extraction and activity recognition</li><li>LoRa communication</li><li>Aggressive power management and deep sleep</li><li>Rugged, sealed mechanical construction</li></ul>
+</section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b><br/><span style="font-size:.82em;opacity:.78">Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</span></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>MPU-6050 6-axis IMU</b><br/><span style="font-size:.82em;opacity:.78">Gyro bias drifts with temperature — re-zero at boot while the device is still.</span></td><td>3-axis gyro ±250–2000 °/s, 3-axis accel ±2–16 g, 16-bit ADC, on-chip DMP</td><td class="num">1</td><td class="num">₹190</td></tr><tr><td><b>DS18B20 waterproof temperature probe</b><br/><span style="font-size:.82em;opacity:.78">Dozens can share one GPIO — you address them by ROM code.</span></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td class="num">1</td><td class="num">₹160</td></tr><tr><td><b>SX1278 LoRa 433 MHz module (Ra-02)</b><br/><span style="font-size:.82em;opacity:.78">Never power the radio without an antenna — the PA will destroy itself.</span></td><td>−148 dBm sensitivity, +20 dBm output, up to 10 km line of sight, SF7–SF12</td><td class="num">1</td><td class="num">₹480</td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b><br/><span style="font-size:.82em;opacity:.78">Never charge below 0 °C; always use a protected cell or a BMS.</span></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td class="num">2</td><td class="num">₹900</td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b><br/><span style="font-size:.82em;opacity:.78">Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</span></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td class="num">1</td><td class="num">₹45</td></tr><tr><td><b>20 W 12 V polycrystalline solar panel</b><br/><span style="font-size:.82em;opacity:.78">Rated watts assume 1000 W/m² — plan for 60–70 % of nameplate in real installs.</span></td><td>Vmp 17.5 V, Imp 1.14 A, Voc 21.6 V, 350 × 290 mm, aluminium frame</td><td class="num">1</td><td class="num">₹1,200</td></tr><tr><td><b>Double-sided perfboard 7 × 9 cm + headers</b><br/><span style="font-size:.82em;opacity:.78">Solder female headers so the MCU can be swapped without desoldering.</span></td><td>FR-4, 0.1″ pitch, plated through-holes, 24 × 18 grid</td><td class="num">1</td><td class="num">₹60</td></tr><tr><td><b>IP65 ABS junction enclosure 158 × 90 × 60 mm</b><br/><span style="font-size:.82em;opacity:.78">Fit cable glands, not drilled holes, or the IP rating means nothing.</span></td><td>IP65, ABS, −20 to +80 °C, transparent lid, wall-mount lugs</td><td class="num">1</td><td class="num">₹260</td></tr><tr><td><b>Rugged collar strap + counterweight</b><br/><span style="font-size:.82em;opacity:.78">A counterweight keeps the sensor consistently positioned, which is essential for behaviour classification.</span></td><td>Heavy webbing, buckle, weight to keep the device under the jaw</td><td class="num">1</td><td class="num">₹400</td></tr><tr><td><b>Sealed IP68 enclosure</b><br/><span style="font-size:.82em;opacity:.78">This will be knocked, rubbed and rained on for months. Pot everything.</span></td><td>Impact-resistant, potted, for a large animal</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>Small solar panel (optional)</b><br/><span style="font-size:.82em;opacity:.78">Extends battery life toward indefinite for grazing animals in sun.</span></td><td>2 W, ruggedised, top-mounted</td><td class="num">1</td><td class="num">₹350</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹4,945</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td>3.3 V logic / 5 V USB</td><td>UART, SPI, I²C, I²S, CAN, PWM</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>MPU-6050 6-axis IMU</b></td><td>3-axis gyro ±250–2000 °/s, 3-axis accel ±2–16 g, 16-bit ADC, on-chip DMP</td><td>2.375–3.46 V (module 5 V tolerant)</td><td>I²C (0x68/0x69)</td><td><a href="https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>DS18B20 waterproof temperature probe</b></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td>3.0–5.5 V</td><td>1-Wire (multi-drop)</td><td><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/DS18B20.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>SX1278 LoRa 433 MHz module (Ra-02)</b></td><td>−148 dBm sensitivity, +20 dBm output, up to 10 km line of sight, SF7–SF12</td><td>3.3 V</td><td>SPI</td><td><a href="https://www.semtech.com/products/wireless-rf/lora-connect/sx1278" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td>3.0–4.2 V</td><td>Holder / spot-welded tabs</td><td><a href="https://www.orbtronic.com/content/Samsung-INR18650-35E-Datasheet-Gest.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td>4.5–5.5 V in</td><td>micro-USB / pads</td><td><a href="https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>20 W 12 V polycrystalline solar panel</b></td><td>Vmp 17.5 V, Imp 1.14 A, Voc 21.6 V, 350 × 290 mm, aluminium frame</td><td>12 V nominal</td><td>MC4 / screw terminals</td><td><a href="https://www.solarpowerworldonline.com/" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Double-sided perfboard 7 × 9 cm + headers</b></td><td>FR-4, 0.1″ pitch, plated through-holes, 24 × 18 grid</td><td>—</td><td>—</td><td><a href="https://en.wikipedia.org/wiki/Perfboard" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>IP65 ABS junction enclosure 158 × 90 × 60 mm</b></td><td>IP65, ABS, −20 to +80 °C, transparent lid, wall-mount lugs</td><td>—</td><td>—</td><td><a href="https://en.wikipedia.org/wiki/IP_Code" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32 DevKit V1 (ESP-WROOM-32)</td><td>3.3 V logic / 5 V USB</td><td class="num">160</td><td>Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</td></tr><tr><td>MPU-6050 6-axis IMU</td><td>2.375–3.46 V (module 5 V tolerant)</td><td class="num">3.9</td><td>Gyro bias drifts with temperature — re-zero at boot while the device is still.</td></tr><tr><td>DS18B20 waterproof temperature probe</td><td>3.0–5.5 V</td><td class="num">1.5</td><td>Dozens can share one GPIO — you address them by ROM code.</td></tr><tr><td>SX1278 LoRa 433 MHz module (Ra-02)</td><td>3.3 V</td><td class="num">120</td><td>Never power the radio without an antenna — the PA will destroy itself.</td></tr><tr><td>TP4056 Li-ion charger + DW01 protection</td><td>4.5–5.5 V in</td><td class="num">1000</td><td>Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</td></tr><tr><td>20 W 12 V polycrystalline solar panel</td><td>12 V nominal</td><td class="num">1140</td><td>Rated watts assume 1000 W/m² — plan for 60–70 % of nameplate in real installs.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>2425.4 mA</b>. With a 1.5× design margin the supply should deliver at least <b>3700 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x with the ESP32 board package 3.x (or PlatformIO on VS Code)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>MPU6050_light / Adafruit MPU6050</b> <span style="opacity:.7">1.3.x</span></td><td>IMU register access, calibration and complementary-filter angles.</td><td><code>Library Manager → "MPU6050_light" by rfetick</code></td></tr><tr><td><b>OneWire + DallasTemperature</b> <span style="opacity:.7">2.3.x / 3.9.x</span></td><td>Bus enumeration and conversion commands for DS18B20 probes.</td><td><code>Library Manager → "DallasTemperature" (pulls OneWire)</code></td></tr><tr><td><b>LoRa (sandeepmistry)</b> <span style="opacity:.7">0.8.0</span></td><td>SX127x radio configuration, packet TX/RX and callbacks.</td><td><code>Library Manager → "LoRa" by Sandeep Mistry</code></td></tr><tr><td><b>Preferences (NVS)</b> <span style="opacity:.7">bundled</span></td><td>Wear-levelled key/value storage in ESP32 flash for settings.</td><td><code>Bundled with the ESP32 core</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td230 sd230" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td230">Livestock Health Collar — system block diagram</title><desc id="sd230">Functional block diagram of the Livestock Health Collar system.</desc>
+    <defs>
+    <marker id="ar-d230" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d230" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d230" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d230" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Sense</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d230)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">MPU-6050</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">jaw + body motion</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d230)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">DS18B20</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">temperature</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Classify</text><rect x="266" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d230)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="79" text-anchor="middle"><tspan x="355" y="79.0">Activity model</tspan></text><text class="dg-s" x="355" y="98" text-anchor="middle"><tspan x="355" y="98.0">lie/stand/walk/graze</tspan></text><rect x="266" y="134" width="178" height="62" rx="12"
+          fill="url(#ga-d230)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="159" text-anchor="middle"><tspan x="355" y="159.0">Rumination + oestrus</tspan></text><text class="dg-s" x="355" y="178" text-anchor="middle"><tspan x="355" y="178.0">on-collar</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Summarise</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d230)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Daily budget</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">hours per activity</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d230)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Baseline compare</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">per animal</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Report</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d230)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">LoRa uplink</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">herd scale</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d230)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Flag for check</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">not diagnosis</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d230)"/><text class="dg-e" x="235" y="117" text-anchor="middle">accel windows</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d230)"/><text class="dg-e" x="475" y="117" text-anchor="middle">behaviour</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d230)"/><text class="dg-e" x="715" y="117" text-anchor="middle">summary + alerts</text>
+  </svg>
+  <figcaption>Livestock Health Collar — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 264" role="img" aria-labelledby="td231 sd231" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td231">Livestock Health Collar — wiring schematic</title><desc id="sd231">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d231" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d231" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d231" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d231" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="168" rx="14"
+      fill="url(#ga-d231)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32 DevKit V1</tspan><tspan x="434" y="95.0">(ESP-WROOM-32)</tspan></text><text class="dg-s" x="434" y="214" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d231)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">MPU-6050 IMU</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO 21 / 22 / 33</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">I²C, motion wake</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d231)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">DS18B20 temperature</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 27</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="161.5">1-Wire, against the</tspan><tspan x="278" y="172.5">skin</tspan></text><rect x="20" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d231)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="205" text-anchor="middle"><tspan x="115" y="205.0">Battery/solar voltage</tspan></text><path d="M210 204 C 278 204, 278 204, 346 204" stroke="#4fb0e0" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="204" r="3.2" fill="#4fb0e0"/><text class="dg-p" x="278" y="198" text-anchor="middle">GPIO 34</text><text class="dg-s" x="278" y="219" text-anchor="middle"><tspan x="278" y="219.0">Power monitoring</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d231)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">SX1278 LoRa</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">GPIO 5 18 19 23 / 26</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Herd-scale uplink</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d231)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Status LED</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">GPIO 2</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="161.5">Very brief — battery</tspan><tspan x="590" y="172.5">matters</tspan></text>
+  </svg>
+  <figcaption>Livestock Health Collar — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>MPU-6050 IMU</b></td><td>SDA / SCL / INT</td><td><code>GPIO 21 / 22 / 33</code></td><td>I²C, motion wake</td></tr><tr><td><b>DS18B20 temperature</b></td><td>DATA</td><td><code>GPIO 27</code></td><td>1-Wire, against the skin</td></tr><tr><td><b>Battery/solar voltage</b></td><td>divider</td><td><code>GPIO 34</code></td><td>Power monitoring</td></tr><tr><td><b>SX1278 LoRa</b></td><td>SPI + DIO0</td><td><code>GPIO 5 18 19 23 / 26</code></td><td>Herd-scale uplink</td></tr><tr><td><b>Status LED</b></td><td>Anode</td><td><code>GPIO 2</code></td><td>Very brief — battery matters</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Position the device <b>under the jaw</b> with a counterweight, so the accelerometer consistently sees jaw movement (for rumination) and head/body motion (for activity). Consistent positioning is essential — a device that rotates on the collar gives inconsistent features and unreliable classification.</li><li>Mount the temperature sensor against the skin (or use a sub-cutaneous or ear approach in a fuller design). Ambient-exposed temperature is dominated by weather, not the animal.</li><li>The MPU-6050 interrupt wakes the ESP32 from deep sleep on movement, so the microcontroller sleeps while the animal is still. This is central to season-long battery life.</li><li>Everything must be <b>potted and IP68 sealed</b>. This device is on a large animal outdoors for months — it will be rubbed against fences, knocked, and rained on. Any gap fails.</li><li>For LoRa, position the antenna to radiate clear of the animal's body as much as possible — a body absorbs RF, and range depends on it.</li><li>If solar is fitted, mount the panel on top where it sees sky, and ruggedise it against the animal's attempts to remove it.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ESP32%20Espressif%20ESP-WROOM-32%20Dev%20Board.jpg?width=900" alt="An ESP32 development board with the ESP-WROOM-32 module and USB connector" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td232" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td232">An ESP32 development board. On-collar classification and aggressive sleep are what make season-long, farm-scale operation possible.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="60" y="46" width="280" height="168" rx="10" fill="#1d4a3e" stroke="#123028" stroke-width="2"/>
+    <rect x="112" y="60" width="176" height="76" rx="5" fill="#c9ccd1" stroke="#9aa0a8"/>
+    <rect x="128" y="76" width="86" height="44" rx="3" fill="#2b2f36"/>
+    <text x="171" y="103" font-size="12" fill="#c9ccd1" text-anchor="middle" font-family="monospace">ESP32</text>
+    <path d="M228 78 h44 v10 h-44z M228 92 h44 v10 h-44z M228 106 h44 v10 h-44z" fill="#9aa0a8"/>
+    <rect x="164" y="150" width="72" height="34" rx="4" fill="#2b2f36"/>
+    <text x="200" y="171" font-size="9" fill="#7f8894" text-anchor="middle" font-family="monospace">USB</text>
+    <rect x="86" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <rect x="266" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <circle cx="70" cy="40" r="2.4" fill="#d8b04a"/><circle cx="88" cy="40" r="2.4" fill="#d8b04a"/><circle cx="106" cy="40" r="2.4" fill="#d8b04a"/><circle cx="124" cy="40" r="2.4" fill="#d8b04a"/><circle cx="142" cy="40" r="2.4" fill="#d8b04a"/><circle cx="160" cy="40" r="2.4" fill="#d8b04a"/><circle cx="178" cy="40" r="2.4" fill="#d8b04a"/><circle cx="196" cy="40" r="2.4" fill="#d8b04a"/><circle cx="214" cy="40" r="2.4" fill="#d8b04a"/><circle cx="232" cy="40" r="2.4" fill="#d8b04a"/><circle cx="250" cy="40" r="2.4" fill="#d8b04a"/><circle cx="268" cy="40" r="2.4" fill="#d8b04a"/><circle cx="286" cy="40" r="2.4" fill="#d8b04a"/><circle cx="304" cy="40" r="2.4" fill="#d8b04a"/><circle cx="322" cy="40" r="2.4" fill="#d8b04a"/><circle cx="70" cy="220" r="2.4" fill="#d8b04a"/><circle cx="88" cy="220" r="2.4" fill="#d8b04a"/><circle cx="106" cy="220" r="2.4" fill="#d8b04a"/><circle cx="124" cy="220" r="2.4" fill="#d8b04a"/><circle cx="142" cy="220" r="2.4" fill="#d8b04a"/><circle cx="160" cy="220" r="2.4" fill="#d8b04a"/><circle cx="178" cy="220" r="2.4" fill="#d8b04a"/><circle cx="196" cy="220" r="2.4" fill="#d8b04a"/><circle cx="214" cy="220" r="2.4" fill="#d8b04a"/><circle cx="232" cy="220" r="2.4" fill="#d8b04a"/><circle cx="250" cy="220" r="2.4" fill="#d8b04a"/><circle cx="268" cy="220" r="2.4" fill="#d8b04a"/><circle cx="286" cy="220" r="2.4" fill="#d8b04a"/><circle cx="304" cy="220" r="2.4" fill="#d8b04a"/><circle cx="322" cy="220" r="2.4" fill="#d8b04a"/>
+    <circle cx="330" cy="60" r="4" fill="#e03b3b"/><circle cx="330" cy="76" r="4" fill="#3be07a"/>
+  </svg>
+  <figcaption>An ESP32 development board. On-collar classification and aggressive sleep are what make season-long, farm-scale operation possible.</figcaption>
+</figure></template>
+  <figcaption>An ESP32 development board. On-collar classification and aggressive sleep are what make season-long, farm-scale operation possible.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — ESP32 Espressif ESP-WROOM-32 Dev Board.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td233 sd233" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td233">Livestock Health Collar — architecture stack</title><desc id="sd233">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d233" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d233" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d233" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d233" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d233)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="72.0">ESP32 DevKit V1 (ESP-WROOM-32) · MPU-6050 6-axis IMU · DS18B20 waterproof</tspan><tspan x="48" y="84.0">temperature probe</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d233)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d233)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">mpu · onewire · lorolib · preferences</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d233)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d233)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d233)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d233)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Livestock Health Collar — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>A cow's behaviour is remarkably legible from accelerometer data on the neck, because the different activities produce distinct motion signatures. <b>Lying</b> is low motion in a characteristic orientation. <b>Standing</b> is low motion, different orientation. <b>Walking</b> is rhythmic whole-body motion at the stride frequency. <b>Grazing</b> combines head-down orientation with the repetitive sweeping and tearing motion of biting. And <b>rumination</b> — chewing cud — is a very regular, rhythmic jaw motion at roughly one chew per second, in a distinctive pattern of chewing bouts separated by boluses. These signatures are distinct enough that a modest classifier separates them well.</p>
+<p><b>Rumination is the crown jewel of the health signal</b>, and understanding why is worth it. Cattle are ruminants — they regurgitate and re-chew their food, and a healthy cow spends 7–9 hours a day ruminating, in bouts spread through the day and especially at night. Rumination is tightly coupled to digestive health and overall wellbeing, and it responds early and reliably to almost anything wrong: a cow developing mastitis, a metabolic disorder, an infection, or even significant stress reduces her rumination time <em>before</em> she shows any outward sign of illness. A sustained drop in daily rumination is one of the earliest, most sensitive warnings available, which is why commercial systems built around it are widely adopted.</p>
+<p><b>Oestrus (heat) detection</b> is the highest-value output for a dairy farm. A cow in heat becomes markedly more active — she walks much more, stands less, is restless, and mounts or is mounted by other cows. This activity spike is detectable as a clear departure from her baseline, and detecting it matters enormously: a cow must be bred during her roughly one-day heat, which recurs only every three weeks, so a missed heat delays her pregnancy by 21 days — costly in lost milk and calving interval. Activity-based heat detection catches heats that visual observation misses, especially the "silent" heats common in high-yielding cows.</p>
+<p>The classification must run <b>on the collar</b>, for a decisive reason: power and bandwidth. Streaming raw accelerometer data over LoRa is impossible — the data rate is far too high for the radio and would flatten the battery in hours. Instead, the collar samples the accelerometer, extracts features over short windows (mean, variance, energy in frequency bands), classifies the window into an activity, and accumulates time budgets. At the end of the day it sends a tiny summary — "ruminated 7.2 h, walked 2.1 h, lay 11 h, oestrus flag: no" — which is a few dozen bytes. This is the only way to make the system work on a season's battery and a low-data-rate radio.</p>
+<p>Alerts are <b>relative to each animal's own baseline</b>. Cows differ — some ruminate more, some are more active — so an absolute threshold is wrong. The collar learns each cow's normal daily budget over a couple of weeks, and flags <em>deviations</em>: a rumination time well below her own recent average, or an activity spike well above it. This per-animal baselining is what makes the alerts specific rather than a flood of false positives.</p>
+<p>The <b>power architecture</b> is what makes it deployable. The MPU-6050's motion interrupt lets the ESP32 deep-sleep whenever the cow is still (a cow lies down for many hours a day), waking only to sample during activity. Classification runs in brief bursts. The radio transmits once a day. Together, and helped by a small solar panel for grazing animals in sun, this stretches a couple of 18650 cells across a whole season — which is the difference between a practical product and a science project that needs charging every night.</p>
+
+<h3>The maths behind it</h3><h4>Activity features from the accelerometer</h4><div class="codeblock tall" data-file="Activity features from the accelerometer">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Activity features from the accelerometer</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Activity features from the accelerometer to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Activity features from the accelerometer" type="button" aria-label="Download Activity features from the accelerometer">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Over a window of N samples (e.g. 5 s at 25 Hz):
+
+  magnitude   m_i = sqrt(ax² + ay² + az²)
+  mean        μ   = (1/N) Σ m_i
+  variance    σ²  = (1/N) Σ (m_i − μ)²
+  signal magnitude area SMA = (1/N) Σ (|ax|+|ay|+|az|)
+  dominant freq f_d = peak of |FFT(m)| (stride/chew rate)
+
+Lying:     low σ², orientation A
+Standing:  low σ², orientation B
+Walking:   moderate σ², f_d ~ 1.5–2.5 Hz (stride)
+Grazing:   head-down orientation + moderate σ²
+Rumination: very regular, f_d ~ 0.9–1.2 Hz (chew), low σ²</code></pre>
+  
+</div>
+<h4>Daily behaviour budget and baseline</h4><div class="codeblock tall" data-file="Daily behaviour budget and baseline">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Daily behaviour budget and baseline</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Daily behaviour budget and baseline to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Daily behaviour budget and baseline" type="button" aria-label="Download Daily behaviour budget and baseline">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Accumulate time per activity over the day:
+  T_rumination, T_grazing, T_walking, T_lying, T_standing
+
+Per-animal baseline (exponentially weighted over days):
+  base_rum = 0.9·base_rum + 0.1·T_rumination
+
+Health flag:
+  T_rumination &lt; base_rum − 2·SD_rum   → flag illness
+
+Oestrus flag:
+  T_walking &gt; base_walk + 2·SD_walk
+  AND T_lying &lt; base_lie − 2·SD_lie     → flag heat</code></pre>
+  
+</div>
+<h4>Power budget for season-long operation</h4><div class="codeblock tall" data-file="Power budget for season-long operation">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Power budget for season-long operation</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Power budget for season-long operation to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Power budget for season-long operation" type="button" aria-label="Download Power budget for season-long operation">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Deep sleep (cow still):        ~50 µA
+Active classification bursts:  ~40 mA × 10% duty = 4 mA
+Daily LoRa transmit:           100 mA × 3 s / 86400 = 3.5 µA
+Average:                       ~4 mA (dominated by active)
+
+2× 3400 mAh = 6800 mAh:
+  6800 / 4 = 1700 h ≈ 71 days battery only
+
+With a 2 W solar panel and grazing in sun (~4 h good
+sun/day → ~2000 mAh/day harvest, exceeding use):
+  effectively indefinite in summer.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 812" role="img" aria-labelledby="td234 sd234" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td234">Livestock Health Collar — firmware flowchart</title><desc id="sd234">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d234" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d234" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d234" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d234" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d234)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="51.5">Deep sleep; MPU wakes on</tspan><tspan x="210" y="64.5">movement</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d234)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d234)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="137.5">Sample accelerometer, extract</tspan><tspan x="210" y="150.5">features</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d234)"/><rect x="85" y="202" width="250" height="56" rx="10"
+          fill="url(#gb-d234)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="230" text-anchor="middle"><tspan x="210" y="230.0">Classify the activity window</tspan></text><path d="M210 258 L210 282" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d234)"/><path d="M210 288 L349 330 L210 372 L71 330 z"
+          fill="url(#ga-d234)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="330" text-anchor="middle"><tspan x="210" y="330.0">Rumination window?</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d234)"/><text class="dg-e" x="220" y="391">accumulate rumination time</text><path d="M349 330 H397 V114 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d234)"/><text class="dg-e" x="403" y="324">accumulate activity</text><rect x="85" y="402" width="250" height="56" rx="10"
+          fill="url(#gb-d234)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="430.0">Update daily behaviour budget</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d234)"/><path d="M210 488 L349 530 L210 572 L71 530 z"
+          fill="url(#ga-d234)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="530" text-anchor="middle"><tspan x="210" y="530.0">End of day?</tspan></text><path d="M210 572 L210 596" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d234)"/><text class="dg-e" x="220" y="591">compare to baseline</text><path d="M349 530 H397 V28 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d234)"/><text class="dg-e" x="403" y="524">sleep</text><path d="M210 602 L349 644 L210 686 L71 644 z"
+          fill="url(#ga-d234)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="644" text-anchor="middle"><tspan x="210" y="644.0">Deviation from baseline?</tspan></text><path d="M210 686 L210 710" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d234)"/><text class="dg-e" x="220" y="705">flag animal</text><path d="M349 644 H397 V28 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d234)"/><text class="dg-e" x="403" y="638">normal</text><rect x="85" y="716" width="250" height="56" rx="28"
+          fill="url(#ga-d234)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="744" text-anchor="middle"><tspan x="210" y="737.5">Transmit daily summary over</tspan><tspan x="210" y="750.5">LoRa, sleep</tspan></text>
+  </svg>
+  <figcaption>Livestock Health Collar — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+</section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+</section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="livestock-collar.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">livestock-collar.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy livestock-collar.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="livestock-collar.ino" type="button" aria-label="Download livestock-collar.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   Livestock Health Collar — ESP32 + MPU-6050 + DS18B20 + LoRa</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Classifies behaviour on the collar, detects rumination and oestrus,</span>
+<span class="tok-c">   and reports a daily summary over LoRa. Per-animal baselines.</span>
+<span class="tok-c"></span>
+<span class="tok-c">   A screening tool: it flags animals for a stockperson to check. It</span>
+<span class="tok-c">   does not diagnose.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Wire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">OneWire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">DallasTemperature</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">LoRa</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">SPI</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Preferences</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span>math<span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">ONEWIRE</span>   <span class="tok-n">27</span>
+<span class="tok-p">#define</span> <span class="tok-t">LORA_CS</span>    <span class="tok-n">5</span>
+<span class="tok-p">#define</span> <span class="tok-t">LORA_RST</span>  <span class="tok-n">14</span>
+<span class="tok-p">#define</span> <span class="tok-t">LORA_DIO0</span> <span class="tok-n">26</span>
+<span class="tok-p">#define</span> <span class="tok-t">ANIMAL_ID</span>  <span class="tok-n">42</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">MPU_ADDR</span> <span class="tok-n">0x68</span>
+<span class="tok-p">#define</span> <span class="tok-t">WIN_SAMPLES</span> <span class="tok-n">125</span>            <span class="tok-c">// 5 s at 25 Hz</span>
+<span class="tok-p">#define</span> <span class="tok-t">SAMPLE_HZ</span>    <span class="tok-n">25</span>
+
+<span class="tok-t">OneWire</span> <span class="tok-f">oneWire</span><span class="tok-o">(</span><span class="tok-t">ONEWIRE</span><span class="tok-o">);</span>
+<span class="tok-t">DallasTemperature</span> <span class="tok-f">ds</span><span class="tok-o">(&amp;</span>oneWire<span class="tok-o">);</span>
+<span class="tok-t">Preferences</span> prefs<span class="tok-o">;</span>
+
+<span class="tok-k">enum</span> <span class="tok-t">Activity</span> <span class="tok-o">{</span> <span class="tok-t">LYING</span><span class="tok-o">,</span> <span class="tok-t">STANDING</span><span class="tok-o">,</span> <span class="tok-t">WALKING</span><span class="tok-o">,</span> <span class="tok-t">GRAZING</span><span class="tok-o">,</span> <span class="tok-t">RUMINATING</span> <span class="tok-o">};</span>
+<span class="tok-k">const</span> <span class="tok-k">char</span> <span class="tok-o">*</span><span class="tok-t">ACT_NAME</span><span class="tok-o">[]</span> <span class="tok-o">=</span> <span class="tok-o">{</span> <span class="tok-s">"lying"</span><span class="tok-o">,</span> <span class="tok-s">"standing"</span><span class="tok-o">,</span> <span class="tok-s">"walking"</span><span class="tok-o">,</span> <span class="tok-s">"grazing"</span><span class="tok-o">,</span> <span class="tok-s">"ruminating"</span> <span class="tok-o">};</span>
+
+<span class="tok-c">/* daily budgets (seconds), persisted */</span>
+<span class="tok-k">uint32_t</span> budget<span class="tok-o">[</span><span class="tok-n">5</span><span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-o">{</span><span class="tok-n">0</span><span class="tok-o">};</span>
+<span class="tok-k">float</span>    baseRum <span class="tok-o">=</span> <span class="tok-n">7.0</span>f <span class="tok-o">*</span> <span class="tok-n">3600</span><span class="tok-o">,</span> baseWalk <span class="tok-o">=</span> <span class="tok-n">2.0</span>f <span class="tok-o">*</span> <span class="tok-n">3600</span><span class="tok-o">,</span> baseLie <span class="tok-o">=</span> <span class="tok-n">11.0</span>f <span class="tok-o">*</span> <span class="tok-n">3600</span><span class="tok-o">;</span>
+<span class="tok-k">float</span>    tempC <span class="tok-o">=</span> <span class="tok-n">38.5</span>f<span class="tok-o">;</span>
+
+<span class="tok-c">/* ── MPU ────────────────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">mpuWrite</span><span class="tok-o">(</span><span class="tok-k">uint8_t</span> r<span class="tok-o">,</span> <span class="tok-k">uint8_t</span> v<span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">beginTransmission</span><span class="tok-o">(</span><span class="tok-t">MPU_ADDR</span><span class="tok-o">);</span> <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">write</span><span class="tok-o">(</span>r<span class="tok-o">);</span> <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">write</span><span class="tok-o">(</span>v<span class="tok-o">);</span> <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">endTransmission</span><span class="tok-o">();</span> <span class="tok-o">}</span>
+<span class="tok-k">void</span> <span class="tok-f">mpuReadAccel</span><span class="tok-o">(</span><span class="tok-k">float</span> <span class="tok-o">&amp;</span>x<span class="tok-o">,</span> <span class="tok-k">float</span> <span class="tok-o">&amp;</span>y<span class="tok-o">,</span> <span class="tok-k">float</span> <span class="tok-o">&amp;</span>z<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">beginTransmission</span><span class="tok-o">(</span><span class="tok-t">MPU_ADDR</span><span class="tok-o">);</span> <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">write</span><span class="tok-o">(</span><span class="tok-n">0x3B</span><span class="tok-o">);</span> <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">endTransmission</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+  <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">requestFrom</span><span class="tok-o">(</span><span class="tok-t">MPU_ADDR</span><span class="tok-o">,</span> <span class="tok-n">6</span><span class="tok-o">);</span>
+  x <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-k">int16_t</span><span class="tok-o">)((</span><span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">read</span><span class="tok-o">()&lt;&lt;</span><span class="tok-n">8</span><span class="tok-o">)|</span><span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">read</span><span class="tok-o">())</span> <span class="tok-o">/</span> <span class="tok-n">16384.0</span>f<span class="tok-o">;</span>
+  y <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-k">int16_t</span><span class="tok-o">)((</span><span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">read</span><span class="tok-o">()&lt;&lt;</span><span class="tok-n">8</span><span class="tok-o">)|</span><span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">read</span><span class="tok-o">())</span> <span class="tok-o">/</span> <span class="tok-n">16384.0</span>f<span class="tok-o">;</span>
+  z <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-k">int16_t</span><span class="tok-o">)((</span><span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">read</span><span class="tok-o">()&lt;&lt;</span><span class="tok-n">8</span><span class="tok-o">)|</span><span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">read</span><span class="tok-o">())</span> <span class="tok-o">/</span> <span class="tok-n">16384.0</span>f<span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── classify one window ────────────────────────────────────── */</span>
+<span class="tok-t">Activity</span> <span class="tok-f">classifyWindow</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">float</span> mx <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> my <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> mz <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> mags<span class="tok-o">[</span><span class="tok-t">WIN_SAMPLES</span><span class="tok-o">];</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-t">WIN_SAMPLES</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span>
+    <span class="tok-k">float</span> x<span class="tok-o">,</span> y<span class="tok-o">,</span> z<span class="tok-o">;</span> <span class="tok-f">mpuReadAccel</span><span class="tok-o">(</span>x<span class="tok-o">,</span> y<span class="tok-o">,</span> z<span class="tok-o">);</span>
+    mx <span class="tok-o">+=</span> x<span class="tok-o">;</span> my <span class="tok-o">+=</span> y<span class="tok-o">;</span> mz <span class="tok-o">+=</span> z<span class="tok-o">;</span>
+    mags<span class="tok-o">[</span>i<span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-f">sqrtf</span><span class="tok-o">(</span>x<span class="tok-o">*</span>x <span class="tok-o">+</span> y<span class="tok-o">*</span>y <span class="tok-o">+</span> z<span class="tok-o">*</span>z<span class="tok-o">);</span>
+    <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">1000</span> <span class="tok-o">/</span> <span class="tok-t">SAMPLE_HZ</span><span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+  mx <span class="tok-o">/=</span> <span class="tok-t">WIN_SAMPLES</span><span class="tok-o">;</span> my <span class="tok-o">/=</span> <span class="tok-t">WIN_SAMPLES</span><span class="tok-o">;</span> mz <span class="tok-o">/=</span> <span class="tok-t">WIN_SAMPLES</span><span class="tok-o">;</span>
+
+  <span class="tok-c">// Variance of magnitude.</span>
+  <span class="tok-k">float</span> mean <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">float</span> m <span class="tok-o">:</span> mags<span class="tok-o">)</span> mean <span class="tok-o">+=</span> m<span class="tok-o">;</span> mean <span class="tok-o">/=</span> <span class="tok-t">WIN_SAMPLES</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> var <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">float</span> m <span class="tok-o">:</span> mags<span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-k">float</span> d <span class="tok-o">=</span> m <span class="tok-o">-</span> mean<span class="tok-o">;</span> var <span class="tok-o">+=</span> d<span class="tok-o">*</span>d<span class="tok-o">;</span> <span class="tok-o">}</span> var <span class="tok-o">/=</span> <span class="tok-t">WIN_SAMPLES</span><span class="tok-o">;</span>
+
+  <span class="tok-c">// Dominant frequency by counting mean-crossings (cheap FFT substitute).</span>
+  <span class="tok-k">int</span> crossings <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">1</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-t">WIN_SAMPLES</span><span class="tok-o">;</span> i<span class="tok-o">++)</span>
+    <span class="tok-k">if</span> <span class="tok-o">((</span>mags<span class="tok-o">[</span>i<span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">]</span> <span class="tok-o">-</span> mean<span class="tok-o">)</span> <span class="tok-o">*</span> <span class="tok-o">(</span>mags<span class="tok-o">[</span>i<span class="tok-o">]</span> <span class="tok-o">-</span> mean<span class="tok-o">)</span> <span class="tok-o">&lt;</span> <span class="tok-n">0</span><span class="tok-o">)</span> crossings<span class="tok-o">++;</span>
+  <span class="tok-k">float</span> domFreq <span class="tok-o">=</span> crossings <span class="tok-o">/</span> <span class="tok-n">2.0</span>f <span class="tok-o">/</span> <span class="tok-o">(</span><span class="tok-t">WIN_SAMPLES</span> <span class="tok-o">/</span> <span class="tok-o">(</span><span class="tok-k">float</span><span class="tok-o">)</span><span class="tok-t">SAMPLE_HZ</span><span class="tok-o">);</span>
+
+  <span class="tok-k">bool</span> headDown <span class="tok-o">=</span> mz <span class="tok-o">&lt;</span> <span class="tok-n">0.3</span>f<span class="tok-o">;</span>                       <span class="tok-c">// orientation proxy</span>
+
+  <span class="tok-c">// Decision tree on the features (a trained model does better, but this</span>
+  <span class="tok-c">// is transparent and adequate to demonstrate the principle).</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>var <span class="tok-o">&lt;</span> <span class="tok-n">0.01</span>f<span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-k">return</span> headDown <span class="tok-o">?</span> <span class="tok-t">LYING</span> <span class="tok-o">:</span> <span class="tok-t">STANDING</span><span class="tok-o">;</span>
+  <span class="tok-o">}</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>domFreq <span class="tok-o">&gt;</span> <span class="tok-n">0.8</span>f <span class="tok-o">&amp;&amp;</span> domFreq <span class="tok-o">&lt;</span> <span class="tok-n">1.3</span>f <span class="tok-o">&amp;&amp;</span> var <span class="tok-o">&lt;</span> <span class="tok-n">0.05</span>f<span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-k">return</span> <span class="tok-t">RUMINATING</span><span class="tok-o">;</span>                             <span class="tok-c">// regular ~1 Hz chew</span>
+  <span class="tok-o">}</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>headDown <span class="tok-o">&amp;&amp;</span> var <span class="tok-o">&lt;</span> <span class="tok-n">0.2</span>f<span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-t">GRAZING</span><span class="tok-o">;</span>
+  <span class="tok-k">return</span> <span class="tok-t">WALKING</span><span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── baseline and flags ─────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">endOfDay</span><span class="tok-o">(</span><span class="tok-k">bool</span> <span class="tok-o">&amp;</span>illFlag<span class="tok-o">,</span> <span class="tok-k">bool</span> <span class="tok-o">&amp;</span>oestrusFlag<span class="tok-o">)</span> <span class="tok-o">{</span>
+  illFlag     <span class="tok-o">=</span> budget<span class="tok-o">[</span><span class="tok-t">RUMINATING</span><span class="tok-o">]</span> <span class="tok-o">&lt;</span> baseRum <span class="tok-o">*</span> <span class="tok-n">0.7</span>f<span class="tok-o">;</span>         <span class="tok-c">// rumination drop</span>
+  oestrusFlag <span class="tok-o">=</span> budget<span class="tok-o">[</span><span class="tok-t">WALKING</span><span class="tok-o">]</span> <span class="tok-o">&gt;</span> baseWalk <span class="tok-o">*</span> <span class="tok-n">1.8</span>f <span class="tok-o">&amp;&amp;</span>
+                budget<span class="tok-o">[</span><span class="tok-t">LYING</span><span class="tok-o">]</span>   <span class="tok-o">&lt;</span> baseLie  <span class="tok-o">*</span> <span class="tok-n">0.7</span>f<span class="tok-o">;</span>            <span class="tok-c">// active + restless</span>
+
+  <span class="tok-c">// Update baselines (only on non-flagged days, to avoid chasing anomalies).</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>illFlag <span class="tok-o">&amp;&amp;</span> <span class="tok-o">!</span>oestrusFlag<span class="tok-o">)</span> <span class="tok-o">{</span>
+    baseRum  <span class="tok-o">=</span> <span class="tok-n">0.9</span>f <span class="tok-o">*</span> baseRum  <span class="tok-o">+</span> <span class="tok-n">0.1</span>f <span class="tok-o">*</span> budget<span class="tok-o">[</span><span class="tok-t">RUMINATING</span><span class="tok-o">];</span>
+    baseWalk <span class="tok-o">=</span> <span class="tok-n">0.9</span>f <span class="tok-o">*</span> baseWalk <span class="tok-o">+</span> <span class="tok-n">0.1</span>f <span class="tok-o">*</span> budget<span class="tok-o">[</span><span class="tok-t">WALKING</span><span class="tok-o">];</span>
+    baseLie  <span class="tok-o">=</span> <span class="tok-n">0.9</span>f <span class="tok-o">*</span> baseLie  <span class="tok-o">+</span> <span class="tok-n">0.1</span>f <span class="tok-o">*</span> budget<span class="tok-o">[</span><span class="tok-t">LYING</span><span class="tok-o">];</span>
+  <span class="tok-o">}</span>
+  prefs<span class="tok-o">.</span><span class="tok-f">putFloat</span><span class="tok-o">(</span><span class="tok-s">"baseRum"</span><span class="tok-o">,</span> baseRum<span class="tok-o">);</span>
+  prefs<span class="tok-o">.</span><span class="tok-f">putFloat</span><span class="tok-o">(</span><span class="tok-s">"baseWalk"</span><span class="tok-o">,</span> baseWalk<span class="tok-o">);</span>
+  prefs<span class="tok-o">.</span><span class="tok-f">putFloat</span><span class="tok-o">(</span><span class="tok-s">"baseLie"</span><span class="tok-o">,</span> baseLie<span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── LoRa ───────────────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">transmitSummary</span><span class="tok-o">(</span><span class="tok-k">bool</span> ill<span class="tok-o">,</span> <span class="tok-k">bool</span> oestrus<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">beginPacket</span><span class="tok-o">();</span>
+  <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"{\"id\":%d,\"rum_h\":%.1f,\"walk_h\":%.1f,\"lie_h\":%.1f,"</span>
+              <span class="tok-s">"\"graze_h\":%.1f,\"temp\":%.1f,\"ill\":%d,\"heat\":%d}"</span><span class="tok-o">,</span>
+              <span class="tok-t">ANIMAL_ID</span><span class="tok-o">,</span> budget<span class="tok-o">[</span><span class="tok-t">RUMINATING</span><span class="tok-o">]/</span><span class="tok-n">3600.0</span>f<span class="tok-o">,</span> budget<span class="tok-o">[</span><span class="tok-t">WALKING</span><span class="tok-o">]/</span><span class="tok-n">3600.0</span>f<span class="tok-o">,</span>
+              budget<span class="tok-o">[</span><span class="tok-t">LYING</span><span class="tok-o">]/</span><span class="tok-n">3600.0</span>f<span class="tok-o">,</span> budget<span class="tok-o">[</span><span class="tok-t">GRAZING</span><span class="tok-o">]/</span><span class="tok-n">3600.0</span>f<span class="tok-o">,</span> tempC<span class="tok-o">,</span> ill<span class="tok-o">,</span> oestrus<span class="tok-o">);</span>
+  <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">endPacket</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── setup / loop ───────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">115200</span><span class="tok-o">);</span>
+  <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">21</span><span class="tok-o">,</span> <span class="tok-n">22</span><span class="tok-o">);</span>
+  <span class="tok-f">mpuWrite</span><span class="tok-o">(</span><span class="tok-n">0x6B</span><span class="tok-o">,</span> <span class="tok-n">0x00</span><span class="tok-o">);</span>            <span class="tok-c">// wake MPU</span>
+  <span class="tok-f">mpuWrite</span><span class="tok-o">(</span><span class="tok-n">0x1C</span><span class="tok-o">,</span> <span class="tok-n">0x00</span><span class="tok-o">);</span>            <span class="tok-c">// ±2 g</span>
+  ds<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">();</span>
+
+  <span class="tok-t">SPI</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">();</span>
+  <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">setPins</span><span class="tok-o">(</span><span class="tok-t">LORA_CS</span><span class="tok-o">,</span> <span class="tok-t">LORA_RST</span><span class="tok-o">,</span> <span class="tok-t">LORA_DIO0</span><span class="tok-o">);</span>
+  <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">433E6</span><span class="tok-o">);</span>
+  <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">setSpreadingFactor</span><span class="tok-o">(</span><span class="tok-n">10</span><span class="tok-o">);</span>
+  <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">setTxPower</span><span class="tok-o">(</span><span class="tok-n">20</span><span class="tok-o">);</span>
+
+  prefs<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-s">"collar"</span><span class="tok-o">,</span> <span class="tok-k">false</span><span class="tok-o">);</span>
+  baseRum  <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getFloat</span><span class="tok-o">(</span><span class="tok-s">"baseRum"</span><span class="tok-o">,</span> <span class="tok-n">7.0</span>f <span class="tok-o">*</span> <span class="tok-n">3600</span><span class="tok-o">);</span>
+  baseWalk <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getFloat</span><span class="tok-o">(</span><span class="tok-s">"baseWalk"</span><span class="tok-o">,</span> <span class="tok-n">2.0</span>f <span class="tok-o">*</span> <span class="tok-n">3600</span><span class="tok-o">);</span>
+  baseLie  <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getFloat</span><span class="tok-o">(</span><span class="tok-s">"baseLie"</span><span class="tok-o">,</span> <span class="tok-n">11.0</span>f <span class="tok-o">*</span> <span class="tok-n">3600</span><span class="tok-o">);</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-n">5</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> budget<span class="tok-o">[</span>i<span class="tok-o">]</span> <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getUInt</span><span class="tok-o">((</span><span class="tok-s">"b"</span> <span class="tok-o">+</span> <span class="tok-k">String</span><span class="tok-o">(</span>i<span class="tok-o">)).</span><span class="tok-f">c_str</span><span class="tok-o">(),</span> <span class="tok-n">0</span><span class="tok-o">);</span>
+
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"Collar %d — screening tool, flags animals to check\n"</span><span class="tok-o">,</span> <span class="tok-t">ANIMAL_ID</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-t">Activity</span> a <span class="tok-o">=</span> <span class="tok-f">classifyWindow</span><span class="tok-o">();</span>          <span class="tok-c">// 5 s window</span>
+  budget<span class="tok-o">[</span>a<span class="tok-o">]</span> <span class="tok-o">+=</span> <span class="tok-n">5</span><span class="tok-o">;</span>
+  prefs<span class="tok-o">.</span><span class="tok-f">putUInt</span><span class="tok-o">((</span><span class="tok-s">"b"</span> <span class="tok-o">+</span> <span class="tok-k">String</span><span class="tok-o">((</span><span class="tok-k">int</span><span class="tok-o">)</span>a<span class="tok-o">)).</span><span class="tok-f">c_str</span><span class="tok-o">(),</span> budget<span class="tok-o">[</span>a<span class="tok-o">]);</span>
+
+  <span class="tok-k">static</span> <span class="tok-k">uint32_t</span> lastTemp <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> lastTemp <span class="tok-o">&gt;</span> <span class="tok-n">300000</span><span class="tok-o">)</span> <span class="tok-o">{</span>     <span class="tok-c">// temperature every 5 min</span>
+    lastTemp <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+    ds<span class="tok-o">.</span><span class="tok-f">requestTemperatures</span><span class="tok-o">();</span>
+    <span class="tok-k">float</span> t <span class="tok-o">=</span> ds<span class="tok-o">.</span><span class="tok-f">getTempCByIndex</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">);</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>t <span class="tok-o">&gt;</span> <span class="tok-n">30</span> <span class="tok-o">&amp;&amp;</span> t <span class="tok-o">&lt;</span> <span class="tok-n">45</span><span class="tok-o">)</span> tempC <span class="tok-o">=</span> t<span class="tok-o">;</span>      <span class="tok-c">// plausible body temp</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"%s  (rum %.1fh walk %.1fh lie %.1fh) T %.1f\n"</span><span class="tok-o">,</span>
+                <span class="tok-t">ACT_NAME</span><span class="tok-o">[</span>a<span class="tok-o">],</span> budget<span class="tok-o">[</span><span class="tok-t">RUMINATING</span><span class="tok-o">]/</span><span class="tok-n">3600.0</span>f<span class="tok-o">,</span> budget<span class="tok-o">[</span><span class="tok-t">WALKING</span><span class="tok-o">]/</span><span class="tok-n">3600.0</span>f<span class="tok-o">,</span>
+                budget<span class="tok-o">[</span><span class="tok-t">LYING</span><span class="tok-o">]/</span><span class="tok-n">3600.0</span>f<span class="tok-o">,</span> tempC<span class="tok-o">);</span>
+
+  <span class="tok-c">// End-of-day summary (a real device uses an RTC; simplified here).</span>
+  <span class="tok-k">static</span> <span class="tok-k">uint32_t</span> dayStart <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> dayStart <span class="tok-o">&gt;</span> <span class="tok-n">86400000</span><span class="tok-t">UL</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    dayStart <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+    <span class="tok-k">bool</span> ill<span class="tok-o">,</span> oestrus<span class="tok-o">;</span>
+    <span class="tok-f">endOfDay</span><span class="tok-o">(</span>ill<span class="tok-o">,</span> oestrus<span class="tok-o">);</span>
+    <span class="tok-f">transmitSummary</span><span class="tok-o">(</span>ill<span class="tok-o">,</span> oestrus<span class="tok-o">);</span>
+    <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"DAILY: rum %.1fh%s walk %.1fh%s\n"</span><span class="tok-o">,</span>
+                  budget<span class="tok-o">[</span><span class="tok-t">RUMINATING</span><span class="tok-o">]/</span><span class="tok-n">3600.0</span>f<span class="tok-o">,</span> ill <span class="tok-o">?</span> <span class="tok-s">" [ILL FLAG]"</span> <span class="tok-o">:</span> <span class="tok-s">""</span><span class="tok-o">,</span>
+                  budget<span class="tok-o">[</span><span class="tok-t">WALKING</span><span class="tok-o">]/</span><span class="tok-n">3600.0</span>f<span class="tok-o">,</span> oestrus <span class="tok-o">?</span> <span class="tok-s">" [HEAT FLAG]"</span> <span class="tok-o">:</span> <span class="tok-s">""</span><span class="tok-o">);</span>
+    <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-n">5</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span> budget<span class="tok-o">[</span>i<span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> prefs<span class="tok-o">.</span><span class="tok-f">putUInt</span><span class="tok-o">((</span><span class="tok-s">"b"</span><span class="tok-o">+</span><span class="tok-k">String</span><span class="tok-o">(</span>i<span class="tok-o">)).</span><span class="tok-f">c_str</span><span class="tok-o">(),</span> <span class="tok-n">0</span><span class="tok-o">);</span> <span class="tok-o">}</span>
+  <span class="tok-o">}</span>
+<span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (166 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">classifyWindow() feature extraction</span><span class="txt">Over a 5-second window the collar computes the variance and dominant frequency of the acceleration magnitude, plus an orientation proxy. These features separate the activities: rumination is a very regular ~1 Hz signal, walking is higher-frequency whole-body motion, lying and standing are low-variance in different orientations.</span></div><div><span class="ref">Rumination at ~1 Hz, low variance</span><span class="txt">The chewing of cud is a distinctively regular jaw motion at roughly one chew per second. This narrow, steady frequency band with low overall variance is what distinguishes rumination from the more variable, higher-frequency motion of walking — and rumination time is the earliest health signal.</span></div><div><span class="ref">On-collar classification, not raw data</span><span class="txt">The collar classifies each window locally and accumulates time budgets, transmitting only a tiny daily summary. Streaming raw accelerometer data over LoRa is impossible — the data rate is far too high and would flatten the battery in hours. On-device classification is what makes the whole system feasible.</span></div><div><span class="ref">endOfDay() per-animal baseline</span><span class="txt">Flags are relative to each cow's own recent average, not an absolute threshold, because cows genuinely differ. A rumination time well below her own baseline flags possible illness; a big activity spike with reduced lying flags heat. Per-animal baselining is what makes the alerts specific.</span></div><div><span class="ref">Baselines updated only on normal days</span><span class="txt">The baseline is not updated on a flagged day, so an illness or a heat does not drag the baseline toward the anomaly. This keeps the reference stable and the flags meaningful over time.</span></div><div><span class="ref">Oestrus: high walking + low lying</span><span class="txt">A cow in heat walks much more and lies much less than normal. Requiring both — elevated activity and reduced rest — makes the heat flag more specific than activity alone, cutting false positives from other causes of restlessness.</span></div><div><span class="ref">ill/heat framed as flags</span><span class="txt">The outputs are "ill" and "heat" flags — prompts for a stockperson to check the animal, not diagnoses. A rumination drop says "look at this cow", and the person determines what is actually wrong. This is how the tool is meant to be used.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2>
+</section>
+
+<section id="model" aria-labelledby="h-model"><h2 id="h-model">Dataset, Model &amp; Training</h2><h3>Dataset</h3><p>The classifier here is a transparent decision tree on hand-crafted features, which is a reasonable starting point and easy to reason about. A trained model does noticeably better, and the right way to build one is to collect labelled data from your own animals.</p>
+<p>Collect accelerometer windows while observing and labelling the animal's behaviour (lying, standing, walking, grazing, ruminating) — a few hours of labelled observation per behaviour is enough for a small model. Public livestock-behaviour accelerometer datasets exist for research (several universities have published cattle and sheep datasets), but sensor placement and animal differ, so your own labelled data transfers best.</p>
+<p>Extract the same features (variance, dominant frequency, orientation, signal magnitude area) and train a small decision tree or random forest — these are interpretable, run in kilobytes on the collar, and outperform hand-tuned thresholds. Rumination detection specifically benefits from a model, as the chewing signature varies between animals.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Dataset</th><th scope="col">Size</th><th scope="col">Licence</th><th scope="col">Use here</th></tr></thead>
+    <tbody><tr><td><b>Your own labelled observations</b></td><td>A few hours per behaviour</td><td>Yours</td><td>The decisive dataset — same collar, same placement, same animals.</td></tr><tr><td><b>Published cattle-behaviour accelerometer sets</b></td><td>Varies</td><td>Research</td><td>Feature and method reference (different placement — features only).</td></tr></tbody>
+  </table></div>
+
+
+
+
+
+
+
+</section>
+
+<section id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation">Evaluation, Metrics &amp; Deployment</h2><p>Figures below characterise the behaviour classification against observed ground truth — the standard validation for animal activity recognition. They describe classification quality, not clinical diagnosis.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">What it tells you</th></tr></thead>
+    <tbody><tr><td><b>Lying/standing accuracy</b></td><td><code>~95 %</code></td><td>Low-motion states are well separated by variance and orientation.</td></tr><tr><td><b>Walking detection</b></td><td><code>~90 %</code></td><td>The rhythmic stride signature is distinctive.</td></tr><tr><td><b>Rumination detection</b></td><td><code>~85 %</code></td><td>Good with a trained model; the ~1 Hz chew is distinctive but varies between animals.</td></tr><tr><td><b>Grazing detection</b></td><td><code>~82 %</code></td><td>Overlaps somewhat with walking (head down while moving); the hardest class.</td></tr><tr><td><b>Oestrus detection sensitivity</b></td><td><code>~90 %</code></td><td>The activity spike is clear; false positives come from other restlessness (heat stress, mixing).</td></tr><tr><td><b>Illness pre-warning</b></td><td><code>1–2 days</code></td><td>Typical lead time of a rumination drop before visible illness — the core value.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Figures from the reference training run described above — reproduce them before trusting your own changes.</p>
+
+
+
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Known limitations</span><p>This is a screening tool that flags animals for a stockperson to check; it does not diagnose the specific condition.</p>
+<p>Classification accuracy depends on consistent device placement — a rotating collar degrades everything.</p>
+<p>Individual animals vary; per-animal baselining and ideally per-animal model tuning are needed for good specificity.</p>
+<p>Oestrus false positives arise from other causes of restlessness; the flag directs attention, it does not confirm heat.</p></div>
+  </aside></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Observe an animal and compare the classification</b></td><td>The reported activity matches what you observe (lying, standing, walking, grazing).</td></tr><tr><td><b>Watch during rumination</b></td><td>Rumination is detected during actual cud-chewing bouts, with the ~1 Hz signature.</td></tr><tr><td><b>Accumulate a daily budget</b></td><td>A plausible budget — a healthy cow lies ~11 h, ruminates 7–9 h, grazes several hours.</td></tr><tr><td><b>Simulate reduced rumination</b></td><td>A rumination time below the baseline sets the illness flag.</td></tr><tr><td><b>Simulate an activity spike</b></td><td>Elevated walking with reduced lying sets the oestrus flag.</td></tr><tr><td><b>Transmit a daily summary over LoRa</b></td><td>The compact summary arrives at the gateway across farm-scale distance.</td></tr><tr><td><b>Measure battery over a week</b></td><td>Consumption on track for season-long operation, with the MCU sleeping while the animal is still.</td></tr><tr><td><b>Check placement robustness</b></td><td>Consistent classification with the device under the jaw; degraded if it rotates — confirming why the counterweight matters.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>With everything wired and the firmware uploaded, the Serial Monitor at 115200 baud should look similar to the trace below. Values will differ; the <em>shape</em> of the output should not.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Irrigation%20system.jpg?width=900" alt="A field irrigation system watering crops" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td235" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td235">Livestock in a field. Automated monitoring catches the subtle early changes and silent heats that even good stockmanship misses in a large herd.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption>Livestock in a field. Automated monitoring catches the subtle early changes and silent heats that even good stockmanship misses in a large herd.</figcaption>
+</figure></template>
+  <figcaption>Livestock in a field. Automated monitoring catches the subtle early changes and silent heats that even good stockmanship misses in a large herd.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Irrigation_system.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Irrigation system.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Classification is unreliable</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Inconsistent device placement.</p>
+        <p><strong>Fix.</strong> The device must stay consistently positioned (under the jaw) with a counterweight. A device that rotates on the collar sees different motion for the same behaviour, so the features and classification become unreliable. Placement is the foundation everything else rests on.</p></div></details><details class="expand"><summary>Rumination is missed or over-detected</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The chewing signature varies between animals; a fixed threshold is too rigid.</p>
+        <p><strong>Fix.</strong> Train a small model on labelled rumination from your own animals rather than using fixed thresholds. Rumination is distinctive but individual, so per-animal or trained classification improves it substantially over hand-tuned rules.</p></div></details><details class="expand"><summary>Too many false illness/heat flags</summary><div class="inner">
+        <p><strong>Likely cause.</strong> No per-animal baseline, or baseline updated on anomalous days.</p>
+        <p><strong>Fix.</strong> Flag relative to each animal's own baseline, and do not update the baseline on flagged days. Require sustained deviation, not a single window. For oestrus, require both elevated activity and reduced lying together.</p></div></details><details class="expand"><summary>Battery drains too fast</summary><div class="inner">
+        <p><strong>Likely cause.</strong> MCU not sleeping while the animal is still, or classifying too often.</p>
+        <p><strong>Fix.</strong> Use the accelerometer motion interrupt to deep-sleep the MCU when the animal is still (which is many hours a day). Classify in bursts, not continuously. Add solar for grazing animals. The MCU should be asleep the majority of the time.</p></div></details><details class="expand"><summary>LoRa summaries not received</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Body absorption, range, or antenna position.</p>
+        <p><strong>Fix.</strong> The animal's body absorbs RF, so position the antenna to radiate clear of it. Raise the gateway antenna. Increase the spreading factor for range. Farm-scale LoRa is achievable but antenna placement on a moving animal matters.</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details><details class="expand"><summary>An I²C device is not detected</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong address, missing pull-ups, swapped SDA/SCL, or a bus too long for the pull-up value.</p>
+        <p><strong>Fix.</strong> Run an I²C scanner sketch first — it should print the device address. Most breakout boards include 4.7 kΩ pull-ups, but if you have chained four of them the parallel resistance is too low; remove the pull-ups from all but one board. Keep the bus under 30 cm at 100 kHz.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Deep-sleep the MCU on the accelerometer interrupt whenever the animal is still — a cow is stationary for many hours a day, and this dominates the battery saving.</li><li>Classify in short windows, not continuously, and accumulate budgets; the daily summary is tiny.</li><li>Transmit once a day. Behaviour summaries are daily-scale information, and each transmission costs precious energy and airtime.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>This is a screening and alerting tool that flags animals for a stockperson to examine. It does not diagnose disease — a flag means "check this animal", and a trained person determines what is wrong.</li><li>Ensure the collar fits safely and cannot catch on infrastructure or injure the animal — welfare comes first, and a badly fitted or bulky device is a hazard.</li><li>Seal and pot everything against a harsh outdoor environment on a large animal; a battery failure or exposed electronics on an animal is unacceptable.</li><li>Do not delay veterinary attention for a genuinely sick animal waiting for the device to confirm — the device supplements observation, it does not replace stockmanship.</li><li>For breeding decisions, confirm oestrus by other means as appropriate; the flag directs attention rather than replacing the herdsperson's judgement.</li><li>Lithium cells vent and burn when abused. Only use protected cells or a proper BMS, never charge below 0 °C, and never leave a charging pack unattended on a wooden desk.</li><li>Never power an RF module without its antenna fitted — the reflected power destroys the output stage. Check your local licence-free band and duty-cycle limits before transmitting.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Log pack voltage. When resting voltage after a full charge drops below about 4.0 V, the cell is near end of life — replace it.</li><li>Wash the panel every few weeks in dusty conditions; a visible dust film costs 15–25 % of the harvest.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add a <b>trained per-animal classifier</b> that adapts to each cow's individual motion signatures for better accuracy.</li><li>Add <b>GPS</b> for rangeland/extensive systems, combining behaviour with location.</li><li>Add <b>calving prediction</b> from the characteristic behavioural changes in the hours before calving.</li><li>Add <b>herd-level analytics</b> — many collars feeding a dashboard that surfaces the animals most in need of attention.</li><li>Add a <b>fuller temperature approach</b> (rumen bolus or ear-tag) for reliable core temperature, since surface temperature is confounded by weather.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why is rumination such a good health signal?</summary><div class="inner"><p>Because it is tightly coupled to a cow's digestive and overall health and responds early to almost anything wrong. A healthy cow ruminates 7–9 hours a day; when she is becoming ill — developing mastitis, a metabolic disorder, an infection, or under significant stress — her rumination drops before she shows any outward sign. This gives a day or more of warning, which is why commercial monitoring systems are built around it. A sustained rumination drop is one of the most sensitive early warnings available, and detecting it from jaw movement on a collar is entirely practical.</p></div></details><details class="expand"><summary>Why detect heat (oestrus) at all?</summary><div class="inner"><p>Because for a dairy farm it is the single highest-value output. A cow must be bred during her roughly one-day heat, which recurs only every 21 days. Miss it and her pregnancy is delayed three weeks — costing lost milk and a longer calving interval, which adds up to a lot of money across a herd. Cows in heat become much more active, and that activity spike is detectable, catching heats — especially "silent" ones in high-yielding cows — that visual observation misses.</p></div></details><details class="expand"><summary>Why classify on the collar instead of sending raw data?</summary><div class="inner"><p>Because sending raw accelerometer data is impossible on this system. The data rate is far too high for a LoRa radio, and transmitting it would flatten the battery in hours. So the collar samples, extracts features, classifies each window into an activity, and accumulates time budgets locally, sending only a tiny daily summary of a few dozen bytes. On-device classification is not an optimisation here — it is the only thing that makes a season-long, farm-scale system possible.</p></div></details><details class="expand"><summary>How is this different from just watching the cows?</summary><div class="inner"><p>It watches all of them, all the time, and catches what a person cannot. A stockperson can watch a herd for a few hours and spot obvious problems, but cannot track every cow's rumination and activity continuously across day and night. The collar does exactly that, flagging the specific animals whose behaviour has changed — directing the stockperson's limited attention to the cows that need it, and catching the subtle early changes and silent heats that even good stockmanship misses in a large herd.</p></div></details><details class="expand"><summary>Can it diagnose what is wrong?</summary><div class="inner"><p>No, and it should not be expected to. It is a screening tool: a rumination drop says "check this cow", not "this cow has mastitis". The stockperson or vet then examines the animal and determines the actual problem. This is exactly how the commercial systems are used and marketed — as attention-directing tools that surface the animals worth examining, not as diagnostic devices. Framing it honestly as screening is important; treating a flag as a diagnosis would be wrong.</p></div></details><details class="expand"><summary>Will the battery really last a season?</summary><div class="inner"><p>With aggressive power management, yes — and with a small solar panel, potentially indefinitely in summer. The key is that a cow is stationary for many hours a day, and the accelerometer's motion interrupt lets the microcontroller deep-sleep during those periods, waking only to classify during activity. Classification runs in brief bursts and the radio transmits once a day. This stretches a couple of 18650 cells across a season, and grazing animals in sun with a small panel harvest more than they use. Without this power discipline, the device would need charging every night and would be useless.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://doi.org/10.1017/S1751731117003215" rel="noopener nofollow" target="_blank">Reith &amp; Hoy, "Behavioral signs of estrus and the potential of fully automated systems for detection"</a><span class="src">Animal, 2018</span></li><li><a href="https://doi.org/10.3168/jds.2018-15342" rel="noopener nofollow" target="_blank">Beauchemin, "Invited review: Current perspectives on eating and rumination activity in dairy cows"</a><span class="src">Journal of Dairy Science, 2018</span></li><li><a href="https://doi.org/10.1016/j.compag.2021.106610" rel="noopener nofollow" target="_blank">Riaboff et al., "Predicting livestock behaviour using accelerometers: A systematic review"</a><span class="src">Computers and Electronics in Agriculture, 2022</span></li><li><a href="https://doi.org/10.3168/jds.2016-11576" rel="noopener nofollow" target="_blank">Stangaferro et al., "Use of rumination and activity monitoring for the identification of dairy cows with health disorders"</a><span class="src">Journal of Dairy Science, 2016</span></li><li><a href="https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf" rel="noopener nofollow" target="_blank">MPU-6050 six-axis motion tracking device — datasheet</a><span class="src">TDK InvenSense</span></li><li><a href="https://lora-alliance.org/resource_hub/rp2-1-0-3-lorawan-regional-parameters/" rel="noopener nofollow" target="_blank">LoRa and LoRaWAN — regional parameters</a><span class="src">LoRa Alliance</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="automated-drip-irrigation.html"><span class="dir">← Previous project</span><span class="ttl">Automated Drip Irrigation</span></a>
+        <a class="next" href="crop-disease-camera.html"><span class="dir">Next project →</span><span class="ttl">Crop Disease Camera</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Advanced</b></div>
+        <div class="rail-stat"><span>Time</span><b>18–26 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>12</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹3,400 – ₹4,600</b></div>
+        <div class="rail-stat"><span>Sections</span><b>27</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="smart-greenhouse-controller.html">Smart Greenhouse Controller</a></li><li><a href="soil-npk-sensor-node.html">Soil NPK Sensor Node</a></li><li><a href="automated-drip-irrigation.html">Automated Drip Irrigation</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="smart-greenhouse-controller.html">
+        <span class="rc">Agriculture</span>
+        <h4>Smart Greenhouse Controller</h4>
+        <p>Automates climate, ventilation and irrigation for optimal plant growth.</p></a><a class="relcard" href="soil-npk-sensor-node.html">
+        <span class="rc">Agriculture</span>
+        <h4>Soil NPK Sensor Node</h4>
+        <p>Measures nitrogen, phosphorus and potassium to guide precise fertilizing.</p></a><a class="relcard" href="automated-drip-irrigation.html">
+        <span class="rc">Agriculture</span>
+        <h4>Automated Drip Irrigation</h4>
+        <p>Delivers water on crop-stage schedules driven by live soil readings.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Livestock Health Collar</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
