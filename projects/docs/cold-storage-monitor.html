@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Cold Storage Monitor — Circuit, Code &amp; Full Build Guide | Agriculture</title>
+  <meta name="description" content="Complete intermediate-level build guide for a Cold Storage Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="cold storage monitor, cold storage monitor project, how to build cold storage monitor, esp32 devkit v1 project, agriculture project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/cold-storage-monitor.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/cold-storage-monitor.html" />
+  <meta property="og:title" content="Cold Storage Monitor — Circuit, Code &amp; Full Build Guide | Agriculture" />
+  <meta property="og:description" content="Complete intermediate-level build guide for a Cold Storage Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Agriculture" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-27" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Cold Storage Monitor — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete intermediate-level build guide for a Cold Storage Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>❄️</text></svg>" />
+  <style>:root{--acc:#22d3ee;--acc-light:#67e8f9;--acc-rgb:34,211,238}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/cold-storage-monitor.html#article","headline":"Cold Storage Monitor — Complete Build Guide","name":"Cold Storage Monitor","description":"Complete intermediate-level build guide for a Cold Storage Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/cold-storage-monitor.html","inLanguage":"en","articleSection":"Agriculture","keywords":"cold storage monitor, cold storage monitor project, how to build cold storage monitor, esp32 devkit v1 project, agriculture project, circuit diagram, source code, tutorial","proficiencyLevel":"Intermediate","dependencies":"WiFi (ESP32 core), PubSubClient, OneWire + DallasTemperature, Adafruit Unified Sensor, ArduinoJson, Preferences (NVS), NTPClient / configTime, SQLite","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-27","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/cold-storage-monitor.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/cold-storage-monitor.html#howto","name":"How to build a Cold Storage Monitor","description":"Complete intermediate-level build guide for a Cold Storage Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT14H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"5615"},"supply":[{"@type":"HowToSupply","name":"ESP32 DevKit V1 (ESP-WROOM-32)"},{"@type":"HowToSupply","name":"DS18B20 waterproof temperature probe"},{"@type":"HowToSupply","name":"SHT31-D temperature + humidity sensor"},{"@type":"HowToSupply","name":"Reed switch + magnet pair (door contact)"},{"@type":"HowToSupply","name":"DS3231 precision RTC + CR2032 backup"},{"@type":"HowToSupply","name":"microSD card 32 GB A1 class"},{"@type":"HowToSupply","name":"Active piezo buzzer 5 V"},{"@type":"HowToSupply","name":"TP4056 Li-ion charger + DW01 protection"},{"@type":"HowToSupply","name":"18650 Li-ion cell 3400 mAh + holder"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Establish trusted time and the log format","text":"Sync the RTC (from NTP when online) and define an append-only log record: timestamp, each zone temperature, humidity, door state, and any active excursion. Never rewrite past records."},{"@type":"HowToStep","position":2,"name":"Compute excursions and MKT continuously","text":"Track the warmest representative zone against the limit to open/close excursions, and fold every interval into the MKT accumulator so the effective temperature is always current."},{"@type":"HowToStep","position":3,"name":"Alarm, escalate, and mirror","text":"Sound the local alarm on an excursion or door-open-too-long; escalate to phone/SMS if unacknowledged. Mirror each record to the cloud, and when offline, queue records on the SD and sync the backlog on reconnect."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Cold Storage Monitor","item":"https://siddhantkumar.in/projects/docs/cold-storage-monitor.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/cold-storage-monitor.html#faq","mainEntity":[{"@type":"Question","name":"Why several probes instead of one?","acceptedAnswer":{"@type":"Answer","text":"A cold room varies from the cold evaporator to the warm door and corners. One probe reads the best spot and hides excursions; several placed at the warm, variable spots represent what the product actually experienced."}},{"@type":"Question","name":"What is mean kinetic temperature and why not just an average?","acceptedAnswer":{"@type":"Answer","text":"MKT weights warm periods exponentially, because spoilage accelerates with temperature. A brief spike affects product more than a plain average implies, and MKT captures that — which is why regulated cold chains use it."}},{"@type":"Question","name":"What makes the log \"tamper-evident\"?","acceptedAnswer":{"@type":"Answer","text":"It is append-only with sequence numbers (optionally hashes) and mirrored to the cloud. You can add readings but not silently rewrite them, and deleting a line breaks the sequence."}},{"@type":"Question","name":"Does it keep working during a power cut?","acceptedAnswer":{"@type":"Answer","text":"Yes. A backup battery keeps it logging locally with correct timestamps, and it syncs the backlog to the cloud when power and network return — outages are exactly when the record matters most."}},{"@type":"Question","name":"Can it control the fridge to fix an excursion?","acceptedAnswer":{"@type":"Answer","text":"By design it is a watchdog, not the control system. It alarms and escalates so a person or the refrigeration's own controls act; keeping it independent is what lets it honestly judge the room."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#agriculture">Agriculture</a><span class="sep">/</span>
+        <span aria-current="page">Cold Storage Monitor</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 037 · Agriculture</span>
+          <h1>Cold Storage Monitor<span class="grad">.</span></h1>
+          <p class="tagline">Keeps produce and perishables inside their safe temperature band and keeps a tamper-evident compliance log that proves it — with alarms the moment anything drifts.</p>
+          <div class="hero-chips">
+            <span class="chip lv-intermediate">Intermediate</span>
+            <span class="chip">10–16 hours</span>
+            <span class="chip neutral">37 min read</span>
+            <span class="chip neutral">Cold-chain</span><span class="chip neutral">Sensors</span><span class="chip neutral">Alerts</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td297" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td297">Cold Storage Monitor — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Cold Storage Monitor — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Intermediate</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>10–16 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹3,200 – ₹4,400</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32 DevKit V1 (ESP-WROOM-32)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Agriculture</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>27 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Keeps produce and perishables inside their safe temperature band and keeps a tamper-evident compliance log that proves it — with alarms the moment anything drifts.</p>
+<p>Cold storage is a promise: that everything inside stayed within a safe temperature band from the moment it went in until the moment it came out. Break that promise for even a few hours — a door left ajar, a compressor that quietly failed overnight, a sensor no one was watching — and a room full of produce, dairy, vaccines or frozen goods can be spoiled or, worse, made unsafe while still looking fine. And in regulated cold chains, being able to <b>prove</b> the temperature never strayed is as important as the temperature itself: without a trustworthy log, a buyer or an inspector must assume the worst. This monitor does both jobs — it watches the room and keeps the record.</p>
+<p>Several temperature probes are placed where the room is actually at risk — near the door, in the warmest corner, at the return air, and among the product — because a single sensor by the evaporator reads the coldest, most flattering spot and misses the excursions that matter. A humidity sensor tracks the condition that governs how fast produce dehydrates or how readily frost forms. A door sensor logs every opening, since the door is the single biggest source of warm, moist air and most excursions begin with it. The controller timestamps everything against a real-time clock, writes it to local storage that cannot be quietly edited, and mirrors it to the cloud so the record survives even if the device is later tampered with.</p>
+<p>On top of the raw log sit the two numbers a cold chain lives by: <b>excursions</b> (any time-above-limit event, with its duration and peak) and <b>mean kinetic temperature</b>, a way of summarising a fluctuating temperature history into the single effective temperature the product experienced — the metric regulators use precisely because a brief warm spike is not the same as a steady warm room. Alarms fire the instant the band is breached or the door stays open too long, escalating if no one responds, so a failure at 2 a.m. wakes someone instead of thawing the stock. The result is a cold room that protects its contents and defends its own paperwork.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Warehouse%20racking.jpg?width=900" alt="Pallet racking in a distribution warehouse" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td289" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td289">A cold store — the monitor represents the whole room with probes at its warmest, most variable points.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <path d="M120 152 a38 38 0 0 1 6-75 a52 52 0 0 1 98-14 a44 44 0 0 1 52 44 a34 34 0 0 1-8 45 z"
+      fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="150" y="172" width="100" height="44" rx="8" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="200" y="199" font-size="12" fill="var(--dg-muted)" text-anchor="middle" font-family="monospace">broker</text>
+    <line x1="200" y1="152" x2="200" y2="170" stroke="var(--dg-accent)" stroke-width="2"/>
+  </svg>
+  <figcaption>A cold store — the monitor represents the whole room with probes at its warmest, most variable points.</figcaption>
+</figure></template>
+  <figcaption>A cold store — the monitor represents the whole room with probes at its warmest, most variable points.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Warehouse_racking.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Warehouse racking.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Monitors temperature at several points in the room, not just the coldest spot</li><li>Tracks humidity and logs every door opening with its duration</li><li>Timestamps all readings against a real-time clock and writes a tamper-evident local log</li><li>Mirrors the log to the cloud so the record survives device tampering</li><li>Detects excursions (time-above-limit) with duration and peak, and computes mean kinetic temperature</li><li>Alarms immediately on band breach or door-open-too-long, with escalation</li><li>Rides through power and network outages on battery and local storage</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Produce and food cold rooms</b></td><td>Keeping fruit, vegetables, dairy and meat within grade-safe temperatures and proving it to buyers who reject undocumented stock.</td></tr><tr><td><b>Pharmaceutical / vaccine storage</b></td><td>Cold-chain compliance where an undocumented excursion can legally condemn an entire batch; MKT and excursion logs are mandatory.</td></tr><tr><td><b>Restaurant and retail refrigeration</b></td><td>Automating the manual temperature-check logs that food-safety rules require, with alarms before stock is lost.</td></tr><tr><td><b>Agri warehouses and FPO cold stores</b></td><td>Protecting aggregated produce and settling disputes with an objective record of storage conditions.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Multi-zone sensing that catches the warm corners a single probe misses</li><li>Door-event logging — the root cause of most excursions</li><li>Tamper-evident, timestamped compliance log (local + cloud mirror)</li><li>Mean kinetic temperature and excursion reporting for regulated cold chains</li><li>Escalating alarms so a 2 a.m. failure actually reaches someone</li><li>Battery + local logging ride-through for power and network outages</li><li>Exportable audit trail for buyers and inspectors</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Intermediate</td></tr><tr><td><b>Estimated completion time</b></td><td>10–16 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹3,200 – ₹4,400</td></tr><tr><td><b>Primary discipline</b></td><td>Agriculture</td></tr><tr><td><b>Reference platform</b></td><td>ESP32 DevKit V1 (ESP-WROOM-32)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Placing multiple temperature probes to represent a room, not a point</li><li>Using a real-time clock and writing timestamped, append-only logs to SD/flash</li><li>Reed-switch door sensing and event logging</li><li>Computing excursions and mean kinetic temperature</li><li>Designing escalating alarms and outage ride-through</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>Probe placement decides everything: put probes where the room is warmest and most variable (near the door, top corners, in-product), not next to the evaporator.</p>
+<p>The compliance log is only trustworthy if it is append-only and mirrored off-device; a log the operator can silently edit proves nothing.</p>
+<p>The monitor observes and alarms — it does not by itself keep the room cold. Treat it as an independent watchdog over the refrigeration, not the refrigeration control.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b><br/><span style="font-size:.82em;opacity:.78">Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</span></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>DS18B20 waterproof temperature probe</b><br/><span style="font-size:.82em;opacity:.78">Dozens can share one GPIO — you address them by ROM code.</span></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td class="num">4</td><td class="num">₹640</td></tr><tr><td><b>SHT31-D temperature + humidity sensor</b><br/><span style="font-size:.82em;opacity:.78">The built-in heater burns off condensation — essential for outdoor or greenhouse use.</span></td><td>−40 to +125 °C ±0.2 °C, 0–100 %RH ±2 %, 1 Hz–10 Hz, on-chip heater</td><td class="num">1</td><td class="num">₹620</td></tr><tr><td><b>Reed switch + magnet pair (door contact)</b><br/><span style="font-size:.82em;opacity:.78">Wire it normally-closed so a cut cable reads the same as an open door — fail-safe by construction.</span></td><td>NO contact, 10–15 mm operating gap, 100 V / 0.5 A, &gt; 10⁷ operations</td><td class="num">1</td><td class="num">₹55</td></tr><tr><td><b>DS3231 precision RTC + CR2032 backup</b><br/><span style="font-size:.82em;opacity:.78">Vastly better than DS1307; some boards trickle-charge a non-rechargeable cell — cut that resistor.</span></td><td>±2 ppm (±1 min/year), temperature-compensated crystal, alarms, 32 kHz out</td><td class="num">1</td><td class="num">₹180</td></tr><tr><td><b>microSD card 32 GB A1 class</b><br/><span style="font-size:.82em;opacity:.78">For 24/7 loggers buy a high-endurance card — normal cards die in months.</span></td><td>A1 rated, 10 MB/s random write, UHS-I, endurance-grade recommended</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>Active piezo buzzer 5 V</b><br/><span style="font-size:.82em;opacity:.78">Active buzzers make tone on DC; passive ones need a PWM carrier.</span></td><td>85 dB at 10 cm, 2.3 kHz resonance, 12 mm diameter</td><td class="num">1</td><td class="num">₹25</td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b><br/><span style="font-size:.82em;opacity:.78">Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</span></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td class="num">1</td><td class="num">₹45</td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b><br/><span style="font-size:.82em;opacity:.78">Never charge below 0 °C; always use a protected cell or a BMS.</span></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>Waterproof DS18B20 probes on cable</b><br/><span style="font-size:.82em;opacity:.78">One 1-Wire bus, addresses mapped to locations</span></td><td>Stainless probes for door/corner/return/in-product placement</td><td class="num">4</td><td class="num">₹1,920</td></tr><tr><td><b>Door reed switch</b></td><td>Magnetic contact on the cold-room door</td><td class="num">1</td><td class="num">₹120</td></tr><tr><td><b>Backup battery + charger</b></td><td>18650 + TP4056 to ride through power cuts and keep logging</td><td class="num">1</td><td class="num">₹260</td></tr><tr><td><b>IP-rated enclosure (external mount)</b></td><td>Electronics outside the cold, only probes inside, to avoid condensation on the board</td><td class="num">1</td><td class="num">₹400</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹5,615</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td>3.3 V logic / 5 V USB</td><td>UART, SPI, I²C, I²S, CAN, PWM</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>DS18B20 waterproof temperature probe</b></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td>3.0–5.5 V</td><td>1-Wire (multi-drop)</td><td><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/DS18B20.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>SHT31-D temperature + humidity sensor</b></td><td>−40 to +125 °C ±0.2 °C, 0–100 %RH ±2 %, 1 Hz–10 Hz, on-chip heater</td><td>2.4–5.5 V</td><td>I²C (0x44/0x45)</td><td><a href="https://sensirion.com/media/documents/213E6A3B/63A5A569/Datasheet_SHT3x_DIS.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Reed switch + magnet pair (door contact)</b></td><td>NO contact, 10–15 mm operating gap, 100 V / 0.5 A, &gt; 10⁷ operations</td><td>passive</td><td>Digital with pull-up</td><td><a href="https://en.wikipedia.org/wiki/Reed_switch" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>DS3231 precision RTC + CR2032 backup</b></td><td>±2 ppm (±1 min/year), temperature-compensated crystal, alarms, 32 kHz out</td><td>2.3–5.5 V</td><td>I²C (0x68)</td><td><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/DS3231.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>microSD card 32 GB A1 class</b></td><td>A1 rated, 10 MB/s random write, UHS-I, endurance-grade recommended</td><td>3.3 V</td><td>SDIO / SPI</td><td><a href="https://www.sdcard.org/developers/sd-standard-overview/application-performance-class/" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Active piezo buzzer 5 V</b></td><td>85 dB at 10 cm, 2.3 kHz resonance, 12 mm diameter</td><td>3–5 V</td><td>Digital / PWM</td><td><a href="https://components101.com/misc/buzzer-pinout-working-datasheet" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td>4.5–5.5 V in</td><td>micro-USB / pads</td><td><a href="https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td>3.0–4.2 V</td><td>Holder / spot-welded tabs</td><td><a href="https://www.orbtronic.com/content/Samsung-INR18650-35E-Datasheet-Gest.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32 DevKit V1 (ESP-WROOM-32)</td><td>3.3 V logic / 5 V USB</td><td class="num">160</td><td>Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</td></tr><tr><td>DS18B20 waterproof temperature probe</td><td>3.0–5.5 V</td><td class="num">6</td><td>Dozens can share one GPIO — you address them by ROM code.</td></tr><tr><td>SHT31-D temperature + humidity sensor</td><td>2.4–5.5 V</td><td class="num">1.5</td><td>The built-in heater burns off condensation — essential for outdoor or greenhouse use.</td></tr><tr><td>DS3231 precision RTC + CR2032 backup</td><td>2.3–5.5 V</td><td class="num">0.2</td><td>Vastly better than DS1307; some boards trickle-charge a non-rechargeable cell — cut that resistor.</td></tr><tr><td>microSD card 32 GB A1 class</td><td>3.3 V</td><td class="num">100</td><td>For 24/7 loggers buy a high-endurance card — normal cards die in months.</td></tr><tr><td>Active piezo buzzer 5 V</td><td>3–5 V</td><td class="num">30</td><td>Active buzzers make tone on DC; passive ones need a PWM carrier.</td></tr><tr><td>TP4056 Li-ion charger + DW01 protection</td><td>4.5–5.5 V in</td><td class="num">1000</td><td>Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>1297.7 mA</b>. With a 1.5× design margin the supply should deliver at least <b>2000 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x with the ESP32 board package 3.x (or PlatformIO on VS Code)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>WiFi (ESP32 core)</b> <span style="opacity:.7">bundled</span></td><td>Station/AP connection management for the ESP32.</td><td><code>Bundled with the ESP32 Arduino core</code></td></tr><tr><td><b>PubSubClient</b> <span style="opacity:.7">2.8</span></td><td>Lightweight MQTT 3.1.1 client for constrained devices.</td><td><code>Library Manager → "PubSubClient" by Nick O'Leary</code></td></tr><tr><td><b>OneWire + DallasTemperature</b> <span style="opacity:.7">2.3.x / 3.9.x</span></td><td>Bus enumeration and conversion commands for DS18B20 probes.</td><td><code>Library Manager → "DallasTemperature" (pulls OneWire)</code></td></tr><tr><td><b>Adafruit Unified Sensor</b> <span style="opacity:.7">1.1.x</span></td><td>Common sensor event abstraction; a dependency of most Adafruit drivers.</td><td><code>Library Manager → "Adafruit Unified Sensor"</code></td></tr><tr><td><b>ArduinoJson</b> <span style="opacity:.7">7.x</span></td><td>Zero-allocation JSON serialisation and parsing.</td><td><code>Library Manager → "ArduinoJson" by Benoit Blanchon</code></td></tr><tr><td><b>Preferences (NVS)</b> <span style="opacity:.7">bundled</span></td><td>Wear-levelled key/value storage in ESP32 flash for settings.</td><td><code>Bundled with the ESP32 core</code></td></tr><tr><td><b>NTPClient / configTime</b> <span style="opacity:.7">bundled</span></td><td>Wall-clock time from an NTP server for timestamping.</td><td><code>Bundled (`configTime()` on ESP32)</code></td></tr><tr><td><b>SQLite</b> <span style="opacity:.7">3.45+</span></td><td>Zero-configuration embedded database for local logs.</td><td><code>Bundled with Python (`import sqlite3`)</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 310" role="img" aria-labelledby="td290 sd290" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td290">Cold Storage Monitor — system block diagram</title><desc id="sd290">Functional block diagram of the Cold Storage Monitor system.</desc>
+    <defs>
+    <marker id="ar-d290" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d290" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d290" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d290" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">The room</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d290)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Zone temps</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">DS18B20 ×4</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d290)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Humidity</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">SHT31</tspan></text><rect x="26" y="214" width="178" height="62" rx="12"
+          fill="url(#gb-d290)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="239" text-anchor="middle"><tspan x="115" y="239.0">Door</tspan></text><text class="dg-s" x="115" y="258" text-anchor="middle"><tspan x="115" y="258.0">reed switch</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Record</text><rect x="266" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d290)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="79" text-anchor="middle"><tspan x="355" y="79.0">ESP32 + RTC</tspan></text><text class="dg-s" x="355" y="98" text-anchor="middle"><tspan x="355" y="98.0">timestamp</tspan></text><rect x="266" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d290)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="159" text-anchor="middle"><tspan x="355" y="159.0">SD log</tspan></text><text class="dg-s" x="355" y="178" text-anchor="middle"><tspan x="355" y="178.0">append-only</tspan></text><rect x="266" y="214" width="178" height="62" rx="12"
+          fill="url(#gb-d290)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="239" text-anchor="middle"><tspan x="355" y="239.0">MKT/excursion</tspan></text><text class="dg-s" x="355" y="258" text-anchor="middle"><tspan x="355" y="258.0">computed</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Protect</text><rect x="506" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d290)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="119" text-anchor="middle"><tspan x="595" y="119.0">Alarm</tspan></text><text class="dg-s" x="595" y="138" text-anchor="middle"><tspan x="595" y="138.0">buzzer + escalate</tspan></text><rect x="506" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d290)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="199" text-anchor="middle"><tspan x="595" y="199.0">Cloud mirror</tspan></text><text class="dg-s" x="595" y="218" text-anchor="middle"><tspan x="595" y="218.0">off-device copy</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Auditor</text><rect x="746" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d290)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="119" text-anchor="middle"><tspan x="835" y="119.0">Dashboard</tspan></text><text class="dg-s" x="835" y="138" text-anchor="middle"><tspan x="835" y="138.0">live + history</tspan></text><rect x="746" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d290)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="199" text-anchor="middle"><tspan x="835" y="199.0">Export</tspan></text><text class="dg-s" x="835" y="218" text-anchor="middle"><tspan x="835" y="218.0">audit trail</tspan></text><path d="M208 165 C 235 165, 235 165, 258 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d290)"/><text class="dg-e" x="235" y="157" text-anchor="middle">right</text><path d="M448 165 C 475 165, 475 165, 498 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d290)"/><text class="dg-e" x="475" y="157" text-anchor="middle">right</text><path d="M688 165 C 715 165, 715 165, 738 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d290)"/><text class="dg-e" x="715" y="157" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Cold Storage Monitor — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 316" role="img" aria-labelledby="td291 sd291" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td291">Cold Storage Monitor — wiring schematic</title><desc id="sd291">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d291" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d291" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d291" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d291" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="220" rx="14"
+      fill="url(#ga-d291)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32 DevKit V1</tspan><tspan x="434" y="95.0">(ESP-WROOM-32)</tspan></text><text class="dg-s" x="434" y="266" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d291)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">DS18B20 ×4</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO 4</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="109.5">1-Wire zone temps</tspan><tspan x="278" y="120.5">(4.7 kΩ pull-up)</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d291)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">SHT31</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 21/22</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="161.5">Humidity + temp</tspan><tspan x="278" y="172.5">(I²C)</tspan></text><rect x="20" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d291)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="205" text-anchor="middle"><tspan x="115" y="205.0">Reed switch</tspan></text><path d="M210 204 C 278 204, 278 204, 346 204" stroke="#4fb0e0" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="204" r="3.2" fill="#4fb0e0"/><text class="dg-p" x="278" y="198" text-anchor="middle">GPIO 27</text><text class="dg-s" x="278" y="219" text-anchor="middle"><tspan x="278" y="219.0">Door open/closed</tspan></text><rect x="20" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d291)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="257" text-anchor="middle"><tspan x="115" y="257.0">DS3231 RTC</tspan></text><path d="M210 256 C 278 256, 278 256, 346 256" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="256" r="3.2" fill="#5ec27a"/><text class="dg-p" x="278" y="250" text-anchor="middle">GPIO 21/22</text><text class="dg-s" x="278" y="271" text-anchor="middle"><tspan x="278" y="265.5">Timestamp source</tspan><tspan x="278" y="276.5">(I²C)</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d291)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">microSD</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">GPIO 18/19/23/5</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="109.5">Local append-only</tspan><tspan x="590" y="120.5">log</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d291)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Buzzer/relay</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">GPIO 13</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Local alarm output</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d291)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">TP4056</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">VIN / 3V3 reg</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="213.5">Backup-battery</tspan><tspan x="590" y="224.5">supply</tspan></text><rect x="658" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d291)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="257" text-anchor="middle"><tspan x="753" y="257.0">Mains 5V</tspan></text><path d="M658 256 C 590 256, 590 256, 522 256" stroke="#3cc7c0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="256" r="3.2" fill="#3cc7c0"/><text class="dg-p" x="590" y="250" text-anchor="middle">TP4056 IN</text><text class="dg-s" x="590" y="271" text-anchor="middle"><tspan x="590" y="265.5">Primary supply +</tspan><tspan x="590" y="276.5">charge</tspan></text>
+  </svg>
+  <figcaption>Cold Storage Monitor — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>DS18B20 ×4</b></td><td>DQ</td><td><code>GPIO 4</code></td><td>1-Wire zone temps (4.7 kΩ pull-up)</td></tr><tr><td><b>SHT31</b></td><td>SDA/SCL</td><td><code>GPIO 21/22</code></td><td>Humidity + temp (I²C)</td></tr><tr><td><b>Reed switch</b></td><td>NO</td><td><code>GPIO 27</code></td><td>Door open/closed</td></tr><tr><td><b>DS3231 RTC</b></td><td>SDA/SCL</td><td><code>GPIO 21/22</code></td><td>Timestamp source (I²C)</td></tr><tr><td><b>microSD</b></td><td>SPI</td><td><code>GPIO 18/19/23/5</code></td><td>Local append-only log</td></tr><tr><td><b>Buzzer/relay</b></td><td>IN</td><td><code>GPIO 13</code></td><td>Local alarm output</td></tr><tr><td><b>TP4056</b></td><td>OUT</td><td><code>VIN / 3V3 reg</code></td><td>Backup-battery supply</td></tr><tr><td><b>Mains 5V</b></td><td>+/–</td><td><code>TP4056 IN</code></td><td>Primary supply + charge</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Mount the electronics box <b>outside</b> the cold room. Only the probes and the reed switch go into the cold; a circuit board in a cold, humid room grows condensation and corrodes.</li><li>Run the four DS18B20 probes on one 1-Wire bus with a single 4.7 kΩ pull-up, and map each address to its physical location (door, corner, return, in-product).</li><li>Wire the reed switch so a door opening is unambiguous; debounce it in firmware to log clean open/close events.</li><li>Give the RTC a coin-cell backup so timestamps survive power loss — a compliance log with wrong times is worthless.</li><li>Power from mains with the 18650 as automatic backup, so a power cut does not create a gap in the record.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ESP32%20Espressif%20ESP-WROOM-32%20Dev%20Board.jpg?width=900" alt="An ESP32 development board with the ESP-WROOM-32 module and USB connector" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td292" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td292">ESP32 module timestamping and logging every zone, the humidity and every door event.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="60" y="46" width="280" height="168" rx="10" fill="#1d4a3e" stroke="#123028" stroke-width="2"/>
+    <rect x="112" y="60" width="176" height="76" rx="5" fill="#c9ccd1" stroke="#9aa0a8"/>
+    <rect x="128" y="76" width="86" height="44" rx="3" fill="#2b2f36"/>
+    <text x="171" y="103" font-size="12" fill="#c9ccd1" text-anchor="middle" font-family="monospace">ESP32</text>
+    <path d="M228 78 h44 v10 h-44z M228 92 h44 v10 h-44z M228 106 h44 v10 h-44z" fill="#9aa0a8"/>
+    <rect x="164" y="150" width="72" height="34" rx="4" fill="#2b2f36"/>
+    <text x="200" y="171" font-size="9" fill="#7f8894" text-anchor="middle" font-family="monospace">USB</text>
+    <rect x="86" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <rect x="266" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <circle cx="70" cy="40" r="2.4" fill="#d8b04a"/><circle cx="88" cy="40" r="2.4" fill="#d8b04a"/><circle cx="106" cy="40" r="2.4" fill="#d8b04a"/><circle cx="124" cy="40" r="2.4" fill="#d8b04a"/><circle cx="142" cy="40" r="2.4" fill="#d8b04a"/><circle cx="160" cy="40" r="2.4" fill="#d8b04a"/><circle cx="178" cy="40" r="2.4" fill="#d8b04a"/><circle cx="196" cy="40" r="2.4" fill="#d8b04a"/><circle cx="214" cy="40" r="2.4" fill="#d8b04a"/><circle cx="232" cy="40" r="2.4" fill="#d8b04a"/><circle cx="250" cy="40" r="2.4" fill="#d8b04a"/><circle cx="268" cy="40" r="2.4" fill="#d8b04a"/><circle cx="286" cy="40" r="2.4" fill="#d8b04a"/><circle cx="304" cy="40" r="2.4" fill="#d8b04a"/><circle cx="322" cy="40" r="2.4" fill="#d8b04a"/><circle cx="70" cy="220" r="2.4" fill="#d8b04a"/><circle cx="88" cy="220" r="2.4" fill="#d8b04a"/><circle cx="106" cy="220" r="2.4" fill="#d8b04a"/><circle cx="124" cy="220" r="2.4" fill="#d8b04a"/><circle cx="142" cy="220" r="2.4" fill="#d8b04a"/><circle cx="160" cy="220" r="2.4" fill="#d8b04a"/><circle cx="178" cy="220" r="2.4" fill="#d8b04a"/><circle cx="196" cy="220" r="2.4" fill="#d8b04a"/><circle cx="214" cy="220" r="2.4" fill="#d8b04a"/><circle cx="232" cy="220" r="2.4" fill="#d8b04a"/><circle cx="250" cy="220" r="2.4" fill="#d8b04a"/><circle cx="268" cy="220" r="2.4" fill="#d8b04a"/><circle cx="286" cy="220" r="2.4" fill="#d8b04a"/><circle cx="304" cy="220" r="2.4" fill="#d8b04a"/><circle cx="322" cy="220" r="2.4" fill="#d8b04a"/>
+    <circle cx="330" cy="60" r="4" fill="#e03b3b"/><circle cx="330" cy="76" r="4" fill="#3be07a"/>
+  </svg>
+  <figcaption>ESP32 module timestamping and logging every zone, the humidity and every door event.</figcaption>
+</figure></template>
+  <figcaption>ESP32 module timestamping and logging every zone, the humidity and every door event.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — ESP32 Espressif ESP-WROOM-32 Dev Board.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 486" role="img" aria-labelledby="td293 sd293" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td293">Cold Storage Monitor — architecture stack</title><desc id="sd293">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d293" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d293" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d293" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d293" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d293)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="72.0">ESP32 DevKit V1 (ESP-WROOM-32) · DS18B20 waterproof temperature probe ·</tspan><tspan x="48" y="84.0">SHT31-D temperature + humidity sensor</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d293)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d293)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">wifi · pubsub · onewire · unified</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d293)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d293)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d293)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d293)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Transport layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="336.0">Wi-Fi + MQTT with escalation; local SD is the source of truth · TLS ·</tspan><tspan x="48" y="348.0">retry and backoff</tspan></text><path d="M330 368 L330 381" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d293)"/><rect x="30" y="382" width="600" height="74" rx="12"
+        fill="url(#gb-d293)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="408">Presentation layer</text><text class="dg-s" x="48" y="430"><tspan x="48" y="430.0">dashboard · mobile notifications · historical charts</tspan></text>
+  </svg>
+  <figcaption>Cold Storage Monitor — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>A cold room is not one temperature — it is a field of temperatures, coldest at the evaporator and warmest near the door and the ceiling corners, and it changes every time the door opens or the compressor cycles. A single probe by the cooling coil reads the best-case number and will happily show "all fine" while product near the door sits above its safe limit. Representing the room honestly means several probes placed deliberately at the <b>worst</b> spots — the door, the far top corner, the return air, and within the product mass where thermal inertia matters — so the log reflects what the goods actually experienced, not the flattering minimum.</p>
+<p>The door is the villain in most cold-chain stories. Every opening dumps warm, humid air into the room; frequent or prolonged openings are the commonest cause of excursions and of frost and dehydration problems. Logging door events — when, and for how long — both explains excursions after the fact and lets the monitor alarm proactively when a door has been left open past a sensible threshold, catching the classic "someone propped it open and forgot" failure before it spoils anything.</p>
+<p>Two derived numbers turn a raw temperature stream into compliance evidence. An <b>excursion</b> is any continuous period above the safe limit, characterised by its start, duration and peak — because regulators and buyers care about how far and how long, not merely that it happened once. <b>Mean kinetic temperature</b> (MKT) collapses a fluctuating history into the single effective temperature the product experienced, weighting warm periods more heavily than a plain average because degradation accelerates with temperature (an Arrhenius relationship). MKT is the standard cold-chain summary precisely because it answers the real question — "given all the ups and downs, what effective temperature did this batch see?" — better than a min/max or an average can.</p>
+<p>The record is only worth keeping if it is <b>trustworthy</b>. That means append-only local storage (you can add readings, not silently rewrite history), timestamps from a backed-up real-time clock, and an off-device mirror to the cloud so that even if the local device is lost or tampered with, the evidence survives. And because power and network both fail exactly when you most need the record — during the incident — the monitor runs on a backup battery and keeps logging locally through outages, syncing the backlog when connectivity returns. A compliance monitor that goes blind during a power cut is blind during the very events it exists to document.</p>
+
+<h3>The maths behind it</h3><h4>Mean kinetic temperature (Arrhenius-weighted)</h4><div class="codeblock tall" data-file="Mean kinetic temperature (Arrhenius-weighted)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Mean kinetic temperature (Arrhenius-weighted)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Mean kinetic temperature (Arrhenius-weighted) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Mean kinetic temperature (Arrhenius-weighted)" type="button" aria-label="Download Mean kinetic temperature (Arrhenius-weighted)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>MKT summarises a varying temperature history:
+
+  MKT = (ΔH/R) / −ln[ (Σ e^(−ΔH/(R·T_i))) / n ]
+
+  T_i are absolute temperatures (K) of each interval,
+  ΔH ≈ 83 kJ/mol (typical activation energy),
+  R = 8.314 J/mol·K, n = number of intervals.
+
+Warm periods dominate the average far more than in a plain
+mean — which is the point: degradation is exponential in T.</code></pre>
+  
+</div>
+<h4>Excursion detection</h4><div class="codeblock tall" data-file="Excursion detection">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Excursion detection</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Excursion detection to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Excursion detection" type="button" aria-label="Download Excursion detection">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>For the representative zone temperature T_rep
+(usually the warmest logged zone):
+
+  in_excursion  while T_rep &gt; T_limit
+  duration = t_end − t_start,  peak = max T_rep in window
+
+Alarm when duration exceeds a grace period (e.g. product
+can tolerate a short spike but not a sustained breach).
+Log every excursion's start, end, duration and peak.</code></pre>
+  
+</div>
+<h4>Door-open alarm</h4><div class="codeblock tall" data-file="Door-open alarm">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Door-open alarm</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Door-open alarm to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Door-open alarm" type="button" aria-label="Download Door-open alarm">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>From the reed switch:
+
+  open_duration = now − door_opened_at
+  alarm if door open and open_duration &gt; T_door (e.g. 120 s)
+
+Also count openings per hour; an unusually high rate warns
+of a propped door or heavy traffic driving up the room temp.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 784" role="img" aria-labelledby="td294 sd294" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td294">Cold Storage Monitor — firmware flowchart</title><desc id="sd294">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d294" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d294" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d294" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d294" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d294)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Sample zones + humidity + door</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d294)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d294)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="144.0">Timestamp and append to log</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d294)"/><path d="M210 202 L349 244 L210 286 L71 244 z"
+          fill="url(#ga-d294)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="244" text-anchor="middle"><tspan x="210" y="244.0">Any zone above limit?</tspan></text><path d="M210 286 L210 310" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d294)"/><text class="dg-e" x="220" y="305">Start/continue excursion; alarm</text><path d="M349 244 H397 V200 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d294)"/><text class="dg-e" x="403" y="238">Clear excursion state</text><path d="M101 316 L335 316 L319 372 L85 372 z"
+          fill="url(#gb-d294)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="344" text-anchor="middle"><tspan x="210" y="337.5">Start/continue excursion;</tspan><tspan x="210" y="350.5">alarm</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d294)"/><path d="M210 402 L349 444 L210 486 L71 444 z"
+          fill="url(#ga-d294)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="444" text-anchor="middle"><tspan x="210" y="444.0">Door open too long?</tspan></text><path d="M210 486 L210 510" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d294)"/><text class="dg-e" x="220" y="505">Door alarm</text><path d="M349 444 H397 V400 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d294)"/><text class="dg-e" x="403" y="438">Update MKT</text><path d="M101 516 L335 516 L319 572 L85 572 z"
+          fill="url(#gb-d294)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="544" text-anchor="middle"><tspan x="210" y="544.0">Door alarm</tspan></text><path d="M210 572 L210 596" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d294)"/><rect x="85" y="602" width="250" height="56" rx="10"
+          fill="url(#gb-d294)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="630" text-anchor="middle"><tspan x="210" y="630.0">Update MKT</tspan></text><path d="M210 658 L210 682" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d294)"/><rect x="85" y="688" width="250" height="56" rx="28"
+          fill="url(#ga-d294)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="716" text-anchor="middle"><tspan x="210" y="716.0">Mirror to cloud; wait interval</tspan></text>
+  </svg>
+  <figcaption>Cold Storage Monitor — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Place the probes where the room is at risk</h4><p>Put one probe just inside the door (the warmest, most variable spot), one in the far top corner, one at the evaporator return air, and one inserted into or among the product to capture its thermal inertia.</p>
+<p>Run all four on a single 1-Wire cable and record which address is where — the log must say "door zone", not "sensor 2".</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Do not cluster all probes near the cooling coil. That reads the coldest air and hides the excursions the monitor exists to catch.</p></div>
+  </aside></li><li><h4>Fit the door sensor and mount electronics outside</h4><p>Install the reed switch and magnet on the door and frame so an opening is cleanly detected. Route its cable out through a gland.</p>
+<p>Mount the ESP32/SD/RTC box outside the cold room to avoid condensation on the board; only sensor cables cross the wall.</p></li><li><h4>Set up logging, clock and backup power</h4><p>Insert the microSD and confirm the RTC holds the correct time with its coin cell in. Wire mains power with the 18650 as automatic backup so logging never stops.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Establish trusted time and the log format</h4><p>Sync the RTC (from NTP when online) and define an append-only log record: timestamp, each zone temperature, humidity, door state, and any active excursion. Never rewrite past records.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Include a running hash or sequence number per record so a missing or altered entry is detectable — the difference between a log and evidence.</p></div>
+  </aside></li><li><h4>Compute excursions and MKT continuously</h4><p>Track the warmest representative zone against the limit to open/close excursions, and fold every interval into the MKT accumulator so the effective temperature is always current.</p><div class="codeblock tall" data-file="compliance.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">compliance.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy compliance.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="compliance.ino" type="button" aria-label="Download compliance.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">// Running mean kinetic temperature accumulator (Arrhenius-weighted).</span>
+<span class="tok-k">struct</span> <span class="tok-t">MKT</span> <span class="tok-o">{</span> <span class="tok-k">double</span> sumExp <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">uint32_t</span> n <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-o">};</span>
+<span class="tok-k">const</span> <span class="tok-k">double</span> <span class="tok-t">DH_R</span> <span class="tok-o">=</span> <span class="tok-n">83000.0</span> <span class="tok-o">/</span> <span class="tok-n">8.314</span><span class="tok-o">;</span>    <span class="tok-c">// ΔH/R in kelvin</span>
+
+<span class="tok-k">void</span> <span class="tok-f">mktAdd</span><span class="tok-o">(</span><span class="tok-t">MKT</span> <span class="tok-o">&amp;</span>m<span class="tok-o">,</span> <span class="tok-k">float</span> tempC<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">double</span> <span class="tok-t">Tk</span> <span class="tok-o">=</span> tempC <span class="tok-o">+</span> <span class="tok-n">273.15</span><span class="tok-o">;</span>
+  m<span class="tok-o">.</span>sumExp <span class="tok-o">+=</span> <span class="tok-f">exp</span><span class="tok-o">(-</span><span class="tok-t">DH_R</span> <span class="tok-o">/</span> <span class="tok-t">Tk</span><span class="tok-o">);</span>
+  m<span class="tok-o">.</span>n<span class="tok-o">++;</span>
+<span class="tok-o">}</span>
+<span class="tok-k">float</span> <span class="tok-f">mktValue</span><span class="tok-o">(</span><span class="tok-k">const</span> <span class="tok-t">MKT</span> <span class="tok-o">&amp;</span>m<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>m<span class="tok-o">.</span>n <span class="tok-o">==</span> <span class="tok-n">0</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-t">NAN</span><span class="tok-o">;</span>
+  <span class="tok-k">double</span> denom <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-f">log</span><span class="tok-o">(</span>m<span class="tok-o">.</span>sumExp <span class="tok-o">/</span> m<span class="tok-o">.</span>n<span class="tok-o">);</span>
+  <span class="tok-k">return</span> <span class="tok-o">(</span><span class="tok-k">float</span><span class="tok-o">)(</span><span class="tok-t">DH_R</span> <span class="tok-o">/</span> denom <span class="tok-o">-</span> <span class="tok-n">273.15</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">// Excursion state machine on the warmest representative zone.</span>
+<span class="tok-k">struct</span> <span class="tok-t">Excursion</span> <span class="tok-o">{</span> <span class="tok-k">bool</span> active <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span> <span class="tok-k">uint32_t</span> start <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">float</span> peak <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">99</span><span class="tok-o">;</span> <span class="tok-o">};</span>
+
+<span class="tok-k">void</span> <span class="tok-f">excursionUpdate</span><span class="tok-o">(</span><span class="tok-t">Excursion</span> <span class="tok-o">&amp;</span>e<span class="tok-o">,</span> <span class="tok-k">float</span> tRep<span class="tok-o">,</span> <span class="tok-k">float</span> limit<span class="tok-o">,</span>
+                     <span class="tok-k">uint32_t</span> now<span class="tok-o">,</span> <span class="tok-k">uint32_t</span> grace<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>tRep <span class="tok-o">&gt;</span> limit<span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-k">if</span> <span class="tok-o">(!</span>e<span class="tok-o">.</span>active<span class="tok-o">)</span> <span class="tok-o">{</span> e<span class="tok-o">.</span>active <span class="tok-o">=</span> <span class="tok-k">true</span><span class="tok-o">;</span> e<span class="tok-o">.</span>start <span class="tok-o">=</span> now<span class="tok-o">;</span> e<span class="tok-o">.</span>peak <span class="tok-o">=</span> tRep<span class="tok-o">;</span> <span class="tok-o">}</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>tRep <span class="tok-o">&gt;</span> e<span class="tok-o">.</span>peak<span class="tok-o">)</span> e<span class="tok-o">.</span>peak <span class="tok-o">=</span> tRep<span class="tok-o">;</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>now <span class="tok-o">-</span> e<span class="tok-o">.</span>start <span class="tok-o">&gt;</span> grace<span class="tok-o">)</span> <span class="tok-f">raiseAlarm</span><span class="tok-o">(</span><span class="tok-s">"Temperature excursion"</span><span class="tok-o">,</span> tRep<span class="tok-o">,</span> e<span class="tok-o">.</span>peak<span class="tok-o">);</span>
+  <span class="tok-o">}</span> <span class="tok-k">else</span> <span class="tok-k">if</span> <span class="tok-o">(</span>e<span class="tok-o">.</span>active<span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-f">logExcursion</span><span class="tok-o">(</span>e<span class="tok-o">.</span>start<span class="tok-o">,</span> now<span class="tok-o">,</span> e<span class="tok-o">.</span>peak<span class="tok-o">);</span>      <span class="tok-c">// record start/end/duration/peak</span>
+    e<span class="tok-o">.</span>active <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span> e<span class="tok-o">.</span>peak <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">99</span><span class="tok-o">;</span>
+  <span class="tok-o">}</span>
+<span class="tok-o">}</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">const double DH_R</span><span class="txt">Pre-computes the activation-energy-over-gas-constant term, the constant that makes MKT weight warm intervals exponentially more than cool ones.</span></div><div><span class="ref">m.sumExp += exp(-DH_R / Tk)</span><span class="txt">Each interval's absolute temperature is folded into a running sum of Arrhenius weights, so MKT can be read out at any time without storing the whole history.</span></div><div><span class="ref">if (!e.active)</span><span class="txt">An excursion opens the moment the representative zone crosses the limit, capturing its start time and tracking the peak as it develops.</span></div><div><span class="ref">if (now - e.start &gt; grace)</span><span class="txt">A brief spike within the product's tolerance does not alarm; only a breach sustained past the grace period does — matching how cold-chain limits actually work.</span></div><div><span class="ref">logExcursion(</span><span class="txt">When the temperature recovers, the full excursion — start, end, duration, peak — is written to the compliance log as a discrete, auditable event.</span></div></div></li><li><h4>Alarm, escalate, and mirror</h4><p>Sound the local alarm on an excursion or door-open-too-long; escalate to phone/SMS if unacknowledged. Mirror each record to the cloud, and when offline, queue records on the SD and sync the backlog on reconnect.</p></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="cold-storage-monitor.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">cold-storage-monitor.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy cold-storage-monitor.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="cold-storage-monitor.ino" type="button" aria-label="Download cold-storage-monitor.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   Cold Storage Monitor — ESP32, multi-zone temp, door, RTC, SD, cloud</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Watches several zones of a cold room, logs a timestamped</span>
+<span class="tok-c">   append-only compliance record locally and to the cloud, computes</span>
+<span class="tok-c">   excursions and mean kinetic temperature, and alarms with escalation.</span>
+<span class="tok-c">   Rides through power/network outages on battery + SD.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">WiFi</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">PubSubClient</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">OneWire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">DallasTemperature</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Wire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Adafruit_SHT31</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">RTClib</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">SD</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">SPI</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span>math<span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">OW_PIN</span>     <span class="tok-n">4</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_DOOR</span>  <span class="tok-n">27</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_ALARM</span> <span class="tok-n">13</span>
+<span class="tok-p">#define</span> <span class="tok-t">SD_CS</span>      <span class="tok-n">5</span>
+<span class="tok-p">#define</span> <span class="tok-t">NUM_ZONES</span>  <span class="tok-n">4</span>
+<span class="tok-p">#define</span> <span class="tok-t">T_LIMIT</span>    <span class="tok-n">4.0</span>f       <span class="tok-c">// safe upper limit (chilled produce example)</span>
+<span class="tok-p">#define</span> <span class="tok-t">GRACE_MS</span>  <span class="tok-n">300000</span><span class="tok-t">UL</span>    <span class="tok-c">// 5 min sustained breach before alarm</span>
+<span class="tok-p">#define</span> <span class="tok-t">DOOR_MS</span>   <span class="tok-n">120000</span><span class="tok-t">UL</span>    <span class="tok-c">// door open &gt; 2 min alarms</span>
+<span class="tok-p">#define</span> <span class="tok-t">LOG_MS</span>     <span class="tok-n">60000</span><span class="tok-t">UL</span>    <span class="tok-c">// log once a minute</span>
+
+<span class="tok-t">OneWire</span>           <span class="tok-f">ow</span><span class="tok-o">(</span><span class="tok-t">OW_PIN</span><span class="tok-o">);</span>
+<span class="tok-t">DallasTemperature</span> <span class="tok-f">zones</span><span class="tok-o">(&amp;</span>ow<span class="tok-o">);</span>
+<span class="tok-t">Adafruit_SHT31</span>    sht<span class="tok-o">;</span>
+<span class="tok-t">RTC_DS3231</span>        rtc<span class="tok-o">;</span>
+<span class="tok-t">WiFiClient</span>        net<span class="tok-o">;</span>
+<span class="tok-t">PubSubClient</span>      <span class="tok-f">mqtt</span><span class="tok-o">(</span>net<span class="tok-o">);</span>
+
+<span class="tok-k">const</span> <span class="tok-k">char</span> <span class="tok-o">*</span>zoneName<span class="tok-o">[</span><span class="tok-t">NUM_ZONES</span><span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-o">{</span><span class="tok-s">"door"</span><span class="tok-o">,</span><span class="tok-s">"corner"</span><span class="tok-o">,</span><span class="tok-s">"return"</span><span class="tok-o">,</span><span class="tok-s">"product"</span><span class="tok-o">};</span>
+
+<span class="tok-k">struct</span> <span class="tok-t">MKT</span> <span class="tok-o">{</span> <span class="tok-k">double</span> sumExp <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">uint32_t</span> n <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-o">}</span> mkt<span class="tok-o">;</span>
+<span class="tok-k">const</span> <span class="tok-k">double</span> <span class="tok-t">DH_R</span> <span class="tok-o">=</span> <span class="tok-n">83000.0</span> <span class="tok-o">/</span> <span class="tok-n">8.314</span><span class="tok-o">;</span>
+
+<span class="tok-k">struct</span> <span class="tok-t">Excursion</span> <span class="tok-o">{</span> <span class="tok-k">bool</span> active<span class="tok-o">=</span><span class="tok-k">false</span><span class="tok-o">;</span> <span class="tok-k">uint32_t</span> start<span class="tok-o">=</span><span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">float</span> peak<span class="tok-o">=-</span><span class="tok-n">99</span><span class="tok-o">;</span> <span class="tok-o">}</span> exc<span class="tok-o">;</span>
+<span class="tok-k">uint32_t</span> doorOpenedAt <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> lastLog <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> seq <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">bool</span> alarmActive <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">,</span> alarmAck <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span>
+
+<span class="tok-k">void</span> <span class="tok-f">mktAdd</span><span class="tok-o">(</span><span class="tok-k">float</span> t<span class="tok-o">)</span> <span class="tok-o">{</span> mkt<span class="tok-o">.</span>sumExp <span class="tok-o">+=</span> <span class="tok-f">exp</span><span class="tok-o">(-</span><span class="tok-t">DH_R</span> <span class="tok-o">/</span> <span class="tok-o">(</span>t <span class="tok-o">+</span> <span class="tok-n">273.15</span><span class="tok-o">));</span> mkt<span class="tok-o">.</span>n<span class="tok-o">++;</span> <span class="tok-o">}</span>
+<span class="tok-k">float</span> <span class="tok-f">mktValue</span><span class="tok-o">()</span> <span class="tok-o">{</span> <span class="tok-k">return</span> mkt<span class="tok-o">.</span>n <span class="tok-o">?</span> <span class="tok-o">(</span><span class="tok-k">float</span><span class="tok-o">)(</span><span class="tok-t">DH_R</span> <span class="tok-o">/</span> <span class="tok-o">-</span><span class="tok-f">log</span><span class="tok-o">(</span>mkt<span class="tok-o">.</span>sumExp<span class="tok-o">/</span>mkt<span class="tok-o">.</span>n<span class="tok-o">)</span> <span class="tok-o">-</span> <span class="tok-n">273.15</span><span class="tok-o">)</span> <span class="tok-o">:</span> <span class="tok-t">NAN</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+
+<span class="tok-c">// Append-only log line with a sequence number for tamper detection.</span>
+<span class="tok-k">void</span> <span class="tok-f">logLine</span><span class="tok-o">(</span><span class="tok-t">DateTime</span> t<span class="tok-o">,</span> <span class="tok-k">float</span> <span class="tok-o">*</span>z<span class="tok-o">,</span> <span class="tok-k">float</span> rh<span class="tok-o">,</span> <span class="tok-k">bool</span> doorOpen<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-t">File</span> f <span class="tok-o">=</span> <span class="tok-t">SD</span><span class="tok-o">.</span><span class="tok-f">open</span><span class="tok-o">(</span><span class="tok-s">"/coldlog.csv"</span><span class="tok-o">,</span> <span class="tok-t">FILE_APPEND</span><span class="tok-o">);</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>f<span class="tok-o">)</span> <span class="tok-k">return</span><span class="tok-o">;</span>
+  f<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"%lu,%04d-%02d-%02d %02d:%02d:%02d"</span><span class="tok-o">,</span>
+           <span class="tok-o">(</span><span class="tok-k">unsigned</span> <span class="tok-k">long</span><span class="tok-o">)</span>seq<span class="tok-o">++,</span> t<span class="tok-o">.</span><span class="tok-f">year</span><span class="tok-o">(),</span> t<span class="tok-o">.</span><span class="tok-f">month</span><span class="tok-o">(),</span> t<span class="tok-o">.</span><span class="tok-f">day</span><span class="tok-o">(),</span>
+           t<span class="tok-o">.</span><span class="tok-f">hour</span><span class="tok-o">(),</span> t<span class="tok-o">.</span><span class="tok-f">minute</span><span class="tok-o">(),</span> t<span class="tok-o">.</span><span class="tok-f">second</span><span class="tok-o">());</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-t">NUM_ZONES</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> f<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">",%.2f"</span><span class="tok-o">,</span> z<span class="tok-o">[</span>i<span class="tok-o">]);</span>
+  f<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">",%.1f,%d,%.2f,%d\n"</span><span class="tok-o">,</span> rh<span class="tok-o">,</span> doorOpen <span class="tok-o">?</span> <span class="tok-n">1</span> <span class="tok-o">:</span> <span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-f">mktValue</span><span class="tok-o">(),</span>
+           exc<span class="tok-o">.</span>active <span class="tok-o">?</span> <span class="tok-n">1</span> <span class="tok-o">:</span> <span class="tok-n">0</span><span class="tok-o">);</span>
+  f<span class="tok-o">.</span><span class="tok-f">close</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">raiseAlarm</span><span class="tok-o">(</span><span class="tok-k">const</span> <span class="tok-k">char</span> <span class="tok-o">*</span>why<span class="tok-o">,</span> <span class="tok-k">float</span> v<span class="tok-o">,</span> <span class="tok-k">float</span> peak<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_ALARM</span><span class="tok-o">,</span> <span class="tok-t">HIGH</span><span class="tok-o">);</span>
+  alarmActive <span class="tok-o">=</span> <span class="tok-k">true</span><span class="tok-o">;</span>
+  <span class="tok-k">char</span> msg<span class="tok-o">[</span><span class="tok-n">160</span><span class="tok-o">];</span>
+  <span class="tok-f">snprintf</span><span class="tok-o">(</span>msg<span class="tok-o">,</span> <span class="tok-k">sizeof</span> msg<span class="tok-o">,</span>
+    <span class="tok-s">"{\"alarm\":\"%s\",\"val\":%.2f,\"peak\":%.2f}"</span><span class="tok-o">,</span> why<span class="tok-o">,</span> v<span class="tok-o">,</span> peak<span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">publish</span><span class="tok-o">(</span><span class="tok-s">"cold/room1/alarm"</span><span class="tok-o">,</span> msg<span class="tok-o">);</span>   <span class="tok-c">// triggers escalation server-side</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">publishLive</span><span class="tok-o">(</span><span class="tok-k">float</span> <span class="tok-o">*</span>z<span class="tok-o">,</span> <span class="tok-k">float</span> rh<span class="tok-o">,</span> <span class="tok-k">bool</span> doorOpen<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">char</span> b<span class="tok-o">[</span><span class="tok-n">240</span><span class="tok-o">];</span>
+  <span class="tok-k">int</span> n <span class="tok-o">=</span> <span class="tok-f">snprintf</span><span class="tok-o">(</span>b<span class="tok-o">,</span> <span class="tok-k">sizeof</span> b<span class="tok-o">,</span>
+    <span class="tok-s">"{\"mkt\":%.2f,\"rh\":%.1f,\"door\":%d,\"exc\":%d"</span><span class="tok-o">,</span>
+    <span class="tok-f">mktValue</span><span class="tok-o">(),</span> rh<span class="tok-o">,</span> doorOpen <span class="tok-o">?</span> <span class="tok-n">1</span> <span class="tok-o">:</span> <span class="tok-n">0</span><span class="tok-o">,</span> exc<span class="tok-o">.</span>active <span class="tok-o">?</span> <span class="tok-n">1</span> <span class="tok-o">:</span> <span class="tok-n">0</span><span class="tok-o">);</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-t">NUM_ZONES</span><span class="tok-o">;</span> i<span class="tok-o">++)</span>
+    n <span class="tok-o">+=</span> <span class="tok-f">snprintf</span><span class="tok-o">(</span>b<span class="tok-o">+</span>n<span class="tok-o">,</span> <span class="tok-k">sizeof</span> b<span class="tok-o">-</span>n<span class="tok-o">,</span> <span class="tok-s">",\"%s\":%.2f"</span><span class="tok-o">,</span> zoneName<span class="tok-o">[</span>i<span class="tok-o">],</span> z<span class="tok-o">[</span>i<span class="tok-o">]);</span>
+  <span class="tok-f">snprintf</span><span class="tok-o">(</span>b<span class="tok-o">+</span>n<span class="tok-o">,</span> <span class="tok-k">sizeof</span> b<span class="tok-o">-</span>n<span class="tok-o">,</span> <span class="tok-s">"}"</span><span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">publish</span><span class="tok-o">(</span><span class="tok-s">"cold/room1/live"</span><span class="tok-o">,</span> b<span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">115200</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_DOOR</span><span class="tok-o">,</span> <span class="tok-t">INPUT_PULLUP</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_ALARM</span><span class="tok-o">,</span> <span class="tok-t">OUTPUT</span><span class="tok-o">);</span>
+  zones<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">();</span>
+  <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">21</span><span class="tok-o">,</span> <span class="tok-n">22</span><span class="tok-o">);</span>
+  sht<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">0x44</span><span class="tok-o">);</span>
+  rtc<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">();</span>
+  <span class="tok-t">SD</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-t">SD_CS</span><span class="tok-o">);</span>
+  <span class="tok-t">WiFi</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-t">WIFI_SSID</span><span class="tok-o">,</span> <span class="tok-t">WIFI_PASS</span><span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">setServer</span><span class="tok-o">(</span><span class="tok-t">MQTT_HOST</span><span class="tok-o">,</span> <span class="tok-n">1883</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>mqtt<span class="tok-o">.</span><span class="tok-f">connected</span><span class="tok-o">()</span> <span class="tok-o">&amp;&amp;</span> <span class="tok-t">WiFi</span><span class="tok-o">.</span><span class="tok-f">status</span><span class="tok-o">()</span> <span class="tok-o">==</span> <span class="tok-t">WL_CONNECTED</span><span class="tok-o">)</span> mqtt<span class="tok-o">.</span><span class="tok-f">connect</span><span class="tok-o">(</span><span class="tok-s">"cold-1"</span><span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">loop</span><span class="tok-o">();</span>
+  <span class="tok-k">uint32_t</span> now <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+
+  <span class="tok-k">bool</span> doorOpen <span class="tok-o">=</span> <span class="tok-f">digitalRead</span><span class="tok-o">(</span><span class="tok-t">PIN_DOOR</span><span class="tok-o">)</span> <span class="tok-o">==</span> <span class="tok-t">LOW</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>doorOpen <span class="tok-o">&amp;&amp;</span> doorOpenedAt <span class="tok-o">==</span> <span class="tok-n">0</span><span class="tok-o">)</span> doorOpenedAt <span class="tok-o">=</span> now<span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>doorOpen<span class="tok-o">)</span> doorOpenedAt <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>now <span class="tok-o">-</span> lastLog <span class="tok-o">&gt;=</span> <span class="tok-t">LOG_MS</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    lastLog <span class="tok-o">=</span> now<span class="tok-o">;</span>
+    zones<span class="tok-o">.</span><span class="tok-f">requestTemperatures</span><span class="tok-o">();</span>
+    <span class="tok-k">float</span> z<span class="tok-o">[</span><span class="tok-t">NUM_ZONES</span><span class="tok-o">],</span> tRep <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">99</span><span class="tok-o">;</span>
+    <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-t">NUM_ZONES</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span>
+      z<span class="tok-o">[</span>i<span class="tok-o">]</span> <span class="tok-o">=</span> zones<span class="tok-o">.</span><span class="tok-f">getTempCByIndex</span><span class="tok-o">(</span>i<span class="tok-o">);</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>z<span class="tok-o">[</span>i<span class="tok-o">]</span> <span class="tok-o">&gt;</span> tRep<span class="tok-o">)</span> tRep <span class="tok-o">=</span> z<span class="tok-o">[</span>i<span class="tok-o">];</span>          <span class="tok-c">// warmest zone represents risk</span>
+    <span class="tok-o">}</span>
+    <span class="tok-k">float</span> rh <span class="tok-o">=</span> sht<span class="tok-o">.</span><span class="tok-f">readHumidity</span><span class="tok-o">();</span>
+    <span class="tok-t">DateTime</span> t <span class="tok-o">=</span> rtc<span class="tok-o">.</span><span class="tok-f">now</span><span class="tok-o">();</span>
+
+    <span class="tok-f">mktAdd</span><span class="tok-o">(</span>tRep<span class="tok-o">);</span>
+    <span class="tok-f">logLine</span><span class="tok-o">(</span>t<span class="tok-o">,</span> z<span class="tok-o">,</span> rh<span class="tok-o">,</span> doorOpen<span class="tok-o">);</span>             <span class="tok-c">// append-only, always (even offline)</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-t">WiFi</span><span class="tok-o">.</span><span class="tok-f">status</span><span class="tok-o">()</span> <span class="tok-o">==</span> <span class="tok-t">WL_CONNECTED</span><span class="tok-o">)</span> <span class="tok-f">publishLive</span><span class="tok-o">(</span>z<span class="tok-o">,</span> rh<span class="tok-o">,</span> doorOpen<span class="tok-o">);</span>
+
+    <span class="tok-c">// excursion state machine</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>tRep <span class="tok-o">&gt;</span> <span class="tok-t">T_LIMIT</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+      <span class="tok-k">if</span> <span class="tok-o">(!</span>exc<span class="tok-o">.</span>active<span class="tok-o">)</span> <span class="tok-o">{</span> exc<span class="tok-o">.</span>active <span class="tok-o">=</span> <span class="tok-k">true</span><span class="tok-o">;</span> exc<span class="tok-o">.</span>start <span class="tok-o">=</span> now<span class="tok-o">;</span> exc<span class="tok-o">.</span>peak <span class="tok-o">=</span> tRep<span class="tok-o">;</span> <span class="tok-o">}</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>tRep <span class="tok-o">&gt;</span> exc<span class="tok-o">.</span>peak<span class="tok-o">)</span> exc<span class="tok-o">.</span>peak <span class="tok-o">=</span> tRep<span class="tok-o">;</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>now <span class="tok-o">-</span> exc<span class="tok-o">.</span>start <span class="tok-o">&gt;</span> <span class="tok-t">GRACE_MS</span> <span class="tok-o">&amp;&amp;</span> <span class="tok-o">!</span>alarmActive<span class="tok-o">)</span>
+        <span class="tok-f">raiseAlarm</span><span class="tok-o">(</span><span class="tok-s">"temp excursion"</span><span class="tok-o">,</span> tRep<span class="tok-o">,</span> exc<span class="tok-o">.</span>peak<span class="tok-o">);</span>
+    <span class="tok-o">}</span> <span class="tok-k">else</span> <span class="tok-k">if</span> <span class="tok-o">(</span>exc<span class="tok-o">.</span>active<span class="tok-o">)</span> <span class="tok-o">{</span>
+      <span class="tok-k">char</span> m<span class="tok-o">[</span><span class="tok-n">120</span><span class="tok-o">];</span>
+      <span class="tok-f">snprintf</span><span class="tok-o">(</span>m<span class="tok-o">,</span> <span class="tok-k">sizeof</span> m<span class="tok-o">,</span>
+        <span class="tok-s">"{\"exc_end\":1,\"peak\":%.2f,\"dur_s\":%lu}"</span><span class="tok-o">,</span>
+        exc<span class="tok-o">.</span>peak<span class="tok-o">,</span> <span class="tok-o">(</span><span class="tok-k">unsigned</span> <span class="tok-k">long</span><span class="tok-o">)((</span>now <span class="tok-o">-</span> exc<span class="tok-o">.</span>start<span class="tok-o">)/</span><span class="tok-n">1000</span><span class="tok-o">));</span>
+      mqtt<span class="tok-o">.</span><span class="tok-f">publish</span><span class="tok-o">(</span><span class="tok-s">"cold/room1/excursion"</span><span class="tok-o">,</span> m<span class="tok-o">);</span>
+      exc<span class="tok-o">.</span>active <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span> exc<span class="tok-o">.</span>peak <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">99</span><span class="tok-o">;</span>
+      <span class="tok-k">if</span> <span class="tok-o">(!</span><span class="tok-f">doorAlarmActive</span><span class="tok-o">())</span> <span class="tok-o">{</span> <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_ALARM</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span> alarmActive <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+    <span class="tok-o">}</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>doorOpenedAt <span class="tok-o">&amp;&amp;</span> now <span class="tok-o">-</span> doorOpenedAt <span class="tok-o">&gt;</span> <span class="tok-t">DOOR_MS</span><span class="tok-o">)</span>
+    <span class="tok-f">raiseAlarm</span><span class="tok-o">(</span><span class="tok-s">"door open too long"</span><span class="tok-o">,</span> <span class="tok-o">(</span>now <span class="tok-o">-</span> doorOpenedAt<span class="tok-o">)/</span><span class="tok-n">1000.0</span>f<span class="tok-o">,</span> <span class="tok-n">0</span><span class="tok-o">);</span>
+
+  <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">1000</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">bool</span> <span class="tok-f">doorAlarmActive</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">return</span> doorOpenedAt <span class="tok-o">&amp;&amp;</span> <span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> doorOpenedAt <span class="tok-o">&gt;</span> <span class="tok-t">DOOR_MS</span><span class="tok-o">;</span>
+<span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (145 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">void logLine(</span><span class="txt">Every record is appended — never overwritten — with an incrementing sequence number, so a deleted or altered line breaks the sequence and is detectable on audit.</span></div><div><span class="ref">if (z[i] &gt; tRep) tRep = z[i]</span><span class="txt">The warmest of the four zones represents the room's risk; compliance is judged against the hottest spot the product could be sitting in, not an average that hides it.</span></div><div><span class="ref">logLine(t, z, rh, doorOpen);  // append-only, always</span><span class="txt">Logging happens whether or not the network is up, so a power cut or outage — exactly when incidents happen — never leaves a gap in the local record.</span></div><div><span class="ref">raiseAlarm("door open too long"</span><span class="txt">The commonest real-world cause of an excursion, a propped or forgotten door, is alarmed proactively before the room even breaches its limit.</span></div><div><span class="ref">mqtt.publish("cold/room1/alarm"</span><span class="txt">Alarms are published to a topic the server watches for escalation, so an unacknowledged 2 a.m. failure can be pushed onward to SMS or a call.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Set T_LIMIT (and, if needed, a low limit for frozen goods) to the product's safe band, and the excursion grace period to its tolerance.</li><li>Map each DS18B20 address to its zone name so the log and alarms are human-readable.</li><li>Set the door-open alarm time and the escalation policy (who is notified, and after how long unacknowledged).</li><li>Configure the cloud endpoint and the offline-backlog sync so outage records are uploaded on reconnect.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Probe agreement</h4><p>Before installing, bundle all probes in an ice-water bath (0 °C) and a known reference; record and correct any per-probe offset so zone comparisons are fair.</p></li><li><h4>Clock accuracy</h4><p>Sync the RTC to NTP and confirm it holds time on the coin cell through a power-off. Compliance timestamps must be right.</p></li><li><h4>Excursion timing</h4><p>Verify with a controlled warm-up that an excursion opens at the limit, the grace period behaves, and the logged duration/peak match reality.</p></li></ol></section>
+
+<section id="connectivity" aria-labelledby="h-connectivity"><h2 id="h-connectivity">Network Architecture &amp; Connectivity</h2>
+<div class="diagram-scroll"><figure class="diagram diagram-network">
+  <svg viewBox="0 0 760 232" role="img" aria-labelledby="td295 sd295" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td295">Cold Storage Monitor — network topology</title><desc id="sd295">Path taken by telemetry from field node to end user.</desc>
+    <defs>
+    <marker id="ar-d295" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d295" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d295" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d295" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="100" y="26" text-anchor="middle">Edge nodes</text><text class="dg-col" x="321" y="26" text-anchor="middle">Gateway</text><text class="dg-col" x="543" y="26" text-anchor="middle">Cloud</text><text class="dg-col" x="769" y="26" text-anchor="middle">Clients</text><rect x="16" y="52" width="168" height="52" rx="11"
+        fill="url(#gb-d295)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="74" text-anchor="middle"><tspan x="100" y="74.0">Room monitor</tspan></text><text class="dg-s" x="100" y="92" text-anchor="middle">ESP32 + SD</text><path d="M184 78 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d295)"/><rect x="16" y="118" width="168" height="52" rx="11"
+        fill="url(#gb-d295)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="140" text-anchor="middle"><tspan x="100" y="140.0">Other rooms</tspan></text><text class="dg-s" x="100" y="158" text-anchor="middle">more nodes</text><path d="M184 144 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d295)"/><text class="dg-e" x="215" y="46" text-anchor="middle">Wi-Fi 2.4 GHz</text><rect x="246" y="92" width="150" height="60" rx="11"
+        fill="url(#ga-d295)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="321" y="114" text-anchor="middle"><tspan x="321" y="114.0">Router</tspan></text><text class="dg-s" x="321" y="132" text-anchor="middle">or cellular backup</text><path d="M396 122 H460" stroke="var(--dg-accent)" stroke-width="1.6" fill="none" marker-end="url(#arh-d295)"/><text class="dg-e" x="432" y="112" text-anchor="middle">MQTT/TLS 8883</text><rect x="468" y="88" width="150" height="68" rx="11"
+        fill="url(#ga-d295)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="543" y="110" text-anchor="middle"><tspan x="543" y="104.0">Broker + compliance</tspan><tspan x="543" y="116.0">store</tspan></text><text class="dg-s" x="543" y="128" text-anchor="middle">immutable mirror</text><rect x="690" y="52" width="158" height="52" rx="11"
+        fill="url(#gb-d295)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="74" text-anchor="middle"><tspan x="769" y="74.0">Dashboard</tspan></text><text class="dg-s" x="769" y="92" text-anchor="middle">live + audit</text><path d="M618 122 C 652 122, 656 78, 682 78"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d295)"/><rect x="690" y="118" width="158" height="52" rx="11"
+        fill="url(#gb-d295)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="140" text-anchor="middle"><tspan x="769" y="140.0">Phone/SMS</tspan></text><text class="dg-s" x="769" y="158" text-anchor="middle">escalation</text><path d="M618 122 C 652 122, 656 144, 682 144"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d295)"/>
+  </svg>
+  <figcaption>Cold Storage Monitor — network topology</figcaption>
+</figure></div>
+<h3>Communication protocol</h3><p>Live readings publish once a minute; alarms and excursion start/end publish immediately. The local append-only SD log is the authoritative record, and the cloud is a mirror plus escalation engine — so losing the network degrades visibility, not the evidence.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Topic / endpoint</th><th scope="col">Direction</th><th scope="col">Payload</th></tr></thead>
+    <tbody><tr><td><code>cold/room1/live</code></td><td>node → broker</td><td>per-zone temps, RH, door, MKT</td></tr><tr><td><code>cold/room1/alarm</code></td><td>node → broker</td><td>excursion / door alarm for escalation</td></tr><tr><td><code>cold/room1/excursion</code></td><td>node → broker</td><td>excursion end: duration + peak</td></tr></tbody>
+  </table></div><p class="tbl-caption">Message contract between the device and the broker.</p>
+<h3>Cloud platform configuration</h3><p>A broker feeds an immutable compliance store that mirrors every record and drives escalation — if an alarm is not acknowledged within a set time it is pushed onward to SMS or a phone call, so a failure reaches a human even at night.</p>
+
+<h3>Dashboard setup</h3><p>Live per-zone tiles, an MKT readout, and a timeline of door events and excursions; an export button produces the timestamped audit trail buyers and inspectors require.</p>
+<h3>Mobile app integration</h3><p>Escalating push/SMS alerts for excursions and door-open-too-long, with acknowledgement so the system knows a human is handling it.</p>
+<h3>Security considerations</h3><ul class="check"><li>Use TLS to the broker and an append-only, sequence-numbered log so records cannot be silently altered.</li><li>Mirror off-device so tampering with the local unit does not erase the evidence.</li><li>Authenticate acknowledgements so only authorised staff can silence an alarm.</li></ul></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Warm the door-zone probe above T_LIMIT briefly then recover</b></td><td>Excursion opens and closes; logged with duration and peak; no alarm if within grace</td></tr><tr><td><b>Hold above limit past the grace period</b></td><td>Alarm fires locally and publishes for escalation</td></tr><tr><td><b>Open the door and leave it open</b></td><td>Door-open alarm after the threshold; opening logged</td></tr><tr><td><b>Pull mains power</b></td><td>Battery keeps the device logging locally with correct timestamps</td></tr><tr><td><b>Drop the network during an excursion</b></td><td>Local log continues; records sync to cloud on reconnect</td></tr><tr><td><b>Attempt to edit a past log line</b></td><td>Sequence/hash break makes the tampering detectable on audit</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>The dashboard shows each zone's live temperature, the room humidity, door state, the current MKT, and a timeline of excursions and door events; an export produces the audit trail.</p>
+<div class="codeblock tall" data-file="coldlog.csv">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">coldlog.csv</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy coldlog.csv to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="coldlog.csv" type="button" aria-label="Download coldlog.csv">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>seq,timestamp,door,corner,return,product,rh,door_open,mkt,exc
+10432,2026-07-27 02:14:00,3.6,3.9,2.1,3.2,86,0,3.1,0
+10433,2026-07-27 02:15:00,5.8,4.2,2.2,3.4,88,1,3.2,1
+10434,2026-07-27 02:16:00,6.9,4.6,2.3,3.6,90,1,3.4,1
+... excursion: start 02:15, peak 6.9C, cause: door open 3m</code></pre>
+  
+</div>
+
+<p>The record shows a door left open at 02:15 driving the door-zone above the 4 °C limit — the door event, the excursion and the rising MKT all captured and linked.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Grafana%20dashboard.png?width=900" alt="A Grafana time-series dashboard" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td296" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td296">A dashboard turns the compliance log into a live view and an exportable audit trail.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="30" y="34" width="340" height="192" rx="10" fill="var(--dg-box-b)" stroke="var(--dg-stroke)"/>
+    <rect x="30" y="34" width="340" height="28" rx="10" fill="var(--dg-chip)"/>
+    <circle cx="48" cy="48" r="4" fill="#e05f5f"/><circle cx="62" cy="48" r="4" fill="#e0b45f"/><circle cx="76" cy="48" r="4" fill="#5fe08a"/>
+    <rect x="44" y="76" width="140" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="58" y="98" font-size="10" fill="var(--dg-muted)">TEMPERATURE</text>
+    <text x="58" y="126" font-size="24" fill="var(--dg-accent)" font-family="monospace">27.4°</text>
+    <rect x="198" y="76" width="158" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="210,126 236,110 262,118 288,94 314,104 340,86" fill="none" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="44" y="152" width="312" height="60" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="56,196 86,180 116,188 146,160 176,172 206,146 236,158 266,138 296,150 340,128"
+      fill="none" stroke="var(--dg-accent)" stroke-width="2" opacity=".8"/>
+  </svg>
+  <figcaption>A dashboard turns the compliance log into a live view and an exportable audit trail.</figcaption>
+</figure></template>
+  <figcaption>A dashboard turns the compliance log into a live view and an exportable audit trail.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Grafana_dashboard.png" rel="noopener nofollow" target="_blank">Wikimedia Commons — Grafana dashboard.png</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Log looks fine but product spoiled</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Probes clustered at the cold spot, missing the warm zones</p>
+        <p><strong>Fix.</strong> Relocate probes to the door, top corner and product; judge compliance on the warmest zone</p></div></details><details class="expand"><summary>Timestamps wrong after a power cut</summary><div class="inner">
+        <p><strong>Likely cause.</strong> RTC coin cell missing/dead</p>
+        <p><strong>Fix.</strong> Fit a fresh coin cell; re-sync from NTP; verify time survives power-off</p></div></details><details class="expand"><summary>Frequent nuisance excursion alarms</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Grace period too short, or normal defrost cycles</p>
+        <p><strong>Fix.</strong> Lengthen the grace period; mask known defrost windows; ensure the limit matches the product</p></div></details><details class="expand"><summary>Gaps in the record</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Device stopped logging during an outage</p>
+        <p><strong>Fix.</strong> Verify the backup battery carries the logger; confirm offline logging to SD is enabled</p></div></details><details class="expand"><summary>Humidity reads saturated</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Condensation on the SHT31 in the cold, humid air</p>
+        <p><strong>Fix.</strong> Mount the sensor to shed condensation; allow warm-up; keep electronics outside the room</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details><details class="expand"><summary>An I²C device is not detected</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong address, missing pull-ups, swapped SDA/SCL, or a bus too long for the pull-up value.</p>
+        <p><strong>Fix.</strong> Run an I²C scanner sketch first — it should print the device address. Most breakout boards include 4.7 kΩ pull-ups, but if you have chained four of them the parallel resistance is too low; remove the pull-ups from all but one board. Keep the bus under 30 cm at 100 kHz.</p></div></details><details class="expand"><summary>Wi-Fi connects but MQTT never does (state -2)</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong broker address or port, a firewall in the way, or the broker requiring credentials the sketch is not sending.</p>
+        <p><strong>Fix.</strong> Test from a laptop on the same network first: <code>mosquitto_sub -h &lt;broker&gt; -t "#" -v</code>. If that works, the problem is on the device — check the IP literal, port 1883 (or 8883 for TLS), and that <code>client.setServer()</code> runs before <code>connect()</code>. PubSubClient state codes are documented in its header.</p></div></details><details class="expand"><summary>Readings arrive for a while and then stop</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The Wi-Fi or MQTT session dropped and the sketch never reconnects, or the broker dropped the client on keep-alive timeout.</p>
+        <p><strong>Fix.</strong> Never assume the link stays up. Check <code>WiFi.status()</code> and <code>client.connected()</code> at the top of every loop and reconnect with exponential backoff. Add a watchdog so a wedged network stack reboots the device instead of going silent.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>A one-minute log cadence is ample for a slow thermal mass; publish alarms and excursion edges immediately.</li><li>Keep the SD log append-only and rotate by day/month rather than rewriting, to stay fast and tamper-evident.</li><li>Compute MKT incrementally (running sum) so the effective temperature is always available without reprocessing history.</li><li>Ride outages on the battery and local SD; sync the backlog in batches on reconnect rather than blocking on the network.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Batch several samples into one MQTT publish. Radio time, not CPU time, dominates the energy budget.</li><li>Set the MQTT keep-alive to a value that matches your reporting interval so the broker does not churn reconnections.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>The monitor is an independent watchdog; it does not control the refrigeration and must not be relied on to keep the room cold.</li><li>For regulated cold chains (e.g. pharma), validate probe placement, calibration and MKT settings against the applicable standard.</li><li>Keep electronics and the lithium backup outside the cold, humid room to prevent condensation faults.</li><li>Test the alarm and escalation path regularly — an alarm no one receives is no protection.</li><li>Lithium cells vent and burn when abused. Only use protected cells or a proper BMS, never charge below 0 °C, and never leave a charging pack unattended on a wooden desk.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Periodically re-verify probe calibration in an ice bath and against a reference.</li><li>Replace the RTC coin cell on schedule so timestamps never drift.</li><li>Check the door reed switch and magnet alignment; a mis-sensed door corrupts the event log.</li><li>Confirm the cloud mirror and backlog sync are current, and export/archive the audit trail per your retention policy.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Rotate the microSD card annually and keep an image of the working system. Cards used as loggers wear out silently.</li><li>Log pack voltage. When resting voltage after a full charge drops below about 4.0 V, the cell is near end of life — replace it.</li><li>Keep the broker and dashboard containers patched, and rotate device credentials at least once a year.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add power-quality logging so a compressor failure is distinguished from a mains outage.</li><li>Predict compressor decline from slowly rising pull-down times and warn before it fails.</li><li>Add CO₂/ethylene sensing for controlled-atmosphere produce storage.</li><li>Sign each record cryptographically for a stronger, court-defensible audit trail.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add over-the-air firmware updates so you never have to physically reach a deployed node again.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why several probes instead of one?</summary><div class="inner"><p>A cold room varies from the cold evaporator to the warm door and corners. One probe reads the best spot and hides excursions; several placed at the warm, variable spots represent what the product actually experienced.</p></div></details><details class="expand"><summary>What is mean kinetic temperature and why not just an average?</summary><div class="inner"><p>MKT weights warm periods exponentially, because spoilage accelerates with temperature. A brief spike affects product more than a plain average implies, and MKT captures that — which is why regulated cold chains use it.</p></div></details><details class="expand"><summary>What makes the log "tamper-evident"?</summary><div class="inner"><p>It is append-only with sequence numbers (optionally hashes) and mirrored to the cloud. You can add readings but not silently rewrite them, and deleting a line breaks the sequence.</p></div></details><details class="expand"><summary>Does it keep working during a power cut?</summary><div class="inner"><p>Yes. A backup battery keeps it logging locally with correct timestamps, and it syncs the backlog to the cloud when power and network return — outages are exactly when the record matters most.</p></div></details><details class="expand"><summary>Can it control the fridge to fix an excursion?</summary><div class="inner"><p>By design it is a watchdog, not the control system. It alarms and escalates so a person or the refrigeration's own controls act; keeping it independent is what lets it honestly judge the room.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Mean_kinetic_temperature" rel="noopener nofollow" target="_blank">Mean kinetic temperature — definition and use</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Cold_chain" rel="noopener nofollow" target="_blank">Cold chain and temperature monitoring — overview</a><span class="src">Reference</span></li><li><a href="https://www.who.int/" rel="noopener nofollow" target="_blank">WHO — temperature monitoring of vaccine cold chain</a><span class="src">WHO</span></li><li><a href="https://www.analog.com/en/products/ds18b20.html" rel="noopener nofollow" target="_blank">DS18B20 1-Wire digital thermometer (datasheet)</a><span class="src">Analog Devices</span></li><li><a href="https://www.analog.com/en/products/ds3231.html" rel="noopener nofollow" target="_blank">DS3231 extremely accurate RTC (datasheet)</a><span class="src">Analog Devices</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="smart-pest-trap-counter.html"><span class="dir">← Previous project</span><span class="ttl">Smart Pest Trap Counter</span></a>
+        <a class="next" href="aquaponics-controller.html"><span class="dir">Next project →</span><span class="ttl">Aquaponics Controller</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Intermediate</b></div>
+        <div class="rail-stat"><span>Time</span><b>10–16 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>13</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹3,200 – ₹4,400</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="smart-greenhouse-controller.html">Smart Greenhouse Controller</a></li><li><a href="soil-npk-sensor-node.html">Soil NPK Sensor Node</a></li><li><a href="automated-drip-irrigation.html">Automated Drip Irrigation</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="smart-greenhouse-controller.html">
+        <span class="rc">Agriculture</span>
+        <h4>Smart Greenhouse Controller</h4>
+        <p>Automates climate, ventilation and irrigation for optimal plant growth.</p></a><a class="relcard" href="soil-npk-sensor-node.html">
+        <span class="rc">Agriculture</span>
+        <h4>Soil NPK Sensor Node</h4>
+        <p>Measures nitrogen, phosphorus and potassium to guide precise fertilizing.</p></a><a class="relcard" href="automated-drip-irrigation.html">
+        <span class="rc">Agriculture</span>
+        <h4>Automated Drip Irrigation</h4>
+        <p>Delivers water on crop-stage schedules driven by live soil readings.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Cold Storage Monitor</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
