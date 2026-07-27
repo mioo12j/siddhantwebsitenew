@@ -225,7 +225,8 @@ html[data-theme="light"] .btn.solid{color:#fff}
 .rail-stat span{color:var(--fg-mute)}
 
 /* ── article body ─────────────────────────────────────────────── */
-.doc-body{min-width:0;max-width:var(--doc-max);padding-bottom:3rem}
+.doc-body{min-width:0;max-width:var(--doc-max);padding-bottom:3rem;overflow-wrap:break-word}
+.doc-body a:not(.btn){overflow-wrap:anywhere}
 .doc-body section{scroll-margin-top:88px;margin-bottom:2.9rem}
 .doc-body h2{font-family:var(--f-display);font-size:clamp(1.5rem,3vw,1.95rem);font-weight:700;
   letter-spacing:-.015em;line-height:1.2;margin:0 0 .5rem;padding-bottom:.6rem;
@@ -266,9 +267,13 @@ tbody tr:hover td{background:rgba(var(--acc-rgb),.045)}
 tbody td b,tbody td strong{color:var(--fg)}
 td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono);font-size:.82rem}
 .tbl-caption{font-size:.76rem;color:var(--fg-mute);margin:-.7rem 0 1.4rem;font-style:italic}
-code.inline,.doc-body p code,.doc-body li code,td code{font-family:var(--f-mono);font-size:.855em;
+code.inline,.doc-body p code,.doc-body li code,td code,.code-explain code,.callout code{
+  font-family:var(--f-mono);font-size:.855em;
   background:rgba(var(--acc-rgb),.11);color:var(--acc-light);padding:.13em .42em;border-radius:5px;
-  border:1px solid rgba(var(--acc-rgb),.17);white-space:nowrap}
+  border:1px solid rgba(var(--acc-rgb),.17);
+  /* Long identifiers must be able to break, or a single install command
+     pushes the whole page into horizontal scroll on a phone. */
+  white-space:normal;overflow-wrap:anywhere;word-break:break-word}
 html[data-theme="light"] code.inline,html[data-theme="light"] .doc-body p code,
 html[data-theme="light"] .doc-body li code,html[data-theme="light"] td code{color:#0a5f70}
 
