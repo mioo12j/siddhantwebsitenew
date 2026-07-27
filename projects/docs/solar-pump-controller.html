@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Solar Pump Controller — Circuit, Code &amp; Full Build Guide | Agriculture</title>
+  <meta name="description" content="Complete intermediate-level build guide for a Solar Pump Controller: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="solar pump controller, solar pump controller project, how to build solar pump controller, esp32 devkit v1 project, agriculture project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/solar-pump-controller.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/solar-pump-controller.html" />
+  <meta property="og:title" content="Solar Pump Controller — Circuit, Code &amp; Full Build Guide | Agriculture" />
+  <meta property="og:description" content="Complete intermediate-level build guide for a Solar Pump Controller: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Agriculture" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-27" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Solar Pump Controller — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete intermediate-level build guide for a Solar Pump Controller: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>☀️</text></svg>" />
+  <style>:root{--acc:#22d3ee;--acc-light:#67e8f9;--acc-rgb:34,211,238}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/solar-pump-controller.html#article","headline":"Solar Pump Controller — Complete Build Guide","name":"Solar Pump Controller","description":"Complete intermediate-level build guide for a Solar Pump Controller: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/solar-pump-controller.html","inLanguage":"en","articleSection":"Agriculture","keywords":"solar pump controller, solar pump controller project, how to build solar pump controller, esp32 devkit v1 project, agriculture project, circuit diagram, source code, tutorial","proficiencyLevel":"Intermediate","dependencies":"WiFi (ESP32 core), PubSubClient, ArduinoJson, Preferences (NVS), NTPClient / configTime","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-27","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/solar-pump-controller.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/solar-pump-controller.html#howto","name":"How to build a Solar Pump Controller","description":"Complete intermediate-level build guide for a Solar Pump Controller: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT14H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"3045"},"supply":[{"@type":"HowToSupply","name":"ESP32 DevKit V1 (ESP-WROOM-32)"},{"@type":"HowToSupply","name":"JSN-SR04T waterproof ultrasonic sensor"},{"@type":"HowToSupply","name":"ACS712 hall-effect current sensor (20 A)"},{"@type":"HowToSupply","name":"INA219 high-side DC current/power monitor"},{"@type":"HowToSupply","name":"5 V single-channel opto-isolated relay module"},{"@type":"HowToSupply","name":"LDR (GL5528 photoresistor) + 10 kΩ divider"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Calibrate the empty/full tank levels","text":"With the tank empty, record the ultrasonic distance; with it full, record it again. These two numbers define the fill-fraction scale for your specific tank."},{"@type":"HowToStep","position":2,"name":"Learn the healthy running current","text":"On a known-good, primed run, capture the steady running current a few seconds after start (past inrush). Store it as the baseline the dry-run test compares against."},{"@type":"HowToStep","position":3,"name":"Implement the protective state machine","text":"Move between IDLE, STARTING, RUNNING, and COOLDOWN. Enter STARTING only when sun and tank demand agree; require healthy current to reach RUNNING; drop to COOLDOWN on a dry-run trip and refuse to restart until the timer expires."},{"@type":"HowToStep","position":4,"name":"Log and report","text":"Accumulate run-time, estimate water delivered, count dry-run trips, and publish status plus any alerts to the phone/dashboard each cycle and on every state change."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Solar Pump Controller","item":"https://siddhantkumar.in/projects/docs/solar-pump-controller.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/solar-pump-controller.html#faq","mainEntity":[{"@type":"Question","name":"How does it detect a dry run without a special sensor?","acceptedAnswer":{"@type":"Answer","text":"A pump moving water draws its rated current; a pump spinning in air draws much less. The controller learns the healthy current, then trips when the current collapses below a fraction of it."}},{"@type":"Question","name":"What if the software crashes with the pump on?","acceptedAnswer":{"@type":"Answer","text":"The float switch is wired in hardware series with the contactor coil, so at tank-full the pump drops out no matter what the software does. That is the whole point of the backstop."}},{"@type":"Question","name":"Why check sunlight before starting?","acceptedAnswer":{"@type":"Answer","text":"Starting a solar pump on weak light can make it strain and stall without moving water, which stresses the motor. Requiring a minimum sun level means every start is one the array can actually sustain."}},{"@type":"Question","name":"Can it run a mains or 48 V DC pump?","acceptedAnswer":{"@type":"Answer","text":"Yes — the controller drives a contactor sized for your pump, so the same control logic works for AC or DC pumps as long as the contactor and current sensor match the pump."}},{"@type":"Question","name":"Does it measure how much water I pumped?","acceptedAnswer":{"@type":"Answer","text":"It estimates volume from run-time and rated flow out of the box; add a flow meter for a true measurement and a blockage alarm."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#agriculture">Agriculture</a><span class="sep">/</span>
+        <span aria-current="page">Solar Pump Controller</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 034 · Agriculture</span>
+          <h1>Solar Pump Controller<span class="grad">.</span></h1>
+          <p class="tagline">Runs a solar borewell pump only when there is enough sun and the tank actually needs water, and protects it from the dry-run that kills submersible pumps.</p>
+          <div class="hero-chips">
+            <span class="chip lv-intermediate">Intermediate</span>
+            <span class="chip">10–16 hours</span>
+            <span class="chip neutral">35 min read</span>
+            <span class="chip neutral">Solar</span><span class="chip neutral">Pump</span><span class="chip neutral">Automation</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td270" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td270">Solar Pump Controller — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Solar Pump Controller — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Intermediate</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>10–16 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹3,000 – ₹4,500</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32 DevKit V1 (ESP-WROOM-32)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Agriculture</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>27 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Runs a solar borewell pump only when there is enough sun and the tank actually needs water, and protects it from the dry-run that kills submersible pumps.</p>
+<p>A solar borewell pump is a wonderful thing until the day it runs dry. When the water level in the well drops below the pump intake — which happens on hot afternoons exactly when the sun is strongest and the pump is running hardest — a submersible pump keeps spinning with no water to cool or lubricate it. Within minutes the seals cook and the motor burns out, and a farmer who bought a pump to save money on diesel is suddenly facing its full replacement cost. This controller sits between the solar array and the pump and makes the pump smart: it runs when the sun is strong <i>and</i> the tank needs filling, and it shuts down the instant it detects a dry run.</p>
+<p>The logic is deliberately simple and robust because it protects an expensive asset in a place with no technician nearby. An ultrasonic sensor watches the tank level so the pump stops when the tank is full and starts when it draws down. A current sensor on the pump feed watches the motor: a pump that suddenly draws much less current than normal is almost always running dry or has lost prime, and that signature triggers an immediate protective stop and a cool-down timer. A light sensor (or the panel's own voltage) tells the controller whether there is enough sun to start at all, so it never tries to start a pump on a cloudy morning and stall it.</p>
+<p>Everything is logged and reported so the farmer can see, from a phone, how much the pump ran, how many dry-run events were caught, and whether the tank is keeping up with demand. The controller turns a bare solar pump into a managed irrigation resource — one that protects itself, waters on its own, and tells you when something is wrong before the crop or the pump suffers.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Solar%20panel.jpg?width=900" alt="A photovoltaic solar panel in sunlight" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td262" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td262">A solar array feeds the borewell pump; the controller decides when it is worth starting and protects it while it runs.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <g transform="skewX(-12)">
+      <rect x="110" y="60" width="200" height="130" rx="6" fill="#16385e" stroke="#0d2340" stroke-width="2"/>
+      <rect x="118" y="68" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="182" y="68" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="246" y="68" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="118" y="99" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="182" y="99" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="246" y="99" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="118" y="130" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="182" y="130" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="246" y="130" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="118" y="161" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="182" y="161" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/><rect x="246" y="161" width="58" height="26" rx="2" fill="#1f4f86" stroke="#2f6aa8"/>
+    </g>
+    <rect x="150" y="192" width="120" height="8" rx="3" fill="#4a525e"/>
+    <rect x="196" y="198" width="10" height="28" fill="#4a525e"/>
+    <circle cx="330" cy="60" r="20" fill="#e8b64a" opacity=".85"/>
+  </svg>
+  <figcaption>A solar array feeds the borewell pump; the controller decides when it is worth starting and protects it while it runs.</figcaption>
+</figure></template>
+  <figcaption>A solar array feeds the borewell pump; the controller decides when it is worth starting and protects it while it runs.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Solar_panel.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Solar panel.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Starts the pump only when solar power is sufficient and the tank needs water</li><li>Stops automatically when the tank is full (ultrasonic level)</li><li>Detects a dry run from the pump's current signature and stops to protect the motor</li><li>Enforces a cool-down before retrying after a dry-run trip</li><li>Logs run-time, water delivered (estimated) and every protective event</li><li>Reports status and alerts to a phone over Wi-Fi or LoRa</li><li>Falls back to a hardware float switch so the tank never overflows even if software fails</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Solar borewell irrigation</b></td><td>The core case: a submersible solar pump filling an overhead or ground tank for drip/flood irrigation without diesel or grid power.</td></tr><tr><td><b>Village drinking-water supply</b></td><td>A community solar pump filling a storage tank, where an unattended dry-run burnout means days without water and a costly repair.</td></tr><tr><td><b>Livestock watering</b></td><td>Keeping troughs and tanks topped up automatically on remote grazing land far from mains power.</td></tr><tr><td><b>Small horticulture / polyhouse</b></td><td>Managed filling of a header tank that feeds fertigation, where consistent supply and pump longevity both matter.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Dry-run protection by motor-current signature — saves the pump's life</li><li>Sun-aware starting so the pump never stalls on weak light</li><li>Tank-level control with a hardware float-switch backstop</li><li>Cool-down and retry logic instead of hammering a failing pump</li><li>Run-time and water-delivered logging for irrigation planning</li><li>Contactor drive so the low-voltage controller safely switches a mains/48 V pump</li><li>Phone alerts for dry-run, tank-full and no-sun conditions</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Intermediate</td></tr><tr><td><b>Estimated completion time</b></td><td>10–16 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹3,000 – ₹4,500</td></tr><tr><td><b>Primary discipline</b></td><td>Agriculture</td></tr><tr><td><b>Reference platform</b></td><td>ESP32 DevKit V1 (ESP-WROOM-32)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Reading an ultrasonic level sensor and rejecting spurious echoes</li><li>Non-invasive current sensing with a Hall-effect sensor (ACS712 / clamp)</li><li>Driving a contactor from a microcontroller to switch a high-power pump safely</li><li>Designing protective state machines (dry-run trip, cool-down, retry)</li><li>Solar power basics: knowing when there is enough light to start a load</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>The controller must never switch pump-level power directly — it drives a correctly-rated contactor or motor starter that switches the pump.</p>
+<p>A hardware float switch in series with the contactor coil is a required safety backstop, independent of any software.</p>
+<p>Mains/48 V wiring and pump electricals should be done or checked by a qualified electrician. This project builds the low-voltage control brain, not the power wiring.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b><br/><span style="font-size:.82em;opacity:.78">Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</span></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>JSN-SR04T waterproof ultrasonic sensor</b><br/><span style="font-size:.82em;opacity:.78">The 25 cm blind zone matters — mount it above the maximum expected water level.</span></td><td>25–450 cm, ±1 cm, IP67 sealed transducer, 45° beam</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>ACS712 hall-effect current sensor (20 A)</b><br/><span style="font-size:.82em;opacity:.78">Zero-offset drifts with temperature — re-zero at boot with no load.</span></td><td>±20 A, 100 mV/A, 80 kHz bandwidth, 1.2 mΩ internal resistance, 2.1 kV isolation</td><td class="num">1</td><td class="num">₹180</td></tr><tr><td><b>INA219 high-side DC current/power monitor</b><br/><span style="font-size:.82em;opacity:.78">Reports bus voltage, shunt voltage, current and power directly — no maths needed.</span></td><td>0–26 V bus, ±3.2 A with 0.1 Ω shunt, 12-bit, ±0.5 % gain error</td><td class="num">1</td><td class="num">₹260</td></tr><tr><td><b>5 V single-channel opto-isolated relay module</b><br/><span style="font-size:.82em;opacity:.78">Cut the JD-VCC jumper and feed the coil separately for true isolation.</span></td><td>SPDT contacts rated 10 A @ 250 VAC / 10 A @ 30 VDC, opto-isolated input</td><td class="num">1</td><td class="num">₹90</td></tr><tr><td><b>LDR (GL5528 photoresistor) + 10 kΩ divider</b><br/><span style="font-size:.82em;opacity:.78">Cheap and rugged, but non-linear and unit-to-unit variation is large.</span></td><td>10–20 kΩ at 10 lx, 1 MΩ dark, peak response 540 nm</td><td class="num">1</td><td class="num">₹15</td></tr><tr><td><b>AC/DC contactor rated for the pump</b><br/><span style="font-size:.82em;opacity:.78">Choose AC or DC coil to match your control supply</span></td><td>Coil driven by the relay; contacts rated ≥ pump full-load current with margin</td><td class="num">1</td><td class="num">₹650</td></tr><tr><td><b>Float switch (backstop)</b><br/><span style="font-size:.82em;opacity:.78">Independent hardware overflow protection</span></td><td>Normally-closed, wired in series with the contactor coil at tank-full</td><td class="num">1</td><td class="num">₹180</td></tr><tr><td><b>Waterproof enclosure + glands</b></td><td>IP65, room for contactor + controller, DIN or panel mount</td><td class="num">1</td><td class="num">₹550</td></tr><tr><td><b>Current transformer or ACS712 module</b><br/><span style="font-size:.82em;opacity:.78">ACS712 for DC/small AC; a CT for larger AC pumps</span></td><td>Sized to the pump current; ACS712-30A for small pumps, CT clamp for larger</td><td class="num">1</td><td class="num">₹220</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹3,045</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td>3.3 V logic / 5 V USB</td><td>UART, SPI, I²C, I²S, CAN, PWM</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>JSN-SR04T waterproof ultrasonic sensor</b></td><td>25–450 cm, ±1 cm, IP67 sealed transducer, 45° beam</td><td>5 V</td><td>Trigger/Echo or UART</td><td><a href="https://www.jsnsensor.com/" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>ACS712 hall-effect current sensor (20 A)</b></td><td>±20 A, 100 mV/A, 80 kHz bandwidth, 1.2 mΩ internal resistance, 2.1 kV isolation</td><td>5 V</td><td>Analogue</td><td><a href="https://www.allegromicro.com/-/media/files/datasheets/acs712-datasheet.ashx" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>INA219 high-side DC current/power monitor</b></td><td>0–26 V bus, ±3.2 A with 0.1 Ω shunt, 12-bit, ±0.5 % gain error</td><td>3–5.5 V</td><td>I²C (0x40–0x4F)</td><td><a href="https://www.ti.com/lit/ds/symlink/ina219.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>5 V single-channel opto-isolated relay module</b></td><td>SPDT contacts rated 10 A @ 250 VAC / 10 A @ 30 VDC, opto-isolated input</td><td>5 V coil</td><td>Digital (active-low)</td><td><a href="https://components101.com/switches/5v-single-channel-relay-module-pinout-features-applications-working-datasheet" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>LDR (GL5528 photoresistor) + 10 kΩ divider</b></td><td>10–20 kΩ at 10 lx, 1 MΩ dark, peak response 540 nm</td><td>any (passive)</td><td>Analogue divider</td><td><a href="https://cdn-shop.adafruit.com/datasheets/GL5537.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32 DevKit V1 (ESP-WROOM-32)</td><td>3.3 V logic / 5 V USB</td><td class="num">160</td><td>Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</td></tr><tr><td>JSN-SR04T waterproof ultrasonic sensor</td><td>5 V</td><td class="num">30</td><td>The 25 cm blind zone matters — mount it above the maximum expected water level.</td></tr><tr><td>ACS712 hall-effect current sensor (20 A)</td><td>5 V</td><td class="num">10</td><td>Zero-offset drifts with temperature — re-zero at boot with no load.</td></tr><tr><td>INA219 high-side DC current/power monitor</td><td>3–5.5 V</td><td class="num">1</td><td>Reports bus voltage, shunt voltage, current and power directly — no maths needed.</td></tr><tr><td>5 V single-channel opto-isolated relay module</td><td>5 V coil</td><td class="num">70</td><td>Cut the JD-VCC jumper and feed the coil separately for true isolation.</td></tr><tr><td>LDR (GL5528 photoresistor) + 10 kΩ divider</td><td>any (passive)</td><td class="num">0.3</td><td>Cheap and rugged, but non-linear and unit-to-unit variation is large.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>271.3 mA</b>. With a 1.5× design margin the supply should deliver at least <b>500 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x with the ESP32 board package 3.x (or PlatformIO on VS Code)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>WiFi (ESP32 core)</b> <span style="opacity:.7">bundled</span></td><td>Station/AP connection management for the ESP32.</td><td><code>Bundled with the ESP32 Arduino core</code></td></tr><tr><td><b>PubSubClient</b> <span style="opacity:.7">2.8</span></td><td>Lightweight MQTT 3.1.1 client for constrained devices.</td><td><code>Library Manager → "PubSubClient" by Nick O'Leary</code></td></tr><tr><td><b>ArduinoJson</b> <span style="opacity:.7">7.x</span></td><td>Zero-allocation JSON serialisation and parsing.</td><td><code>Library Manager → "ArduinoJson" by Benoit Blanchon</code></td></tr><tr><td><b>Preferences (NVS)</b> <span style="opacity:.7">bundled</span></td><td>Wear-levelled key/value storage in ESP32 flash for settings.</td><td><code>Bundled with the ESP32 core</code></td></tr><tr><td><b>NTPClient / configTime</b> <span style="opacity:.7">bundled</span></td><td>Wall-clock time from an NTP server for timestamping.</td><td><code>Bundled (`configTime()` on ESP32)</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 310" role="img" aria-labelledby="td263 sd263" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td263">Solar Pump Controller — system block diagram</title><desc id="sd263">Functional block diagram of the Solar Pump Controller system.</desc>
+    <defs>
+    <marker id="ar-d263" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d263" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d263" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d263" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Sense</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d263)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Tank level</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">JSN-SR04T ultrasonic</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#ga-d263)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Pump current</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">ACS712 / CT</tspan></text><rect x="26" y="214" width="178" height="62" rx="12"
+          fill="url(#gb-d263)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="239" text-anchor="middle"><tspan x="115" y="239.0">Sun</tspan></text><text class="dg-s" x="115" y="258" text-anchor="middle"><tspan x="115" y="258.0">LDR / panel V</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Decide</text><rect x="266" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d263)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="119" text-anchor="middle"><tspan x="355" y="119.0">ESP32</tspan></text><text class="dg-s" x="355" y="138" text-anchor="middle"><tspan x="355" y="138.0">state machine</tspan></text><rect x="266" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d263)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="199" text-anchor="middle"><tspan x="355" y="199.0">Protect</tspan></text><text class="dg-s" x="355" y="218" text-anchor="middle"><tspan x="355" y="218.0">dry-run + cool-down</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Actuate</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d263)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Relay</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">coil driver</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d263)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Contactor</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">switches pump</tspan></text><rect x="506" y="214" width="178" height="62" rx="12"
+          fill="url(#gb-d263)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="239" text-anchor="middle"><tspan x="595" y="239.0">Float NC</tspan></text><text class="dg-s" x="595" y="258" text-anchor="middle"><tspan x="595" y="258.0">HW backstop</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Report</text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d263)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Wi-Fi/LoRa</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">status + alerts</tspan></text><path d="M208 165 C 235 165, 235 165, 258 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d263)"/><text class="dg-e" x="235" y="157" text-anchor="middle">right</text><path d="M448 165 C 475 165, 475 165, 498 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d263)"/><text class="dg-e" x="475" y="157" text-anchor="middle">right</text><path d="M688 165 C 715 165, 715 165, 738 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d263)"/><text class="dg-e" x="715" y="157" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Solar Pump Controller — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 316" role="img" aria-labelledby="td264 sd264" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td264">Solar Pump Controller — wiring schematic</title><desc id="sd264">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d264" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d264" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d264" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d264" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="220" rx="14"
+      fill="url(#ga-d264)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32 DevKit V1</tspan><tspan x="434" y="95.0">(ESP-WROOM-32)</tspan></text><text class="dg-s" x="434" y="266" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d264)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">JSN-SR04T</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO 26/25</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="104.0">Waterproof</tspan><tspan x="278" y="115.0">ultrasonic tank</tspan><tspan x="278" y="126.0">level</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d264)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">ACS712 / CT</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 34 (ADC)</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="161.5">Pump current</tspan><tspan x="278" y="172.5">signature</tspan></text><rect x="20" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d264)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="205" text-anchor="middle"><tspan x="115" y="205.0">INA219</tspan></text><path d="M210 204 C 278 204, 278 204, 346 204" stroke="#4fb0e0" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="204" r="3.2" fill="#4fb0e0"/><text class="dg-p" x="278" y="198" text-anchor="middle">GPIO 21/22</text><text class="dg-s" x="278" y="219" text-anchor="middle"><tspan x="278" y="208.0">Panel</tspan><tspan x="278" y="219.0">voltage/current</tspan><tspan x="278" y="230.0">(I²C)</tspan></text><rect x="20" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d264)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="257" text-anchor="middle"><tspan x="115" y="257.0">LDR / panel V</tspan></text><path d="M210 256 C 278 256, 278 256, 346 256" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="256" r="3.2" fill="#5ec27a"/><text class="dg-p" x="278" y="250" text-anchor="middle">GPIO 35 (ADC)</text><text class="dg-s" x="278" y="271" text-anchor="middle"><tspan x="278" y="265.5">Sunlight-sufficient</tspan><tspan x="278" y="276.5">signal</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d264)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Relay → contactor coil</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">GPIO 27</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="109.5">Pump on/off via</tspan><tspan x="590" y="120.5">contactor</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d264)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Float switch</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">In series with coil</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="161.5">Hardware tank-full</tspan><tspan x="590" y="172.5">backstop</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d264)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">Status LED/buzzer</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">GPIO 13</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="213.5">Local run / fault</tspan><tspan x="590" y="224.5">indicator</tspan></text><rect x="658" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d264)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="257" text-anchor="middle"><tspan x="753" y="257.0">Supply</tspan></text><path d="M658 256 C 590 256, 590 256, 522 256" stroke="#3cc7c0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="256" r="3.2" fill="#3cc7c0"/><text class="dg-p" x="590" y="250" text-anchor="middle">Buck from panel/battery</text><text class="dg-s" x="590" y="271" text-anchor="middle"><tspan x="590" y="271.0">Controller power</tspan></text>
+  </svg>
+  <figcaption>Solar Pump Controller — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>JSN-SR04T</b></td><td>TRIG/ECHO</td><td><code>GPIO 26/25</code></td><td>Waterproof ultrasonic tank level</td></tr><tr><td><b>ACS712 / CT</b></td><td>OUT</td><td><code>GPIO 34 (ADC)</code></td><td>Pump current signature</td></tr><tr><td><b>INA219</b></td><td>SDA/SCL</td><td><code>GPIO 21/22</code></td><td>Panel voltage/current (I²C)</td></tr><tr><td><b>LDR / panel V</b></td><td>AOUT</td><td><code>GPIO 35 (ADC)</code></td><td>Sunlight-sufficient signal</td></tr><tr><td><b>Relay → contactor coil</b></td><td>IN</td><td><code>GPIO 27</code></td><td>Pump on/off via contactor</td></tr><tr><td><b>Float switch</b></td><td>NC</td><td><code>In series with coil</code></td><td>Hardware tank-full backstop</td></tr><tr><td><b>Status LED/buzzer</b></td><td>IN</td><td><code>GPIO 13</code></td><td>Local run / fault indicator</td></tr><tr><td><b>Supply</b></td><td>5V/3V3</td><td><code>Buck from panel/battery</code></td><td>Controller power</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>The ESP32 drives a relay; the relay switches the contactor coil; the contactor switches the pump. The microcontroller never carries pump current.</li><li>Wire the float switch (normally-closed at tank-full) in series with the contactor coil. When the tank is full the coil drops out regardless of software — this is the overflow backstop.</li><li>Mount the JSN-SR04T transducer looking down at the tank water from the top, clear of the inlet splash, so echoes are clean.</li><li>Place the current sensor on the pump feed conductor: ACS712 in-line for small DC/AC pumps, or a clip-on CT for larger AC pumps to avoid breaking the conductor.</li><li>Give the contactor coil a flyback/snubber appropriate to its coil type so switching transients do not reset the ESP32.</li><li>Keep the ultrasonic and current signal grounds tied to the ESP32 ADC ground reference for stable analogue readings.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ESP32%20Espressif%20ESP-WROOM-32%20Dev%20Board.jpg?width=900" alt="An ESP32 development board with the ESP-WROOM-32 module and USB connector" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td265" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td265">ESP32 module running the protective state machine — sun, tank and current in, contactor drive out.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="60" y="46" width="280" height="168" rx="10" fill="#1d4a3e" stroke="#123028" stroke-width="2"/>
+    <rect x="112" y="60" width="176" height="76" rx="5" fill="#c9ccd1" stroke="#9aa0a8"/>
+    <rect x="128" y="76" width="86" height="44" rx="3" fill="#2b2f36"/>
+    <text x="171" y="103" font-size="12" fill="#c9ccd1" text-anchor="middle" font-family="monospace">ESP32</text>
+    <path d="M228 78 h44 v10 h-44z M228 92 h44 v10 h-44z M228 106 h44 v10 h-44z" fill="#9aa0a8"/>
+    <rect x="164" y="150" width="72" height="34" rx="4" fill="#2b2f36"/>
+    <text x="200" y="171" font-size="9" fill="#7f8894" text-anchor="middle" font-family="monospace">USB</text>
+    <rect x="86" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <rect x="266" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <circle cx="70" cy="40" r="2.4" fill="#d8b04a"/><circle cx="88" cy="40" r="2.4" fill="#d8b04a"/><circle cx="106" cy="40" r="2.4" fill="#d8b04a"/><circle cx="124" cy="40" r="2.4" fill="#d8b04a"/><circle cx="142" cy="40" r="2.4" fill="#d8b04a"/><circle cx="160" cy="40" r="2.4" fill="#d8b04a"/><circle cx="178" cy="40" r="2.4" fill="#d8b04a"/><circle cx="196" cy="40" r="2.4" fill="#d8b04a"/><circle cx="214" cy="40" r="2.4" fill="#d8b04a"/><circle cx="232" cy="40" r="2.4" fill="#d8b04a"/><circle cx="250" cy="40" r="2.4" fill="#d8b04a"/><circle cx="268" cy="40" r="2.4" fill="#d8b04a"/><circle cx="286" cy="40" r="2.4" fill="#d8b04a"/><circle cx="304" cy="40" r="2.4" fill="#d8b04a"/><circle cx="322" cy="40" r="2.4" fill="#d8b04a"/><circle cx="70" cy="220" r="2.4" fill="#d8b04a"/><circle cx="88" cy="220" r="2.4" fill="#d8b04a"/><circle cx="106" cy="220" r="2.4" fill="#d8b04a"/><circle cx="124" cy="220" r="2.4" fill="#d8b04a"/><circle cx="142" cy="220" r="2.4" fill="#d8b04a"/><circle cx="160" cy="220" r="2.4" fill="#d8b04a"/><circle cx="178" cy="220" r="2.4" fill="#d8b04a"/><circle cx="196" cy="220" r="2.4" fill="#d8b04a"/><circle cx="214" cy="220" r="2.4" fill="#d8b04a"/><circle cx="232" cy="220" r="2.4" fill="#d8b04a"/><circle cx="250" cy="220" r="2.4" fill="#d8b04a"/><circle cx="268" cy="220" r="2.4" fill="#d8b04a"/><circle cx="286" cy="220" r="2.4" fill="#d8b04a"/><circle cx="304" cy="220" r="2.4" fill="#d8b04a"/><circle cx="322" cy="220" r="2.4" fill="#d8b04a"/>
+    <circle cx="330" cy="60" r="4" fill="#e03b3b"/><circle cx="330" cy="76" r="4" fill="#3be07a"/>
+  </svg>
+  <figcaption>ESP32 module running the protective state machine — sun, tank and current in, contactor drive out.</figcaption>
+</figure></template>
+  <figcaption>ESP32 module running the protective state machine — sun, tank and current in, contactor drive out.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — ESP32 Espressif ESP-WROOM-32 Dev Board.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 486" role="img" aria-labelledby="td266 sd266" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td266">Solar Pump Controller — architecture stack</title><desc id="sd266">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d266" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d266" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d266" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d266" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d266)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="72.0">ESP32 DevKit V1 (ESP-WROOM-32) · JSN-SR04T waterproof ultrasonic sensor ·</tspan><tspan x="48" y="84.0">ACS712 hall-effect current sensor (20 A)</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d266)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d266)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">wifi · pubsub · arduinojson · preferences</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d266)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d266)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d266)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d266)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Transport layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">Wi-Fi + MQTT (LoRa for remote wells) · TLS · retry and backoff</tspan></text><path d="M330 368 L330 381" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d266)"/><rect x="30" y="382" width="600" height="74" rx="12"
+        fill="url(#gb-d266)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="408">Presentation layer</text><text class="dg-s" x="48" y="430"><tspan x="48" y="430.0">dashboard · mobile notifications · historical charts</tspan></text>
+  </svg>
+  <figcaption>Solar Pump Controller — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>The controller is a protective state machine wrapped around three questions: is there enough sun to run, does the tank need water, and is the pump running healthily. Only when the first two are yes does it start; while running, the third question is checked continuously and can stop the pump in a fraction of a second.</p>
+<p>Dry-run detection rests on a simple fact of centrifugal pumps: a pump moving water does work and draws its rated current; a pump spinning in air (dry, or having lost prime) does far less work and draws noticeably <b>less</b> current. So the protective signal is not an over-current — it is an <i>under</i>-current relative to the pump's learned normal running draw. When current collapses below a fraction of the learned baseline while the pump should be pumping, the controller trips immediately. This catches dry runs, lost prime and a closed/blocked delivery before heat destroys the seals.</p>
+<p>The sun check prevents a different failure: starting a pump on marginal light. A solar pump fed by weak sun may draw current, strain, and stall without ever moving water — which itself looks like and can cause a dry-run-like stress. By requiring a minimum irradiance (from an LDR or, better, the panel's open-circuit/loaded voltage) before starting, the controller only ever commits to a start it can sustain.</p>
+<p>Tank-level control closes the outer loop. The ultrasonic sensor measures the distance to the water surface; knowing the tank geometry converts that to a fill fraction. The pump starts when the tank draws down past a low mark and stops at a high mark, with hysteresis so it does not chatter on and off around a single level. And underneath all of it sits the float switch — a piece of hardware that drops the contactor coil at tank-full no matter what the software believes, so the tank physically cannot overflow.</p>
+
+<h3>The maths behind it</h3><h4>Tank fill fraction from ultrasonic distance</h4><div class="codeblock tall" data-file="Tank fill fraction from ultrasonic distance">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Tank fill fraction from ultrasonic distance</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Tank fill fraction from ultrasonic distance to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Tank fill fraction from ultrasonic distance" type="button" aria-label="Download Tank fill fraction from ultrasonic distance">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Sensor measures distance d to the water surface.
+Tank of height H, sensor mounted at the top:
+
+  water_depth = H − d
+  fill_fraction = (H − d) / H          (clamp to [0,1])
+
+Start pump when fill_fraction &lt; LOW  (e.g. 0.30)
+Stop  pump when fill_fraction &gt; HIGH (e.g. 0.90)
+Hysteresis (HIGH−LOW) prevents on/off chatter.</code></pre>
+  
+</div>
+<h4>Dry-run detection by under-current</h4><div class="codeblock tall" data-file="Dry-run detection by under-current">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Dry-run detection by under-current</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Dry-run detection by under-current to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Dry-run detection by under-current" type="button" aria-label="Download Dry-run detection by under-current">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Learn the healthy running current I_run over the first
+seconds of a good run (pump primed, moving water).
+
+  dry if I_now &lt; k · I_run   (e.g. k = 0.6) for t &gt; t_debounce
+
+A pump in air does far less work → draws far less current.
+Debounce (t_debounce ~ 3–5 s) rejects the start-up inrush
+and momentary air slugs.</code></pre>
+  
+</div>
+<h4>Water delivered estimate</h4><div class="codeblock tall" data-file="Water delivered estimate">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Water delivered estimate</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Water delivered estimate to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Water delivered estimate" type="button" aria-label="Download Water delivered estimate">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Without a flow meter, estimate volume from run-time:
+
+  V ≈ Q_rated · t_run · η_head
+
+Q_rated is the pump's rated flow at the working head,
+t_run the accumulated run-time, η_head a derating for the
+actual head vs rated. A cheap way to log daily delivery;
+add a flow sensor later for true measurement.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 898" role="img" aria-labelledby="td267 sd267" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td267">Solar Pump Controller — firmware flowchart</title><desc id="sd267">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d267" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d267" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d267" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d267" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d267)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Idle</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d267)"/><path d="M210 116 L349 158 L210 200 L71 158 z"
+          fill="url(#ga-d267)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="158" text-anchor="middle"><tspan x="210" y="151.5">Enough sun and tank not</tspan><tspan x="210" y="164.5">full?</tspan></text><path d="M210 200 L210 224" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d267)"/><text class="dg-e" x="220" y="219">Start pump via contactor</text><path d="M349 158 H397 V114 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d267)"/><text class="dg-e" x="403" y="152">Stay idle</text><path d="M101 230 L335 230 L319 286 L85 286 z"
+          fill="url(#gb-d267)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="258" text-anchor="middle"><tspan x="210" y="258.0">Stay idle</tspan></text><path d="M210 286 L210 310" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d267)"/><rect x="85" y="316" width="250" height="56" rx="10"
+          fill="url(#gb-d267)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="344" text-anchor="middle"><tspan x="210" y="344.0">Start pump via contactor</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d267)"/><path d="M210 402 L349 444 L210 486 L71 444 z"
+          fill="url(#ga-d267)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="444" text-anchor="middle"><tspan x="210" y="444.0">Current normal (not dry)?</tspan></text><path d="M210 486 L210 510" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d267)"/><text class="dg-e" x="220" y="505">Run + fill tank</text><path d="M349 444 H397 V400 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d267)"/><text class="dg-e" x="403" y="438">Trip: stop + cool-down</text><rect x="85" y="516" width="250" height="56" rx="10"
+          fill="url(#gb-d267)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="544" text-anchor="middle"><tspan x="210" y="544.0">Run + fill tank</tspan></text><path d="M210 572 L210 596" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d267)"/><path d="M210 602 L349 644 L210 686 L71 644 z"
+          fill="url(#ga-d267)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="644" text-anchor="middle"><tspan x="210" y="644.0">Tank full or sun gone?</tspan></text><path d="M210 686 L210 710" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d267)"/><text class="dg-e" x="220" y="705">Stop pump</text><path d="M349 644 H397 V600 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d267)"/><text class="dg-e" x="403" y="638">Run + fill tank</text><path d="M101 716 L335 716 L319 772 L85 772 z"
+          fill="url(#gb-d267)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="744" text-anchor="middle"><tspan x="210" y="744.0">Trip: stop + cool-down</tspan></text><path d="M210 772 L210 796" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d267)"/><rect x="85" y="802" width="250" height="56" rx="28"
+          fill="url(#ga-d267)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="830" text-anchor="middle"><tspan x="210" y="830.0">Stop pump</tspan></text>
+  </svg>
+  <figcaption>Solar Pump Controller — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Mount the control enclosure</h4><p>Fit the contactor and the low-voltage controller in one IP65 box near the pump's electrical connection. Keep the pump-power wiring (contactor input/output) physically separated from the signal wiring inside the box.</p>
+<p>Bring the pump feed through the contactor. Have the current sensor on the pump-side conductor so it sees the motor's draw.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>All pump-power wiring must be done or verified by a qualified electrician and isolated before you work inside the box.</p></div>
+  </aside></li><li><h4>Install the tank sensor and float</h4><p>Mount the JSN-SR04T transducer at the top of the tank, aimed straight down at the water, away from the inlet splash and tank walls that cause false echoes.</p>
+<p>Fit the float switch at the tank-full level and wire its normally-closed contact in series with the contactor coil, so a full tank physically opens the coil circuit.</p></li><li><h4>Wire the sun sensor</h4><p>Place the LDR (or tap the panel voltage through a divider into an ADC pin) where it sees the same sky the array does, so "enough sun" reflects what the panel actually receives.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Calibrate the empty/full tank levels</h4><p>With the tank empty, record the ultrasonic distance; with it full, record it again. These two numbers define the fill-fraction scale for your specific tank.</p></li><li><h4>Learn the healthy running current</h4><p>On a known-good, primed run, capture the steady running current a few seconds after start (past inrush). Store it as the baseline the dry-run test compares against.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Re-learn the baseline seasonally — a worn pump or a changed head shifts the normal running current.</p></div>
+  </aside></li><li><h4>Implement the protective state machine</h4><p>Move between IDLE, STARTING, RUNNING, and COOLDOWN. Enter STARTING only when sun and tank demand agree; require healthy current to reach RUNNING; drop to COOLDOWN on a dry-run trip and refuse to restart until the timer expires.</p><div class="codeblock" data-file="pump-fsm.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">pump-fsm.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy pump-fsm.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="pump-fsm.ino" type="button" aria-label="Download pump-fsm.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">enum</span> <span class="tok-t">State</span> <span class="tok-o">{</span> <span class="tok-t">IDLE</span><span class="tok-o">,</span> <span class="tok-t">STARTING</span><span class="tok-o">,</span> <span class="tok-t">RUNNING</span><span class="tok-o">,</span> <span class="tok-t">COOLDOWN</span> <span class="tok-o">};</span>
+<span class="tok-t">State</span> st <span class="tok-o">=</span> <span class="tok-t">IDLE</span><span class="tok-o">;</span>
+<span class="tok-k">uint32_t</span> stateSince <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">float</span> <span class="tok-t">I_run</span> <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>              <span class="tok-c">// learned healthy running current</span>
+
+<span class="tok-k">void</span> <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">bool</span> on<span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_RELAY</span><span class="tok-o">,</span> on <span class="tok-o">?</span> <span class="tok-t">HIGH</span> <span class="tok-o">:</span> <span class="tok-t">LOW</span><span class="tok-o">);</span> <span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">tick</span><span class="tok-o">(</span><span class="tok-k">float</span> fill<span class="tok-o">,</span> <span class="tok-k">float</span> sun<span class="tok-o">,</span> <span class="tok-k">float</span> <span class="tok-t">I</span><span class="tok-o">,</span> <span class="tok-k">uint32_t</span> now<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">switch</span> <span class="tok-o">(</span>st<span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-k">case</span> <span class="tok-t">IDLE</span><span class="tok-o">:</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>sun <span class="tok-o">&gt;</span> <span class="tok-t">SUN_MIN</span> <span class="tok-o">&amp;&amp;</span> fill <span class="tok-o">&lt;</span> <span class="tok-t">LOW</span><span class="tok-o">)</span> <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">STARTING</span><span class="tok-o">,</span> now<span class="tok-o">);</span>
+      <span class="tok-k">break</span><span class="tok-o">;</span>
+
+    <span class="tok-k">case</span> <span class="tok-t">STARTING</span><span class="tok-o">:</span>                       <span class="tok-c">// spin up, ride out inrush</span>
+      <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">true</span><span class="tok-o">);</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>now <span class="tok-o">-</span> stateSince <span class="tok-o">&gt;</span> <span class="tok-t">START_MS</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+        <span class="tok-t">I_run</span> <span class="tok-o">=</span> <span class="tok-t">I</span><span class="tok-o">;</span>                        <span class="tok-c">// capture healthy running draw</span>
+        <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">RUNNING</span><span class="tok-o">,</span> now<span class="tok-o">);</span>
+      <span class="tok-o">}</span>
+      <span class="tok-k">break</span><span class="tok-o">;</span>
+
+    <span class="tok-k">case</span> <span class="tok-t">RUNNING</span><span class="tok-o">:</span>
+      <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">true</span><span class="tok-o">);</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-t">I</span> <span class="tok-o">&lt;</span> <span class="tok-t">DRY_K</span> <span class="tok-o">*</span> <span class="tok-t">I_run</span> <span class="tok-o">&amp;&amp;</span> now <span class="tok-o">-</span> stateSince <span class="tok-o">&gt;</span> <span class="tok-t">DRY_DEBOUNCE_MS</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+        <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+        <span class="tok-f">alert</span><span class="tok-o">(</span><span class="tok-s">"Dry-run: current %.1fA &lt; %.1fA. Cooling down."</span><span class="tok-o">,</span> <span class="tok-t">I</span><span class="tok-o">,</span> <span class="tok-t">DRY_K</span><span class="tok-o">*</span><span class="tok-t">I_run</span><span class="tok-o">);</span>
+        <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">COOLDOWN</span><span class="tok-o">,</span> now<span class="tok-o">);</span>
+      <span class="tok-o">}</span> <span class="tok-k">else</span> <span class="tok-k">if</span> <span class="tok-o">(</span>fill <span class="tok-o">&gt;</span> <span class="tok-t">HIGH</span> <span class="tok-o">||</span> sun <span class="tok-o">&lt;</span> <span class="tok-t">SUN_MIN</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+        <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+        <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">IDLE</span><span class="tok-o">,</span> now<span class="tok-o">);</span>                 <span class="tok-c">// tank full or sun gone</span>
+      <span class="tok-o">}</span>
+      <span class="tok-k">break</span><span class="tok-o">;</span>
+
+    <span class="tok-k">case</span> <span class="tok-t">COOLDOWN</span><span class="tok-o">:</span>
+      <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>now <span class="tok-o">-</span> stateSince <span class="tok-o">&gt;</span> <span class="tok-t">COOLDOWN_MS</span><span class="tok-o">)</span> <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">IDLE</span><span class="tok-o">,</span> now<span class="tok-o">);</span>
+      <span class="tok-k">break</span><span class="tok-o">;</span>
+  <span class="tok-o">}</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">State</span> s<span class="tok-o">,</span> <span class="tok-k">uint32_t</span> now<span class="tok-o">)</span> <span class="tok-o">{</span> st <span class="tok-o">=</span> s<span class="tok-o">;</span> stateSince <span class="tok-o">=</span> now<span class="tok-o">;</span> <span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (41 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">if (sun &gt; SUN_MIN &amp;&amp; fill &lt; LOW)</span><span class="txt">The pump only ever starts when there is enough sun to sustain it and the tank actually needs water — never on marginal light.</span></div><div><span class="ref">I_run = I;</span><span class="txt">A few seconds into a good run, past the inrush, the controller learns the pump's healthy current so the dry-run test compares against reality, not a fixed guess.</span></div><div><span class="ref">if (I &lt; DRY_K * I_run</span><span class="txt">Dry running shows up as a current collapse below a fraction of the learned normal; debounced, it trips an immediate protective stop.</span></div><div><span class="ref">case COOLDOWN</span><span class="txt">After a trip the pump is held off for a fixed cool-down instead of being hammered on and off, letting the well recover and the motor cool.</span></div></div></li><li><h4>Log and report</h4><p>Accumulate run-time, estimate water delivered, count dry-run trips, and publish status plus any alerts to the phone/dashboard each cycle and on every state change.</p></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="solar-pump-controller.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">solar-pump-controller.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy solar-pump-controller.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="solar-pump-controller.ino" type="button" aria-label="Download solar-pump-controller.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   Solar Pump Controller — ESP32</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Runs a solar borewell pump only with sufficient sun and tank demand,</span>
+<span class="tok-c">   protects it from dry-running by motor-current signature, enforces a</span>
+<span class="tok-c">   cool-down, and reports status/alerts. Drives a contactor; a hardware</span>
+<span class="tok-c">   float switch in series with the coil is the overflow backstop.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">WiFi</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">PubSubClient</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Wire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Preferences</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">PIN_TRIG</span>   <span class="tok-n">26</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_ECHO</span>   <span class="tok-n">25</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_CUR</span>    <span class="tok-n">34</span>     <span class="tok-c">// ACS712 / CT signal (ADC)</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_SUN</span>    <span class="tok-n">35</span>     <span class="tok-c">// LDR or panel-voltage divider (ADC)</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_RELAY</span>  <span class="tok-n">27</span>     <span class="tok-c">// -&gt; contactor coil</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_LED</span>    <span class="tok-n">13</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">TANK_H_CM</span>   <span class="tok-n">200.0</span>f
+<span class="tok-p">#define</span> <span class="tok-t">LOW_FRAC</span>    <span class="tok-n">0.30</span>f
+<span class="tok-p">#define</span> <span class="tok-t">HIGH_FRAC</span>   <span class="tok-n">0.90</span>f
+<span class="tok-p">#define</span> <span class="tok-t">SUN_MIN</span>     <span class="tok-n">0.35</span>f   <span class="tok-c">// normalised sun threshold to start</span>
+<span class="tok-p">#define</span> <span class="tok-t">DRY_K</span>       <span class="tok-n">0.60</span>f   <span class="tok-c">// trip below 60% of learned running current</span>
+<span class="tok-p">#define</span> <span class="tok-t">START_MS</span>    <span class="tok-n">5000</span>    <span class="tok-c">// ride out inrush, then learn baseline</span>
+<span class="tok-p">#define</span> <span class="tok-t">DRY_DEBOUNCE_MS</span> <span class="tok-n">4000</span>
+<span class="tok-p">#define</span> <span class="tok-t">COOLDOWN_MS</span> <span class="tok-n">600000</span>  <span class="tok-c">// 10 min after a dry-run trip</span>
+
+<span class="tok-k">enum</span> <span class="tok-t">State</span> <span class="tok-o">{</span> <span class="tok-t">IDLE</span><span class="tok-o">,</span> <span class="tok-t">STARTING</span><span class="tok-o">,</span> <span class="tok-t">RUNNING</span><span class="tok-o">,</span> <span class="tok-t">COOLDOWN</span> <span class="tok-o">};</span>
+<span class="tok-t">State</span> st <span class="tok-o">=</span> <span class="tok-t">IDLE</span><span class="tok-o">;</span>
+<span class="tok-k">uint32_t</span> stateSince <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">float</span> <span class="tok-t">I_run</span> <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> runMinutes <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">uint32_t</span> dryTrips <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> lastRunTick <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+
+<span class="tok-t">Preferences</span> prefs<span class="tok-o">;</span>
+<span class="tok-t">WiFiClient</span> net<span class="tok-o">;</span>
+<span class="tok-t">PubSubClient</span> <span class="tok-f">mqtt</span><span class="tok-o">(</span>net<span class="tok-o">);</span>
+
+<span class="tok-c">/* ── sensors ─────────────────────────────────────────────────── */</span>
+<span class="tok-k">float</span> <span class="tok-f">readDistanceCm</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_TRIG</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>  <span class="tok-f">delayMicroseconds</span><span class="tok-o">(</span><span class="tok-n">2</span><span class="tok-o">);</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_TRIG</span><span class="tok-o">,</span> <span class="tok-t">HIGH</span><span class="tok-o">);</span> <span class="tok-f">delayMicroseconds</span><span class="tok-o">(</span><span class="tok-n">10</span><span class="tok-o">);</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_TRIG</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>
+  <span class="tok-k">long</span> us <span class="tok-o">=</span> <span class="tok-f">pulseIn</span><span class="tok-o">(</span><span class="tok-t">PIN_ECHO</span><span class="tok-o">,</span> <span class="tok-t">HIGH</span><span class="tok-o">,</span> <span class="tok-n">30000</span><span class="tok-o">);</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>us <span class="tok-o">==</span> <span class="tok-n">0</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-t">NAN</span><span class="tok-o">;</span>                 <span class="tok-c">// no echo</span>
+  <span class="tok-k">return</span> us <span class="tok-o">/</span> <span class="tok-n">58.0</span>f<span class="tok-o">;</span>                       <span class="tok-c">// cm</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">// Median of several pings rejects the odd spurious echo.</span>
+<span class="tok-k">float</span> <span class="tok-f">tankFill</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">float</span> d<span class="tok-o">[</span><span class="tok-n">5</span><span class="tok-o">];</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-n">5</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span> d<span class="tok-o">[</span>i<span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-f">readDistanceCm</span><span class="tok-o">();</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">60</span><span class="tok-o">);</span> <span class="tok-o">}</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-n">4</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> j <span class="tok-o">=</span> i<span class="tok-o">+</span><span class="tok-n">1</span><span class="tok-o">;</span> j <span class="tok-o">&lt;</span> <span class="tok-n">5</span><span class="tok-o">;</span> j<span class="tok-o">++)</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>d<span class="tok-o">[</span>j<span class="tok-o">]</span> <span class="tok-o">&lt;</span> d<span class="tok-o">[</span>i<span class="tok-o">])</span> <span class="tok-o">{</span> <span class="tok-k">float</span> t <span class="tok-o">=</span> d<span class="tok-o">[</span>i<span class="tok-o">];</span> d<span class="tok-o">[</span>i<span class="tok-o">]</span> <span class="tok-o">=</span> d<span class="tok-o">[</span>j<span class="tok-o">];</span> d<span class="tok-o">[</span>j<span class="tok-o">]</span> <span class="tok-o">=</span> t<span class="tok-o">;</span> <span class="tok-o">}</span>
+  <span class="tok-k">float</span> dist <span class="tok-o">=</span> d<span class="tok-o">[</span><span class="tok-n">2</span><span class="tok-o">];</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">isnan</span><span class="tok-o">(</span>dist<span class="tok-o">))</span> <span class="tok-k">return</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> frac <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-t">TANK_H_CM</span> <span class="tok-o">-</span> dist<span class="tok-o">)</span> <span class="tok-o">/</span> <span class="tok-t">TANK_H_CM</span><span class="tok-o">;</span>
+  <span class="tok-k">return</span> <span class="tok-f">constrain</span><span class="tok-o">(</span>frac<span class="tok-o">,</span> <span class="tok-n">0.0</span>f<span class="tok-o">,</span> <span class="tok-n">1.0</span>f<span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">float</span> <span class="tok-f">sunLevel</span><span class="tok-o">()</span> <span class="tok-o">{</span>                          <span class="tok-c">// normalised 0..1</span>
+  <span class="tok-k">return</span> <span class="tok-f">analogRead</span><span class="tok-o">(</span><span class="tok-t">PIN_SUN</span><span class="tok-o">)</span> <span class="tok-o">/</span> <span class="tok-n">4095.0</span>f<span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">// RMS-ish current from the sensor (offset-removed, scaled).</span>
+<span class="tok-k">float</span> <span class="tok-f">pumpCurrent</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">const</span> <span class="tok-k">int</span> <span class="tok-t">N</span> <span class="tok-o">=</span> <span class="tok-n">400</span><span class="tok-o">;</span> <span class="tok-k">long</span> acc <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">int</span> mid <span class="tok-o">=</span> <span class="tok-n">2048</span><span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-t">N</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span>
+    <span class="tok-k">int</span> v <span class="tok-o">=</span> <span class="tok-f">analogRead</span><span class="tok-o">(</span><span class="tok-t">PIN_CUR</span><span class="tok-o">)</span> <span class="tok-o">-</span> mid<span class="tok-o">;</span>
+    acc <span class="tok-o">+=</span> <span class="tok-o">(</span><span class="tok-k">long</span><span class="tok-o">)</span>v <span class="tok-o">*</span> v<span class="tok-o">;</span>
+  <span class="tok-o">}</span>
+  <span class="tok-k">float</span> rms <span class="tok-o">=</span> <span class="tok-f">sqrtf</span><span class="tok-o">((</span><span class="tok-k">float</span><span class="tok-o">)</span>acc <span class="tok-o">/</span> <span class="tok-t">N</span><span class="tok-o">);</span>
+  <span class="tok-k">return</span> rms <span class="tok-o">*</span> <span class="tok-t">CUR_SCALE</span><span class="tok-o">;</span>                   <span class="tok-c">// A; CUR_SCALE from calibration</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── state machine ───────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">bool</span> on<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_RELAY</span><span class="tok-o">,</span> on <span class="tok-o">?</span> <span class="tok-t">HIGH</span> <span class="tok-o">:</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_LED</span><span class="tok-o">,</span>   on <span class="tok-o">?</span> <span class="tok-t">HIGH</span> <span class="tok-o">:</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+<span class="tok-k">void</span> <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">State</span> s<span class="tok-o">,</span> <span class="tok-k">uint32_t</span> now<span class="tok-o">)</span> <span class="tok-o">{</span> st <span class="tok-o">=</span> s<span class="tok-o">;</span> stateSince <span class="tok-o">=</span> now<span class="tok-o">;</span> <span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">publish</span><span class="tok-o">(</span><span class="tok-k">float</span> fill<span class="tok-o">,</span> <span class="tok-k">float</span> sun<span class="tok-o">,</span> <span class="tok-k">float</span> <span class="tok-t">I</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">char</span> buf<span class="tok-o">[</span><span class="tok-n">220</span><span class="tok-o">];</span>
+  <span class="tok-k">const</span> <span class="tok-k">char</span> <span class="tok-o">*</span>sn<span class="tok-o">[]</span> <span class="tok-o">=</span> <span class="tok-o">{</span><span class="tok-s">"idle"</span><span class="tok-o">,</span><span class="tok-s">"starting"</span><span class="tok-o">,</span><span class="tok-s">"running"</span><span class="tok-o">,</span><span class="tok-s">"cooldown"</span><span class="tok-o">};</span>
+  <span class="tok-f">snprintf</span><span class="tok-o">(</span>buf<span class="tok-o">,</span> <span class="tok-k">sizeof</span> buf<span class="tok-o">,</span>
+    <span class="tok-s">"{\"state\":\"%s\",\"fill\":%.2f,\"sun\":%.2f,\"I\":%.2f,"</span>
+    <span class="tok-s">"\"I_run\":%.2f,\"run_min\":%.0f,\"dry_trips\":%u}"</span><span class="tok-o">,</span>
+    sn<span class="tok-o">[</span>st<span class="tok-o">],</span> fill<span class="tok-o">,</span> sun<span class="tok-o">,</span> <span class="tok-t">I</span><span class="tok-o">,</span> <span class="tok-t">I_run</span><span class="tok-o">,</span> runMinutes<span class="tok-o">,</span> dryTrips<span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">publish</span><span class="tok-o">(</span><span class="tok-s">"pump/1/status"</span><span class="tok-o">,</span> buf<span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">tick</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">uint32_t</span> now <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+  <span class="tok-k">float</span> fill <span class="tok-o">=</span> <span class="tok-f">tankFill</span><span class="tok-o">();</span>
+  <span class="tok-k">float</span> sun  <span class="tok-o">=</span> <span class="tok-f">sunLevel</span><span class="tok-o">();</span>
+  <span class="tok-k">float</span> <span class="tok-t">I</span>    <span class="tok-o">=</span> <span class="tok-f">pumpCurrent</span><span class="tok-o">();</span>
+
+  <span class="tok-k">switch</span> <span class="tok-o">(</span>st<span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-k">case</span> <span class="tok-t">IDLE</span><span class="tok-o">:</span>
+      <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>sun <span class="tok-o">&gt;</span> <span class="tok-t">SUN_MIN</span> <span class="tok-o">&amp;&amp;</span> fill <span class="tok-o">&gt;=</span> <span class="tok-n">0</span> <span class="tok-o">&amp;&amp;</span> fill <span class="tok-o">&lt;</span> <span class="tok-t">LOW_FRAC</span><span class="tok-o">)</span> <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">STARTING</span><span class="tok-o">,</span> now<span class="tok-o">);</span>
+      <span class="tok-k">break</span><span class="tok-o">;</span>
+    <span class="tok-k">case</span> <span class="tok-t">STARTING</span><span class="tok-o">:</span>
+      <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">true</span><span class="tok-o">);</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>now <span class="tok-o">-</span> stateSince <span class="tok-o">&gt;</span> <span class="tok-t">START_MS</span><span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-t">I_run</span> <span class="tok-o">=</span> <span class="tok-t">I</span><span class="tok-o">;</span> <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">RUNNING</span><span class="tok-o">,</span> now<span class="tok-o">);</span> <span class="tok-o">}</span>
+      <span class="tok-k">break</span><span class="tok-o">;</span>
+    <span class="tok-k">case</span> <span class="tok-t">RUNNING</span><span class="tok-o">:</span>
+      <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">true</span><span class="tok-o">);</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>now <span class="tok-o">-</span> lastRunTick <span class="tok-o">&gt;</span> <span class="tok-n">60000</span><span class="tok-o">)</span> <span class="tok-o">{</span> runMinutes <span class="tok-o">+=</span> <span class="tok-n">1</span><span class="tok-o">;</span> lastRunTick <span class="tok-o">=</span> now<span class="tok-o">;</span> <span class="tok-o">}</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-t">I</span> <span class="tok-o">&lt;</span> <span class="tok-t">DRY_K</span> <span class="tok-o">*</span> <span class="tok-t">I_run</span> <span class="tok-o">&amp;&amp;</span> now <span class="tok-o">-</span> stateSince <span class="tok-o">&gt;</span> <span class="tok-t">DRY_DEBOUNCE_MS</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+        <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+        dryTrips<span class="tok-o">++;</span>
+        mqtt<span class="tok-o">.</span><span class="tok-f">publish</span><span class="tok-o">(</span><span class="tok-s">"pump/1/alert"</span><span class="tok-o">,</span> <span class="tok-s">"dry-run trip"</span><span class="tok-o">);</span>
+        prefs<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-s">"pump"</span><span class="tok-o">,</span> <span class="tok-k">false</span><span class="tok-o">);</span>
+        prefs<span class="tok-o">.</span><span class="tok-f">putUInt</span><span class="tok-o">(</span><span class="tok-s">"dry"</span><span class="tok-o">,</span> dryTrips<span class="tok-o">);</span>
+        prefs<span class="tok-o">.</span><span class="tok-f">putFloat</span><span class="tok-o">(</span><span class="tok-s">"run"</span><span class="tok-o">,</span> runMinutes<span class="tok-o">);</span>
+        prefs<span class="tok-o">.</span><span class="tok-f">end</span><span class="tok-o">();</span>
+        <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">COOLDOWN</span><span class="tok-o">,</span> now<span class="tok-o">);</span>
+      <span class="tok-o">}</span> <span class="tok-k">else</span> <span class="tok-k">if</span> <span class="tok-o">(</span>fill <span class="tok-o">&gt;</span> <span class="tok-t">HIGH_FRAC</span> <span class="tok-o">||</span> sun <span class="tok-o">&lt;</span> <span class="tok-t">SUN_MIN</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+        <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+        <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">IDLE</span><span class="tok-o">,</span> now<span class="tok-o">);</span>
+      <span class="tok-o">}</span>
+      <span class="tok-k">break</span><span class="tok-o">;</span>
+    <span class="tok-k">case</span> <span class="tok-t">COOLDOWN</span><span class="tok-o">:</span>
+      <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>now <span class="tok-o">-</span> stateSince <span class="tok-o">&gt;</span> <span class="tok-t">COOLDOWN_MS</span><span class="tok-o">)</span> <span class="tok-f">enter</span><span class="tok-o">(</span><span class="tok-t">IDLE</span><span class="tok-o">,</span> now<span class="tok-o">);</span>
+      <span class="tok-k">break</span><span class="tok-o">;</span>
+  <span class="tok-o">}</span>
+  <span class="tok-f">publish</span><span class="tok-o">(</span>fill<span class="tok-o">,</span> sun<span class="tok-o">,</span> <span class="tok-t">I</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">115200</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_TRIG</span><span class="tok-o">,</span> <span class="tok-t">OUTPUT</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_ECHO</span><span class="tok-o">,</span> <span class="tok-t">INPUT</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_RELAY</span><span class="tok-o">,</span> <span class="tok-t">OUTPUT</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_LED</span><span class="tok-o">,</span> <span class="tok-t">OUTPUT</span><span class="tok-o">);</span>
+  <span class="tok-f">setPump</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+  <span class="tok-f">analogSetPinAttenuation</span><span class="tok-o">(</span><span class="tok-t">PIN_CUR</span><span class="tok-o">,</span> <span class="tok-t">ADC_11db</span><span class="tok-o">);</span>
+  <span class="tok-f">analogSetPinAttenuation</span><span class="tok-o">(</span><span class="tok-t">PIN_SUN</span><span class="tok-o">,</span> <span class="tok-t">ADC_11db</span><span class="tok-o">);</span>
+
+  prefs<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-s">"pump"</span><span class="tok-o">,</span> <span class="tok-k">true</span><span class="tok-o">);</span>
+  runMinutes <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getFloat</span><span class="tok-o">(</span><span class="tok-s">"run"</span><span class="tok-o">,</span> <span class="tok-n">0</span><span class="tok-o">);</span>
+  dryTrips   <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getUInt</span><span class="tok-o">(</span><span class="tok-s">"dry"</span><span class="tok-o">,</span> <span class="tok-n">0</span><span class="tok-o">);</span>
+  prefs<span class="tok-o">.</span><span class="tok-f">end</span><span class="tok-o">();</span>
+
+  <span class="tok-t">WiFi</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-t">WIFI_SSID</span><span class="tok-o">,</span> <span class="tok-t">WIFI_PASS</span><span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">setServer</span><span class="tok-o">(</span><span class="tok-t">MQTT_HOST</span><span class="tok-o">,</span> <span class="tok-n">1883</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>mqtt<span class="tok-o">.</span><span class="tok-f">connected</span><span class="tok-o">())</span> mqtt<span class="tok-o">.</span><span class="tok-f">connect</span><span class="tok-o">(</span><span class="tok-s">"pump-1"</span><span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">loop</span><span class="tok-o">();</span>
+  <span class="tok-f">tick</span><span class="tok-o">();</span>
+  <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">1000</span><span class="tok-o">);</span>                              <span class="tok-c">// 1 Hz control loop</span>
+<span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (159 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">float tankFill()</span><span class="txt">Takes five ultrasonic pings and uses the median, so a single spurious echo off the inlet splash or a tank wall cannot fake a level and mis-trigger the pump.</span></div><div><span class="ref">float pumpCurrent()</span><span class="txt">Computes an RMS-style current from many fast ADC samples of the AC/DC current sensor, which is what the dry-run test needs — a stable measure of how hard the motor is working.</span></div><div><span class="ref">if (sun &gt; SUN_MIN &amp;&amp; fill &gt;= 0 &amp;&amp; fill &lt; LOW_FRAC)</span><span class="txt">The start condition is a conjunction: enough sun, a valid level reading, and genuine tank demand. A failed level read (fill < 0) blocks the start rather than guessing.</span></div><div><span class="ref">prefs.putUInt("dry", dryTrips)</span><span class="txt">Run-time and dry-trip counts survive power loss, so the season's log and the pump's protective history are not wiped every sunset.</span></div><div><span class="ref">delay(1000)</span><span class="txt">A one-second control loop is fast enough to catch a dry run within the debounce window while keeping the ADC and Wi-Fi work light.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Set TANK_H_CM and the LOW/HIGH fractions to your tank geometry and desired reserve.</li><li>Calibrate CUR_SCALE against a clamp meter so pumpCurrent() reads true amps.</li><li>Tune DRY_K (fraction of running current that counts as dry) to your pump — start at 0.6 and adjust after watching a real dry run.</li><li>Set SUN_MIN from observation: the lowest sun level at which your pump reliably sustains a run.</li><li>Pick the reporting transport (Wi-Fi/MQTT here, or LoRa for remote wells) and the cool-down duration.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Tank scale</h4><p>Record ultrasonic distance at empty and full; verify the computed fill fraction matches a physical mark at a couple of intermediate levels.</p></li><li><h4>Current scale</h4><p>With the pump running normally, compare pumpCurrent() to a clamp-meter reading and set CUR_SCALE so they agree. This is the anchor for dry-run detection.</p></li><li><h4>Dry-run threshold</h4><p>Deliberately (and briefly, safely) create a lost-prime or closed-valve condition and watch the current drop; set DRY_K comfortably above the dry current but below the healthy current.</p></li></ol></section>
+
+<section id="connectivity" aria-labelledby="h-connectivity"><h2 id="h-connectivity">Network Architecture &amp; Connectivity</h2>
+<div class="diagram-scroll"><figure class="diagram diagram-network">
+  <svg viewBox="0 0 760 232" role="img" aria-labelledby="td268 sd268" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td268">Solar Pump Controller — network topology</title><desc id="sd268">Path taken by telemetry from field node to end user.</desc>
+    <defs>
+    <marker id="ar-d268" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d268" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d268" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d268" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="100" y="26" text-anchor="middle">Edge nodes</text><text class="dg-col" x="321" y="26" text-anchor="middle">Gateway</text><text class="dg-col" x="543" y="26" text-anchor="middle">Cloud</text><text class="dg-col" x="769" y="26" text-anchor="middle">Clients</text><rect x="16" y="52" width="168" height="52" rx="11"
+        fill="url(#gb-d268)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="74" text-anchor="middle"><tspan x="100" y="74.0">Pump controller</tspan></text><text class="dg-s" x="100" y="92" text-anchor="middle">ESP32</text><path d="M184 78 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d268)"/><rect x="16" y="118" width="168" height="52" rx="11"
+        fill="url(#gb-d268)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="140" text-anchor="middle"><tspan x="100" y="140.0">Tank sensor</tspan></text><text class="dg-s" x="100" y="158" text-anchor="middle">on the same node</text><path d="M184 144 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d268)"/><text class="dg-e" x="215" y="46" text-anchor="middle">Wi-Fi 2.4 GHz</text><rect x="246" y="92" width="150" height="60" rx="11"
+        fill="url(#ga-d268)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="321" y="114" text-anchor="middle"><tspan x="321" y="114.0">Router / LoRa GW</tspan></text><text class="dg-s" x="321" y="132" text-anchor="middle">or LoRa for a remote well</text><path d="M396 122 H460" stroke="var(--dg-accent)" stroke-width="1.6" fill="none" marker-end="url(#arh-d268)"/><text class="dg-e" x="432" y="112" text-anchor="middle">MQTT 1883</text><rect x="468" y="88" width="150" height="68" rx="11"
+        fill="url(#ga-d268)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="543" y="110" text-anchor="middle"><tspan x="543" y="110.0">Broker + dashboard</tspan></text><text class="dg-s" x="543" y="128" text-anchor="middle">run-time &amp; events</text><rect x="690" y="52" width="158" height="52" rx="11"
+        fill="url(#gb-d268)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="74" text-anchor="middle"><tspan x="769" y="74.0">Dashboard</tspan></text><text class="dg-s" x="769" y="92" text-anchor="middle">state, fill, current</text><path d="M618 122 C 652 122, 656 78, 682 78"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d268)"/><rect x="690" y="118" width="158" height="52" rx="11"
+        fill="url(#gb-d268)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="140" text-anchor="middle"><tspan x="769" y="140.0">Phone</tspan></text><text class="dg-s" x="769" y="158" text-anchor="middle">dry-run alerts</text><path d="M618 122 C 652 122, 656 144, 682 144"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d268)"/>
+  </svg>
+  <figcaption>Solar Pump Controller — network topology</figcaption>
+</figure></div>
+<h3>Communication protocol</h3><p>Status JSON is published at roughly 1 Hz locally and throttled to a sensible rate over the network, with an immediate publish on any state change or protective trip so a dry-run event reaches the operator without waiting for the next heartbeat.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Topic / endpoint</th><th scope="col">Direction</th><th scope="col">Payload</th></tr></thead>
+    <tbody><tr><td><code>pump/1/status</code></td><td>node → broker</td><td>state, fill, current, run-time</td></tr><tr><td><code>pump/1/alert</code></td><td>node → broker</td><td>dry-run, tank-full-timeout, no-sun</td></tr><tr><td><code>pump/1/cmd</code></td><td>broker → node</td><td>force-stop, enable/disable</td></tr></tbody>
+  </table></div><p class="tbl-caption">Message contract between the device and the broker.</p>
+<h3>Cloud platform configuration</h3><p>A broker plus a small dashboard trends run-time, estimated water delivered and every dry-run event; a command topic lets the owner force-stop or enable/disable the pump remotely without defeating the local hardware interlocks.</p>
+
+<h3>Dashboard setup</h3><p>A live tile shows state, tank fill and live pump current against the learned running current, with daily bars of run-time and delivery and a red marker on every dry-run trip.</p>
+<h3>Mobile app integration</h3><p>Push alerts fire for a dry-run trip, a tank-full-timeout (the pump ran but the tank is not filling — a likely blockage) and days with no usable sun.</p>
+<h3>Security considerations</h3><ul class="check"><li>Authenticate the command topic so only the owner can start or stop the pump remotely.</li><li>Keep the float-switch interlock and dry-run trip entirely in local hardware/firmware, independent of the network.</li><li>Alert on communication loss so a controller that has gone silent is investigated.</li></ul></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Empty tank, full sun</b></td><td>Controller starts the pump, reaches RUNNING, learns I_run</td></tr><tr><td><b>Simulate tank filling to HIGH</b></td><td>Pump stops cleanly; state returns to IDLE</td></tr><tr><td><b>Simulate dry run (close valve / lost prime)</b></td><td>Current collapses; trip within debounce; COOLDOWN entered; alert sent</td></tr><tr><td><b>Shade the sun sensor</b></td><td>Pump will not start; if running with sun lost, it stops</td></tr><tr><td><b>Open the float switch at tank-full</b></td><td>Contactor drops out in hardware regardless of software state</td></tr><tr><td><b>Power-cycle mid-run</b></td><td>Run-time and dry-trip counts restored from flash</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>The dashboard shows the current state, tank fill, sun level, live pump current versus the learned running current, cumulative run-time and dry-trip count.</p>
+<div class="codeblock tall" data-file="status.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">status.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy status.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="status.json" type="button" aria-label="Download status.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "state": "running",
+  "fill": <span class="tok-n">0.42</span>,
+  "sun": <span class="tok-n">0.78</span>,
+  "I": <span class="tok-n">4.9</span>,
+  "I_run": <span class="tok-n">5.1</span>,
+  "run_min": <span class="tok-n">137</span>,
+  "dry_trips": <span class="tok-n">2</span>
+}</code></pre>
+  
+</div>
+
+<p>A dry-run event appears as the live current I dropping well below I_run, followed by a state change to "cooldown" and a "dry-run trip" alert on the phone.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/HC-SR04.jpg?width=900" alt="An HC-SR04 ultrasonic distance sensor with its two transducers" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td269" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td269">A waterproof ultrasonic sensor reads the tank surface from above to close the fill-level control loop.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption>A waterproof ultrasonic sensor reads the tank surface from above to close the fill-level control loop.</figcaption>
+</figure></template>
+  <figcaption>A waterproof ultrasonic sensor reads the tank surface from above to close the fill-level control loop.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:HC-SR04.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — HC-SR04.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Pump short-cycles on/off</summary><div class="inner">
+        <p><strong>Likely cause.</strong> LOW and HIGH fractions too close, or noisy level reads</p>
+        <p><strong>Fix.</strong> Widen the hysteresis; keep the median-of-5 ping filter; move the transducer away from splash</p></div></details><details class="expand"><summary>False dry-run trips</summary><div class="inner">
+        <p><strong>Likely cause.</strong> DRY_K too high or CUR_SCALE wrong</p>
+        <p><strong>Fix.</strong> Re-calibrate current against a clamp meter; lower DRY_K; lengthen the debounce slightly</p></div></details><details class="expand"><summary>Pump never starts</summary><div class="inner">
+        <p><strong>Likely cause.</strong> SUN_MIN too high, float switch open, or level read failing</p>
+        <p><strong>Fix.</strong> Lower SUN_MIN; check the float wiring; confirm tankFill() returns a valid fraction</p></div></details><details class="expand"><summary>ESP32 resets when the pump switches</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Contactor coil transient coupling into the controller supply</p>
+        <p><strong>Fix.</strong> Add a proper snubber/flyback across the coil; separate control and power grounds/wiring</p></div></details><details class="expand"><summary>Tank overflows</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Relying on software alone</p>
+        <p><strong>Fix.</strong> This must never happen — verify the NC float switch is truly in series with the contactor coil</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details><details class="expand"><summary>An I²C device is not detected</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong address, missing pull-ups, swapped SDA/SCL, or a bus too long for the pull-up value.</p>
+        <p><strong>Fix.</strong> Run an I²C scanner sketch first — it should print the device address. Most breakout boards include 4.7 kΩ pull-ups, but if you have chained four of them the parallel resistance is too low; remove the pull-ups from all but one board. Keep the bus under 30 cm at 100 kHz.</p></div></details><details class="expand"><summary>Wi-Fi connects but MQTT never does (state -2)</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong broker address or port, a firewall in the way, or the broker requiring credentials the sketch is not sending.</p>
+        <p><strong>Fix.</strong> Test from a laptop on the same network first: <code>mosquitto_sub -h &lt;broker&gt; -t "#" -v</code>. If that works, the problem is on the device — check the IP literal, port 1883 (or 8883 for TLS), and that <code>client.setServer()</code> runs before <code>connect()</code>. PubSubClient state codes are documented in its header.</p></div></details><details class="expand"><summary>Readings arrive for a while and then stop</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The Wi-Fi or MQTT session dropped and the sketch never reconnects, or the broker dropped the client on keep-alive timeout.</p>
+        <p><strong>Fix.</strong> Never assume the link stays up. Check <code>WiFi.status()</code> and <code>client.connected()</code> at the top of every loop and reconnect with exponential backoff. Add a watchdog so a wedged network stack reboots the device instead of going silent.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Run the control loop at ~1 Hz — fast enough to catch a dry run, light enough on the ADC and radio.</li><li>Average many ADC samples for current; a single sample is far too noisy to base a protective trip on.</li><li>Publish on change plus a slow heartbeat rather than streaming every second, to keep network and power modest.</li><li>If solar-powered controller electronics, deep-sleep the reporting stack overnight when the pump cannot run anyway.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Batch several samples into one MQTT publish. Radio time, not CPU time, dominates the energy budget.</li><li>Set the MQTT keep-alive to a value that matches your reporting interval so the broker does not churn reconnections.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>The controller drives a correctly-rated contactor; it never switches pump power directly.</li><li>A normally-closed float switch in series with the contactor coil is a mandatory hardware overflow backstop, independent of software.</li><li>Have a qualified electrician do or verify all pump-power wiring and earthing/RCD protection.</li><li>Dry-run protection reduces but does not eliminate pump risk — do not defeat the pump's own thermal or motor-protection devices.</li><li><b>Mains voltage kills.</b> Anything on the load side of the relay is at 230 V. Do not work on a powered circuit, and never leave exposed mains wiring on a bench where someone could touch it.</li><li>Keep at least 6 mm of creepage between the mains and low-voltage sides of any board you make, and never route mains tracks under the microcontroller.</li><li>Have a qualified electrician do the final installation into a consumer unit or wall fitting. In most jurisdictions this is a legal requirement, not a suggestion.</li><li>Fit an RCD/RCBO upstream and fuse the load appropriately for its rating.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-learn the healthy running current at the start of each season and after any pump service.</li><li>Clean the ultrasonic transducer face; scale or a spider web across it causes phantom levels.</li><li>Check the float switch physically moves freely and its contacts are sound.</li><li>Inspect the contactor contacts for pitting; a solar pump cycles them thousands of times a season.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Keep the broker and dashboard containers patched, and rotate device credentials at least once a year.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add a true flow meter for measured (not estimated) delivery and a blockage alarm when current is normal but flow is low.</li><li>Add a well-level probe to distinguish a dry well from a dry pump.</li><li>Log energy from the INA219 to report water-per-kWh efficiency of the array.</li><li>MPPT-aware starting: begin only when the array can hold its maximum-power voltage under load.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add over-the-air firmware updates so you never have to physically reach a deployed node again.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>How does it detect a dry run without a special sensor?</summary><div class="inner"><p>A pump moving water draws its rated current; a pump spinning in air draws much less. The controller learns the healthy current, then trips when the current collapses below a fraction of it.</p></div></details><details class="expand"><summary>What if the software crashes with the pump on?</summary><div class="inner"><p>The float switch is wired in hardware series with the contactor coil, so at tank-full the pump drops out no matter what the software does. That is the whole point of the backstop.</p></div></details><details class="expand"><summary>Why check sunlight before starting?</summary><div class="inner"><p>Starting a solar pump on weak light can make it strain and stall without moving water, which stresses the motor. Requiring a minimum sun level means every start is one the array can actually sustain.</p></div></details><details class="expand"><summary>Can it run a mains or 48 V DC pump?</summary><div class="inner"><p>Yes — the controller drives a contactor sized for your pump, so the same control logic works for AC or DC pumps as long as the contactor and current sensor match the pump.</p></div></details><details class="expand"><summary>Does it measure how much water I pumped?</summary><div class="inner"><p>It estimates volume from run-time and rated flow out of the box; add a flow meter for a true measurement and a blockage alarm.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Submersible_pump" rel="noopener nofollow" target="_blank">Submersible pump dry-run protection — application notes</a><span class="src">Reference</span></li><li><a href="https://www.allegromicro.com/en/products/sense/current-sensor-ics/zero-to-fifty-amp-integrated-conductor-sensor-ics/acs712" rel="noopener nofollow" target="_blank">ACS712 Hall-effect current sensor (datasheet)</a><span class="src">Allegro</span></li><li><a href="https://www.electroschematics.com/" rel="noopener nofollow" target="_blank">JSN-SR04T waterproof ultrasonic ranging module</a><span class="src">Reference</span></li><li><a href="https://mnre.gov.in/" rel="noopener nofollow" target="_blank">Solar water pumping systems — design guidance</a><span class="src">MNRE India</span></li><li><a href="https://en.wikipedia.org/wiki/Contactor" rel="noopener nofollow" target="_blank">Contactor selection and coil control basics</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="grain-silo-monitor.html"><span class="dir">← Previous project</span><span class="ttl">Grain Silo Monitor</span></a>
+        <a class="next" href="beehive-health-monitor.html"><span class="dir">Next project →</span><span class="ttl">Beehive Health Monitor</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Intermediate</b></div>
+        <div class="rail-stat"><span>Time</span><b>10–16 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>10</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹3,000 – ₹4,500</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="smart-greenhouse-controller.html">Smart Greenhouse Controller</a></li><li><a href="soil-npk-sensor-node.html">Soil NPK Sensor Node</a></li><li><a href="automated-drip-irrigation.html">Automated Drip Irrigation</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="smart-greenhouse-controller.html">
+        <span class="rc">Agriculture</span>
+        <h4>Smart Greenhouse Controller</h4>
+        <p>Automates climate, ventilation and irrigation for optimal plant growth.</p></a><a class="relcard" href="soil-npk-sensor-node.html">
+        <span class="rc">Agriculture</span>
+        <h4>Soil NPK Sensor Node</h4>
+        <p>Measures nitrogen, phosphorus and potassium to guide precise fertilizing.</p></a><a class="relcard" href="automated-drip-irrigation.html">
+        <span class="rc">Agriculture</span>
+        <h4>Automated Drip Irrigation</h4>
+        <p>Delivers water on crop-stage schedules driven by live soil readings.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Solar Pump Controller</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
