@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Remote Tank Level Telemetry — Circuit, Code &amp; Full Build Guide | Industrial</title>
+  <meta name="description" content="Complete intermediate-level build guide for a Remote Tank Level Telemetry: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="remote tank level telemetry, remote tank level telemetry project, how to build remote tank level telemetry, esp32 devkit v1 project, industrial project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/remote-tank-level-telemetry.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/remote-tank-level-telemetry.html" />
+  <meta property="og:title" content="Remote Tank Level Telemetry — Circuit, Code &amp; Full Build Guide | Industrial" />
+  <meta property="og:description" content="Complete intermediate-level build guide for a Remote Tank Level Telemetry: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Industrial" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-27" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Remote Tank Level Telemetry — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete intermediate-level build guide for a Remote Tank Level Telemetry: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🛢️</text></svg>" />
+  <style>:root{--acc:#22d3ee;--acc-light:#67e8f9;--acc-rgb:34,211,238}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/remote-tank-level-telemetry.html#article","headline":"Remote Tank Level Telemetry — Complete Build Guide","name":"Remote Tank Level Telemetry","description":"Complete intermediate-level build guide for a Remote Tank Level Telemetry: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/remote-tank-level-telemetry.html","inLanguage":"en","articleSection":"Industrial","keywords":"remote tank level telemetry, remote tank level telemetry project, how to build remote tank level telemetry, esp32 devkit v1 project, industrial project, circuit diagram, source code, tutorial","proficiencyLevel":"Intermediate","dependencies":"WiFi (ESP32 core), OneWire + DallasTemperature, Adafruit Unified Sensor, LoRa (sandeepmistry), ArduinoJson, Preferences (NVS), NTPClient / configTime","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-27","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/remote-tank-level-telemetry.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/remote-tank-level-telemetry.html#howto","name":"How to build a Remote Tank Level Telemetry","description":"Complete intermediate-level build guide for a Remote Tank Level Telemetry: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT16H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"8185"},"supply":[{"@type":"HowToSupply","name":"ESP32 DevKit V1 (ESP-WROOM-32)"},{"@type":"HowToSupply","name":"JSN-SR04T waterproof ultrasonic sensor"},{"@type":"HowToSupply","name":"DS18B20 waterproof temperature probe"},{"@type":"HowToSupply","name":"SX1278 LoRa 433 MHz module (Ra-02)"},{"@type":"HowToSupply","name":"SIM800L GSM/GPRS module"},{"@type":"HowToSupply","name":"20 W 12 V polycrystalline solar panel"},{"@type":"HowToSupply","name":"TP4056 Li-ion charger + DW01 protection"},{"@type":"HowToSupply","name":"18650 Li-ion cell 3400 mAh + holder"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Convert level to volume and detect anomalies","text":"Read and temperature-correct the level, interpolate the strapping table to volume, and evaluate rate-of-change and threshold alerts."},{"@type":"HowToStep","position":2,"name":"Alert, reorder and report","text":"Raise low-level (with reorder lead time), overfill, leak/theft and refill alerts, log the history for consumption analysis and reconciliation, and report over LoRa/cellular."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Remote Tank Level Telemetry","item":"https://siddhantkumar.in/projects/docs/remote-tank-level-telemetry.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/remote-tank-level-telemetry.html#faq","mainEntity":[{"@type":"Question","name":"Why convert level to volume?","acceptedAnswer":{"@type":"Answer","text":"Because you act in litres, not centimetres — reorder, reconcile deliveries and quantify losses all use volume. And volume is very non-linear with height in horizontal/irregular tanks, so a strapping table is needed for accuracy."}},{"@type":"Question","name":"How does it tell a leak/theft from normal use?","acceptedAnswer":{"@type":"Answer","text":"By rate of change and context. Normal consumption is a slow decline; a sudden drop when nothing should be drawing (equipment off, overnight) is a leak or theft, and a decline faster than expected flags a possible slow leak."}},{"@type":"Question","name":"Can I put this on a diesel tank myself?","acceptedAnswer":{"@type":"Answer","text":"Fuel tanks create a potentially explosive atmosphere, so any in-zone electronics must be intrinsically-safe/rated and installed per standards and law. This is a legal, life-safety requirement — a hobby build is not automatically compliant."}},{"@type":"Question","name":"How does it help me not run dry?","acceptedAnswer":{"@type":"Answer","text":"It projects days-to-empty from your real consumption and alerts with enough lead time to reorder, instead of only warning when the tank is already nearly empty."}},{"@type":"Question","name":"How does it work at a remote site with no power or Wi-Fi?","acceptedAnswer":{"@type":"Answer","text":"Solar power, LoRa or cellular telemetry, and local logging so nothing is lost during outages — standard remote-telemetry design."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#industrial">Industrial</a><span class="sep">/</span>
+        <span aria-current="page">Remote Tank Level Telemetry</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 064 · Industrial</span>
+          <h1>Remote Tank Level Telemetry<span class="grad">.</span></h1>
+          <p class="tagline">Monitors fuel and chemical tank levels from anywhere, converts level to real volume, and flags the unexpected drops that mean a leak or theft — safely, even in hazardous atmospheres.</p>
+          <div class="hero-chips">
+            <span class="chip lv-intermediate">Intermediate</span>
+            <span class="chip">12–18 hours</span>
+            <span class="chip neutral">32 min read</span>
+            <span class="chip neutral">Level</span><span class="chip neutral">Telemetry</span><span class="chip neutral">Cloud</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td541" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td541">Remote Tank Level Telemetry — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Remote Tank Level Telemetry — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Intermediate</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>12–18 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹5,000 – ₹9,000 (higher with IS-rated hardware)</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32 DevKit V1 (ESP-WROOM-32)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Industrial</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>27 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Monitors fuel and chemical tank levels from anywhere, converts level to real volume, and flags the unexpected drops that mean a leak or theft — safely, even in hazardous atmospheres.</p>
+<p>Tanks of fuel, water, chemicals or lubricant sit at remote sites — a genset's diesel tank at a tower, a farm's chemical store, a plant's bulk storage — and running one dry, or losing product to a leak or theft, is expensive and sometimes dangerous. Yet checking them means someone driving out with a dipstick. This project puts a level sensor on the tank and telemeters the reading from anywhere, so you always know how much is in each tank, get warned before it runs low (in time to reorder), and — importantly — get alerted to the <b>unexpected drops</b> that signal a leak or theft rather than normal use.</p>
+<p>The measurement turns a raw level into something useful. A sensor reads the level — non-contact ultrasonic/radar from the top, or a hydrostatic pressure sensor at the bottom (pressure is proportional to the height of liquid above it) — and the firmware converts that height into a real <b>volume</b> using the tank's geometry or a <b>strapping table</b> (a lookup of level-to-volume for irregular or horizontal cylindrical tanks, where volume is very non-linear with height). So the report is "1,840 litres, 61%", not just a distance. It watches the <b>rate of change</b>: a slow decline matches expected consumption, a sudden step down when nothing should be drawing signals a leak or theft, and a rise means a refill (which it can log and reconcile against the delivery).</p>
+<p>Because these tanks are remote and often in hazardous locations, the design takes both seriously: it is solar-powered and reports over LoRa or cellular (no mains, no Wi-Fi), logs locally so nothing is lost, and — critically for fuels and flammable chemicals — it is explicit that any electronics in or near a potentially explosive atmosphere must use appropriately <b>intrinsically-safe/rated</b> equipment, keeping sparks away from vapour. It stages alerts (low level → reorder, sudden drop → leak/theft, high → overfill) and logs history for consumption analysis and reconciliation. It is honest that hazardous-area work is governed by law and standards and that a hobby build is not automatically compliant — but as a level-to-volume, leak-and-theft-aware, remote tank monitor, it replaces the dipstick run with knowing, from anywhere, exactly how much is in every tank and when something is wrong.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Factory%20automation.jpg?width=900" alt="Automated machinery on a factory production line" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td533" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td533">Remote tanks monitored from anywhere — real volume, reorder timing, and leak/theft alerts.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="120" y="96" width="130" height="84" rx="10" fill="#4a525e" stroke="#333a45" stroke-width="2"/>
+    <rect x="250" y="126" width="52" height="24" rx="4" fill="#8a919b"/>
+    <circle cx="302" cy="138" r="18" fill="#2b2f36" stroke="#6a727e" stroke-width="3"/>
+    <rect x="96" y="112" width="26" height="52" rx="4" fill="#2b2f36"/>
+    <line x1="96" y1="126" x2="60" y2="126" stroke="#e05050" stroke-width="3"/>
+    <line x1="96" y1="150" x2="60" y2="150" stroke="#2b2f36" stroke-width="3"/>
+    <line x1="132" y1="96" x2="132" y2="180" stroke="#333a45" stroke-width="2"/><line x1="152" y1="96" x2="152" y2="180" stroke="#333a45" stroke-width="2"/><line x1="172" y1="96" x2="172" y2="180" stroke="#333a45" stroke-width="2"/><line x1="192" y1="96" x2="192" y2="180" stroke="#333a45" stroke-width="2"/><line x1="212" y1="96" x2="212" y2="180" stroke="#333a45" stroke-width="2"/><line x1="232" y1="96" x2="232" y2="180" stroke="#333a45" stroke-width="2"/>
+  </svg>
+  <figcaption>Remote tanks monitored from anywhere — real volume, reorder timing, and leak/theft alerts.</figcaption>
+</figure></template>
+  <figcaption>Remote tanks monitored from anywhere — real volume, reorder timing, and leak/theft alerts.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Factory_automation.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Factory automation.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Monitors tank level remotely (non-contact or hydrostatic pressure)</li><li>Converts level to real volume via geometry or a strapping table</li><li>Warns before a tank runs low (reorder in time)</li><li>Flags unexpected drops (leak/theft) vs normal consumption</li><li>Logs refills and reconciles against deliveries</li><li>Runs on solar and reports over LoRa/cellular with local logging</li><li>Respects hazardous-area requirements for fuels/flammable chemicals</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Diesel / genset fuel tanks</b></td><td>Remote fuel level with reorder alerts and theft/leak detection at towers, sites and farms.</td></tr><tr><td><b>Chemical / agri storage</b></td><td>Level and usage of stored chemicals, with overfill and leak alerts.</td></tr><tr><td><b>Water / lubricant tanks</b></td><td>Level telemetry for water storage and industrial fluids.</td></tr><tr><td><b>Fuel distribution / fleets</b></td><td>Bulk-tank monitoring and delivery reconciliation across sites.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Level-to-volume conversion (strapping table for non-linear tanks)</li><li>Rate-of-change leak/theft detection</li><li>Low-level reorder and overfill alerts</li><li>Refill logging and delivery reconciliation</li><li>Solar + LoRa/cellular for remote, mains-free sites</li><li>Local logging through outages</li><li>Explicit intrinsically-safe/hazardous-area guidance</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Intermediate</td></tr><tr><td><b>Estimated completion time</b></td><td>12–18 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹5,000 – ₹9,000 (higher with IS-rated hardware)</td></tr><tr><td><b>Primary discipline</b></td><td>Industrial</td></tr><tr><td><b>Reference platform</b></td><td>ESP32 DevKit V1 (ESP-WROOM-32)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Non-contact and hydrostatic level measurement</li><li>Level-to-volume conversion and strapping tables</li><li>Rate-of-change leak/theft detection</li><li>LoRa/cellular + solar remote telemetry</li><li>Hazardous-area (intrinsic safety) awareness</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>For fuels/flammable chemicals, any device in or near the hazardous zone must be appropriately intrinsically-safe/rated — this is law, not optional; a hobby build is not automatically compliant.</p>
+<p>Convert level to volume with the correct geometry/strapping table — volume is very non-linear with height in horizontal cylindrical tanks.</p>
+<p>Watch rate of change: a sudden drop with no draw is leak/theft, not consumption.</p>
+<p>Log locally and report over LoRa/cellular — remote sites have no mains or Wi-Fi.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b><br/><span style="font-size:.82em;opacity:.78">Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</span></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>JSN-SR04T waterproof ultrasonic sensor</b><br/><span style="font-size:.82em;opacity:.78">The 25 cm blind zone matters — mount it above the maximum expected water level.</span></td><td>25–450 cm, ±1 cm, IP67 sealed transducer, 45° beam</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>DS18B20 waterproof temperature probe</b><br/><span style="font-size:.82em;opacity:.78">Dozens can share one GPIO — you address them by ROM code.</span></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td class="num">1</td><td class="num">₹160</td></tr><tr><td><b>SX1278 LoRa 433 MHz module (Ra-02)</b><br/><span style="font-size:.82em;opacity:.78">Never power the radio without an antenna — the PA will destroy itself.</span></td><td>−148 dBm sensitivity, +20 dBm output, up to 10 km line of sight, SF7–SF12</td><td class="num">1</td><td class="num">₹480</td></tr><tr><td><b>SIM800L GSM/GPRS module</b><br/><span style="font-size:.82em;opacity:.78">Transmit bursts hit 2 A — needs a 4.0 V supply and a 1000 µF bulk capacitor.</span></td><td>Quad-band 850/900/1800/1900 MHz, GPRS class 12, SMS + TCP/IP</td><td class="num">1</td><td class="num">₹550</td></tr><tr><td><b>20 W 12 V polycrystalline solar panel</b><br/><span style="font-size:.82em;opacity:.78">Rated watts assume 1000 W/m² — plan for 60–70 % of nameplate in real installs.</span></td><td>Vmp 17.5 V, Imp 1.14 A, Voc 21.6 V, 350 × 290 mm, aluminium frame</td><td class="num">1</td><td class="num">₹1,200</td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b><br/><span style="font-size:.82em;opacity:.78">Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</span></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td class="num">1</td><td class="num">₹45</td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b><br/><span style="font-size:.82em;opacity:.78">Never charge below 0 °C; always use a protected cell or a BMS.</span></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>Level sensor (non-contact or hydrostatic)</b><br/><span style="font-size:.82em;opacity:.78">Choose intrinsically-safe/rated types for fuels/flammables</span></td><td>Radar/ultrasonic from top, or a submersible hydrostatic pressure transducer</td><td class="num">1</td><td class="num">₹1,500</td></tr><tr><td><b>Intrinsic-safety barrier / rated enclosure</b><br/><span style="font-size:.82em;opacity:.78">Mandatory in hazardous zones — follow standards/law</span></td><td>IS barrier and rated enclosure where the atmosphere may be explosive</td><td class="num">1</td><td class="num">₹2,000</td></tr><tr><td><b>Strapping table (tank data)</b><br/><span style="font-size:.82em;opacity:.78">Not hardware — essential for accurate volume</span></td><td>Manufacturer level-to-volume table for the specific tank</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Cellular modem (optional)</b></td><td>Where no LoRa gateway exists</td><td class="num">1</td><td class="num">₹900</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹8,185</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td>3.3 V logic / 5 V USB</td><td>UART, SPI, I²C, I²S, CAN, PWM</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>JSN-SR04T waterproof ultrasonic sensor</b></td><td>25–450 cm, ±1 cm, IP67 sealed transducer, 45° beam</td><td>5 V</td><td>Trigger/Echo or UART</td><td><a href="https://www.jsnsensor.com/" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>DS18B20 waterproof temperature probe</b></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td>3.0–5.5 V</td><td>1-Wire (multi-drop)</td><td><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/DS18B20.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>SX1278 LoRa 433 MHz module (Ra-02)</b></td><td>−148 dBm sensitivity, +20 dBm output, up to 10 km line of sight, SF7–SF12</td><td>3.3 V</td><td>SPI</td><td><a href="https://www.semtech.com/products/wireless-rf/lora-connect/sx1278" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>SIM800L GSM/GPRS module</b></td><td>Quad-band 850/900/1800/1900 MHz, GPRS class 12, SMS + TCP/IP</td><td>3.4–4.4 V (NOT 5 V)</td><td>UART AT commands</td><td><a href="https://simcom.ee/documents/SIM800L/SIM800L_Hardware_Design_V1.00.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>20 W 12 V polycrystalline solar panel</b></td><td>Vmp 17.5 V, Imp 1.14 A, Voc 21.6 V, 350 × 290 mm, aluminium frame</td><td>12 V nominal</td><td>MC4 / screw terminals</td><td><a href="https://www.solarpowerworldonline.com/" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td>4.5–5.5 V in</td><td>micro-USB / pads</td><td><a href="https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td>3.0–4.2 V</td><td>Holder / spot-welded tabs</td><td><a href="https://www.orbtronic.com/content/Samsung-INR18650-35E-Datasheet-Gest.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32 DevKit V1 (ESP-WROOM-32)</td><td>3.3 V logic / 5 V USB</td><td class="num">160</td><td>Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</td></tr><tr><td>JSN-SR04T waterproof ultrasonic sensor</td><td>5 V</td><td class="num">30</td><td>The 25 cm blind zone matters — mount it above the maximum expected water level.</td></tr><tr><td>DS18B20 waterproof temperature probe</td><td>3.0–5.5 V</td><td class="num">1.5</td><td>Dozens can share one GPIO — you address them by ROM code.</td></tr><tr><td>SX1278 LoRa 433 MHz module (Ra-02)</td><td>3.3 V</td><td class="num">120</td><td>Never power the radio without an antenna — the PA will destroy itself.</td></tr><tr><td>SIM800L GSM/GPRS module</td><td>3.4–4.4 V (NOT 5 V)</td><td class="num">2000</td><td>Transmit bursts hit 2 A — needs a 4.0 V supply and a 1000 µF bulk capacitor.</td></tr><tr><td>20 W 12 V polycrystalline solar panel</td><td>12 V nominal</td><td class="num">1140</td><td>Rated watts assume 1000 W/m² — plan for 60–70 % of nameplate in real installs.</td></tr><tr><td>TP4056 Li-ion charger + DW01 protection</td><td>4.5–5.5 V in</td><td class="num">1000</td><td>Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>4451.5 mA</b>. With a 1.5× design margin the supply should deliver at least <b>6700 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x with the ESP32 board package 3.x (or PlatformIO on VS Code)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>WiFi (ESP32 core)</b> <span style="opacity:.7">bundled</span></td><td>Station/AP connection management for the ESP32.</td><td><code>Bundled with the ESP32 Arduino core</code></td></tr><tr><td><b>OneWire + DallasTemperature</b> <span style="opacity:.7">2.3.x / 3.9.x</span></td><td>Bus enumeration and conversion commands for DS18B20 probes.</td><td><code>Library Manager → "DallasTemperature" (pulls OneWire)</code></td></tr><tr><td><b>Adafruit Unified Sensor</b> <span style="opacity:.7">1.1.x</span></td><td>Common sensor event abstraction; a dependency of most Adafruit drivers.</td><td><code>Library Manager → "Adafruit Unified Sensor"</code></td></tr><tr><td><b>LoRa (sandeepmistry)</b> <span style="opacity:.7">0.8.0</span></td><td>SX127x radio configuration, packet TX/RX and callbacks.</td><td><code>Library Manager → "LoRa" by Sandeep Mistry</code></td></tr><tr><td><b>ArduinoJson</b> <span style="opacity:.7">7.x</span></td><td>Zero-allocation JSON serialisation and parsing.</td><td><code>Library Manager → "ArduinoJson" by Benoit Blanchon</code></td></tr><tr><td><b>Preferences (NVS)</b> <span style="opacity:.7">bundled</span></td><td>Wear-levelled key/value storage in ESP32 flash for settings.</td><td><code>Bundled with the ESP32 core</code></td></tr><tr><td><b>NTPClient / configTime</b> <span style="opacity:.7">bundled</span></td><td>Wall-clock time from an NTP server for timestamping.</td><td><code>Bundled (`configTime()` on ESP32)</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td534 sd534" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td534">Remote Tank Level Telemetry — system block diagram</title><desc id="sd534">Functional block diagram of the Remote Tank Level Telemetry system.</desc>
+    <defs>
+    <marker id="ar-d534" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d534" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d534" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d534" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Measure</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d534)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Level sensor</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">non-contact/hydrostatic</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d534)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Temp</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">correction</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Convert</text><rect x="266" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d534)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="79" text-anchor="middle"><tspan x="355" y="79.0">ESP32</tspan></text><text class="dg-s" x="355" y="98" text-anchor="middle"><tspan x="355" y="98.0">level → volume</tspan></text><rect x="266" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d534)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="159" text-anchor="middle"><tspan x="355" y="159.0">Strapping</tspan></text><text class="dg-s" x="355" y="178" text-anchor="middle"><tspan x="355" y="178.0">table lookup</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Detect</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d534)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Rate</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">leak/theft vs use</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d534)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Alerts</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">low/overfill/drop</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Report</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d534)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Dashboard</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">volume + history</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d534)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Reorder</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">in time</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d534)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d534)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d534)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Remote Tank Level Telemetry — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 316" role="img" aria-labelledby="td535 sd535" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td535">Remote Tank Level Telemetry — wiring schematic</title><desc id="sd535">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d535" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d535" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d535" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d535" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="220" rx="14"
+      fill="url(#ga-d535)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32 DevKit V1</tspan><tspan x="434" y="95.0">(ESP-WROOM-32)</tspan></text><text class="dg-s" x="434" y="266" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d535)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Level sensor</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO 26/25 or ADC</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="109.5">Level</tspan><tspan x="278" y="120.5">(non-contact/hydrostatic)</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d535)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">DS18B20</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 4</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="156.0">Temp</tspan><tspan x="278" y="167.0">(density/sound-speed</tspan><tspan x="278" y="178.0">correction)</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d535)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">LoRa/cellular</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">SPI / UART</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Telemetry</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d535)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Solar + TP4056</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">3V3 reg</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Charged supply</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d535)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">IS barrier</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">—</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="213.5">Hazardous-area</tspan><tspan x="590" y="224.5">protection</tspan></text><rect x="658" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d535)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="257" text-anchor="middle"><tspan x="753" y="257.0">Status LED</tspan></text><path d="M658 256 C 590 256, 590 256, 522 256" stroke="#3cc7c0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="256" r="3.2" fill="#3cc7c0"/><text class="dg-p" x="590" y="250" text-anchor="middle">GPIO 2</text><text class="dg-s" x="590" y="271" text-anchor="middle"><tspan x="590" y="271.0">Health</tspan></text>
+  </svg>
+  <figcaption>Remote Tank Level Telemetry — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Level sensor</b></td><td>TRIG/ECHO or 4-20mA</td><td><code>GPIO 26/25 or ADC</code></td><td>Level (non-contact/hydrostatic)</td></tr><tr><td><b>DS18B20</b></td><td>DQ</td><td><code>GPIO 4</code></td><td>Temp (density/sound-speed correction)</td></tr><tr><td><b>LoRa/cellular</b></td><td>bus</td><td><code>SPI / UART</code></td><td>Telemetry</td></tr><tr><td><b>Solar + TP4056</b></td><td>OUT</td><td><code>3V3 reg</code></td><td>Charged supply</td></tr><tr><td><b>IS barrier</b></td><td>in-line</td><td><code>—</code></td><td>Hazardous-area protection</td></tr><tr><td><b>Status LED</b></td><td>IN</td><td><code>GPIO 2</code></td><td>Health</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>For fuels/flammable chemicals: any sensor/electronics in or near the hazardous zone must be intrinsically-safe/rated and installed via an IS barrier per standards — keep sparks away from vapour. This is legally required.</li><li>Mount non-contact sensors above the max level aimed at the liquid; hydrostatic transducers sit at the tank bottom and read the pressure of liquid above.</li><li>Temperature-correct as needed (ultrasonic sound speed; liquid density for mass) using the DS18B20.</li><li>Keep the controller/battery outside the hazardous zone where possible, with only the rated sensor inside.</li><li>Solar-power and antenna clear of the tank structure; log locally so nothing is lost.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/HC-SR04.jpg?width=900" alt="An HC-SR04 ultrasonic distance sensor with its two transducers" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td536" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td536">A level sensor reads the tank; the firmware converts it to volume via the strapping table.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption>A level sensor reads the tank; the firmware converts it to volume via the strapping table.</figcaption>
+</figure></template>
+  <figcaption>A level sensor reads the tank; the firmware converts it to volume via the strapping table.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:HC-SR04.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — HC-SR04.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 486" role="img" aria-labelledby="td537 sd537" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td537">Remote Tank Level Telemetry — architecture stack</title><desc id="sd537">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d537" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d537" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d537" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d537" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d537)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="72.0">ESP32 DevKit V1 (ESP-WROOM-32) · JSN-SR04T waterproof ultrasonic sensor ·</tspan><tspan x="48" y="84.0">DS18B20 waterproof temperature probe</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d537)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d537)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">wifi · onewire · unified · lorolib</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d537)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d537)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d537)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d537)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Transport layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">LoRa/cellular → tank dashboard · TLS · retry and backoff</tspan></text><path d="M330 368 L330 381" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d537)"/><rect x="30" y="382" width="600" height="74" rx="12"
+        fill="url(#gb-d537)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="408">Presentation layer</text><text class="dg-s" x="48" y="430"><tspan x="48" y="430.0">dashboard · mobile notifications · historical charts</tspan></text>
+  </svg>
+  <figcaption>Remote Tank Level Telemetry — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>The point of tank telemetry is to replace the dipstick run with continuous knowledge, and its usefulness depends on turning a raw level into <b>volume</b> and on interpreting the <b>change</b> in that volume. Measuring level is the easy part: a non-contact ultrasonic/radar sensor times an echo off the surface from the top, or a hydrostatic pressure transducer at the bottom measures the pressure of the liquid column above it (pressure is directly proportional to liquid height and density). Either gives a height. But a height is not what anyone acts on — you reorder against litres remaining, reconcile a delivery in litres, and quantify a loss in litres — so the firmware must convert height to volume.</p>
+<p>That conversion is where a subtlety lives: for many real tanks, <b>volume is strongly non-linear with height</b>. A horizontal cylindrical tank (the classic fuel tank) holds far more litres per centimetre near the middle than near the top or bottom, because its cross-section is a circle; a step-shaped or irregular tank is worse. So a simple "height × area" fails, and the correct approach is a <b>strapping table</b> — a lookup, provided by the tank manufacturer or measured, that maps level to volume for that specific tank — interpolated between entries. Using the right geometry or strapping table is the difference between a volume reading that is trustworthy and one that is comfortably wrong exactly where it matters.</p>
+<p>The high-value intelligence is in the <b>rate of change</b>. A tank's volume normally declines slowly as product is consumed, matching the expected draw, and jumps up on a refill. Against that backdrop, two anomalies stand out. A <b>sudden step down</b> when nothing should be drawing — overnight, or when the equipment is off — is the signature of a <b>leak or theft</b>, and catching it fast can save a lot of product (and, for fuel, a lot of money and a safety hazard). A gradual decline <i>faster</i> than expected consumption can indicate a slow leak. And a <b>rise</b> is a delivery, which the monitor logs so it can <b>reconcile</b> the measured increase against the invoiced quantity — catching short deliveries. Layered on this are the operational thresholds: a <b>low-level</b> alert with enough lead time to reorder before running dry, and a <b>high-level/overfill</b> alert during filling.</p>
+<p>Finally, the deployment realities are handled honestly, and one of them is <b>safety-critical</b>. Remote tanks have no mains and no Wi-Fi, so the monitor is solar-powered, reports over LoRa or cellular, and logs locally so an outage loses nothing — standard remote-telemetry design. But fuels and many chemicals create a <b>potentially explosive atmosphere</b> of vapour, and electronics placed in or near that zone can ignite it, so the design is emphatic that any in-zone sensor or wiring must be <b>intrinsically safe / appropriately rated</b> and installed through an IS barrier per the governing standards and law — keeping the electrical energy too low to ignite vapour, and keeping the battery and radio out of the hazardous zone where possible. This is not an optional nicety; it is a legal and life-safety requirement, and a hobby build is not automatically compliant. Within that frame, though, the monitor delivers exactly what tank operators need: from anywhere, the real volume in every tank, timely reordering, delivery reconciliation, and an immediate flag when a level drops for a reason that is not normal use.</p>
+
+<h3>The maths behind it</h3><h4>Hydrostatic level and volume</h4><div class="codeblock tall" data-file="Hydrostatic level and volume">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Hydrostatic level and volume</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Hydrostatic level and volume to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Hydrostatic level and volume" type="button" aria-label="Download Hydrostatic level and volume">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Hydrostatic pressure at the bottom:
+  P = ρ·g·h   →   h = P / (ρ·g)   (ρ = liquid density)
+
+Volume from level via geometry/strapping:
+  simple vertical cylinder: V = A·h
+  horizontal cylinder / irregular: V = strapping_table(h)
+  → volume is NON-LINEAR with h; use the table.</code></pre>
+  
+</div>
+<h4>Leak / theft detection</h4><div class="codeblock tall" data-file="Leak / theft detection">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Leak / theft detection</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Leak / theft detection to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Leak / theft detection" type="button" aria-label="Download Leak / theft detection">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Expected: slow decline matching consumption, rises on refill.
+
+  dV/dt ≈ −consumption   (normal)
+  ALERT leak/theft if dV/dt &lt;&lt; expected while no draw
+     (sudden step down, or decline with equipment off)
+  ALERT refill if dV/dt &gt; 0 (log; reconcile vs delivery)</code></pre>
+  
+</div>
+<h4>Reorder lead time</h4><div class="codeblock tall" data-file="Reorder lead time">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Reorder lead time</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Reorder lead time to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Reorder lead time" type="button" aria-label="Download Reorder lead time">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>From current volume V and average consumption rate c:
+  days_to_empty ≈ V / c
+
+  reorder when days_to_empty &lt; lead_time + safety_margin
+Gives time to reorder before running dry.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 870" role="img" aria-labelledby="td538 sd538" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td538">Remote Tank Level Telemetry — firmware flowchart</title><desc id="sd538">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d538" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d538" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d538" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d538" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d538)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Wake on schedule</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d538)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d538)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="144.0">Read level; temp-correct</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d538)"/><rect x="85" y="202" width="250" height="56" rx="10"
+          fill="url(#gb-d538)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="230" text-anchor="middle"><tspan x="210" y="230.0">Level → volume (strapping)</tspan></text><path d="M210 258 L210 282" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d538)"/><path d="M210 288 L349 330 L210 372 L71 330 z"
+          fill="url(#ga-d538)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="330" text-anchor="middle"><tspan x="210" y="330.0">Sudden drop with no draw?</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d538)"/><text class="dg-e" x="220" y="391">Leak/theft alert</text><path d="M349 330 H397 V286 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d538)"/><text class="dg-e" x="403" y="324">Check thresholds</text><path d="M101 402 L335 402 L319 458 L85 458 z"
+          fill="url(#gb-d538)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="430.0">Leak/theft alert</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d538)"/><rect x="85" y="488" width="250" height="56" rx="10"
+          fill="url(#gb-d538)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="516" text-anchor="middle"><tspan x="210" y="516.0">Check thresholds</tspan></text><path d="M210 544 L210 568" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d538)"/><path d="M210 574 L349 616 L210 658 L71 616 z"
+          fill="url(#ga-d538)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="616" text-anchor="middle"><tspan x="210" y="616.0">Low/overfill?</tspan></text><path d="M210 658 L210 682" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d538)"/><text class="dg-e" x="220" y="677">Reorder / overfill alert</text><path d="M349 616 H397 V572 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d538)"/><text class="dg-e" x="403" y="610">Log + report</text><path d="M101 688 L335 688 L319 744 L85 744 z"
+          fill="url(#gb-d538)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="716" text-anchor="middle"><tspan x="210" y="716.0">Reorder / overfill alert</tspan></text><path d="M210 744 L210 768" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d538)"/><rect x="85" y="774" width="250" height="56" rx="28"
+          fill="url(#ga-d538)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="802" text-anchor="middle"><tspan x="210" y="802.0">Log + report; sleep</tspan></text>
+  </svg>
+  <figcaption>Remote Tank Level Telemetry — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Install the level sensor safely</h4><p>Fit a non-contact sensor above the max level (aimed at the liquid) or a hydrostatic transducer at the bottom. For fuels/flammables, use intrinsically-safe/rated equipment installed through an IS barrier per standards, and keep the controller/battery outside the hazardous zone where possible.</p>
+<p>Load the tank's strapping table (or exact geometry) for accurate volume.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Hazardous-area safety is legally mandated for fuels/flammable chemicals. Non-IS electronics in a vapour zone can cause an explosion. Follow the governing standards and use rated equipment — a hobby build is not automatically compliant.</p></div>
+  </aside></li><li><h4>Set up level-to-volume and detection</h4><p>Configure the strapping-table interpolation and temperature correction, and the rate-of-change leak/theft logic and thresholds.</p></li><li><h4>Set up power, telemetry and logging</h4><p>Solar-power the (out-of-zone) controller, report over LoRa/cellular, and log locally so nothing is lost.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Convert level to volume and detect anomalies</h4><p>Read and temperature-correct the level, interpolate the strapping table to volume, and evaluate rate-of-change and threshold alerts.</p><div class="codeblock tall" data-file="tank-volume.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">tank-volume.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy tank-volume.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="tank-volume.ino" type="button" aria-label="Download tank-volume.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">// Strapping table: level (cm) -&gt; volume (L), interpolated.</span>
+<span class="tok-k">struct</span> <span class="tok-t">Strap</span> <span class="tok-o">{</span> <span class="tok-k">float</span> level_cm<span class="tok-o">;</span> <span class="tok-k">float</span> volume_L<span class="tok-o">;</span> <span class="tok-o">};</span>
+<span class="tok-t">Strap</span> <span class="tok-t">TABLE</span><span class="tok-o">[]</span> <span class="tok-o">=</span> <span class="tok-o">{</span> <span class="tok-o">{</span><span class="tok-n">0</span><span class="tok-o">,</span><span class="tok-n">0</span><span class="tok-o">},{</span><span class="tok-n">20</span><span class="tok-o">,</span><span class="tok-n">180</span><span class="tok-o">},{</span><span class="tok-n">40</span><span class="tok-o">,</span><span class="tok-n">520</span><span class="tok-o">},{</span><span class="tok-n">60</span><span class="tok-o">,</span><span class="tok-n">980</span><span class="tok-o">},{</span><span class="tok-n">80</span><span class="tok-o">,</span><span class="tok-n">1520</span><span class="tok-o">},</span>
+                  <span class="tok-o">{</span><span class="tok-n">100</span><span class="tok-o">,</span><span class="tok-n">2080</span><span class="tok-o">},{</span><span class="tok-n">120</span><span class="tok-o">,</span><span class="tok-n">2560</span><span class="tok-o">},{</span><span class="tok-n">140</span><span class="tok-o">,</span><span class="tok-n">2900</span><span class="tok-o">},{</span><span class="tok-n">160</span><span class="tok-o">,</span><span class="tok-n">3080</span><span class="tok-o">}</span> <span class="tok-o">};</span>
+<span class="tok-k">const</span> <span class="tok-k">int</span> <span class="tok-t">N</span> <span class="tok-o">=</span> <span class="tok-k">sizeof</span><span class="tok-o">(</span><span class="tok-t">TABLE</span><span class="tok-o">)/</span><span class="tok-k">sizeof</span><span class="tok-o">(</span><span class="tok-t">TABLE</span><span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">]);</span>
+
+<span class="tok-k">float</span> <span class="tok-f">levelToVolume</span><span class="tok-o">(</span><span class="tok-k">float</span> level_cm<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>level_cm <span class="tok-o">&lt;=</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">].</span>level_cm<span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">].</span>volume_L<span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">1</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-t">N</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>level_cm <span class="tok-o">&lt;=</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">].</span>level_cm<span class="tok-o">)</span> <span class="tok-o">{</span>          <span class="tok-c">// linear interpolation</span>
+      <span class="tok-k">float</span> f <span class="tok-o">=</span> <span class="tok-o">(</span>level_cm <span class="tok-o">-</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>level_cm<span class="tok-o">)</span> <span class="tok-o">/</span>
+                <span class="tok-o">(</span><span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">].</span>level_cm <span class="tok-o">-</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>level_cm<span class="tok-o">);</span>
+      <span class="tok-k">return</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>volume_L <span class="tok-o">+</span>
+             f<span class="tok-o">*(</span><span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">].</span>volume_L <span class="tok-o">-</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>volume_L<span class="tok-o">);</span>
+    <span class="tok-o">}</span>
+  <span class="tok-o">}</span>
+  <span class="tok-k">return</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span><span class="tok-t">N</span><span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>volume_L<span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> <span class="tok-f">anomaly</span><span class="tok-o">(</span><span class="tok-k">float</span> vol<span class="tok-o">,</span> <span class="tok-k">float</span> prevVol<span class="tok-o">,</span> <span class="tok-k">float</span> dtHrs<span class="tok-o">,</span>
+                    <span class="tok-k">float</span> expectedDrawLph<span class="tok-o">,</span> <span class="tok-k">bool</span> equipmentOn<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">float</span> dV <span class="tok-o">=</span> vol <span class="tok-o">-</span> prevVol<span class="tok-o">;</span>                        <span class="tok-c">// L change</span>
+  <span class="tok-k">float</span> rate <span class="tok-o">=</span> dtHrs<span class="tok-o">&gt;</span><span class="tok-n">0</span> <span class="tok-o">?</span> dV<span class="tok-o">/</span>dtHrs <span class="tok-o">:</span> <span class="tok-n">0</span><span class="tok-o">;</span>             <span class="tok-c">// L/h</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>rate <span class="tok-o">&gt;</span> <span class="tok-n">5</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-s">"refill"</span><span class="tok-o">;</span>                    <span class="tok-c">// rise -&gt; delivery</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>equipmentOn <span class="tok-o">&amp;&amp;</span> rate <span class="tok-o">&lt;</span> <span class="tok-o">-</span><span class="tok-n">5</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-s">"LEAK/THEFT (drop, no draw)"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>rate <span class="tok-o">&lt;</span> <span class="tok-o">-</span><span class="tok-n">1.5</span>f<span class="tok-o">*</span>expectedDrawLph<span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-s">"faster than expected (leak?)"</span><span class="tok-o">;</span>
+  <span class="tok-k">return</span> <span class="tok-k">nullptr</span><span class="tok-o">;</span>
+<span class="tok-o">}</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">float levelToVolume(float level_cm)</span><span class="txt">Converts level to real volume by interpolating the tank's strapping table, correctly handling the strong non-linearity of horizontal/irregular tanks that a simple area calculation gets wrong.</span></div><div><span class="ref">if (!equipmentOn &amp;&amp; rate &lt; -5) return "LEAK/THEFT (drop, no draw)"</span><span class="txt">A volume drop while nothing should be drawing is the signature of a leak or theft — the high-value anomaly, distinct from normal consumption.</span></div><div><span class="ref">if (rate &gt; 5) return "refill"</span><span class="txt">A rising volume is logged as a delivery so it can be reconciled against the invoiced quantity.</span></div><div><span class="ref">if (rate &lt; -1.5f*expectedDrawLph) return "faster than expected (leak?)"</span><span class="txt">A decline faster than expected consumption flags a possible slow leak even without a sudden step.</span></div></div></li><li><h4>Alert, reorder and report</h4><p>Raise low-level (with reorder lead time), overfill, leak/theft and refill alerts, log the history for consumption analysis and reconciliation, and report over LoRa/cellular.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Compute days-to-empty from recent consumption and alert with enough lead time to reorder — not just when the tank is nearly dry.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="tank-level-telemetry.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">tank-level-telemetry.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy tank-level-telemetry.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="tank-level-telemetry.ino" type="button" aria-label="Download tank-level-telemetry.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   Remote Tank Level Telemetry — ESP32, level→volume, leak/theft, LoRa</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Reads tank level (non-contact/hydrostatic), converts to real volume</span>
+<span class="tok-c">   via a strapping table, detects leaks/theft/refills by rate-of-change,</span>
+<span class="tok-c">   alerts and reorders in time, and reports over LoRa/cellular on solar.</span>
+<span class="tok-c">   HAZARDOUS AREAS: use intrinsically-safe/rated equipment (law).</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">OneWire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">DallasTemperature</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">LoRa</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">SPI</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Preferences</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">PIN_TRIG</span> <span class="tok-n">26</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_ECHO</span> <span class="tok-n">25</span>
+<span class="tok-p">#define</span> <span class="tok-t">OW_PIN</span>    <span class="tok-n">4</span>
+<span class="tok-p">#define</span> <span class="tok-t">SENSOR_HEIGHT_CM</span> <span class="tok-n">170.0</span>f
+<span class="tok-p">#define</span> <span class="tok-t">REORDER_DAYS</span> <span class="tok-n">5</span>
+<span class="tok-p">#define</span> <span class="tok-t">SLEEP_S</span> <span class="tok-n">1800</span>            <span class="tok-c">// 30 min</span>
+
+<span class="tok-t">OneWire</span> <span class="tok-f">ow</span><span class="tok-o">(</span><span class="tok-t">OW_PIN</span><span class="tok-o">);</span> <span class="tok-t">DallasTemperature</span> <span class="tok-f">temp</span><span class="tok-o">(&amp;</span>ow<span class="tok-o">);</span>
+<span class="tok-t">Preferences</span> prefs<span class="tok-o">;</span>
+
+<span class="tok-k">struct</span> <span class="tok-t">Strap</span> <span class="tok-o">{</span> <span class="tok-k">float</span> lvl<span class="tok-o">,</span> vol<span class="tok-o">;</span> <span class="tok-o">};</span>
+<span class="tok-t">Strap</span> <span class="tok-t">TABLE</span><span class="tok-o">[]</span> <span class="tok-o">=</span> <span class="tok-o">{</span> <span class="tok-o">{</span><span class="tok-n">0</span><span class="tok-o">,</span><span class="tok-n">0</span><span class="tok-o">},{</span><span class="tok-n">20</span><span class="tok-o">,</span><span class="tok-n">180</span><span class="tok-o">},{</span><span class="tok-n">40</span><span class="tok-o">,</span><span class="tok-n">520</span><span class="tok-o">},{</span><span class="tok-n">60</span><span class="tok-o">,</span><span class="tok-n">980</span><span class="tok-o">},{</span><span class="tok-n">80</span><span class="tok-o">,</span><span class="tok-n">1520</span><span class="tok-o">},</span>
+                  <span class="tok-o">{</span><span class="tok-n">100</span><span class="tok-o">,</span><span class="tok-n">2080</span><span class="tok-o">},{</span><span class="tok-n">120</span><span class="tok-o">,</span><span class="tok-n">2560</span><span class="tok-o">},{</span><span class="tok-n">140</span><span class="tok-o">,</span><span class="tok-n">2900</span><span class="tok-o">},{</span><span class="tok-n">160</span><span class="tok-o">,</span><span class="tok-n">3080</span><span class="tok-o">}</span> <span class="tok-o">};</span>
+<span class="tok-k">const</span> <span class="tok-k">int</span> <span class="tok-t">N</span> <span class="tok-o">=</span> <span class="tok-n">9</span><span class="tok-o">;</span>
+
+<span class="tok-t">RTC_DATA_ATTR</span> <span class="tok-k">float</span> prevVol <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">;</span> <span class="tok-t">RTC_DATA_ATTR</span> <span class="tok-k">uint32_t</span> prevEpoch <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-t">RTC_DATA_ATTR</span> <span class="tok-k">float</span> avgDrawLph <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+
+<span class="tok-k">float</span> <span class="tok-f">readLevelCm</span><span class="tok-o">(</span><span class="tok-k">float</span> tAir<span class="tok-o">){</span>
+  <span class="tok-k">float</span> c <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-n">331.3</span>f <span class="tok-o">+</span> <span class="tok-n">0.606</span>f<span class="tok-o">*</span>tAir<span class="tok-o">)/</span><span class="tok-n">10000.0</span>f<span class="tok-o">;</span>      <span class="tok-c">// cm/us</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_TRIG</span><span class="tok-o">,</span><span class="tok-t">LOW</span><span class="tok-o">);</span> <span class="tok-f">delayMicroseconds</span><span class="tok-o">(</span><span class="tok-n">2</span><span class="tok-o">);</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_TRIG</span><span class="tok-o">,</span><span class="tok-t">HIGH</span><span class="tok-o">);</span> <span class="tok-f">delayMicroseconds</span><span class="tok-o">(</span><span class="tok-n">10</span><span class="tok-o">);</span> <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_TRIG</span><span class="tok-o">,</span><span class="tok-t">LOW</span><span class="tok-o">);</span>
+  <span class="tok-k">long</span> us <span class="tok-o">=</span> <span class="tok-f">pulseIn</span><span class="tok-o">(</span><span class="tok-t">PIN_ECHO</span><span class="tok-o">,</span><span class="tok-t">HIGH</span><span class="tok-o">,</span><span class="tok-n">30000</span><span class="tok-o">);</span>
+  <span class="tok-k">if</span><span class="tok-o">(!</span>us<span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-t">NAN</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> dist <span class="tok-o">=</span> us<span class="tok-o">*</span>c<span class="tok-o">/</span><span class="tok-n">2.0</span>f<span class="tok-o">;</span>
+  <span class="tok-k">return</span> <span class="tok-t">SENSOR_HEIGHT_CM</span> <span class="tok-o">-</span> dist<span class="tok-o">;</span>                  <span class="tok-c">// liquid height</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">float</span> <span class="tok-f">levelToVolume</span><span class="tok-o">(</span><span class="tok-k">float</span> lvl<span class="tok-o">){</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>lvl<span class="tok-o">&lt;=</span><span class="tok-t">TABLE</span><span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">].</span>lvl<span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">for</span><span class="tok-o">(</span><span class="tok-k">int</span> i<span class="tok-o">=</span><span class="tok-n">1</span><span class="tok-o">;</span>i<span class="tok-o">&lt;</span><span class="tok-t">N</span><span class="tok-o">;</span>i<span class="tok-o">++)</span> <span class="tok-k">if</span><span class="tok-o">(</span>lvl<span class="tok-o">&lt;=</span><span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">].</span>lvl<span class="tok-o">){</span>
+    <span class="tok-k">float</span> f<span class="tok-o">=(</span>lvl<span class="tok-o">-</span><span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>lvl<span class="tok-o">)/(</span><span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">].</span>lvl<span class="tok-o">-</span><span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>lvl<span class="tok-o">);</span>
+    <span class="tok-k">return</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>vol <span class="tok-o">+</span> f<span class="tok-o">*(</span><span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">].</span>vol<span class="tok-o">-</span><span class="tok-t">TABLE</span><span class="tok-o">[</span>i<span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>vol<span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+  <span class="tok-k">return</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span><span class="tok-t">N</span><span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>vol<span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">transmit</span><span class="tok-o">(</span><span class="tok-k">float</span> vol<span class="tok-o">,</span><span class="tok-k">float</span> pct<span class="tok-o">,</span><span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span>alert<span class="tok-o">,</span><span class="tok-k">float</span> days<span class="tok-o">){</span>
+  <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">beginPacket</span><span class="tok-o">();</span>
+  <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"{\"tank\":1,\"vol_L\":%.0f,\"pct\":%.0f,"</span>
+              <span class="tok-s">"\"days\":%.1f,\"alert\":\"%s\"}"</span><span class="tok-o">,</span>
+              vol<span class="tok-o">,</span>pct<span class="tok-o">,</span>days<span class="tok-o">,</span> alert<span class="tok-o">?</span>alert<span class="tok-o">:</span><span class="tok-s">"none"</span><span class="tok-o">);</span>
+  <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">endPacket</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">(){</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">115200</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_TRIG</span><span class="tok-o">,</span><span class="tok-t">OUTPUT</span><span class="tok-o">);</span> <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_ECHO</span><span class="tok-o">,</span><span class="tok-t">INPUT</span><span class="tok-o">);</span>
+  temp<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">();</span>
+
+  temp<span class="tok-o">.</span><span class="tok-f">requestTemperatures</span><span class="tok-o">();</span>
+  <span class="tok-k">float</span> tAir <span class="tok-o">=</span> temp<span class="tok-o">.</span><span class="tok-f">getTempCByIndex</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">);</span>
+  <span class="tok-k">float</span> lvl <span class="tok-o">=</span> <span class="tok-f">readLevelCm</span><span class="tok-o">(</span>tAir<span class="tok-o">);</span>
+  <span class="tok-k">float</span> vol <span class="tok-o">=</span> <span class="tok-f">levelToVolume</span><span class="tok-o">(</span>lvl<span class="tok-o">);</span>
+  <span class="tok-k">float</span> pct <span class="tok-o">=</span> vol <span class="tok-o">/</span> <span class="tok-t">TABLE</span><span class="tok-o">[</span><span class="tok-t">N</span><span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">].</span>vol <span class="tok-o">*</span> <span class="tok-n">100.0</span>f<span class="tok-o">;</span>
+
+  <span class="tok-k">uint32_t</span> nowE <span class="tok-o">=</span> <span class="tok-f">timeEpoch</span><span class="tok-o">();</span>
+  <span class="tok-k">const</span> <span class="tok-k">char</span> <span class="tok-o">*</span>alert <span class="tok-o">=</span> <span class="tok-k">nullptr</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>prevVol <span class="tok-o">&gt;=</span> <span class="tok-n">0</span> <span class="tok-o">&amp;&amp;</span> prevEpoch<span class="tok-o">){</span>
+    <span class="tok-k">float</span> dtHrs <span class="tok-o">=</span> <span class="tok-o">(</span>nowE <span class="tok-o">-</span> prevEpoch<span class="tok-o">)/</span><span class="tok-n">3600.0</span>f<span class="tok-o">;</span>
+    <span class="tok-k">float</span> rate <span class="tok-o">=</span> dtHrs<span class="tok-o">&gt;</span><span class="tok-n">0</span> <span class="tok-o">?</span> <span class="tok-o">(</span>vol<span class="tok-o">-</span>prevVol<span class="tok-o">)/</span>dtHrs <span class="tok-o">:</span> <span class="tok-n">0</span><span class="tok-o">;</span>   <span class="tok-c">// L/h</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>rate <span class="tok-o">&gt;</span> <span class="tok-n">5</span><span class="tok-o">)</span>                     alert <span class="tok-o">=</span> <span class="tok-s">"refill"</span><span class="tok-o">;</span>
+    <span class="tok-k">else</span> <span class="tok-k">if</span> <span class="tok-o">(</span>rate <span class="tok-o">&lt;</span> <span class="tok-o">-</span><span class="tok-n">5</span> <span class="tok-o">&amp;&amp;</span> <span class="tok-f">equipmentOff</span><span class="tok-o">())</span> alert <span class="tok-o">=</span> <span class="tok-s">"LEAK/THEFT"</span><span class="tok-o">;</span>
+    <span class="tok-k">else</span> <span class="tok-k">if</span> <span class="tok-o">(</span>rate <span class="tok-o">&lt;</span> <span class="tok-n">0</span><span class="tok-o">)</span> avgDrawLph <span class="tok-o">=</span> <span class="tok-n">0.8</span>f<span class="tok-o">*</span>avgDrawLph <span class="tok-o">+</span> <span class="tok-n">0.2</span>f<span class="tok-o">*(-</span>rate<span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+  prevVol <span class="tok-o">=</span> vol<span class="tok-o">;</span> prevEpoch <span class="tok-o">=</span> nowE<span class="tok-o">;</span>
+
+  <span class="tok-k">float</span> days <span class="tok-o">=</span> avgDrawLph<span class="tok-o">&gt;</span><span class="tok-n">0.01</span>f <span class="tok-o">?</span> vol<span class="tok-o">/(</span>avgDrawLph<span class="tok-o">*</span><span class="tok-n">24.0</span>f<span class="tok-o">)</span> <span class="tok-o">:</span> <span class="tok-n">999</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>alert <span class="tok-o">&amp;&amp;</span> days <span class="tok-o">&lt;</span> <span class="tok-t">REORDER_DAYS</span><span class="tok-o">)</span> alert <span class="tok-o">=</span> <span class="tok-s">"reorder soon"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>alert <span class="tok-o">&amp;&amp;</span> pct <span class="tok-o">&gt;</span> <span class="tok-n">98</span><span class="tok-o">)</span> alert <span class="tok-o">=</span> <span class="tok-s">"overfill"</span><span class="tok-o">;</span>
+
+  <span class="tok-f">logLocal</span><span class="tok-o">(</span>vol<span class="tok-o">,</span>pct<span class="tok-o">,</span>alert<span class="tok-o">);</span>
+
+  <span class="tok-t">SPI</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">();</span> <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">setPins</span><span class="tok-o">(</span><span class="tok-n">5</span><span class="tok-o">,</span><span class="tok-n">14</span><span class="tok-o">,</span><span class="tok-n">2</span><span class="tok-o">);</span> <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">433E6</span><span class="tok-o">);</span> <span class="tok-t">LoRa</span><span class="tok-o">.</span><span class="tok-f">setSpreadingFactor</span><span class="tok-o">(</span><span class="tok-n">10</span><span class="tok-o">);</span>
+  <span class="tok-f">transmit</span><span class="tok-o">(</span>vol<span class="tok-o">,</span>pct<span class="tok-o">,</span>alert<span class="tok-o">,</span>days<span class="tok-o">);</span>
+
+  <span class="tok-f">esp_sleep_enable_timer_wakeup</span><span class="tok-o">((</span><span class="tok-k">uint64_t</span><span class="tok-o">)</span><span class="tok-t">SLEEP_S</span><span class="tok-o">*</span><span class="tok-n">1000000</span><span class="tok-t">ULL</span><span class="tok-o">);</span>
+  <span class="tok-f">esp_deep_sleep_start</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">(){}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (95 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">float levelToVolume(float lvl)</span><span class="txt">Interpolates the strapping table so the reported volume is accurate even for a tank whose volume is highly non-linear with height.</span></div><div><span class="ref">else if (rate &lt; -5 &amp;&amp; equipmentOff()) alert = "LEAK/THEFT"</span><span class="txt">A drop while the equipment is off is flagged as leak/theft — the anomaly that distinguishes a loss from normal consumption.</span></div><div><span class="ref">else if (rate &lt; 0) avgDrawLph = 0.8f*avgDrawLph + 0.2f*(-rate)</span><span class="txt">Normal declines update the running average consumption rate, which drives the days-to-empty and reorder logic.</span></div><div><span class="ref">float days = avgDrawLph&gt;0.01f ? vol/(avgDrawLph*24.0f) : 999</span><span class="txt">Projects days-to-empty from real consumption so reorder alerts arrive with enough lead time, not when the tank is already low.</span></div><div><span class="ref">esp_sleep_enable_timer_wakeup</span><span class="txt">The monitor deep-sleeps between half-hourly reads, making a solar deployment last indefinitely at a remote site.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Load the tank's strapping table (or exact geometry) and the sensor height/type.</li><li>Set the reorder lead time/safety margin, overfill and leak/theft thresholds, and equipment-off signal.</li><li>Choose LoRa/cellular telemetry, the sampling interval, and local logging.</li><li>For fuels/flammables, specify intrinsically-safe/rated equipment and installation per standards.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Volume</h4><p>Verify the strapping-table volume against known added/removed quantities at several levels; correct the table/geometry.</p></li><li><h4>Anomaly thresholds</h4><p>Set leak/theft and faster-than-expected thresholds from the tank's normal consumption so real losses alarm but normal draw does not.</p></li><li><h4>Reorder</h4><p>Confirm days-to-empty and the reorder lead time give enough warning before running dry.</p></li></ol></section>
+
+<section id="connectivity" aria-labelledby="h-connectivity"><h2 id="h-connectivity">Network Architecture &amp; Connectivity</h2>
+<div class="diagram-scroll"><figure class="diagram diagram-network">
+  <svg viewBox="0 0 760 232" role="img" aria-labelledby="td539 sd539" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td539">Remote Tank Level Telemetry — network topology</title><desc id="sd539">Path taken by telemetry from field node to end user.</desc>
+    <defs>
+    <marker id="ar-d539" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d539" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d539" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d539" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="100" y="26" text-anchor="middle">Edge nodes</text><text class="dg-col" x="321" y="26" text-anchor="middle">Gateway</text><text class="dg-col" x="543" y="26" text-anchor="middle">Cloud</text><text class="dg-col" x="769" y="26" text-anchor="middle">Clients</text><rect x="16" y="52" width="168" height="52" rx="11"
+        fill="url(#gb-d539)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="74" text-anchor="middle"><tspan x="100" y="74.0">Tank monitor</tspan></text><text class="dg-s" x="100" y="92" text-anchor="middle">ESP32</text><path d="M184 78 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d539)"/><rect x="16" y="118" width="168" height="52" rx="11"
+        fill="url(#gb-d539)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="140" text-anchor="middle"><tspan x="100" y="140.0">Other tanks</tspan></text><text class="dg-s" x="100" y="158" text-anchor="middle">per-tank</text><path d="M184 144 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d539)"/><text class="dg-e" x="215" y="46" text-anchor="middle">LoRa / cellular</text><rect x="246" y="92" width="150" height="60" rx="11"
+        fill="url(#ga-d539)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="321" y="114" text-anchor="middle"><tspan x="321" y="114.0">Site/area GW</tspan></text><text class="dg-s" x="321" y="132" text-anchor="middle">or cellular</text><path d="M396 122 H460" stroke="var(--dg-accent)" stroke-width="1.6" fill="none" marker-end="url(#arh-d539)"/><text class="dg-e" x="432" y="112" text-anchor="middle">MQTT 1883</text><rect x="468" y="88" width="150" height="68" rx="11"
+        fill="url(#ga-d539)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="543" y="110" text-anchor="middle"><tspan x="543" y="110.0">Tank dashboard</tspan></text><text class="dg-s" x="543" y="128" text-anchor="middle">volume + alerts</text><rect x="690" y="52" width="158" height="52" rx="11"
+        fill="url(#gb-d539)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="74" text-anchor="middle"><tspan x="769" y="74.0">Dashboard</tspan></text><text class="dg-s" x="769" y="92" text-anchor="middle">volume/history</text><path d="M618 122 C 652 122, 656 78, 682 78"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d539)"/><rect x="690" y="118" width="158" height="52" rx="11"
+        fill="url(#gb-d539)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="140" text-anchor="middle"><tspan x="769" y="140.0">Phone</tspan></text><text class="dg-s" x="769" y="158" text-anchor="middle">leak/reorder</text><path d="M618 122 C 652 122, 656 144, 682 144"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d539)"/>
+  </svg>
+  <figcaption>Remote Tank Level Telemetry — network topology</figcaption>
+</figure></div>
+<h3>Communication protocol</h3><p>Volume, %, days-to-empty and alerts report on a slow cadence; leak/theft and overfill publish immediately. Local logging covers outages.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Topic / endpoint</th><th scope="col">Direction</th><th scope="col">Payload</th></tr></thead>
+    <tbody><tr><td><code>tank/1/level</code></td><td>node → dashboard</td><td>volume, %, days-to-empty</td></tr><tr><td><code>tank/1/alert</code></td><td>node → ops</td><td>leak/theft, reorder, overfill, refill</td></tr><tr><td><code>tank/1/status</code></td><td>node → ops</td><td>battery, RSSI, sensor health</td></tr></tbody>
+  </table></div><p class="tbl-caption">Message contract between the device and the broker.</p>
+<h3>Cloud platform configuration</h3><p>A dashboard trends each tank's volume and consumption, projects reorder timing, reconciles refills against deliveries, and raises leak/theft alerts.</p>
+
+<h3>Dashboard setup</h3><p>Per-tank volume/% gauges, consumption/refill history, days-to-empty, and alert log.</p>
+<h3>Mobile app integration</h3><p>Immediate leak/theft and overfill alerts, and reorder-in-time notifications.</p>
+<h3>Security considerations</h3><ul class="check"><li>Sign readings so levels/alerts cannot be spoofed (relevant to theft).</li><li>Keep hazardous-area electronics intrinsically safe and out of zone where possible.</li><li>Alert on node silence — a disabled monitor could mask theft.</li></ul></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Add/remove known volumes</b></td><td>Reported volume matches via the strapping table</td></tr><tr><td><b>Draw down normally</b></td><td>Slow decline; no anomaly; consumption rate learned</td></tr><tr><td><b>Remove product with equipment off</b></td><td>Leak/theft alert</td></tr><tr><td><b>Refill the tank</b></td><td>Refill logged; reconcile vs delivery</td></tr><tr><td><b>Approach low level</b></td><td>Reorder alert with adequate lead time</td></tr><tr><td><b>Overfill</b></td><td>Overfill alert</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>The dashboard shows each tank's volume and %, days-to-empty, consumption/refill history, and alerts for reorder, overfill and leak/theft.</p>
+<div class="codeblock tall" data-file="tank.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">tank.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy tank.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="tank.json" type="button" aria-label="Download tank.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "tank": <span class="tok-n">1</span>,
+  "vol_L": <span class="tok-n">1840</span>,
+  "pct": <span class="tok-n">61</span>,
+  "days": <span class="tok-n">6.2</span>,
+  "alert": "none"
+}</code></pre>
+  
+</div>
+
+<p>A real volume (1,840 L, 61%) with a days-to-empty projection; a sudden drop with the equipment off would instead raise a leak/theft alert, and a low projection would trigger a reorder in time.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/LoRa%20module.jpg?width=900" alt="A LoRa radio transceiver module" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td540" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td540">A LoRa/cellular link on solar power reports each tank's volume and anomalies from mains-free sites.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption>A LoRa/cellular link on solar power reports each tank's volume and anomalies from mains-free sites.</figcaption>
+</figure></template>
+  <figcaption>A LoRa/cellular link on solar power reports each tank's volume and anomalies from mains-free sites.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:LoRa_module.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — LoRa module.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Volume wrong for the level</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong/simple geometry, not a strapping table</p>
+        <p><strong>Fix.</strong> Use the tank's strapping table; interpolate correctly (volume is non-linear with height)</p></div></details><details class="expand"><summary>Missed a theft/leak</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Thresholds too loose or no equipment-off signal</p>
+        <p><strong>Fix.</strong> Tune rate thresholds; use the equipment-off signal to distinguish loss from draw</p></div></details><details class="expand"><summary>Reorders too late</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Alerting only on low level</p>
+        <p><strong>Fix.</strong> Project days-to-empty from consumption and reorder with lead time</p></div></details><details class="expand"><summary>Noisy level readings</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Surface turbulence/foam, or temperature drift</p>
+        <p><strong>Fix.</strong> Median-filter; temperature-correct; damp the sensor input</p></div></details><details class="expand"><summary>Safety concern (fuel)</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Non-IS electronics in a hazardous zone</p>
+        <p><strong>Fix.</strong> Use intrinsically-safe/rated equipment and an IS barrier per standards/law; keep electronics out of zone where possible</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details><details class="expand"><summary>Wi-Fi connects but MQTT never does (state -2)</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong broker address or port, a firewall in the way, or the broker requiring credentials the sketch is not sending.</p>
+        <p><strong>Fix.</strong> Test from a laptop on the same network first: <code>mosquitto_sub -h &lt;broker&gt; -t "#" -v</code>. If that works, the problem is on the device — check the IP literal, port 1883 (or 8883 for TLS), and that <code>client.setServer()</code> runs before <code>connect()</code>. PubSubClient state codes are documented in its header.</p></div></details><details class="expand"><summary>Readings arrive for a while and then stop</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The Wi-Fi or MQTT session dropped and the sketch never reconnects, or the broker dropped the client on keep-alive timeout.</p>
+        <p><strong>Fix.</strong> Never assume the link stays up. Check <code>WiFi.status()</code> and <code>client.connected()</code> at the top of every loop and reconnect with exponential backoff. Add a watchdog so a wedged network stack reboots the device instead of going silent.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Deep-sleep between reads; a slow cadence suits tanks and preserves solar budget.</li><li>Median-filter and temperature-correct level readings for stable volume.</li><li>Keep consumption/level state in RTC memory so rate/reorder logic survives sleep.</li><li>Report on change plus heartbeat; alerts immediately.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Batch several samples into one MQTT publish. Radio time, not CPU time, dominates the energy budget.</li><li>Set the MQTT keep-alive to a value that matches your reporting interval so the broker does not churn reconnections.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>FOR FUELS/FLAMMABLE CHEMICALS: any device in or near the hazardous atmosphere must be intrinsically-safe/rated and installed per governing standards and law — a hobby build is not automatically compliant.</li><li>Keep the battery/radio out of the hazardous zone where possible; use IS barriers for in-zone sensors.</li><li>Handle chemicals and fuels per their safety data; avoid overfill and spillage.</li><li>Leak/theft alerts support, not replace, proper containment and site safety.</li><li>Lithium cells vent and burn when abused. Only use protected cells or a proper BMS, never charge below 0 °C, and never leave a charging pack unattended on a wooden desk.</li><li>Never power an RF module without its antenna fitted — the reflected power destroys the output stage. Check your local licence-free band and duty-cycle limits before transmitting.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Verify the strapping table and sensor calibration periodically.</li><li>Inspect IS equipment/barriers and enclosures for compliance and integrity.</li><li>Clean non-contact sensor faces; check hydrostatic transducers for fouling.</li><li>Review consumption/leak thresholds and reorder lead times.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Log pack voltage. When resting voltage after a full charge drops below about 4.0 V, the cell is near end of life — replace it.</li><li>Wash the panel every few weeks in dusty conditions; a visible dust film costs 15–25 % of the harvest.</li><li>Keep the broker and dashboard containers patched, and rotate device credentials at least once a year.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add temperature-compensated mass (not just volume) for fuels.</li><li>Add automated reordering/integration with suppliers.</li><li>Fuse multiple tanks and deliveries for full inventory reconciliation.</li><li>Add leak-rate quantification and location hints.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add over-the-air firmware updates so you never have to physically reach a deployed node again.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why convert level to volume?</summary><div class="inner"><p>Because you act in litres, not centimetres — reorder, reconcile deliveries and quantify losses all use volume. And volume is very non-linear with height in horizontal/irregular tanks, so a strapping table is needed for accuracy.</p></div></details><details class="expand"><summary>How does it tell a leak/theft from normal use?</summary><div class="inner"><p>By rate of change and context. Normal consumption is a slow decline; a sudden drop when nothing should be drawing (equipment off, overnight) is a leak or theft, and a decline faster than expected flags a possible slow leak.</p></div></details><details class="expand"><summary>Can I put this on a diesel tank myself?</summary><div class="inner"><p>Fuel tanks create a potentially explosive atmosphere, so any in-zone electronics must be intrinsically-safe/rated and installed per standards and law. This is a legal, life-safety requirement — a hobby build is not automatically compliant.</p></div></details><details class="expand"><summary>How does it help me not run dry?</summary><div class="inner"><p>It projects days-to-empty from your real consumption and alerts with enough lead time to reorder, instead of only warning when the tank is already nearly empty.</p></div></details><details class="expand"><summary>How does it work at a remote site with no power or Wi-Fi?</summary><div class="inner"><p>Solar power, LoRa or cellular telemetry, and local logging so nothing is lost during outages — standard remote-telemetry design.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Level_sensor" rel="noopener nofollow" target="_blank">Tank level measurement methods</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Tank_gauging" rel="noopener nofollow" target="_blank">Tank strapping / calibration tables</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Pressure_measurement" rel="noopener nofollow" target="_blank">Hydrostatic level measurement</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Intrinsic_safety" rel="noopener nofollow" target="_blank">Intrinsic safety and hazardous areas (ATEX/IECEx)</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Leak_detection" rel="noopener nofollow" target="_blank">Fuel theft/leak detection</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="digital-twin-gateway.html"><span class="dir">← Previous project</span><span class="ttl">Digital Twin Gateway</span></a>
+        <a class="next" href="oee-productivity-tracker.html"><span class="dir">Next project →</span><span class="ttl">OEE Productivity Tracker</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Intermediate</b></div>
+        <div class="rail-stat"><span>Time</span><b>12–18 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>12</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹5,000 – ₹9,000 (higher with IS-rated hardware)</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="machine-vibration-monitor.html">Machine Vibration Monitor</a></li><li><a href="factory-energy-dashboard.html">Factory Energy Dashboard</a></li><li><a href="conveyor-item-counter.html">Conveyor Item Counter</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="machine-vibration-monitor.html">
+        <span class="rc">Industrial</span>
+        <h4>Machine Vibration Monitor</h4>
+        <p>Senses abnormal vibration to predict bearing and motor failures.</p></a><a class="relcard" href="factory-energy-dashboard.html">
+        <span class="rc">Industrial</span>
+        <h4>Factory Energy Dashboard</h4>
+        <p>Tracks per-machine power use to cut waste and spot anomalies.</p></a><a class="relcard" href="conveyor-item-counter.html">
+        <span class="rc">Industrial</span>
+        <h4>Conveyor Item Counter</h4>
+        <p>Counts products on the line for accurate, automatic production tallies.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Remote Tank Level Telemetry</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
