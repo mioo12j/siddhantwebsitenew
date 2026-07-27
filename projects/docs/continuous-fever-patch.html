@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Continuous Fever Patch — Circuit, Code &amp; Full Build Guide | Health &amp; Wearables</title>
+  <meta name="description" content="Complete intermediate-level build guide for a Continuous Fever Patch: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="continuous fever patch, continuous fever patch project, how to build continuous fever patch, esp32 devkit v1 project, health &amp; wearables project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/continuous-fever-patch.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/continuous-fever-patch.html" />
+  <meta property="og:title" content="Continuous Fever Patch — Circuit, Code &amp; Full Build Guide | Health &amp; Wearables" />
+  <meta property="og:description" content="Complete intermediate-level build guide for a Continuous Fever Patch: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Health &amp; Wearables" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-27" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Continuous Fever Patch — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete intermediate-level build guide for a Continuous Fever Patch: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🌡️</text></svg>" />
+  <style>:root{--acc:#22d3ee;--acc-light:#67e8f9;--acc-rgb:34,211,238}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/continuous-fever-patch.html#article","headline":"Continuous Fever Patch — Complete Build Guide","name":"Continuous Fever Patch","description":"Complete intermediate-level build guide for a Continuous Fever Patch: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/continuous-fever-patch.html","inLanguage":"en","articleSection":"Health & Wearables","keywords":"continuous fever patch, continuous fever patch project, how to build continuous fever patch, esp32 devkit v1 project, health & wearables project, circuit diagram, source code, tutorial","proficiencyLevel":"Intermediate","dependencies":"OneWire + DallasTemperature, Preferences (NVS), ArduinoJson","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-27","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/continuous-fever-patch.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/continuous-fever-patch.html#howto","name":"How to build a Continuous Fever Patch","description":"Complete intermediate-level build guide for a Continuous Fever Patch: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT12H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"10305"},"supply":[{"@type":"HowToSupply","name":"ESP32 DevKit V1 (ESP-WROOM-32)"},{"@type":"HowToSupply","name":"DS18B20 waterproof temperature probe"},{"@type":"HowToSupply","name":"SHT31-D temperature + humidity sensor"},{"@type":"HowToSupply","name":"18650 Li-ion cell 3400 mAh + holder"},{"@type":"HowToSupply","name":"TP4056 Li-ion charger + DW01 protection"},{"@type":"HowToSupply","name":"Double-sided perfboard 7 × 9 cm + headers"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Continuous Fever Patch","item":"https://siddhantkumar.in/projects/docs/continuous-fever-patch.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/continuous-fever-patch.html#faq","mainEntity":[{"@type":"Question","name":"Why not just use one sensor against the skin?","acceptedAnswer":{"@type":"Answer","text":"Because skin temperature is not body temperature. It sits 1.5–3 °C below core, and the offset changes with ambient temperature, blood flow and clothing. A single sensor with a fixed offset is accurate only under the exact conditions you calibrated it in, and it reports a plausible-looking wrong number outside them. The second sensor measures the gradient, which is what lets you correct for the conditions."}},{"@type":"Question","name":"How accurate is the core estimate?","acceptedAnswer":{"@type":"Answer","text":"After per-wearer calibration, within about 0.3 °C under conditions similar to the calibration. It degrades when ambient temperature changes substantially, or when vasoconstriction changes — a shivering patient has very different core-to-skin resistance. Treat it as an accurate trend and a rough absolute."}},{"@type":"Question","name":"Where should the patch go?","acceptedAnswer":{"@type":"Answer","text":"Under the arm (axilla) is the classic site and gives the smallest core offset. The chest and the upper back are more comfortable for long wear and more movement-stable, at the cost of a slightly larger offset — which the calibration absorbs. Forehead is worst: highly exposed to ambient and to evaporation."}},{"@type":"Question","name":"Why does it take 20 minutes to stabilise?","acceptedAnswer":{"@type":"Answer","text":"Thermal mass. The patch, its potting and the adhesive all have to reach equilibrium with the skin, and the skin under the patch has to reach equilibrium with the reduced heat loss. Any reading in the first 15 minutes after attachment is transitional — the firmware should arguably suppress it entirely, as a clinical device would."}},{"@type":"Question","name":"Can this replace a thermometer?","acceptedAnswer":{"@type":"Answer","text":"No. It is not validated, not calibrated to a traceable standard, and not regulated. What it does that a thermometer cannot is show you the shape of the curve overnight, which is genuinely useful information a spot check cannot provide. Use both."}},{"@type":"Question","name":"Is BLE safe for continuous wear?","acceptedAnswer":{"@type":"Answer","text":"BLE transmits at about 1–10 mW, which is orders of magnitude below a mobile phone and far below any established thermal or non-thermal effect threshold. The bigger practical concern with continuous wear is adhesive irritation, not radio exposure."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#health-and-wearables">Health &amp; Wearables</a><span class="sep">/</span>
+        <span aria-current="page">Continuous Fever Patch</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 019 · Health &amp; Wearables</span>
+          <h1>Continuous Fever Patch<span class="grad">.</span></h1>
+          <p class="tagline">A skin patch that streams axillary temperature every thirty seconds over BLE — with the thermal modelling that turns a skin reading into something that actually tracks core temperature.</p>
+          <div class="hero-chips">
+            <span class="chip lv-intermediate">Intermediate</span>
+            <span class="chip">10–14 hours</span>
+            <span class="chip neutral">36 min read</span>
+            <span class="chip neutral">Sensor</span><span class="chip neutral">BLE</span><span class="chip neutral">Health</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td155" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td155">Continuous Fever Patch — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Continuous Fever Patch — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Intermediate</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>10–14 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹2,400 – ₹3,400</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32 DevKit V1 (ESP-WROOM-32)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Health &amp; Wearables</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>27 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 25 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">A skin patch that streams axillary temperature every thirty seconds over BLE — with the thermal modelling that turns a skin reading into something that actually tracks core temperature.</p>
+<p>A thermometer under the arm is a spot check. What matters clinically in a feverish child is the <em>trajectory</em>: is the temperature climbing, has an antipyretic taken effect, did it spike at 3 a.m. while everyone was asleep. Continuous measurement answers those questions and a spot check does not, which is why continuous patches exist commercially at ten times the cost of this build.</p>
+<p>The hard part is not measurement — a DS18B20 or an MAX30205 resolves 0.0625 °C without effort. The hard part is that <b>skin temperature is not core temperature</b>. A sensor against the skin sits in a thermal gradient between the body and the room, and the offset depends on ambient temperature, blood flow, sweat, clothing and how firmly the sensor is held. Reporting raw skin temperature as if it were body temperature is the single most common error in these projects, and it produces readings that are two degrees low and confidently wrong.</p>
+<p>This design addresses that with a <b>dual-sensor heat-flux approach</b>. One sensor sits against the skin; a second sits on the outer face of a known insulating layer. The difference between them measures heat flowing outward, and a simple thermal model estimates the temperature at the other end of the gradient — the core. It is the same principle used by commercial zero-heat-flux thermometers, implemented simply.</p>
+<p>The rest of the design is about being wearable. It must be small, comfortable, safe against skin for days, run for a week, and — most importantly — must fail visibly rather than silently, because a parent watching a fever needs to know when the device has stopped reporting.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Fitness%20tracker.jpg?width=900" alt="A wrist-worn fitness tracker" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td149" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td149">A body-worn wearable. A fever patch must be thin, light and comfortable enough to stay attached for days — the measurement is worthless if it is removed.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption>A body-worn wearable. A fever patch must be thin, light and comfortable enough to stay attached for days — the measurement is worthless if it is removed.</figcaption>
+</figure></template>
+  <figcaption>A body-worn wearable. A fever patch must be thin, light and comfortable enough to stay attached for days — the measurement is worthless if it is removed.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Fitness_tracker.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Fitness tracker.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Measures skin and outer-surface temperature every 30 seconds with 0.0625 °C resolution.</li><li>Estimates core temperature using a two-sensor heat-flux model calibrated per wearer.</li><li>Streams readings over BLE to a phone, with local buffering for up to 12 hours out of range.</li><li>Alerts on threshold crossing and on rate of rise, both configurable.</li><li>Detects when the patch has come loose or lost skin contact, and says so rather than reporting garbage.</li><li>Logs a full temperature trace for review and export.</li><li>Runs for about a week on a small lithium cell.</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Paediatric fever monitoring</b></td><td>The primary case — overnight trajectory in a feverish child, without waking them every two hours.</td></tr><tr><td><b>Post-operative infection watch</b></td><td>A rising temperature is often the first sign of a surgical site infection, and continuous monitoring catches it a day earlier.</td></tr><tr><td><b>Elderly care</b></td><td>Older adults often mount a blunted fever response; a small but sustained rise is significant and easy to miss on spot checks.</td></tr><tr><td><b>Antipyretic effectiveness</b></td><td>Seeing exactly when and how much paracetamol brought a temperature down is genuinely informative.</td></tr><tr><td><b>Ovulation and cycle tracking</b></td><td>Basal body temperature shifts of about 0.3 °C are detectable with continuous overnight measurement.</td></tr><tr><td><b>Occupational heat stress</b></td><td>The same hardware with different thresholds monitors workers in hot environments.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li><b>Dual-sensor heat-flux estimation</b> rather than a naive skin reading plus a fixed offset.</li><li><b>Per-wearer calibration</b> against a reference thermometer, stored in flash.</li><li><b>Contact detection</b> from the skin-to-ambient gradient — a detached patch is obvious.</li><li><b>Rate-of-rise alerting</b>, which catches a developing fever before the absolute threshold.</li><li><b>12-hour local ring buffer</b> so a night out of BLE range loses nothing.</li><li><b>Configurable thresholds</b> with separate warning and alert levels.</li><li><b>Low-power design</b> at about 60 µA average through aggressive duty cycling.</li><li><b>Visible failure</b>: the device reports staleness rather than repeating the last good value.</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Intermediate</td></tr><tr><td><b>Estimated completion time</b></td><td>10–14 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹2,400 – ₹3,400</td></tr><tr><td><b>Primary discipline</b></td><td>Health &amp; Wearables</td></tr><tr><td><b>Reference platform</b></td><td>ESP32 DevKit V1 (ESP-WROOM-32)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Arduino C++ and 1-Wire or I²C sensor reading</li><li>Basic heat-transfer intuition — conduction, thermal resistance, gradients</li><li>Two-point sensor calibration</li><li>BLE GATT services</li><li>Low-power design and deep sleep</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>This is not a clinical thermometer and must not be used to make a treatment decision. Confirm any concerning reading with a validated device before acting on it, and see a doctor for a genuinely unwell person.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b><br/><span style="font-size:.82em;opacity:.78">Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</span></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>DS18B20 waterproof temperature probe</b><br/><span style="font-size:.82em;opacity:.78">Dozens can share one GPIO — you address them by ROM code.</span></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td class="num">2</td><td class="num">₹320</td></tr><tr><td><b>SHT31-D temperature + humidity sensor</b><br/><span style="font-size:.82em;opacity:.78">The built-in heater burns off condensation — essential for outdoor or greenhouse use.</span></td><td>−40 to +125 °C ±0.2 °C, 0–100 %RH ±2 %, 1 Hz–10 Hz, on-chip heater</td><td class="num">1</td><td class="num">₹620</td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b><br/><span style="font-size:.82em;opacity:.78">Never charge below 0 °C; always use a protected cell or a BMS.</span></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b><br/><span style="font-size:.82em;opacity:.78">Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</span></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td class="num">1</td><td class="num">₹45</td></tr><tr><td><b>Double-sided perfboard 7 × 9 cm + headers</b><br/><span style="font-size:.82em;opacity:.78">Solder female headers so the MCU can be swapped without desoldering.</span></td><td>FR-4, 0.1″ pitch, plated through-holes, 24 × 18 grid</td><td class="num">1</td><td class="num">₹60</td></tr><tr><td><b>MAX30205 clinical-grade temperature sensor</b><br/><span style="font-size:.82em;opacity:.78">Better than DS18B20 in the clinically relevant range. Worth the upgrade if accuracy matters.</span></td><td>±0.1 °C from 37–39 °C, 16-bit, I²C</td><td class="num">2</td><td class="num">₹1,240</td></tr><tr><td><b>Thermally conductive silicone pad</b><br/><span style="font-size:.82em;opacity:.78">The insulating layer between the two sensors. Its thermal resistance must be known and consistent.</span></td><td>1 mm, 1.5 W/m·K, known thickness</td><td class="num">1</td><td class="num">₹180</td></tr><tr><td><b>Hypoallergenic medical adhesive patches</b></td><td>50 mm, breathable, 3M 1776 or similar</td><td class="num">20</td><td class="num">₹6,400</td></tr><tr><td><b>150 mAh LiPo cell</b></td><td>3.7 V, protected, 4 mm thick</td><td class="num">1</td><td class="num">₹240</td></tr><tr><td><b>Flexible PCB or thin perfboard + silicone potting</b></td><td>Skin-safe encapsulation</td><td class="num">1</td><td class="num">₹300</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹10,305</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td>3.3 V logic / 5 V USB</td><td>UART, SPI, I²C, I²S, CAN, PWM</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>DS18B20 waterproof temperature probe</b></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td>3.0–5.5 V</td><td>1-Wire (multi-drop)</td><td><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/DS18B20.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>SHT31-D temperature + humidity sensor</b></td><td>−40 to +125 °C ±0.2 °C, 0–100 %RH ±2 %, 1 Hz–10 Hz, on-chip heater</td><td>2.4–5.5 V</td><td>I²C (0x44/0x45)</td><td><a href="https://sensirion.com/media/documents/213E6A3B/63A5A569/Datasheet_SHT3x_DIS.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td>3.0–4.2 V</td><td>Holder / spot-welded tabs</td><td><a href="https://www.orbtronic.com/content/Samsung-INR18650-35E-Datasheet-Gest.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td>4.5–5.5 V in</td><td>micro-USB / pads</td><td><a href="https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Double-sided perfboard 7 × 9 cm + headers</b></td><td>FR-4, 0.1″ pitch, plated through-holes, 24 × 18 grid</td><td>—</td><td>—</td><td><a href="https://en.wikipedia.org/wiki/Perfboard" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32 DevKit V1 (ESP-WROOM-32)</td><td>3.3 V logic / 5 V USB</td><td class="num">160</td><td>Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</td></tr><tr><td>DS18B20 waterproof temperature probe</td><td>3.0–5.5 V</td><td class="num">3</td><td>Dozens can share one GPIO — you address them by ROM code.</td></tr><tr><td>SHT31-D temperature + humidity sensor</td><td>2.4–5.5 V</td><td class="num">1.5</td><td>The built-in heater burns off condensation — essential for outdoor or greenhouse use.</td></tr><tr><td>TP4056 Li-ion charger + DW01 protection</td><td>4.5–5.5 V in</td><td class="num">1000</td><td>Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>1164.5 mA</b>. With a 1.5× design margin the supply should deliver at least <b>1800 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x with the ESP32 board package 3.x (or PlatformIO on VS Code)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>OneWire + DallasTemperature</b> <span style="opacity:.7">2.3.x / 3.9.x</span></td><td>Bus enumeration and conversion commands for DS18B20 probes.</td><td><code>Library Manager → "DallasTemperature" (pulls OneWire)</code></td></tr><tr><td><b>Preferences (NVS)</b> <span style="opacity:.7">bundled</span></td><td>Wear-levelled key/value storage in ESP32 flash for settings.</td><td><code>Bundled with the ESP32 core</code></td></tr><tr><td><b>ArduinoJson</b> <span style="opacity:.7">7.x</span></td><td>Zero-allocation JSON serialisation and parsing.</td><td><code>Library Manager → "ArduinoJson" by Benoit Blanchon</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 310" role="img" aria-labelledby="td150 sd150" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td150">Continuous Fever Patch — system block diagram</title><desc id="sd150">Functional block diagram of the Continuous Fever Patch system.</desc>
+    <defs>
+    <marker id="ar-d150" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d150" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d150" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d150" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Measure</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d150)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Skin sensor</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">T_skin</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d150)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Outer sensor</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">T_outer</tspan></text><rect x="26" y="214" width="178" height="62" rx="12"
+          fill="url(#gb-d150)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="239" text-anchor="middle"><tspan x="115" y="239.0">SHT31</tspan></text><text class="dg-s" x="115" y="258" text-anchor="middle"><tspan x="115" y="258.0">T_ambient</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Model</text><rect x="266" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d150)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="119" text-anchor="middle"><tspan x="355" y="119.0">Heat-flux estimate</tspan></text><text class="dg-s" x="355" y="138" text-anchor="middle"><tspan x="355" y="138.0">gradient → core</tspan></text><rect x="266" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d150)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="199" text-anchor="middle"><tspan x="355" y="199.0">Contact check</tspan></text><text class="dg-s" x="355" y="218" text-anchor="middle"><tspan x="355" y="218.0">attached?</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Assess</text><rect x="506" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d150)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="119" text-anchor="middle"><tspan x="595" y="119.0">Threshold + rate</tspan></text><text class="dg-s" x="595" y="138" text-anchor="middle"><tspan x="595" y="138.0">warn / alert</tspan></text><rect x="506" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d150)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="199" text-anchor="middle"><tspan x="595" y="199.0">Ring buffer</tspan></text><text class="dg-s" x="595" y="218" text-anchor="middle"><tspan x="595" y="218.0">12 h local</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Report</text><rect x="746" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d150)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="119" text-anchor="middle"><tspan x="835" y="119.0">BLE notify</tspan></text><text class="dg-s" x="835" y="138" text-anchor="middle"><tspan x="835" y="138.0">to phone</tspan></text><rect x="746" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d150)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="199" text-anchor="middle"><tspan x="835" y="199.0">Alert</tspan></text><text class="dg-s" x="835" y="218" text-anchor="middle"><tspan x="835" y="218.0">on crossing</tspan></text><path d="M208 165 C 235 165, 235 165, 258 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d150)"/><text class="dg-e" x="235" y="157" text-anchor="middle">three temps</text><path d="M448 165 C 475 165, 475 165, 498 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d150)"/><text class="dg-e" x="475" y="157" text-anchor="middle">T_core est</text><path d="M688 165 C 715 165, 715 165, 738 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d150)"/><text class="dg-e" x="715" y="157" text-anchor="middle">reading</text>
+  </svg>
+  <figcaption>Continuous Fever Patch — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 316" role="img" aria-labelledby="td151 sd151" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td151">Continuous Fever Patch — wiring schematic</title><desc id="sd151">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d151" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d151" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d151" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d151" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="220" rx="14"
+      fill="url(#ga-d151)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32 DevKit V1</tspan><tspan x="434" y="95.0">(ESP-WROOM-32)</tspan></text><text class="dg-s" x="434" y="266" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d151)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="95.0">Skin-side temperature</tspan><tspan x="115" y="107.0">sensor</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO 27</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="109.5">1-Wire with 4.7 kΩ</tspan><tspan x="278" y="120.5">pull-up</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d151)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="147.0">Outer-side temperature</tspan><tspan x="115" y="159.0">sensor</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 27</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="161.5">Same bus, different</tspan><tspan x="278" y="172.5">ROM ID</tspan></text><rect x="20" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d151)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="205" text-anchor="middle"><tspan x="115" y="205.0">SHT31 ambient reference</tspan></text><path d="M210 204 C 278 204, 278 204, 346 204" stroke="#4fb0e0" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="204" r="3.2" fill="#4fb0e0"/><text class="dg-p" x="278" y="198" text-anchor="middle">GPIO 21 / 22</text><text class="dg-s" x="278" y="219" text-anchor="middle"><tspan x="278" y="219.0">I²C at 0x44</tspan></text><rect x="20" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d151)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="257" text-anchor="middle"><tspan x="115" y="257.0">Battery divider</tspan></text><path d="M210 256 C 278 256, 278 256, 346 256" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="256" r="3.2" fill="#5ec27a"/><text class="dg-p" x="278" y="250" text-anchor="middle">GPIO 34</text><text class="dg-s" x="278" y="271" text-anchor="middle"><tspan x="278" y="271.0">1 MΩ / 1 MΩ, gated</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d151)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Status LED</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">GPIO 25</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="109.5">Very brief flashes</tspan><tspan x="590" y="120.5">only</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d151)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Buzzer (optional)</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">GPIO 26</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Threshold alert</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d151)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">Sensor power gate</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">GPIO 14</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="213.5">Cuts sensor power</tspan><tspan x="590" y="224.5">between samples</tspan></text>
+  </svg>
+  <figcaption>Continuous Fever Patch — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Skin-side temperature sensor</b></td><td>DATA / SDA</td><td><code>GPIO 27</code></td><td>1-Wire with 4.7 kΩ pull-up</td></tr><tr><td><b>Outer-side temperature sensor</b></td><td>DATA / SDA</td><td><code>GPIO 27</code></td><td>Same bus, different ROM ID</td></tr><tr><td><b>SHT31 ambient reference</b></td><td>SDA / SCL</td><td><code>GPIO 21 / 22</code></td><td>I²C at 0x44</td></tr><tr><td><b>Battery divider</b></td><td>Mid-point</td><td><code>GPIO 34</code></td><td>1 MΩ / 1 MΩ, gated</td></tr><tr><td><b>Status LED</b></td><td>Anode</td><td><code>GPIO 25</code></td><td>Very brief flashes only</td></tr><tr><td><b>Buzzer (optional)</b></td><td>+</td><td><code>GPIO 26</code></td><td>Threshold alert</td></tr><tr><td><b>Sensor power gate</b></td><td>MOSFET gate</td><td><code>GPIO 14</code></td><td>Cuts sensor power between samples</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Both DS18B20 sensors share <b>one GPIO</b> — that is the point of 1-Wire. Each has a unique 64-bit ROM address, so you address them individually on the same two wires. Scan and record both addresses before writing the application code.</li><li>The <b>skin-side sensor must contact skin directly</b> through a thin thermally conductive layer, and the outer sensor must be separated from it by an insulator of known thickness. That known thermal resistance is what makes the heat-flux calculation possible.</li><li>Encapsulate everything in skin-safe silicone. Bare electronics against skin for days causes irritation, and sweat will corrode exposed copper within a week.</li><li>Gate the sensor power through a MOSFET. A DS18B20 draws 1.5 mA during conversion and 750 ms per conversion at 12-bit — leaving it powered continuously is most of your battery budget.</li><li>Keep the whole assembly under about 4 mm thick and under 15 g. Anything bulkier will not stay attached under an arm for a week, and the project value depends entirely on it staying on.</li><li>Route the battery so it is on the outer face, away from skin. A lithium cell against skin for days is both a comfort and a safety consideration.</li></ul>
+
+</section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td152 sd152" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td152">Continuous Fever Patch — architecture stack</title><desc id="sd152">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d152" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d152" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d152" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d152" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d152)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="72.0">ESP32 DevKit V1 (ESP-WROOM-32) · DS18B20 waterproof temperature probe ·</tspan><tspan x="48" y="84.0">SHT31-D temperature + humidity sensor</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d152)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d152)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">onewire · preferences · arduinojson</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d152)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d152)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d152)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d152)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Continuous Fever Patch — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>Heat flows from the body core to the environment through a series of thermal resistances: core to skin (mostly determined by blood flow), skin to the patch surface, and patch surface to air. In steady state the same heat flux passes through each stage, and each stage drops a temperature proportional to its thermal resistance. That is exactly Ohm's law with temperature in place of voltage and heat flux in place of current.</p>
+<p>A single skin sensor measures one point in that chain and tells you nothing about the gradient. Two sensors separated by a layer of <b>known thermal resistance</b> measure the gradient directly: the temperature difference across that layer, divided by its resistance, gives the heat flux. Knowing the flux and the (estimated) resistance from core to skin lets you extrapolate back to the core.</p>
+<p>That extrapolation is where the calibration lives. The core-to-skin resistance is not constant — it varies with vasoconstriction, which itself varies with core temperature, ambient temperature and time of day. A single global constant is a simplification. What makes it workable is calibrating that constant <b>per wearer against a reference thermometer</b> at a known point, and accepting that the estimate degrades when conditions change substantially from the calibration conditions.</p>
+<p>The alternative approach, used by high-end clinical devices, is <b>zero-heat-flux</b>: actively heat the outer surface until the gradient across the insulator is zero, at which point no heat flows and the skin temperature equals the core temperature directly. It is elegant and accurate, and it needs a heater drawing tens of milliwatts continuously, which is incompatible with a week of battery life. The passive two-sensor approach is the pragmatic compromise.</p>
+<p><b>Contact detection</b> falls out of the same measurement. When the patch is attached, the skin sensor reads within a few degrees of body temperature and well above ambient. When it detaches, both sensors converge on ambient within a minute or two. Testing for that convergence gives an unambiguous attached/detached signal, which matters enormously: a detached patch reporting 26 °C looks like a healthy reading if you are not checking.</p>
+<p>Finally, <b>rate of rise</b>. A fever developing rises at perhaps 0.5–1.5 °C per hour. Detecting that trend catches it before an absolute threshold is crossed, and — more usefully — distinguishes a genuine rise from the normal circadian variation of about 0.5 °C, which happens far more slowly.</p>
+
+<h3>The maths behind it</h3><h4>Heat flux and core estimation</h4><div class="codeblock tall" data-file="Heat flux and core estimation">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Heat flux and core estimation</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Heat flux and core estimation to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Heat flux and core estimation" type="button" aria-label="Download Heat flux and core estimation">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Thermal resistance analogy:
+  q = ΔT / R          (heat flux = temperature drop / resistance)
+
+Measured across the known insulator:
+  q = (T_skin − T_outer) / R_insulator
+
+Extrapolate back through the core-to-skin resistance:
+  T_core ≈ T_skin + q · R_body
+         = T_skin + (T_skin − T_outer) · (R_body / R_insulator)
+         = T_skin + k · (T_skin − T_outer)
+
+k is the single calibration constant, typically 0.6–1.4.
+
+Worked example, k = 0.9:
+  T_skin = 36.1 °C, T_outer = 34.6 °C
+  T_core = 36.1 + 0.9 × 1.5 = 37.45 °C</code></pre>
+  
+</div>
+<h4>Contact detection</h4><div class="codeblock tall" data-file="Contact detection">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Contact detection</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Contact detection to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Contact detection" type="button" aria-label="Download Contact detection">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Attached:
+  T_skin − T_ambient  &gt; 4 °C   (body is much warmer than the room)
+  T_skin − T_outer    &gt; 0.3 °C (a gradient exists)
+
+Detached (converging on ambient):
+  |T_skin − T_ambient| &lt; 2 °C
+  |T_skin − T_outer|   &lt; 0.2 °C
+
+Require the attached condition for three consecutive
+samples before reporting a temperature at all. A
+detached patch reading 26 °C looks healthy if you
+are not explicitly checking.</code></pre>
+  
+</div>
+<h4>Rate of rise</h4><div class="codeblock tall" data-file="Rate of rise">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Rate of rise</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Rate of rise to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Rate of rise" type="button" aria-label="Download Rate of rise">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Over a 30-minute window (60 samples at 30 s):
+
+  rate = (T_core[now] − T_core[now−30min]) / 0.5 h   °C/h
+
+Interpretation:
+  |rate| &lt; 0.2 °C/h : normal circadian variation
+  rate &gt; 0.5 °C/h   : developing fever — warn
+  rate &gt; 1.0 °C/h   : rapid rise — alert
+  rate &lt; −0.8 °C/h  : antipyretic taking effect
+
+Use a linear least-squares fit over the window rather
+than a two-point difference — the two-point version is
+dominated by noise on a 0.0625 °C resolution sensor.</code></pre>
+  
+</div>
+<h4>Battery budget</h4><div class="codeblock tall" data-file="Battery budget">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Battery budget</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Battery budget to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Battery budget" type="button" aria-label="Download Battery budget">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>DS18B20 conversion: 1.5 mA for 750 ms (12-bit)
+  2 sensors on one bus, one conversion each 30 s
+  = 1.5 mA × 0.75 s / 30 s = 37.5 µA average
+
+SHT31: 1.5 mA for 15 ms every 30 s = 0.75 µA
+ESP32 awake: 80 mA for 1.2 s every 30 s = 3.2 mA  ← dominant
+ESP32 deep sleep: 10 µA
+
+With BLE advertising only every 5th wake:
+  average ≈ 3.3 mA
+
+150 mAh cell → 45 h. Not a week!
+
+Fix: buffer 10 readings, wake the radio once every
+5 minutes instead of every 30 s:
+  ESP32 active drops to ~0.7 mA average
+  → 150 / 0.75 ≈ 200 h ≈ 8 days  ✓</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 784" role="img" aria-labelledby="td153 sd153" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td153">Continuous Fever Patch — firmware flowchart</title><desc id="sd153">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d153" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d153" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d153" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d153" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d153)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="51.5">Wake from deep sleep every 30</tspan><tspan x="210" y="64.5">s</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d153)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d153)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="137.5">Power sensors, wait for</tspan><tspan x="210" y="150.5">conversion</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d153)"/><path d="M101 202 L335 202 L319 258 L85 258 z"
+          fill="url(#gb-d153)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="230" text-anchor="middle"><tspan x="210" y="230.0">Read skin, outer and ambient</tspan></text><path d="M210 258 L210 282" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d153)"/><path d="M210 288 L349 330 L210 372 L71 330 z"
+          fill="url(#ga-d153)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="330" text-anchor="middle"><tspan x="210" y="323.5">Skin−ambient gradient</tspan><tspan x="210" y="336.5">plausible?</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d153)"/><text class="dg-e" x="220" y="391">attached</text><path d="M349 330 H397 V28 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d153)"/><text class="dg-e" x="403" y="324">report detached</text><rect x="85" y="402" width="250" height="56" rx="10"
+          fill="url(#gb-d153)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="423.5">Estimate core from the heat</tspan><tspan x="210" y="436.5">flux</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d153)"/><path d="M210 488 L349 530 L210 572 L71 530 z"
+          fill="url(#ga-d153)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="530" text-anchor="middle"><tspan x="210" y="523.5">Above threshold or rising</tspan><tspan x="210" y="536.5">fast?</tspan></text><path d="M210 572 L210 596" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d153)"/><text class="dg-e" x="220" y="591">alert</text><path d="M349 530 H397 V28 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d153)"/><text class="dg-e" x="403" y="524">log only</text><path d="M101 602 L335 602 L319 658 L85 658 z"
+          fill="url(#gb-d153)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="630" text-anchor="middle"><tspan x="210" y="623.5">Notify over BLE or buffer</tspan><tspan x="210" y="636.5">locally</tspan></text><path d="M210 658 L210 682" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d153)"/><rect x="85" y="688" width="250" height="56" rx="28"
+          fill="url(#ga-d153)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="716" text-anchor="middle"><tspan x="210" y="716.0">Cut sensor power, deep sleep</tspan></text>
+  </svg>
+  <figcaption>Continuous Fever Patch — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+</section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+</section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="fever-patch.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">fever-patch.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy fever-patch.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="fever-patch.ino" type="button" aria-label="Download fever-patch.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   Continuous Fever Patch — ESP32 + dual DS18B20 + SHT31</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Two temperature sensors separated by a layer of known thermal</span>
+<span class="tok-c">   resistance measure the heat flux leaving the skin, which allows a</span>
+<span class="tok-c">   core temperature estimate rather than a raw skin reading.</span>
+<span class="tok-c"></span>
+<span class="tok-c">   NOT a clinical thermometer. Confirm any concerning reading with a</span>
+<span class="tok-c">   validated device.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">OneWire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">DallasTemperature</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Wire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Adafruit_SHT31</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Preferences</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span>esp_sleep<span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">BLEDevice</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">BLEServer</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">BLEUtils</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">BLE2902</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span>math<span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">PIN_ONEWIRE</span>   <span class="tok-n">27</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_SENSOR_EN</span> <span class="tok-n">14</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_LED</span>       <span class="tok-n">25</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_BUZZ</span>      <span class="tok-n">26</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_BATT</span>      <span class="tok-n">34</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_BATT_EN</span>   <span class="tok-n">13</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">SAMPLE_INTERVAL_S</span>   <span class="tok-n">30</span>
+<span class="tok-p">#define</span> <span class="tok-t">RADIO_EVERY_N</span>       <span class="tok-n">10</span>        <span class="tok-c">// advertise once per 5 minutes</span>
+<span class="tok-p">#define</span> <span class="tok-t">BUFFER_LEN</span>         <span class="tok-n">120</span>        <span class="tok-c">// 1 hour of samples in RTC memory</span>
+<span class="tok-p">#define</span> <span class="tok-t">TREND_SAMPLES</span>       <span class="tok-n">60</span>        <span class="tok-c">// 30 minutes for the rate fit</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">WARN_C</span>   <span class="tok-n">37.8</span>f
+<span class="tok-p">#define</span> <span class="tok-t">ALERT_C</span>  <span class="tok-n">38.5</span>f
+<span class="tok-p">#define</span> <span class="tok-t">RATE_WARN_C_PER_H</span>  <span class="tok-n">0.5</span>f
+<span class="tok-p">#define</span> <span class="tok-t">RATE_ALERT_C_PER_H</span> <span class="tok-n">1.0</span>f
+
+<span class="tok-c">/* BLE Health Thermometer Service UUIDs */</span>
+<span class="tok-p">#define</span> <span class="tok-t">HTS_SERVICE</span>     <span class="tok-s">"00001809-0000-1000-8000-00805f9b34fb"</span>
+<span class="tok-p">#define</span> <span class="tok-t">HTS_MEASUREMENT</span> <span class="tok-s">"00002a1c-0000-1000-8000-00805f9b34fb"</span>
+
+<span class="tok-t">OneWire</span>           <span class="tok-f">oneWire</span><span class="tok-o">(</span><span class="tok-t">PIN_ONEWIRE</span><span class="tok-o">);</span>
+<span class="tok-t">DallasTemperature</span> <span class="tok-f">ds</span><span class="tok-o">(&amp;</span>oneWire<span class="tok-o">);</span>
+<span class="tok-t">Adafruit_SHT31</span>    sht<span class="tok-o">;</span>
+<span class="tok-t">Preferences</span>       prefs<span class="tok-o">;</span>
+
+<span class="tok-t">DeviceAddress</span> addrSkin<span class="tok-o">,</span> addrOuter<span class="tok-o">;</span>
+
+<span class="tok-c">/* Survives deep sleep */</span>
+<span class="tok-t">RTC_DATA_ATTR</span> <span class="tok-k">float</span>    ring<span class="tok-o">[</span><span class="tok-t">BUFFER_LEN</span><span class="tok-o">];</span>
+<span class="tok-t">RTC_DATA_ATTR</span> <span class="tok-k">uint32_t</span> ringTime<span class="tok-o">[</span><span class="tok-t">BUFFER_LEN</span><span class="tok-o">];</span>
+<span class="tok-t">RTC_DATA_ATTR</span> <span class="tok-k">uint16_t</span> ringHead <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> ringCount <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-t">RTC_DATA_ATTR</span> <span class="tok-k">uint32_t</span> wakeCount <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-t">RTC_DATA_ATTR</span> <span class="tok-k">bool</span>     wasAttached <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span>
+<span class="tok-t">RTC_DATA_ATTR</span> <span class="tok-k">uint32_t</span> uptimeS <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+
+<span class="tok-k">float</span> kCalib <span class="tok-o">=</span> <span class="tok-n">0.9</span>f<span class="tok-o">;</span>                 <span class="tok-c">// heat-flux constant, per wearer</span>
+<span class="tok-k">float</span> tSkin <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> tOuter <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> tAmbient <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> tCore <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> rateCperH <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">bool</span>  attached <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span>
+
+<span class="tok-c">/* ── sensors ────────────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">sensorsOn</span><span class="tok-o">(</span><span class="tok-k">bool</span> on<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_SENSOR_EN</span><span class="tok-o">,</span> <span class="tok-t">OUTPUT</span><span class="tok-o">);</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_SENSOR_EN</span><span class="tok-o">,</span> on <span class="tok-o">?</span> <span class="tok-t">HIGH</span> <span class="tok-o">:</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>on<span class="tok-o">)</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">20</span><span class="tok-o">);</span>                 <span class="tok-c">// let rails settle before talking</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">bool</span> <span class="tok-f">readAll</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  ds<span class="tok-o">.</span><span class="tok-f">requestTemperatures</span><span class="tok-o">();</span>          <span class="tok-c">// blocking ~750 ms at 12-bit</span>
+  tSkin  <span class="tok-o">=</span> ds<span class="tok-o">.</span><span class="tok-f">getTempC</span><span class="tok-o">(</span>addrSkin<span class="tok-o">);</span>
+  tOuter <span class="tok-o">=</span> ds<span class="tok-o">.</span><span class="tok-f">getTempC</span><span class="tok-o">(</span>addrOuter<span class="tok-o">);</span>
+  tAmbient <span class="tok-o">=</span> sht<span class="tok-o">.</span><span class="tok-f">readTemperature</span><span class="tok-o">();</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>tSkin <span class="tok-o">==</span> <span class="tok-t">DEVICE_DISCONNECTED_C</span> <span class="tok-o">||</span> tOuter <span class="tok-o">==</span> <span class="tok-t">DEVICE_DISCONNECTED_C</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-k">false</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">isnan</span><span class="tok-o">(</span>tAmbient<span class="tok-o">))</span> tAmbient <span class="tok-o">=</span> tOuter<span class="tok-o">;</span>    <span class="tok-c">// fall back to the outer sensor</span>
+  <span class="tok-k">return</span> <span class="tok-k">true</span><span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── attachment detection ───────────────────────────────────── */</span>
+<span class="tok-k">bool</span> <span class="tok-f">checkAttached</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">bool</span> warmerThanRoom <span class="tok-o">=</span> <span class="tok-o">(</span>tSkin <span class="tok-o">-</span> tAmbient<span class="tok-o">)</span> <span class="tok-o">&gt;</span> <span class="tok-n">4.0</span>f<span class="tok-o">;</span>
+  <span class="tok-k">bool</span> gradientExists <span class="tok-o">=</span> <span class="tok-o">(</span>tSkin <span class="tok-o">-</span> tOuter<span class="tok-o">)</span>   <span class="tok-o">&gt;</span> <span class="tok-n">0.3</span>f<span class="tok-o">;</span>
+  <span class="tok-k">return</span> warmerThanRoom <span class="tok-o">&amp;&amp;</span> gradientExists<span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── core estimation ────────────────────────────────────────── */</span>
+<span class="tok-k">float</span> <span class="tok-f">estimateCore</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-c">// T_core = T_skin + k * (T_skin - T_outer)</span>
+  <span class="tok-c">// The bracketed term is proportional to outward heat flux.</span>
+  <span class="tok-k">float</span> flux <span class="tok-o">=</span> tSkin <span class="tok-o">-</span> tOuter<span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>flux <span class="tok-o">&lt;</span> <span class="tok-n">0</span><span class="tok-o">)</span> flux <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>                    <span class="tok-c">// never extrapolate downward</span>
+  <span class="tok-k">return</span> tSkin <span class="tok-o">+</span> kCalib <span class="tok-o">*</span> flux<span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── trend by least squares ─────────────────────────────────── */</span>
+<span class="tok-k">float</span> <span class="tok-f">computeRate</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">int</span> n <span class="tok-o">=</span> ringCount <span class="tok-o">&lt;</span> <span class="tok-t">TREND_SAMPLES</span> <span class="tok-o">?</span> ringCount <span class="tok-o">:</span> <span class="tok-t">TREND_SAMPLES</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>n <span class="tok-o">&lt;</span> <span class="tok-n">10</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+
+  <span class="tok-c">// Least squares slope over the last n samples. A two-point</span>
+  <span class="tok-c">// difference is dominated by the 0.0625 C quantisation step.</span>
+  <span class="tok-k">double</span> sx <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> sy <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> sxy <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> sxx <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> n<span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span>
+    <span class="tok-k">int</span> idx <span class="tok-o">=</span> <span class="tok-o">(</span>ringHead <span class="tok-o">+</span> <span class="tok-t">BUFFER_LEN</span> <span class="tok-o">-</span> <span class="tok-n">1</span> <span class="tok-o">-</span> i<span class="tok-o">)</span> <span class="tok-o">%</span> <span class="tok-t">BUFFER_LEN</span><span class="tok-o">;</span>
+    <span class="tok-k">double</span> x <span class="tok-o">=</span> <span class="tok-o">-(</span><span class="tok-k">double</span><span class="tok-o">)</span>i <span class="tok-o">*</span> <span class="tok-t">SAMPLE_INTERVAL_S</span> <span class="tok-o">/</span> <span class="tok-n">3600.0</span><span class="tok-o">;</span>   <span class="tok-c">// hours, negative</span>
+    <span class="tok-k">double</span> y <span class="tok-o">=</span> ring<span class="tok-o">[</span>idx<span class="tok-o">];</span>
+    sx <span class="tok-o">+=</span> x<span class="tok-o">;</span> sy <span class="tok-o">+=</span> y<span class="tok-o">;</span> sxy <span class="tok-o">+=</span> x <span class="tok-o">*</span> y<span class="tok-o">;</span> sxx <span class="tok-o">+=</span> x <span class="tok-o">*</span> x<span class="tok-o">;</span>
+  <span class="tok-o">}</span>
+  <span class="tok-k">double</span> denom <span class="tok-o">=</span> n <span class="tok-o">*</span> sxx <span class="tok-o">-</span> sx <span class="tok-o">*</span> sx<span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">fabs</span><span class="tok-o">(</span>denom<span class="tok-o">)</span> <span class="tok-o">&lt;</span> <span class="tok-n">1e-9</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">return</span> <span class="tok-o">(</span><span class="tok-k">float</span><span class="tok-o">)((</span>n <span class="tok-o">*</span> sxy <span class="tok-o">-</span> sx <span class="tok-o">*</span> sy<span class="tok-o">)</span> <span class="tok-o">/</span> denom<span class="tok-o">);</span>            <span class="tok-c">// °C per hour</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── BLE ────────────────────────────────────────────────────── */</span>
+<span class="tok-t">BLECharacteristic</span> <span class="tok-o">*</span>htsChar <span class="tok-o">=</span> <span class="tok-k">nullptr</span><span class="tok-o">;</span>
+<span class="tok-k">bool</span> bleClientConnected <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span>
+
+<span class="tok-k">class</span> <span class="tok-t">ServerCb</span> <span class="tok-o">:</span> <span class="tok-k">public</span> <span class="tok-t">BLEServerCallbacks</span> <span class="tok-o">{</span>
+  <span class="tok-k">void</span> <span class="tok-f">onConnect</span><span class="tok-o">(</span><span class="tok-t">BLEServer</span> <span class="tok-o">*)</span> override    <span class="tok-o">{</span> bleClientConnected <span class="tok-o">=</span> <span class="tok-k">true</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+  <span class="tok-k">void</span> <span class="tok-f">onDisconnect</span><span class="tok-o">(</span><span class="tok-t">BLEServer</span> <span class="tok-o">*</span>s<span class="tok-o">)</span> override <span class="tok-o">{</span> bleClientConnected <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span> s<span class="tok-o">-&gt;</span><span class="tok-f">startAdvertising</span><span class="tok-o">();</span> <span class="tok-o">}</span>
+<span class="tok-o">};</span>
+
+<span class="tok-k">void</span> <span class="tok-f">bleBegin</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-t">BLEDevice</span><span class="tok-o">::</span><span class="tok-f">init</span><span class="tok-o">(</span><span class="tok-s">"FeverPatch"</span><span class="tok-o">);</span>
+  <span class="tok-t">BLEServer</span> <span class="tok-o">*</span>server <span class="tok-o">=</span> <span class="tok-t">BLEDevice</span><span class="tok-o">::</span><span class="tok-f">createServer</span><span class="tok-o">();</span>
+  server<span class="tok-o">-&gt;</span><span class="tok-f">setCallbacks</span><span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-f">ServerCb</span><span class="tok-o">());</span>
+
+  <span class="tok-t">BLEService</span> <span class="tok-o">*</span>svc <span class="tok-o">=</span> server<span class="tok-o">-&gt;</span><span class="tok-f">createService</span><span class="tok-o">(</span><span class="tok-t">HTS_SERVICE</span><span class="tok-o">);</span>
+  htsChar <span class="tok-o">=</span> svc<span class="tok-o">-&gt;</span><span class="tok-f">createCharacteristic</span><span class="tok-o">(</span>
+      <span class="tok-t">HTS_MEASUREMENT</span><span class="tok-o">,</span>
+      <span class="tok-t">BLECharacteristic</span><span class="tok-o">::</span><span class="tok-t">PROPERTY_INDICATE</span> <span class="tok-o">|</span> <span class="tok-t">BLECharacteristic</span><span class="tok-o">::</span><span class="tok-t">PROPERTY_NOTIFY</span><span class="tok-o">);</span>
+  htsChar<span class="tok-o">-&gt;</span><span class="tok-f">addDescriptor</span><span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-f">BLE2902</span><span class="tok-o">());</span>
+  svc<span class="tok-o">-&gt;</span><span class="tok-f">start</span><span class="tok-o">();</span>
+  server<span class="tok-o">-&gt;</span><span class="tok-f">getAdvertising</span><span class="tok-o">()-&gt;</span><span class="tok-f">addServiceUUID</span><span class="tok-o">(</span><span class="tok-t">HTS_SERVICE</span><span class="tok-o">);</span>
+  server<span class="tok-o">-&gt;</span><span class="tok-f">getAdvertising</span><span class="tok-o">()-&gt;</span><span class="tok-f">start</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">// Health Thermometer Measurement: flags byte + IEEE-11073 32-bit float</span>
+<span class="tok-k">void</span> <span class="tok-f">bleSend</span><span class="tok-o">(</span><span class="tok-k">float</span> celsius<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>htsChar <span class="tok-o">||</span> <span class="tok-o">!</span>bleClientConnected<span class="tok-o">)</span> <span class="tok-k">return</span><span class="tok-o">;</span>
+  <span class="tok-k">int32_t</span> mantissa <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-k">int32_t</span><span class="tok-o">)</span><span class="tok-f">lroundf</span><span class="tok-o">(</span>celsius <span class="tok-o">*</span> <span class="tok-n">100.0</span>f<span class="tok-o">);</span>
+  <span class="tok-k">uint8_t</span> payload<span class="tok-o">[</span><span class="tok-n">5</span><span class="tok-o">];</span>
+  payload<span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-n">0x00</span><span class="tok-o">;</span>                                   <span class="tok-c">// flags: Celsius</span>
+  payload<span class="tok-o">[</span><span class="tok-n">1</span><span class="tok-o">]</span> <span class="tok-o">=</span>  mantissa        <span class="tok-o">&amp;</span> <span class="tok-n">0xFF</span><span class="tok-o">;</span>
+  payload<span class="tok-o">[</span><span class="tok-n">2</span><span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-o">(</span>mantissa <span class="tok-o">&gt;&gt;</span>  <span class="tok-n">8</span><span class="tok-o">)</span> <span class="tok-o">&amp;</span> <span class="tok-n">0xFF</span><span class="tok-o">;</span>
+  payload<span class="tok-o">[</span><span class="tok-n">3</span><span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-o">(</span>mantissa <span class="tok-o">&gt;&gt;</span> <span class="tok-n">16</span><span class="tok-o">)</span> <span class="tok-o">&amp;</span> <span class="tok-n">0xFF</span><span class="tok-o">;</span>
+  payload<span class="tok-o">[</span><span class="tok-n">4</span><span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-k">uint8_t</span><span class="tok-o">)(</span><span class="tok-k">int8_t</span><span class="tok-o">)(-</span><span class="tok-n">2</span><span class="tok-o">);</span>                  <span class="tok-c">// exponent 10^-2</span>
+  htsChar<span class="tok-o">-&gt;</span><span class="tok-f">setValue</span><span class="tok-o">(</span>payload<span class="tok-o">,</span> <span class="tok-n">5</span><span class="tok-o">);</span>
+  htsChar<span class="tok-o">-&gt;</span><span class="tok-f">notify</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">flushBuffer</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">int</span> n <span class="tok-o">=</span> ringCount <span class="tok-o">&lt;</span> <span class="tok-n">20</span> <span class="tok-o">?</span> ringCount <span class="tok-o">:</span> <span class="tok-n">20</span><span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> n <span class="tok-o">-</span> <span class="tok-n">1</span><span class="tok-o">;</span> i <span class="tok-o">&gt;=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i<span class="tok-o">--)</span> <span class="tok-o">{</span>
+    <span class="tok-k">int</span> idx <span class="tok-o">=</span> <span class="tok-o">(</span>ringHead <span class="tok-o">+</span> <span class="tok-t">BUFFER_LEN</span> <span class="tok-o">-</span> <span class="tok-n">1</span> <span class="tok-o">-</span> i<span class="tok-o">)</span> <span class="tok-o">%</span> <span class="tok-t">BUFFER_LEN</span><span class="tok-o">;</span>
+    <span class="tok-f">bleSend</span><span class="tok-o">(</span>ring<span class="tok-o">[</span>idx<span class="tok-o">]);</span>
+    <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">30</span><span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── calibration ────────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">calibrateAgainst</span><span class="tok-o">(</span><span class="tok-k">float</span> referenceCore<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>attached <span class="tok-o">||</span> <span class="tok-o">(</span>tSkin <span class="tok-o">-</span> tOuter<span class="tok-o">)</span> <span class="tok-o">&lt;</span> <span class="tok-n">0.2</span>f<span class="tok-o">)</span> <span class="tok-k">return</span><span class="tok-o">;</span>
+  kCalib <span class="tok-o">=</span> <span class="tok-o">(</span>referenceCore <span class="tok-o">-</span> tSkin<span class="tok-o">)</span> <span class="tok-o">/</span> <span class="tok-o">(</span>tSkin <span class="tok-o">-</span> tOuter<span class="tok-o">);</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>kCalib <span class="tok-o">&lt;</span> <span class="tok-n">0.2</span>f<span class="tok-o">)</span> kCalib <span class="tok-o">=</span> <span class="tok-n">0.2</span>f<span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>kCalib <span class="tok-o">&gt;</span> <span class="tok-n">2.5</span>f<span class="tok-o">)</span> kCalib <span class="tok-o">=</span> <span class="tok-n">2.5</span>f<span class="tok-o">;</span>
+  prefs<span class="tok-o">.</span><span class="tok-f">putFloat</span><span class="tok-o">(</span><span class="tok-s">"k"</span><span class="tok-o">,</span> kCalib<span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── setup runs once per wake ───────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">115200</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_LED</span><span class="tok-o">,</span> <span class="tok-t">OUTPUT</span><span class="tok-o">);</span>
+  wakeCount<span class="tok-o">++;</span>
+  uptimeS <span class="tok-o">+=</span> <span class="tok-t">SAMPLE_INTERVAL_S</span><span class="tok-o">;</span>
+
+  prefs<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-s">"patch"</span><span class="tok-o">,</span> <span class="tok-k">false</span><span class="tok-o">);</span>
+  kCalib <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getFloat</span><span class="tok-o">(</span><span class="tok-s">"k"</span><span class="tok-o">,</span> <span class="tok-n">0.9</span>f<span class="tok-o">);</span>
+
+  <span class="tok-f">sensorsOn</span><span class="tok-o">(</span><span class="tok-k">true</span><span class="tok-o">);</span>
+  <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">21</span><span class="tok-o">,</span> <span class="tok-n">22</span><span class="tok-o">);</span>
+  sht<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">0x44</span><span class="tok-o">);</span>
+  ds<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">();</span>
+  ds<span class="tok-o">.</span><span class="tok-f">setResolution</span><span class="tok-o">(</span><span class="tok-n">12</span><span class="tok-o">);</span>
+
+  <span class="tok-c">// Both sensors share one bus; index 0 and 1 by discovery order.</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>ds<span class="tok-o">.</span><span class="tok-f">getAddress</span><span class="tok-o">(</span>addrSkin<span class="tok-o">,</span> <span class="tok-n">0</span><span class="tok-o">)</span> <span class="tok-o">||</span> <span class="tok-o">!</span>ds<span class="tok-o">.</span><span class="tok-f">getAddress</span><span class="tok-o">(</span>addrOuter<span class="tok-o">,</span> <span class="tok-n">1</span><span class="tok-o">))</span> <span class="tok-o">{</span>
+    <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">println</span><span class="tok-o">(</span><span class="tok-s">"Sensor discovery failed"</span><span class="tok-o">);</span>
+    <span class="tok-f">sensorsOn</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+    <span class="tok-f">esp_sleep_enable_timer_wakeup</span><span class="tok-o">((</span><span class="tok-k">uint64_t</span><span class="tok-o">)</span><span class="tok-t">SAMPLE_INTERVAL_S</span> <span class="tok-o">*</span> <span class="tok-n">1000000</span><span class="tok-t">ULL</span><span class="tok-o">);</span>
+    <span class="tok-f">esp_deep_sleep_start</span><span class="tok-o">();</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-k">bool</span> ok <span class="tok-o">=</span> <span class="tok-f">readAll</span><span class="tok-o">();</span>
+  <span class="tok-f">sensorsOn</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>ok<span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">println</span><span class="tok-o">(</span><span class="tok-s">"Read failed"</span><span class="tok-o">);</span>
+    <span class="tok-f">esp_sleep_enable_timer_wakeup</span><span class="tok-o">((</span><span class="tok-k">uint64_t</span><span class="tok-o">)</span><span class="tok-t">SAMPLE_INTERVAL_S</span> <span class="tok-o">*</span> <span class="tok-n">1000000</span><span class="tok-t">ULL</span><span class="tok-o">);</span>
+    <span class="tok-f">esp_deep_sleep_start</span><span class="tok-o">();</span>
+  <span class="tok-o">}</span>
+
+  attached <span class="tok-o">=</span> <span class="tok-f">checkAttached</span><span class="tok-o">();</span>
+  tCore <span class="tok-o">=</span> attached <span class="tok-o">?</span> <span class="tok-f">estimateCore</span><span class="tok-o">()</span> <span class="tok-o">:</span> <span class="tok-t">NAN</span><span class="tok-o">;</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>attached<span class="tok-o">)</span> <span class="tok-o">{</span>
+    ring<span class="tok-o">[</span>ringHead<span class="tok-o">]</span> <span class="tok-o">=</span> tCore<span class="tok-o">;</span>
+    ringTime<span class="tok-o">[</span>ringHead<span class="tok-o">]</span> <span class="tok-o">=</span> uptimeS<span class="tok-o">;</span>
+    ringHead <span class="tok-o">=</span> <span class="tok-o">(</span>ringHead <span class="tok-o">+</span> <span class="tok-n">1</span><span class="tok-o">)</span> <span class="tok-o">%</span> <span class="tok-t">BUFFER_LEN</span><span class="tok-o">;</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>ringCount <span class="tok-o">&lt;</span> <span class="tok-t">BUFFER_LEN</span><span class="tok-o">)</span> ringCount<span class="tok-o">++;</span>
+    rateCperH <span class="tok-o">=</span> <span class="tok-f">computeRate</span><span class="tok-o">();</span>
+  <span class="tok-o">}</span> <span class="tok-k">else</span> <span class="tok-o">{</span>
+    ringCount <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>                   <span class="tok-c">// a detached period invalidates the trend</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"skin %.2f  outer %.2f  amb %.2f  core %.2f  rate %+.2f C/h  %s\n"</span><span class="tok-o">,</span>
+                tSkin<span class="tok-o">,</span> tOuter<span class="tok-o">,</span> tAmbient<span class="tok-o">,</span> tCore<span class="tok-o">,</span> rateCperH<span class="tok-o">,</span>
+                attached <span class="tok-o">?</span> <span class="tok-s">"attached"</span> <span class="tok-o">:</span> <span class="tok-s">"DETACHED"</span><span class="tok-o">);</span>
+
+  <span class="tok-k">bool</span> alert <span class="tok-o">=</span> attached <span class="tok-o">&amp;&amp;</span> <span class="tok-o">(</span>tCore <span class="tok-o">&gt;=</span> <span class="tok-t">ALERT_C</span> <span class="tok-o">||</span> rateCperH <span class="tok-o">&gt;=</span> <span class="tok-t">RATE_ALERT_C_PER_H</span><span class="tok-o">);</span>
+  <span class="tok-k">bool</span> warn  <span class="tok-o">=</span> attached <span class="tok-o">&amp;&amp;</span> <span class="tok-o">(</span>tCore <span class="tok-o">&gt;=</span> <span class="tok-t">WARN_C</span>  <span class="tok-o">||</span> rateCperH <span class="tok-o">&gt;=</span> <span class="tok-t">RATE_WARN_C_PER_H</span><span class="tok-o">);</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>alert<span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-n">4</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span> <span class="tok-f">tone</span><span class="tok-o">(</span><span class="tok-t">PIN_BUZZ</span><span class="tok-o">,</span> <span class="tok-n">2600</span><span class="tok-o">,</span> <span class="tok-n">180</span><span class="tok-o">);</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">240</span><span class="tok-o">);</span> <span class="tok-o">}</span> <span class="tok-o">}</span>
+  <span class="tok-k">else</span> <span class="tok-k">if</span> <span class="tok-o">(</span>warn<span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-f">tone</span><span class="tok-o">(</span><span class="tok-t">PIN_BUZZ</span><span class="tok-o">,</span> <span class="tok-n">2000</span><span class="tok-o">,</span> <span class="tok-n">200</span><span class="tok-o">);</span> <span class="tok-o">}</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>attached <span class="tok-o">!=</span> wasAttached<span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-c">// An attachment change is worth reporting immediately.</span>
+    <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_LED</span><span class="tok-o">,</span> <span class="tok-t">HIGH</span><span class="tok-o">);</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">60</span><span class="tok-o">);</span> <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_LED</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>
+    wasAttached <span class="tok-o">=</span> attached<span class="tok-o">;</span>
+    wakeCount <span class="tok-o">=</span> <span class="tok-t">RADIO_EVERY_N</span><span class="tok-o">;</span>       <span class="tok-c">// force a radio wake this cycle</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-c">/* Radio only every Nth wake — this is what makes a week possible. */</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>wakeCount <span class="tok-o">%</span> <span class="tok-t">RADIO_EVERY_N</span> <span class="tok-o">==</span> <span class="tok-n">0</span> <span class="tok-o">||</span> alert<span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-f">bleBegin</span><span class="tok-o">();</span>
+    <span class="tok-k">uint32_t</span> t0 <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+    <span class="tok-k">while</span> <span class="tok-o">(</span><span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> t0 <span class="tok-o">&lt;</span> <span class="tok-n">3000</span> <span class="tok-o">&amp;&amp;</span> <span class="tok-o">!</span>bleClientConnected<span class="tok-o">)</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">50</span><span class="tok-o">);</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>bleClientConnected<span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-f">flushBuffer</span><span class="tok-o">();</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">200</span><span class="tok-o">);</span> <span class="tok-o">}</span>
+    <span class="tok-t">BLEDevice</span><span class="tok-o">::</span><span class="tok-f">deinit</span><span class="tok-o">(</span><span class="tok-k">true</span><span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-f">esp_sleep_enable_timer_wakeup</span><span class="tok-o">((</span><span class="tok-k">uint64_t</span><span class="tok-o">)</span><span class="tok-t">SAMPLE_INTERVAL_S</span> <span class="tok-o">*</span> <span class="tok-n">1000000</span><span class="tok-t">ULL</span><span class="tok-o">);</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">flush</span><span class="tok-o">();</span>
+  <span class="tok-f">esp_deep_sleep_start</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">()</span> <span class="tok-o">{</span> <span class="tok-c">/* never reached */</span> <span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (250 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">estimateCore() with k · (T_skin − T_outer)</span><span class="txt">The bracketed difference is proportional to outward heat flux through a layer of known resistance. Multiplying by a calibrated constant extrapolates back through the body's own thermal resistance to the core — which is the entire reason for the second sensor.</span></div><div><span class="ref">if (flux &lt; 0) flux = 0</span><span class="txt">A negative gradient means heat is flowing inward, which happens in a hot room or direct sun. Extrapolating downward in that case would report a core temperature below skin temperature, which is physically wrong.</span></div><div><span class="ref">checkAttached() two conditions</span><span class="txt">Both must hold: the skin must be much warmer than the room, and a gradient must exist across the insulator. A detached patch fails both within about two minutes, and reporting "detached" rather than an ambient reading is the single most important safety behaviour here.</span></div><div><span class="ref">ringCount = 0 on detach</span><span class="txt">A detached period makes the preceding trend meaningless. Clearing the buffer prevents a rate-of-rise alert firing purely because the patch was reattached to a warm body.</span></div><div><span class="ref">computeRate() least squares, not two-point</span><span class="txt">A DS18B20 quantises to 0.0625 °C. Over 30 minutes a real fever moves perhaps 0.5 °C, which is only eight quantisation steps — a two-point difference is dominated by that quantisation, while a least-squares fit over 60 samples is not.</span></div><div><span class="ref">wakeCount % RADIO_EVERY_N</span><span class="txt">The radio dominates power consumption. Sampling every 30 seconds but advertising every 5 minutes cuts average current by roughly four times, which is the difference between two days and eight days of battery.</span></div><div><span class="ref">IEEE-11073 float in bleSend</span><span class="txt">The standard BLE Health Thermometer characteristic uses a 32-bit medical float: a 24-bit signed mantissa and an 8-bit exponent. Using this standard format means any generic BLE thermometer app can read the patch with no custom code.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Record both DS18B20 ROM addresses and assign them explicitly to skin and outer rather than relying on discovery order, which can change if a sensor is replaced.</li><li>Set <code>kCalib</code> by calibrating against a reference thermometer — the routine is in the code, and the value is typically between 0.6 and 1.4.</li><li>Set <code>WARN_C</code> and <code>ALERT_C</code> from clinical guidance for the wearer. 37.8 °C and 38.5 °C are common adult thresholds; paediatric thresholds differ and should come from a clinician.</li><li>Set <code>RADIO_EVERY_N</code> from your battery target. Every 10th wake (5 minutes) gives about a week; every wake gives about two days.</li><li>Choose the insulating layer deliberately and keep it consistent. Changing its thickness changes the effective thermal resistance and invalidates the calibration.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Calibrate k against a reference</h4><p>Wear the patch for 30 minutes to reach thermal equilibrium, then take a reading with a validated clinical thermometer at the same site. Call <code>calibrateAgainst(reference)</code> with that value. Repeat at a different ambient temperature and average the two k values — a single-point calibration is valid only near those conditions.</p></li><li><h4>Verify both sensors agree</h4><p>Hold both sensors together in a water bath at body temperature. They should read within 0.2 °C of each other. A larger difference is a sensor offset that must be corrected in software before the heat-flux calculation means anything, because it is subtracting one from the other.</p></li><li><h4>Check the equilibration time</h4><p>Attach the patch and log for an hour. The reading should stabilise within 15–25 minutes. Much longer means the thermal mass is too high — reduce the potting compound or use a thinner substrate.</p></li><li><h4>Validate the detach detection</h4><p>Remove the patch and watch. It should report detached within two minutes, not report an ambient temperature as if it were a body temperature.</p></li></ol></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Read both sensors in air</b></td><td>Both within 0.2 °C of each other and of the ambient reference.</td></tr><tr><td><b>Attach the patch under an arm</b></td><td>Skin temperature rises to 34–36 °C over 15–25 minutes; the attached flag becomes true within a few samples.</td></tr><tr><td><b>Compare the estimate with a clinical thermometer</b></td><td>Within about 0.3 °C after calibration, at similar ambient conditions.</td></tr><tr><td><b>Remove the patch</b></td><td>Detached reported within two minutes, and no temperature published — not an ambient reading.</td></tr><tr><td><b>Move to a much colder room while wearing it</b></td><td>The gradient increases, the estimate holds within about 0.5 °C, and it does not collapse toward skin temperature.</td></tr><tr><td><b>Connect a generic BLE thermometer app</b></td><td>The Health Thermometer Service is discovered and readings appear with no custom software.</td></tr><tr><td><b>Leave BLE out of range for two hours</b></td><td>Readings buffer locally and flush on reconnection.</td></tr><tr><td><b>Measure average current</b></td><td>Around 0.7–1.0 mA with radio every 10th wake, giving roughly a week on 150 mAh.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>With everything wired and the firmware uploaded, the Serial Monitor at 115200 baud should look similar to the trace below. Values will differ; the <em>shape</em> of the output should not.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ECG%20trace.png?width=900" alt="An electrocardiogram waveform trace" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td154" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td154">A physiological trace. The shape of a temperature curve overnight is information a spot check simply cannot provide.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="30" y="34" width="340" height="192" rx="10" fill="var(--dg-box-b)" stroke="var(--dg-stroke)"/>
+    <rect x="30" y="34" width="340" height="28" rx="10" fill="var(--dg-chip)"/>
+    <circle cx="48" cy="48" r="4" fill="#e05f5f"/><circle cx="62" cy="48" r="4" fill="#e0b45f"/><circle cx="76" cy="48" r="4" fill="#5fe08a"/>
+    <rect x="44" y="76" width="140" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="58" y="98" font-size="10" fill="var(--dg-muted)">TEMPERATURE</text>
+    <text x="58" y="126" font-size="24" fill="var(--dg-accent)" font-family="monospace">27.4°</text>
+    <rect x="198" y="76" width="158" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="210,126 236,110 262,118 288,94 314,104 340,86" fill="none" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="44" y="152" width="312" height="60" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="56,196 86,180 116,188 146,160 176,172 206,146 236,158 266,138 296,150 340,128"
+      fill="none" stroke="var(--dg-accent)" stroke-width="2" opacity=".8"/>
+  </svg>
+  <figcaption>A physiological trace. The shape of a temperature curve overnight is information a spot check simply cannot provide.</figcaption>
+</figure></template>
+  <figcaption>A physiological trace. The shape of a temperature curve overnight is information a spot check simply cannot provide.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ECG_trace.png" rel="noopener nofollow" target="_blank">Wikimedia Commons — ECG trace.png</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Reported temperature is two degrees below a clinical thermometer</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Raw skin temperature is being reported, or k is far too low.</p>
+        <p><strong>Fix.</strong> Skin is genuinely 1.5–3 °C below core — that is physics, not a bug. Confirm the heat-flux term is being applied and calibrate k against a reference. If the gradient across the insulator is near zero, the insulating layer is too thin or the sensors are thermally shorted together.</p></div></details><details class="expand"><summary>The gradient between the two sensors is nearly zero</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The sensors are thermally coupled — usually by a metal enclosure, a shared PCB copper pour, or potting compound bridging them.</p>
+        <p><strong>Fix.</strong> Separate them with the intended insulator and nothing else. Cut a slot in the PCB between them if they share a board. Any conductive path between the two defeats the entire measurement.</p></div></details><details class="expand"><summary>Readings jump when the wearer moves</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The patch is losing and regaining contact.</p>
+        <p><strong>Fix.</strong> Use a better adhesive and a more flexible substrate. Under an arm is a high-movement site; behind the upper arm or on the chest is more stable. Also confirm the detach detection catches the loss rather than reporting a corrupted value.</p></div></details><details class="expand"><summary>Only one DS18B20 is found</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Missing pull-up, a bad joint, or two sensors with the same address (rare but it happens with counterfeits).</p>
+        <p><strong>Fix.</strong> Fit a 4.7 kΩ pull-up from data to 3.3 V. Run a 1-Wire address scan and confirm two distinct 64-bit ROM codes. If both report identically, one is a clone and must be replaced.</p></div></details><details class="expand"><summary>Battery lasts two days rather than a week</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The radio is waking every sample.</p>
+        <p><strong>Fix.</strong> Advertise every 10th wake and buffer in between. BLE advertising and connection dominate the power budget by roughly four to one over the sensor reads.</p></div></details><details class="expand"><summary>The rate-of-rise alert fires spuriously</summary><div class="inner">
+        <p><strong>Likely cause.</strong> A two-point difference on a quantised sensor, or a reattachment being read as a rise.</p>
+        <p><strong>Fix.</strong> Use the least-squares fit over 30 minutes, and clear the trend buffer whenever the patch detaches. Reattaching to a warm body looks exactly like a rapid fever if the buffer is not cleared.</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Advertise the radio every 5 minutes and buffer readings between — it is the single largest power saving available and costs nothing in usefulness.</li><li>Use 12-bit resolution only if you need 0.0625 °C. Dropping to 11-bit halves the 750 ms conversion time and the energy with it.</li><li>Gate sensor power through a MOSFET. Two DS18B20s and an SHT31 left powered continuously is over 3 mA, which is several times the rest of the budget combined.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li><b>Not a clinical thermometer.</b> Confirm any concerning reading with a validated device before acting on it, and see a doctor for anyone genuinely unwell — especially an infant.</li><li>Use hypoallergenic medical adhesive and check the skin daily. Days of continuous adhesive contact causes irritation, particularly on children and older adults.</li><li>Encapsulate all electronics in skin-safe silicone. Bare copper against skin corrodes in sweat and can cause a contact reaction.</li><li>Keep the lithium cell on the outer face and use a protected cell. A cell against skin for days is both a comfort and a thermal safety consideration.</li><li>Do not use on broken skin, and remove it before any MRI scan.</li><li>Lithium cells vent and burn when abused. Only use protected cells or a proper BMS, never charge below 0 °C, and never leave a charging pack unattended on a wooden desk.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Log pack voltage. When resting voltage after a full charge drops below about 4.0 V, the cell is near end of life — replace it.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Upgrade to <b>MAX30205</b> sensors, specified at ±0.1 °C in the 37–39 °C range, which is where accuracy actually matters for fever.</li><li>Add a <b>zero-heat-flux heater</b> for genuinely accurate core measurement, accepting the much larger battery it requires.</li><li>Add <b>heart rate</b> from a PPG sensor on the same patch — combined temperature and heart rate is far more informative clinically than either alone.</li><li>Add a <b>phone app with a proper timeline</b> and antipyretic dose markers, so the effect of each dose is directly visible.</li><li>Add <b>multi-patient support</b> for a ward or care home, with a single gateway aggregating many patches.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why not just use one sensor against the skin?</summary><div class="inner"><p>Because skin temperature is not body temperature. It sits 1.5–3 °C below core, and the offset changes with ambient temperature, blood flow and clothing. A single sensor with a fixed offset is accurate only under the exact conditions you calibrated it in, and it reports a plausible-looking wrong number outside them. The second sensor measures the gradient, which is what lets you correct for the conditions.</p></div></details><details class="expand"><summary>How accurate is the core estimate?</summary><div class="inner"><p>After per-wearer calibration, within about 0.3 °C under conditions similar to the calibration. It degrades when ambient temperature changes substantially, or when vasoconstriction changes — a shivering patient has very different core-to-skin resistance. Treat it as an accurate trend and a rough absolute.</p></div></details><details class="expand"><summary>Where should the patch go?</summary><div class="inner"><p>Under the arm (axilla) is the classic site and gives the smallest core offset. The chest and the upper back are more comfortable for long wear and more movement-stable, at the cost of a slightly larger offset — which the calibration absorbs. Forehead is worst: highly exposed to ambient and to evaporation.</p></div></details><details class="expand"><summary>Why does it take 20 minutes to stabilise?</summary><div class="inner"><p>Thermal mass. The patch, its potting and the adhesive all have to reach equilibrium with the skin, and the skin under the patch has to reach equilibrium with the reduced heat loss. Any reading in the first 15 minutes after attachment is transitional — the firmware should arguably suppress it entirely, as a clinical device would.</p></div></details><details class="expand"><summary>Can this replace a thermometer?</summary><div class="inner"><p>No. It is not validated, not calibrated to a traceable standard, and not regulated. What it does that a thermometer cannot is show you the shape of the curve overnight, which is genuinely useful information a spot check cannot provide. Use both.</p></div></details><details class="expand"><summary>Is BLE safe for continuous wear?</summary><div class="inner"><p>BLE transmits at about 1–10 mW, which is orders of magnitude below a mobile phone and far below any established thermal or non-thermal effect threshold. The bigger practical concern with continuous wear is adhesive irritation, not radio exposure.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/DS18B20.pdf" rel="noopener nofollow" target="_blank">DS18B20 programmable resolution 1-Wire digital thermometer — datasheet</a><span class="src">Analog Devices</span></li><li><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/MAX30205.pdf" rel="noopener nofollow" target="_blank">MAX30205 human body temperature sensor — datasheet</a><span class="src">Analog Devices</span></li><li><a href="https://doi.org/10.1113/jphysiol.1971.sp009432" rel="noopener nofollow" target="_blank">Fox &amp; Solman, "A new technique for monitoring the deep body temperature" (zero heat flux)</a><span class="src">The Journal of Physiology, 1971</span></li><li><a href="https://doi.org/10.1109/JBHI.2016.2532933" rel="noopener nofollow" target="_blank">Sim et al., "Estimation of circadian body temperature rhythm based on heart rate"</a><span class="src">IEEE JBHI, 2017</span></li><li><a href="https://www.bluetooth.com/specifications/specs/health-thermometer-service-1-0/" rel="noopener nofollow" target="_blank">Bluetooth SIG — Health Thermometer Service specification</a><span class="src">Bluetooth SIG</span></li><li><a href="https://doi.org/10.7326/M15-1150" rel="noopener nofollow" target="_blank">Niven et al., "Accuracy of peripheral thermometers for estimating temperature: a systematic review"</a><span class="src">Annals of Internal Medicine, 2015</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="posture-correction-wearable.html"><span class="dir">← Previous project</span><span class="ttl">Posture Correction Wearable</span></a>
+        <span class="next disabled"></span>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Intermediate</b></div>
+        <div class="rail-stat"><span>Time</span><b>10–14 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>11</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹2,400 – ₹3,400</b></div>
+        <div class="rail-stat"><span>Sections</span><b>25</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="heart-rate-and-spo2-band.html">Heart-Rate &amp; SpO2 Band</a></li><li><a href="fall-detection-pendant.html">Fall Detection Pendant</a></li><li><a href="smart-pill-dispenser.html">Smart Pill Dispenser</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="heart-rate-and-spo2-band.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Heart-Rate &amp; SpO2 Band</h4>
+        <p>A wrist wearable that continuously logs pulse and blood-oxygen levels.</p></a><a class="relcard" href="fall-detection-pendant.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Fall Detection Pendant</h4>
+        <p>Detects sudden falls and alerts family or caregivers with location.</p></a><a class="relcard" href="smart-pill-dispenser.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Smart Pill Dispenser</h4>
+        <p>Times and dispenses medication with reminders and missed-dose alerts.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Continuous Fever Patch</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
