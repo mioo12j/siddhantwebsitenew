@@ -1072,4 +1072,1146 @@ OK 2026-07-27 09:21:59  egress  granted  inside-button`,
   ],
 },
 
+/* ─────────────────────────────────────────────────────────────────
+   002 · Voice-Controlled Home Hub
+──────────────────────────────────────────────────────────────────*/
+{
+  id: '002',
+  domainKey: 'iot',
+  emoji: '🎙️',
+  thumb: 'esp32',
+  difficulty: 'Advanced',
+  hours: '20–30 hours',
+  iso8601: 'PT26H',
+  tagline: 'A wake-word voice assistant that runs entirely on a ₹900 microcontroller — no cloud, no account, no audio leaving the house — switching lights, fans and appliances from a spoken command.',
+
+  overview: [
+    'Commercial voice assistants work by streaming a continuous audio buffer to a data centre. That is a reasonable engineering choice and an unreasonable privacy one. This project takes the opposite position: the microphone data never leaves the ESP32-S3. A small neural network trained on your own recordings runs on-device, and the only thing that ever reaches the network is a two-word MQTT message such as <code>light/on</code>.',
+    'That constraint drives every design decision. You cannot run a general speech recogniser in 512 KB of RAM, so the system is built as a <b>keyword spotter</b> — it recognises a fixed vocabulary of perhaps a dozen commands rather than transcribing arbitrary speech. In practice that is what a home hub actually needs. "Lights on", "fan off", "scene movie" covers the real usage; free-form dictation does not.',
+    'The signal chain is worth understanding because it is the same chain used in every production keyword spotter. Audio arrives from an INMP441 MEMS microphone over I²S at 16 kHz. A 30 ms sliding window is transformed to a <b>Mel-frequency spectrogram</b> — a compact time-frequency image that discards phase and most of the fine spectral detail humans do not use for phoneme identity. That image feeds a small depthwise-separable convolutional network, quantised to int8, which outputs a probability per keyword. The whole inference costs about 15 ms on the ESP32-S3, which has vector instructions specifically for this workload.',
+    'The ESP32-S3 rather than a plain ESP32 is a deliberate choice. The S3 adds 8 MB of PSRAM (enough for audio ring buffers and the model arena) and SIMD-like vector extensions that roughly triple int8 convolution throughput. On a classic ESP32 the same model runs at around 45 ms per inference, which is usable but leaves much less headroom for the audio front end.',
+    'Two failure modes dominate real deployments, and both are addressed here. <b>False accepts</b> — the hub switching the lights because the television said something similar — are handled with a confidence threshold plus a required run of consecutive positive frames. <b>False rejects</b> in a noisy kitchen are handled by training on your own room, with your own voice, including recordings of the background noise you actually have.',
+  ],
+
+  does: [
+    'Continuously listens for a wake word entirely on-device, at about 0.4 W total power.',
+    'Recognises a trained vocabulary of 8–12 command phrases with per-keyword confidence scores.',
+    'Publishes the recognised intent as an MQTT message that Home Assistant, Node-RED or a relay board can act on.',
+    'Switches four mains channels directly through an opto-isolated relay board when running standalone.',
+    'Gives immediate audible and visual feedback so you always know whether a command landed.',
+    'Logs every recognition — including rejected low-confidence ones — so you can tune the threshold from real data.',
+    'Never transmits audio. The microphone buffer is overwritten in place and never written to flash or the network.',
+  ],
+
+  features: [
+    '<b>Fully offline inference</b> using TensorFlow Lite for Microcontrollers with an int8-quantised model under 60 KB.',
+    '<b>Mel-spectrogram front end</b> computed with a fixed-point FFT, so feature extraction costs about 4 ms per window.',
+    '<b>Two-stage detection</b> — a cheap always-on wake-word model gates a larger command model, cutting average power by roughly 60 %.',
+    '<b>Confidence hysteresis</b>: three consecutive frames above threshold to accept, which nearly eliminates television false triggers.',
+    '<b>Per-keyword thresholds</b> tunable at runtime over MQTT, because "off" is inherently harder to detect than "kitchen".',
+    '<b>Ring-buffered I²S capture</b> on a dedicated FreeRTOS task pinned to core 0, so inference on core 1 never drops samples.',
+    '<b>Adaptive noise floor</b> — the detector\'s energy gate tracks the room\'s ambient level over a 30 s window.',
+    '<b>WS2812 status ring</b> giving a listening / thinking / accepted / rejected visual state.',
+  ],
+
+  applications: [
+    { t: 'Accessible home control', d: 'For someone with limited mobility, a reliable local voice switch is genuinely enabling — and unlike a cloud assistant it keeps working when the broadband does not.' },
+    { t: 'Privacy-sensitive households', d: 'Homes where a cloud microphone is unacceptable — therapy practices, legal offices, or simply a matter of principle.' },
+    { t: 'Industrial and workshop control', d: 'Hands-free control while wearing gloves or holding a workpiece, in an environment with no network access.' },
+    { t: 'Hotel and hospital rooms', d: 'A fixed, auditable vocabulary is far easier to certify than a general-purpose assistant.' },
+    { t: 'Teaching TinyML', d: 'The complete loop — collect data, train, quantise, deploy, measure — inside one weekend project.' },
+    { t: 'Kiosk and appliance interfaces', d: 'The same firmware pattern gives a washing machine or coffee machine a small, dependable voice interface.' },
+  ],
+
+  skills: [
+    'Comfortable C++ including pointers, buffers and fixed-size arrays',
+    'Basic digital signal processing intuition — sampling rate, windowing, spectrograms',
+    'Enough Python to run a training notebook and read a confusion matrix',
+    'Understanding of quantisation: why int8 and what it costs in accuracy',
+    'FreeRTOS basics — tasks, cores, queues',
+    'Mains wiring competence if you drive relays directly (or use a separate certified smart plug instead)',
+  ],
+
+  prereq: [
+    'Collect your training data before you write any firmware. The single largest determinant of accuracy is whether the model heard your room, your voice and your background noise during training — not the architecture. Budget an hour for recording and expect to redo it once.',
+  ],
+
+  parts: ['esp32s3', 'inmp441', 'relay4', 'neopixel', 'buzzer', 'buck', 'psu5v', 'perfboard', 'enclosure'],
+  extraParts: [
+    { name: 'Small 4 Ω 3 W speaker + PAM8403 amplifier', spec: 'Class-D, 3 W per channel, 5 V', qty: 1, price: 220, note: 'Optional — for spoken confirmation rather than beeps.' },
+    { name: 'Acoustic foam / felt pad', spec: '10 mm open-cell, self-adhesive', qty: 1, price: 120, note: 'Decouples the microphone from enclosure vibration; noticeably reduces handling noise.' },
+  ],
+  cost: '₹3,600 – ₹4,800',
+
+  libs: ['esptask', 'tflmicro', 'edgeimpulse', 'wifi', 'pubsub', 'arduinojson', 'fastled', 'python', 'tf', 'numpy', 'librosa'],
+  ide: 'Arduino IDE 2.3.x with the ESP32 core 3.x (board: ESP32S3 Dev Module, PSRAM enabled) + Python 3.11 for training',
+
+  pins: {
+    left: [
+      { dev: 'INMP441 microphone', devPin: 'SCK (BCLK)', pin: 'GPIO 14', sig: 'I²S bit clock' },
+      { dev: 'INMP441 microphone', devPin: 'WS (LRCL)', pin: 'GPIO 15', sig: 'I²S word select' },
+      { dev: 'INMP441 microphone', devPin: 'SD (DOUT)', pin: 'GPIO 32', sig: 'I²S serial data' },
+      { dev: 'INMP441 microphone', devPin: 'L/R', pin: 'GND', sig: 'Selects the left channel' },
+      { dev: 'Mode / mute button', devPin: 'NO contact', pin: 'GPIO 0', sig: 'Also the BOOT pin' },
+    ],
+    right: [
+      { dev: 'WS2812 status ring (12 px)', devPin: 'DIN', pin: 'GPIO 48', sig: '800 kHz, 330 Ω series' },
+      { dev: '4-channel relay board', devPin: 'IN1–IN4', pin: 'GPIO 4 5 6 7', sig: 'Active-low' },
+      { dev: 'Piezo buzzer', devPin: '+', pin: 'GPIO 17', sig: 'LEDC PWM tone' },
+    ],
+  },
+
+  wiringNotes: [
+    'The INMP441 is an <b>I²S digital</b> microphone, not analogue. There is no ADC involved on the ESP32 side — the peripheral clocks 24-bit samples straight out of the microphone, which is why the noise floor is so much lower than an analogue electret plus op-amp.',
+    'Tie the microphone <code>L/R</code> pin to ground to select the left channel. Left floating, the microphone may output on either slot and you will read silence half the time.',
+    'Keep the three I²S lines short (under 15 cm) and run a ground wire alongside them. The bit clock is 1.024 MHz at 16 kHz × 32 bits × 2 channels and it radiates.',
+    'Place the microphone port on the enclosure face with a 2–3 mm hole and a fabric mesh behind it. Do not cover it with anything solid, and do not glue it — mechanical coupling to the case turns every knock into a false trigger.',
+    'The WS2812 ring wants 5 V data ideally, but works reliably from a 3.3 V ESP32-S3 for short runs. If the first pixel misbehaves, add a level shifter or sacrifice one pixel as a buffer.',
+    'The relay board must be powered from the 5 V rail, not the ESP32 3V3 pin. Four energised coils draw about 280 mA — far beyond what the on-board regulator will supply.',
+  ],
+
+  block: {
+    columns: [
+      { label: 'Capture', blocks: [{ name: 'INMP441 mic', sub: 'I²S 16 kHz 24-bit' }, { name: 'Ring buffer', sub: 'core 0 task' }] },
+      { label: 'Features', edge: '30 ms window', blocks: [{ name: 'Pre-emphasis + Hann', sub: 'fixed-point' }, { name: 'Mel spectrogram', sub: '40 bands × 49 frames', highlight: true }] },
+      { label: 'Inference', edge: 'int8 tensor', blocks: [{ name: 'Wake-word model', sub: '18 KB, always on' }, { name: 'Command model', sub: '58 KB, gated', highlight: true }] },
+      { label: 'Action', edge: 'intent + score', blocks: [{ name: 'Hysteresis filter', sub: '3 frames' }, { name: 'Relay / MQTT', sub: 'publish intent' }] },
+    ],
+  },
+
+  flow: [
+    { t: 'Boot: init I²S, load models, join Wi-Fi', k: 'start' },
+    { t: 'Core 0 fills the audio ring buffer', k: 'proc' },
+    { t: 'Energy above adaptive noise floor?', k: 'dec', yes: 'yes', no: 'sleep 10 ms', back: 1 },
+    { t: 'Compute Mel spectrogram for this window', k: 'proc' },
+    { t: 'Run the wake-word model', k: 'proc' },
+    { t: 'Wake word detected?', k: 'dec', yes: 'yes', no: 'back to listening', back: 1 },
+    { t: 'Run the command model on the next 1 s', k: 'proc' },
+    { t: 'Score > threshold for 3 frames?', k: 'dec', yes: 'accept', no: 'flash red, log rejection', back: 1 },
+    { t: 'Switch relay and publish MQTT intent', k: 'io' },
+    { t: 'Return to listening', k: 'end' },
+  ],
+
+  layers: [
+    { name: 'Acoustic front end', items: ['INMP441 MEMS mic', 'I²S peripheral', 'DMA ring buffer'], highlight: true },
+    { name: 'Feature extraction', items: ['pre-emphasis', 'Hann window', 'fixed-point FFT', 'Mel filterbank', 'log compression'] },
+    { name: 'Inference', items: ['TFLite Micro interpreter', 'int8 DS-CNN', 'tensor arena in PSRAM'] },
+    { name: 'Decision', items: ['softmax', 'per-keyword threshold', 'consecutive-frame hysteresis', 'debounce timer'] },
+    { name: 'Actuation & transport', items: ['relay driver', 'MQTT intent publish', 'WS2812 feedback'] },
+  ],
+
+  principle: [
+    'Speech recognition on a microcontroller is an exercise in throwing information away intelligently. Raw audio at 16 kHz is 16 000 numbers per second; a keyword decision needs perhaps 2 000 numbers per second of <em>useful</em> information. The Mel spectrogram is the standard way of making that reduction, and it is worth understanding why it works.',
+    'Start with a 30 ms window of samples — 480 at 16 kHz. Speech is roughly stationary over that span: a vowel does not change identity in 30 ms. Multiply by a <b>Hann window</b> to taper the edges, because an abrupt cut produces spectral leakage that smears energy across every frequency bin. Take the magnitude of the FFT and discard the phase; for keyword identity, phase carries almost nothing. That leaves 256 magnitude bins.',
+    'Now compress those 256 bins into about 40, using triangular filters spaced on the <b>Mel scale</b>. The Mel scale is approximately linear below 1 kHz and logarithmic above, which mirrors how the cochlea resolves frequency — we discriminate 200 Hz from 300 Hz easily, and 5000 Hz from 5100 Hz not at all. Filters that follow that curve preserve the information the ear uses and throw away the rest. Take the logarithm of each filter output, because loudness perception is roughly logarithmic and because it compresses the dynamic range into something an int8 network can represent.',
+    'Slide that window forward 20 ms at a time and stack the results, and after one second you have a 49 × 40 image. That image is what the network actually sees. The word "kitchen" produces a visually distinctive pattern — a burst of high-frequency energy for the /k/, a formant structure for the vowel, another burst for the /tʃ/ — and a convolutional network is extremely good at learning those patterns.',
+    'The network itself is a <b>depthwise-separable CNN</b>, the architecture Google published as DS-CNN in their Hello Edge work and which remains the practical default for this task. A standard convolution over C input channels with K output channels and a 3 × 3 kernel costs 9·C·K multiply-accumulates per output pixel. A depthwise-separable convolution splits that into a 3 × 3 spatial filter per channel (9·C) followed by a 1 × 1 mix across channels (C·K), which is roughly 8–9× cheaper for typical channel counts at nearly the same accuracy. That factor is exactly what makes the difference between fitting in a microcontroller and not.',
+    'Finally, <b>quantisation</b>. Training happens in float32; deployment does not. Post-training quantisation maps each tensor to int8 using a per-axis scale and zero point, so a weight <code>w</code> is stored as <code>round(w / scale) + zero_point</code>. The model shrinks 4× and integer arithmetic runs several times faster on hardware with no FPU-heavy vector unit. Typical accuracy cost for this class of model is well under one percentage point, provided you supply a representative dataset during conversion so the converter can measure the real activation ranges.',
+  ],
+
+  equations: [
+    { t: 'Mel scale conversion', eq: 'm = 2595 · log10(1 + f / 700)\nf = 700 · (10^(m / 2595) − 1)\n\n40 filters spanning 80 Hz – 7600 Hz:\n  m_low  = 2595 · log10(1 + 80/700)   ≈  120.4 mel\n  m_high = 2595 · log10(1 + 7600/700) ≈ 2762.4 mel\n  spacing = (2762.4 − 120.4) / 41     ≈   64.4 mel', d: 'Filter centres are evenly spaced in mel and therefore unevenly spaced in hertz — narrow and closely packed at low frequency, wide and sparse at high frequency.' },
+    { t: 'Int8 quantisation', eq: 'real  = scale × (quantised − zero_point)\nscale = (real_max − real_min) / 255\nzero_point = round(−real_min / scale) − 128\n\nExample activation range [−6.0, +2.0]:\n  scale      = 8.0 / 255      = 0.03137\n  zero_point = round(6.0/0.03137) − 128 = 63', d: 'Every tensor carries its own scale and zero point, which is why a representative calibration dataset matters: the converter derives these constants from observed activations.' },
+    { t: 'Inference cost', eq: 'Standard 3×3 conv:  9 · C_in · C_out       MACs / pixel\nDepthwise-separable: 9 · C_in + C_in · C_out\n\nC_in = C_out = 64:\n  standard    = 9 · 64 · 64 = 36 864 MACs\n  separable   = 9 · 64 + 64 · 64 = 4 672 MACs\n  reduction   = 7.9×', d: 'The saving grows with channel count, which is why every mobile and microcontroller vision or audio model uses this decomposition.' },
+  ],
+
+  assembly: [
+    { h: 'Bring up the microphone first', p: ['Wire only the INMP441 and run the I²S capture sketch from step 1. Print the RMS of each buffer and confirm it rises when you speak and falls in silence. A microphone that reads a constant value has its L/R pin floating or its data line on the wrong GPIO.'] },
+    { h: 'Mount the microphone acoustically, not structurally', p: ['Stick the INMP441 board to a small foam pad rather than directly to the enclosure. Line up the microphone port hole in the PCB with a 2.5 mm hole in the case and leave a 1 mm air gap. Cover the outside with acoustic mesh, never with tape.'], warn: 'Do not let solder flux or conformal coating near the microphone port. Blocking it permanently deafens the sensor and it cannot be cleaned.' },
+    { h: 'Add the status ring and buzzer', p: ['The WS2812 ring is the user interface. Fit it behind a diffuser — a disc of 1 mm white acrylic or even printer paper — so it reads as a glow rather than twelve point sources.'] },
+    { h: 'Wire the relay board on the far side of the enclosure', p: ['Keep the mains section physically separated from the microphone and the ESP32-S3, with a solid barrier if the enclosure allows. Relay switching transients are broadband electrical noise, and the I²S clock lines are the last thing you want them coupling into.'], warn: 'If you are not confident wiring mains, do not. Publish MQTT intents instead and let a commercially certified smart plug do the switching. The project loses nothing.' },
+    { h: 'Close up and re-test acoustically', p: ['Recognition accuracy measured with the lid off is not the accuracy you will get with it on. The enclosure changes the frequency response. Always do your final threshold tuning with the case fully assembled and the unit in its final position.'] },
+  ],
+
+  steps: [
+    {
+      h: 'Capture audio over I²S and measure the level',
+      p: ['This sketch does nothing but read the microphone and print a level meter. Get it right before anything else — every later problem is easier to diagnose when you trust the audio.'],
+      code: {
+        file: '01-i2s-capture.ino', lang: 'cpp',
+        body: `#include <driver/i2s.h>
+
+#define I2S_BCLK  14
+#define I2S_LRCL  15
+#define I2S_DOUT  32
+#define SAMPLE_RATE 16000
+#define FRAME_LEN   512
+
+int32_t raw[FRAME_LEN];        // INMP441 delivers 24-bit left-justified in 32
+
+void setup() {
+  Serial.begin(115200);
+
+  i2s_config_t cfg = {
+    .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX),
+    .sample_rate = SAMPLE_RATE,
+    .bits_per_sample = I2S_BITS_PER_SAMPLE_32BIT,
+    .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
+    .communication_format = I2S_COMM_FORMAT_STAND_I2S,
+    .intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,
+    .dma_buf_count = 8,        // 8 x 512 samples = 256 ms of slack
+    .dma_buf_len = FRAME_LEN,
+    .use_apll = true           // cleaner clock than the PLL divider
+  };
+  i2s_pin_config_t pins = {
+    .bck_io_num = I2S_BCLK,  .ws_io_num = I2S_LRCL,
+    .data_out_num = I2S_PIN_NO_CHANGE, .data_in_num = I2S_DOUT
+  };
+  i2s_driver_install(I2S_NUM_0, &cfg, 0, NULL);
+  i2s_set_pin(I2S_NUM_0, &pins);
+}
+
+void loop() {
+  size_t got = 0;
+  i2s_read(I2S_NUM_0, raw, sizeof(raw), &got, portMAX_DELAY);
+  int n = got / sizeof(int32_t);
+
+  // Shift right by 11 to land 24-bit audio in a signed 16-bit range.
+  double sumSq = 0;
+  for (int i = 0; i < n; i++) {
+    int16_t s = (int16_t)(raw[i] >> 11);
+    sumSq += (double)s * s;
+  }
+  float rms = sqrt(sumSq / n);
+  float db  = 20.0f * log10f(rms / 32768.0f + 1e-9f);
+
+  Serial.printf("rms %7.1f  %6.1f dBFS  ", rms, db);
+  for (int i = 0; i < (int)((db + 80) / 2); i++) Serial.print('#');
+  Serial.println();
+}`,
+        explain: [
+          { ref: 'I2S_BITS_PER_SAMPLE_32BIT', txt: 'The INMP441 is a 24-bit part but transmits in 32-bit slots. Configuring 16-bit here is the classic mistake — you get half of each sample and the audio sounds like static.' },
+          { ref: 'raw[i] >> 11', txt: 'The 24 bits sit left-justified in the 32-bit word. Shifting right by 11 keeps the top 16 bits with a little headroom, which is a good working level for speech without clipping on a loud word.' },
+          { ref: 'use_apll = true', txt: 'The audio PLL generates a much lower-jitter bit clock than dividing the main PLL. Jitter shows up as a raised noise floor, which directly costs you recognition accuracy in a quiet room.' },
+          { ref: 'dma_buf_count = 8', txt: 'Eight buffers give 256 ms of slack. If inference occasionally overruns, DMA keeps filling buffers rather than dropping samples — dropped samples corrupt the spectrogram and produce mysterious mis-detections.' },
+        ],
+      },
+      tip: 'A quiet room should read around −55 to −65 dBFS; normal speech at one metre around −25 to −35 dBFS. If silence reads above −40 dBFS you have a wiring or clock problem, not a noisy room.',
+    },
+    {
+      h: 'Collect your own training data',
+      p: ['Public keyword datasets are a starting point, not a solution. Record in the room the device will live in, with the people who will use it. Aim for 60–100 utterances per keyword across at least three speakers, plus five minutes of pure background noise from that room, plus a "not a command" class made of ordinary conversation and television audio.'],
+      code: {
+        file: 'record_samples.py', lang: 'python',
+        body: `#!/usr/bin/env python3
+"""Record labelled 1-second keyword clips at 16 kHz.
+
+    python3 record_samples.py --label lights_on --count 60
+"""
+import argparse
+import pathlib
+import queue
+import sys
+
+import numpy as np
+import sounddevice as sd
+import soundfile as sf
+
+RATE = 16_000
+CLIP = 1.0  # seconds — must match the model's input length
+
+
+def record_one(seconds: float = CLIP) -> np.ndarray:
+    frames: queue.Queue = queue.Queue()
+    with sd.InputStream(samplerate=RATE, channels=1, dtype="int16",
+                        callback=lambda d, *_: frames.put(d.copy())):
+        sd.sleep(int(seconds * 1000))
+    chunks = []
+    while not frames.empty():
+        chunks.append(frames.get())
+    clip = np.concatenate(chunks).flatten()
+    # Pad or trim to exactly CLIP seconds so every example has one shape.
+    want = int(RATE * seconds)
+    return np.pad(clip, (0, max(0, want - len(clip))))[:want]
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--label", required=True)
+    ap.add_argument("--count", type=int, default=60)
+    ap.add_argument("--out", default="dataset")
+    args = ap.parse_args()
+
+    out = pathlib.Path(args.out) / args.label
+    out.mkdir(parents=True, exist_ok=True)
+    start = len(list(out.glob("*.wav")))
+
+    print(f"Recording {args.count} clips for '{args.label}'.")
+    print("Vary your distance, angle and speed. Enter to record, q to stop.")
+    for i in range(args.count):
+        if input(f"[{i + 1}/{args.count}] > ").strip().lower() == "q":
+            break
+        clip = record_one()
+        peak = np.abs(clip).max() / 32768
+        if peak < 0.02:
+            print("  too quiet — discarded, move closer")
+            continue
+        if peak > 0.98:
+            print("  clipped — discarded, move back")
+            continue
+        sf.write(out / f"{args.label}_{start + i:04d}.wav", clip, RATE)
+        print(f"  saved  peak {peak:.2f}")
+
+
+if __name__ == "__main__":
+    sys.exit(main())`,
+        explain: [
+          { ref: 'peak < 0.02 / > 0.98', txt: 'Automatic quality gates. Clips that are near-silent or clipped teach the model nothing useful and actively hurt — rejecting them at capture time is far cheaper than cleaning the dataset later.' },
+          { ref: 'np.pad(...)[:want]', txt: 'Every example must be exactly one second. A model with a fixed input shape cannot accept variable-length audio, and silently truncating during training is a subtle source of label noise.' },
+          { ref: '"Vary your distance, angle and speed"', txt: 'This is the most important line in the script. A dataset recorded at one distance in one tone of voice produces a model that only works at that distance in that tone of voice.' },
+        ],
+      },
+      tip: 'Record the <em>negative</em> class properly. Half your recording time should go on background, conversation and television audio. A keyword spotter with no good negatives fires constantly.',
+    },
+    {
+      h: 'Train and quantise the model',
+      p: ['The architecture is small enough to train on a laptop CPU in about fifteen minutes. Resist the temptation to make it bigger — accuracy on this task is bounded by your data, not your parameter count.'],
+      code: {
+        file: 'train_kws.py', lang: 'python',
+        body: `#!/usr/bin/env python3
+"""Train a depthwise-separable CNN keyword spotter and export int8 TFLite."""
+import pathlib
+
+import numpy as np
+import tensorflow as tf
+
+RATE, CLIP = 16_000, 1.0
+N_MELS, N_FRAMES = 40, 49
+LABELS = ["_background", "_unknown", "lights_on", "lights_off",
+          "fan_on", "fan_off", "scene_movie", "all_off"]
+
+
+def log_mel(waveform: tf.Tensor) -> tf.Tensor:
+    """480-sample window, 320-sample hop -> 49 x 40 log-mel image."""
+    stft = tf.signal.stft(waveform, frame_length=480, frame_step=320, fft_length=512)
+    spec = tf.abs(stft)
+    mel_w = tf.signal.linear_to_mel_weight_matrix(
+        num_mel_bins=N_MELS, num_spectrogram_bins=stft.shape[-1],
+        sample_rate=RATE, lower_edge_hertz=80.0, upper_edge_hertz=7600.0)
+    mel = tf.tensordot(spec, mel_w, 1)
+    return tf.math.log(mel + 1e-6)[..., tf.newaxis]
+
+
+def build_model() -> tf.keras.Model:
+    inp = tf.keras.Input(shape=(N_FRAMES, N_MELS, 1))
+    x = tf.keras.layers.Conv2D(32, (3, 3), strides=(2, 2), padding="same",
+                               use_bias=False)(inp)
+    x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.ReLU()(x)
+
+    for _ in range(4):                       # 4 depthwise-separable blocks
+        x = tf.keras.layers.DepthwiseConv2D((3, 3), padding="same", use_bias=False)(x)
+        x = tf.keras.layers.BatchNormalization()(x)
+        x = tf.keras.layers.ReLU()(x)
+        x = tf.keras.layers.Conv2D(32, (1, 1), padding="same", use_bias=False)(x)
+        x = tf.keras.layers.BatchNormalization()(x)
+        x = tf.keras.layers.ReLU()(x)
+
+    x = tf.keras.layers.GlobalAveragePooling2D()(x)
+    x = tf.keras.layers.Dropout(0.25)(x)
+    out = tf.keras.layers.Dense(len(LABELS), activation="softmax")(x)
+    return tf.keras.Model(inp, out)
+
+
+def load_dataset(root="dataset"):
+    xs, ys = [], []
+    for idx, label in enumerate(LABELS):
+        for wav in pathlib.Path(root, label).glob("*.wav"):
+            audio, _ = tf.audio.decode_wav(tf.io.read_file(str(wav)),
+                                           desired_channels=1,
+                                           desired_samples=int(RATE * CLIP))
+            xs.append(log_mel(tf.squeeze(audio, -1)))
+            ys.append(idx)
+    return np.stack(xs), np.array(ys)
+
+
+def main() -> None:
+    x, y = load_dataset()
+    print(f"{len(x)} examples, {len(LABELS)} classes")
+
+    perm = np.random.permutation(len(x))
+    x, y = x[perm], y[perm]
+    split = int(0.85 * len(x))
+    x_tr, y_tr, x_va, y_va = x[:split], y[:split], x[split:], y[split:]
+
+    model = build_model()
+    model.compile(optimizer=tf.keras.optimizers.Adam(1e-3),
+                  loss="sparse_categorical_crossentropy",
+                  metrics=["accuracy"])
+    model.fit(x_tr, y_tr, validation_data=(x_va, y_va),
+              epochs=60, batch_size=64,
+              callbacks=[tf.keras.callbacks.EarlyStopping(
+                  patience=8, restore_best_weights=True)])
+
+    # ---- int8 quantisation -------------------------------------------
+    def representative():
+        for i in range(min(300, len(x_tr))):
+            yield [x_tr[i:i + 1].astype(np.float32)]
+
+    conv = tf.lite.TFLiteConverter.from_keras_model(model)
+    conv.optimizations = [tf.lite.Optimize.DEFAULT]
+    conv.representative_dataset = representative
+    conv.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+    conv.inference_input_type = tf.int8
+    conv.inference_output_type = tf.int8
+    tflite = conv.convert()
+
+    pathlib.Path("kws_int8.tflite").write_bytes(tflite)
+    print(f"model size: {len(tflite) / 1024:.1f} KB")
+
+    # Emit a C array the sketch can include directly.
+    with open("model_data.h", "w") as f:
+        f.write("alignas(16) const unsigned char g_model[] = {\\n")
+        for i in range(0, len(tflite), 12):
+            f.write("  " + ", ".join(f"0x{b:02x}" for b in tflite[i:i + 12]) + ",\\n")
+        f.write("};\\nconst unsigned int g_model_len = %d;\\n" % len(tflite))
+
+
+if __name__ == "__main__":
+    main()`,
+        explain: [
+          { ref: 'log_mel()', txt: 'Feature extraction lives in the training script and is mirrored exactly in the firmware. Any mismatch — a different window length, a different mel range — silently destroys accuracy at deployment while training metrics still look perfect.' },
+          { ref: 'DepthwiseConv2D + Conv2D 1×1', txt: 'This pair is the depthwise-separable block: spatial filtering per channel, then a pointwise mix across channels. It is what makes the model roughly eight times cheaper than plain convolutions.' },
+          { ref: 'GlobalAveragePooling2D', txt: 'Replaces a flatten-plus-dense head. It removes tens of thousands of parameters and makes the model tolerant of small time shifts in the keyword.' },
+          { ref: 'representative_dataset', txt: 'The converter runs these samples through the float model to observe real activation ranges and pick per-tensor scales. Skip it and every activation gets a crude default range, which typically costs 5–15 points of accuracy.' },
+          { ref: '_background and _unknown classes', txt: 'Two negative classes, not one. "_background" is room noise; "_unknown" is speech that is not a command. Merging them makes the model confuse silence with conversation and raises false accepts sharply.' },
+        ],
+      },
+    },
+    {
+      h: 'Run inference on the device',
+      p: ['The firmware mirrors the training front end exactly, then runs the interpreter and applies hysteresis before acting.'],
+      code: {
+        file: '02-inference-core.ino', lang: 'cpp',
+        body: `#include <TensorFlowLite_ESP32.h>
+#include "tensorflow/lite/micro/micro_interpreter.h"
+#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
+#include "tensorflow/lite/schema/schema_generated.h"
+#include "model_data.h"
+
+constexpr int  N_FRAMES = 49, N_MELS = 40, N_LABELS = 8;
+constexpr int  ARENA_SIZE = 70 * 1024;
+
+static uint8_t *arena;                     // allocated in PSRAM
+static tflite::MicroInterpreter *interp;
+static TfLiteTensor *input, *output;
+
+const char *LABELS[N_LABELS] = {
+  "_background", "_unknown", "lights_on", "lights_off",
+  "fan_on", "fan_off", "scene_movie", "all_off"
+};
+// "off" words are acoustically weaker; they need a lower bar.
+const float THRESH[N_LABELS] = { 1.0f, 1.0f, 0.85f, 0.78f, 0.85f, 0.78f, 0.88f, 0.90f };
+
+void inferenceBegin() {
+  arena = (uint8_t *)heap_caps_malloc(ARENA_SIZE, MALLOC_CAP_SPIRAM);
+
+  static tflite::MicroMutableOpResolver<8> resolver;
+  resolver.AddConv2D();
+  resolver.AddDepthwiseConv2D();
+  resolver.AddRelu();
+  resolver.AddAveragePool2D();
+  resolver.AddReshape();
+  resolver.AddFullyConnected();
+  resolver.AddSoftmax();
+  resolver.AddQuantize();
+
+  const tflite::Model *model = tflite::GetModel(g_model);
+  static tflite::MicroInterpreter s(model, resolver, arena, ARENA_SIZE);
+  interp = &s;
+  interp->AllocateTensors();
+  input  = interp->input(0);
+  output = interp->output(0);
+
+  Serial.printf("arena used: %u bytes\\n", (unsigned)interp->arena_used_bytes());
+}
+
+// features[] holds the float log-mel image; quantise it into the tensor.
+int classify(const float *features, float *bestScore) {
+  const float  s  = input->params.scale;
+  const int    zp = input->params.zero_point;
+  int8_t      *dst = input->data.int8;
+
+  for (int i = 0; i < N_FRAMES * N_MELS; i++) {
+    int v = (int)lroundf(features[i] / s) + zp;
+    dst[i] = (int8_t)(v < -128 ? -128 : (v > 127 ? 127 : v));
+  }
+
+  if (interp->Invoke() != kTfLiteOk) return -1;
+
+  const float os  = output->params.scale;
+  const int   ozp = output->params.zero_point;
+  int   best = 0;
+  float bestP = -1;
+  for (int i = 0; i < N_LABELS; i++) {
+    float p = os * (output->data.int8[i] - ozp);
+    if (p > bestP) { bestP = p; best = i; }
+  }
+  *bestScore = bestP;
+  return best;
+}
+
+// Three consecutive agreeing frames above threshold before we act.
+int stableIntent(int label, float score) {
+  static int   lastLabel = -1;
+  static int   run = 0;
+  static uint32_t lastFire = 0;
+
+  if (label != lastLabel) { lastLabel = label; run = 0; }
+  run = (score >= THRESH[label]) ? run + 1 : 0;
+
+  if (run >= 3 && millis() - lastFire > 1500) {   // 1.5 s command debounce
+    run = 0;
+    lastFire = millis();
+    return label;
+  }
+  return -1;
+}`,
+        explain: [
+          { ref: 'heap_caps_malloc(..., MALLOC_CAP_SPIRAM)', txt: 'The 70 KB tensor arena goes into the S3\'s external PSRAM rather than internal SRAM, leaving internal memory free for the I²S DMA buffers and the Wi-Fi stack — which are both latency-critical and must not be in PSRAM.' },
+          { ref: 'MicroMutableOpResolver<8>', txt: 'Registers only the eight operators this model actually uses. The all-ops resolver pulls in every kernel TFLite Micro knows about and adds roughly 100 KB of flash for no benefit.' },
+          { ref: 'lroundf(features[i] / s) + zp', txt: 'Manual quantisation of the input. The scale and zero point come from the model file itself, so this code stays correct if you retrain and the ranges change.' },
+          { ref: 'THRESH[] per label', txt: 'Unvoiced fricatives such as the /f/ in "off" carry far less energy than a plosive, so a single global threshold either misses "off" or over-triggers on "on". Per-keyword thresholds are the single cheapest accuracy improvement available.' },
+          { ref: 'run >= 3 && millis() - lastFire > 1500', txt: 'Two independent guards. The run counter rejects momentary spikes from a television; the debounce timer stops one long utterance from firing the same command three times.' },
+        ],
+      },
+    },
+  ],
+
+  code: [
+    {
+      file: 'voice-home-hub.ino', lang: 'cpp',
+      body: `/* ═══════════════════════════════════════════════════════════════
+   Offline Voice-Controlled Home Hub — ESP32-S3 + INMP441 + TFLite Micro
+
+   Audio never leaves the device. A dedicated FreeRTOS task on core 0
+   fills a ring buffer from I²S; core 1 computes a log-mel spectrogram
+   and runs an int8 keyword-spotting model. Only the resulting intent
+   is published over MQTT.
+
+   Board: ESP32S3 Dev Module, PSRAM: OPI, Flash: 8 MB
+   ══════════════════════════════════════════════════════════════════ */
+
+#include <WiFi.h>
+#include <PubSubClient.h>
+#include <ArduinoJson.h>
+#include <driver/i2s.h>
+#include <FastLED.h>
+#include <math.h>
+
+#include <TensorFlowLite_ESP32.h>
+#include "tensorflow/lite/micro/micro_interpreter.h"
+#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
+#include "tensorflow/lite/schema/schema_generated.h"
+#include "model_data.h"
+
+/* ── configuration ──────────────────────────────────────────── */
+#define WIFI_SSID   "YOUR_WIFI"
+#define WIFI_PASS   "YOUR_PASSWORD"
+#define MQTT_HOST   "192.168.1.50"
+#define MQTT_PORT   1883
+#define DEVICE_ID   "voice-hub"
+
+#define I2S_BCLK    14
+#define I2S_LRCL    15
+#define I2S_DOUT    32
+#define PIN_LEDS    48
+#define PIN_BUZZER  17
+#define N_LEDS      12
+
+const uint8_t RELAY_PIN[4] = { 4, 5, 6, 7 };
+
+#define SAMPLE_RATE 16000
+#define WIN_LEN     480          // 30 ms
+#define HOP_LEN     320          // 20 ms
+#define FFT_LEN     512
+#define N_MELS      40
+#define N_FRAMES    49           // 49 hops ≈ 1.0 s
+#define RING_LEN    (SAMPLE_RATE)   // 1 s of int16 audio
+#define ARENA_SIZE  (70 * 1024)
+
+const char *LABELS[] = { "_background", "_unknown", "lights_on", "lights_off",
+                         "fan_on", "fan_off", "scene_movie", "all_off" };
+const float THRESH[] = { 1.0f, 1.0f, 0.85f, 0.78f, 0.85f, 0.78f, 0.88f, 0.90f };
+#define N_LABELS (sizeof(LABELS) / sizeof(LABELS[0]))
+
+/* ── globals ────────────────────────────────────────────────── */
+WiFiClient   net;
+PubSubClient mqtt(net);
+CRGB         leds[N_LEDS];
+
+static int16_t  *ring;            // PSRAM audio ring buffer
+static volatile uint32_t ringHead = 0;
+static float    *melFilters;      // N_MELS x (FFT_LEN/2+1), precomputed
+static float    *features;        // N_FRAMES x N_MELS
+static float     noiseFloor = 0.002f;
+
+static uint8_t  *arena;
+static tflite::MicroInterpreter *interp;
+static TfLiteTensor *inputT, *outputT;
+
+/* ── mel filterbank (computed once at boot) ─────────────────── */
+static float hzToMel(float hz)  { return 2595.0f * log10f(1.0f + hz / 700.0f); }
+static float melToHz(float mel) { return 700.0f * (powf(10.0f, mel / 2595.0f) - 1.0f); }
+
+void buildMelFilters() {
+  const int bins = FFT_LEN / 2 + 1;
+  melFilters = (float *)heap_caps_calloc(N_MELS * bins, sizeof(float), MALLOC_CAP_SPIRAM);
+
+  float mLow = hzToMel(80.0f), mHigh = hzToMel(7600.0f);
+  float edges[N_MELS + 2];
+  for (int i = 0; i < N_MELS + 2; i++)
+    edges[i] = melToHz(mLow + (mHigh - mLow) * i / (N_MELS + 1));
+
+  for (int m = 0; m < N_MELS; m++) {
+    float f0 = edges[m], f1 = edges[m + 1], f2 = edges[m + 2];
+    for (int k = 0; k < bins; k++) {
+      float f = (float)k * SAMPLE_RATE / FFT_LEN;
+      float w = 0.0f;
+      if (f >= f0 && f <= f1)      w = (f - f0) / (f1 - f0);
+      else if (f > f1 && f <= f2)  w = (f2 - f) / (f2 - f1);
+      melFilters[m * bins + k] = w;
+    }
+  }
+}
+
+/* ── radix-2 in-place FFT (real input, complex output) ──────── */
+void fft(float *re, float *im, int n) {
+  for (int i = 1, j = 0; i < n; i++) {          // bit-reversal permutation
+    int bit = n >> 1;
+    for (; j & bit; bit >>= 1) j ^= bit;
+    j ^= bit;
+    if (i < j) { float t = re[i]; re[i] = re[j]; re[j] = t;
+                 t = im[i]; im[i] = im[j]; im[j] = t; }
+  }
+  for (int len = 2; len <= n; len <<= 1) {
+    float ang = -2.0f * (float)M_PI / len;
+    float wr = cosf(ang), wi = sinf(ang);
+    for (int i = 0; i < n; i += len) {
+      float cr = 1.0f, ci = 0.0f;
+      for (int k = 0; k < len / 2; k++) {
+        float ur = re[i + k],           ui = im[i + k];
+        float vr = re[i + k + len / 2] * cr - im[i + k + len / 2] * ci;
+        float vi = re[i + k + len / 2] * ci + im[i + k + len / 2] * cr;
+        re[i + k] = ur + vr;            im[i + k] = ui + vi;
+        re[i + k + len / 2] = ur - vr;  im[i + k + len / 2] = ui - vi;
+        float nr = cr * wr - ci * wi;
+        ci = cr * wi + ci * wr;         cr = nr;
+      }
+    }
+  }
+}
+
+/* ── log-mel spectrogram over the last 1 s of the ring ──────── */
+void computeFeatures() {
+  static float re[FFT_LEN], im[FFT_LEN];
+  const int bins = FFT_LEN / 2 + 1;
+  uint32_t start = (ringHead + RING_LEN - (N_FRAMES - 1) * HOP_LEN - WIN_LEN) % RING_LEN;
+
+  for (int f = 0; f < N_FRAMES; f++) {
+    memset(re, 0, sizeof(re));
+    memset(im, 0, sizeof(im));
+
+    float prev = 0;
+    for (int n = 0; n < WIN_LEN; n++) {
+      float s = ring[(start + f * HOP_LEN + n) % RING_LEN] / 32768.0f;
+      float pe = s - 0.97f * prev;                     // pre-emphasis
+      prev = s;
+      float w = 0.5f - 0.5f * cosf(2.0f * (float)M_PI * n / (WIN_LEN - 1)); // Hann
+      re[n] = pe * w;
+    }
+    fft(re, im, FFT_LEN);
+
+    for (int m = 0; m < N_MELS; m++) {
+      float acc = 0;
+      const float *row = &melFilters[m * bins];
+      for (int k = 0; k < bins; k++)
+        if (row[k] > 0) acc += row[k] * sqrtf(re[k] * re[k] + im[k] * im[k]);
+      features[f * N_MELS + m] = logf(acc + 1e-6f);
+    }
+  }
+}
+
+/* ── model ──────────────────────────────────────────────────── */
+void inferenceBegin() {
+  arena = (uint8_t *)heap_caps_malloc(ARENA_SIZE, MALLOC_CAP_SPIRAM);
+
+  static tflite::MicroMutableOpResolver<8> resolver;
+  resolver.AddConv2D();       resolver.AddDepthwiseConv2D();
+  resolver.AddRelu();         resolver.AddAveragePool2D();
+  resolver.AddReshape();      resolver.AddFullyConnected();
+  resolver.AddSoftmax();      resolver.AddQuantize();
+
+  static tflite::MicroInterpreter s(tflite::GetModel(g_model), resolver,
+                                    arena, ARENA_SIZE);
+  interp = &s;
+  interp->AllocateTensors();
+  inputT  = interp->input(0);
+  outputT = interp->output(0);
+  Serial.printf("arena used %u B, model %u B\\n",
+                (unsigned)interp->arena_used_bytes(), g_model_len);
+}
+
+int classify(float *bestScore) {
+  const float s = inputT->params.scale;
+  const int  zp = inputT->params.zero_point;
+  for (int i = 0; i < N_FRAMES * N_MELS; i++) {
+    int v = (int)lroundf(features[i] / s) + zp;
+    inputT->data.int8[i] = (int8_t)(v < -128 ? -128 : (v > 127 ? 127 : v));
+  }
+  if (interp->Invoke() != kTfLiteOk) return -1;
+
+  const float os = outputT->params.scale;
+  const int  ozp = outputT->params.zero_point;
+  int best = 0; float bestP = -1;
+  for (size_t i = 0; i < N_LABELS; i++) {
+    float p = os * (outputT->data.int8[i] - ozp);
+    if (p > bestP) { bestP = p; best = (int)i; }
+  }
+  *bestScore = bestP;
+  return best;
+}
+
+/* ── audio capture task (core 0) ────────────────────────────── */
+void audioTask(void *) {
+  static int32_t raw[256];
+  size_t got;
+  for (;;) {
+    i2s_read(I2S_NUM_0, raw, sizeof(raw), &got, portMAX_DELAY);
+    int n = got / sizeof(int32_t);
+    for (int i = 0; i < n; i++) {
+      ring[ringHead] = (int16_t)(raw[i] >> 11);
+      ringHead = (ringHead + 1) % RING_LEN;
+    }
+  }
+}
+
+float ringRms() {
+  double acc = 0;
+  for (int i = 0; i < 1600; i++) {                 // last 100 ms
+    int16_t s = ring[(ringHead + RING_LEN - 1 - i) % RING_LEN];
+    acc += (double)s * s;
+  }
+  return sqrtf(acc / 1600) / 32768.0f;
+}
+
+/* ── feedback ───────────────────────────────────────────────── */
+void ledState(CRGB c, uint8_t brightness) {
+  fill_solid(leds, N_LEDS, c);
+  FastLED.setBrightness(brightness);
+  FastLED.show();
+}
+
+/* ── actions ────────────────────────────────────────────────── */
+void applyIntent(int label) {
+  const char *name = LABELS[label];
+
+  if      (!strcmp(name, "lights_on"))  digitalWrite(RELAY_PIN[0], LOW);
+  else if (!strcmp(name, "lights_off")) digitalWrite(RELAY_PIN[0], HIGH);
+  else if (!strcmp(name, "fan_on"))     digitalWrite(RELAY_PIN[1], LOW);
+  else if (!strcmp(name, "fan_off"))    digitalWrite(RELAY_PIN[1], HIGH);
+  else if (!strcmp(name, "scene_movie")) {
+    digitalWrite(RELAY_PIN[0], HIGH);
+    digitalWrite(RELAY_PIN[2], LOW);
+  } else if (!strcmp(name, "all_off")) {
+    for (int i = 0; i < 4; i++) digitalWrite(RELAY_PIN[i], HIGH);
+  }
+
+  JsonDocument doc;
+  doc["device"] = DEVICE_ID;
+  doc["intent"] = name;
+  doc["ts"]     = millis() / 1000;
+  char buf[128];
+  size_t n = serializeJson(doc, buf, sizeof(buf));
+  mqtt.publish("home/voice/" DEVICE_ID "/intent", (const uint8_t *)buf, n, false);
+
+  ledState(CRGB::Green, 80);
+  tone(PIN_BUZZER, 2400, 90);
+  delay(220);
+  ledState(CRGB::Blue, 12);
+}
+
+/* ── setup / loop ───────────────────────────────────────────── */
+void setup() {
+  Serial.begin(115200);
+  for (int i = 0; i < 4; i++) { pinMode(RELAY_PIN[i], OUTPUT); digitalWrite(RELAY_PIN[i], HIGH); }
+  pinMode(PIN_BUZZER, OUTPUT);
+
+  FastLED.addLeds<WS2812B, PIN_LEDS, GRB>(leds, N_LEDS);
+  ledState(CRGB::Orange, 30);
+
+  ring     = (int16_t *)heap_caps_calloc(RING_LEN, sizeof(int16_t), MALLOC_CAP_SPIRAM);
+  features = (float  *)heap_caps_calloc(N_FRAMES * N_MELS, sizeof(float), MALLOC_CAP_SPIRAM);
+  buildMelFilters();
+
+  i2s_config_t cfg = {
+    .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX),
+    .sample_rate = SAMPLE_RATE,
+    .bits_per_sample = I2S_BITS_PER_SAMPLE_32BIT,
+    .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
+    .communication_format = I2S_COMM_FORMAT_STAND_I2S,
+    .intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,
+    .dma_buf_count = 8, .dma_buf_len = 256, .use_apll = true
+  };
+  i2s_pin_config_t pins = { .bck_io_num = I2S_BCLK, .ws_io_num = I2S_LRCL,
+                            .data_out_num = I2S_PIN_NO_CHANGE, .data_in_num = I2S_DOUT };
+  i2s_driver_install(I2S_NUM_0, &cfg, 0, NULL);
+  i2s_set_pin(I2S_NUM_0, &pins);
+
+  inferenceBegin();
+
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  for (int i = 0; i < 40 && WiFi.status() != WL_CONNECTED; i++) delay(250);
+  mqtt.setServer(MQTT_HOST, MQTT_PORT);
+
+  // Capture pinned to core 0; inference runs on core 1 in loop().
+  xTaskCreatePinnedToCore(audioTask, "audio", 4096, NULL, 5, NULL, 0);
+
+  ledState(CRGB::Blue, 12);
+  Serial.println("Voice hub listening — audio stays on this device");
+}
+
+void loop() {
+  if (!mqtt.connected() && WiFi.status() == WL_CONNECTED) mqtt.connect(DEVICE_ID);
+  mqtt.loop();
+
+  float rms = ringRms();
+  noiseFloor = 0.999f * noiseFloor + 0.001f * rms;      // slow adaptation
+
+  if (rms < noiseFloor * 3.0f) { delay(10); return; }   // energy gate
+
+  ledState(CRGB::Cyan, 40);
+  uint32_t t0 = micros();
+  computeFeatures();
+  uint32_t t1 = micros();
+  float score;
+  int label = classify(&score);
+  uint32_t t2 = micros();
+
+  static int lastLabel = -1, run = 0;
+  static uint32_t lastFire = 0;
+  if (label != lastLabel) { lastLabel = label; run = 0; }
+  run = (label >= 2 && score >= THRESH[label]) ? run + 1 : 0;
+
+  Serial.printf("%-12s %.2f  feat %lu us  inf %lu us  run %d\\n",
+                label >= 0 ? LABELS[label] : "?", score,
+                (unsigned long)(t1 - t0), (unsigned long)(t2 - t1), run);
+
+  if (run >= 3 && millis() - lastFire > 1500) {
+    run = 0; lastFire = millis();
+    applyIntent(label);
+  } else {
+    ledState(CRGB::Blue, 12);
+  }
+}`,
+      explain: [
+        { ref: 'xTaskCreatePinnedToCore(audioTask, ..., 0)', txt: 'Capture gets its own core. If audio capture shared a core with a 20 ms inference, the DMA buffers would occasionally overflow and drop samples — which corrupts the spectrogram in ways that look like random mis-recognition.' },
+        { ref: 'noiseFloor = 0.999f * noiseFloor + 0.001f * rms', txt: 'A single-pole low-pass with a time constant of roughly 30 s at this call rate. It tracks the room getting noisier (a fan switching on) without following a spoken word, which would defeat the gate.' },
+        { ref: 'rms < noiseFloor * 3.0f', txt: 'The energy gate is what keeps average power low: the expensive FFT and inference only run when something is actually happening. In a quiet room the device spends over 95 % of its time in this early return.' },
+        { ref: 'pre-emphasis s − 0.97·prev', txt: 'A first-order high-pass that boosts high frequencies. Speech has roughly −6 dB/octave spectral tilt; flattening it gives the higher formants comparable weight to the fundamental, which measurably improves consonant discrimination.' },
+        { ref: 'Hann window', txt: 'Tapering the window to zero at both ends prevents spectral leakage. Without it, the discontinuity at the window edge spreads energy across all frequency bins and blurs the formant structure the model relies on.' },
+        { ref: 'label >= 2', txt: 'Classes 0 and 1 are the two negative classes. Requiring label ≥ 2 means background and unknown speech can never trigger an action no matter how confident the model is.' },
+      ],
+    },
+  ],
+
+  config: [
+    'Set <b>Tools → PSRAM → OPI PSRAM</b> in the Arduino IDE. Without it, <code>heap_caps_malloc(..., MALLOC_CAP_SPIRAM)</code> returns null and the device crashes in <code>setup()</code>.',
+    'Set <b>Tools → Partition Scheme → Huge APP (3 MB)</b>. The TFLite Micro runtime plus the model does not fit in the default 1.2 MB app partition.',
+    'Set <b>Tools → CPU Frequency → 240 MHz</b>. At 160 MHz the feature extraction takes about 40 % longer, which eats the headroom that keeps the energy gate cheap.',
+    'Regenerate <code>model_data.h</code> whenever you retrain, and update <code>LABELS[]</code> and <code>THRESH[]</code> to match the label order in <code>train_kws.py</code>. A mismatched label order produces a device that works confidently and wrongly.',
+    'Tune <code>THRESH[]</code> from the serial log, not from intuition. Speak each command twenty times, note the scores, and set the threshold a little below the tenth percentile of true positives.',
+    'Adjust the energy-gate multiplier (3.0) for your room. Higher misses quiet speech; lower burns power on every fridge compressor cycle.',
+  ],
+
+  calibration: [
+    { h: 'Establish the room noise floor', p: ['Leave the device running with the serial log open for ten minutes with nobody speaking. Note the RMS values. The steady-state <code>noiseFloor</code> should settle within about 20 % of the median idle RMS. If it keeps climbing, something in the room is periodically loud and you should raise the gate multiplier.'] },
+    { h: 'Measure the true-positive score distribution', p: ['Speak each command twenty times from the position you will normally use. Record the reported score for each. A well-trained model gives true positives clustered above 0.9 with occasional dips to 0.7. Set that keyword\'s threshold just below the lowest score you are willing to accept.'] },
+    { h: 'Measure the false-accept rate against television', p: ['Play an hour of television or radio at normal volume with nobody in the room and count triggers. Zero is achievable. If you get more than one per hour, the fix is almost always more <code>_unknown</code> training data recorded from that same television, not a higher threshold.'] },
+    { h: 'Verify timing headroom', p: ['The serial log prints feature and inference times. Feature extraction should be around 3–5 ms and inference around 12–18 ms on an ESP32-S3 at 240 MHz. If inference exceeds 40 ms, check that PSRAM is enabled and the CPU is at full clock.'] },
+  ],
+
+  ai: {
+    dataset: [
+      'The dataset is the project. Everything else is plumbing. You need three kinds of audio, and the ratio between them matters more than the total count.',
+      '<b>Positives</b>: 60–100 clips per command word, spread across every person who will use the device, at varied distances (0.5 m to 4 m), angles, speaking rates and volumes. Include deliberately sloppy pronunciations — that is what real usage sounds like.',
+      '<b>Background</b>: five to ten minutes of the actual room with nobody speaking, captured at different times of day so it includes the fridge, the fan, traffic and the air conditioner.',
+      '<b>Unknown speech</b>: at least as many clips as all your positives combined, drawn from ordinary conversation, television and radio. This is the class most people under-collect, and it is the direct cause of a hub that switches the lights during dinner.',
+      'Google\'s Speech Commands v0.02 dataset is a useful supplement for the <code>_unknown</code> class — 105 000 one-second clips of 35 words under a permissive licence — but it will not substitute for recordings of your own room.',
+    ],
+    datasetTable: [
+      { n: 'Your own recordings', size: '~800 clips (≈15 min)', lic: 'Yours', use: 'All positive classes and room background — the decisive part of the dataset.' },
+      { n: 'Google Speech Commands v0.02', size: '105 829 clips, 2.3 GB', lic: 'CC BY 4.0', use: 'Bulk of the _unknown class and augmentation for robustness.' },
+      { n: 'MS-SNSD noise corpus', size: '~10 h', lic: 'MIT', use: 'Noise mixing during augmentation to simulate a noisier room.' },
+    ],
+    preprocess: [
+      'Resample everything to 16 kHz mono, 16-bit PCM. Mismatched sample rates between training and deployment are the most common silent failure in TinyML audio.',
+      'Trim or pad every clip to exactly 1.000 s, aligning the keyword roughly centrally but with deliberate jitter of ±100 ms so the model does not learn a fixed onset time.',
+      'Normalise each clip to a peak of about −3 dBFS, then apply random gain of ±6 dB during training. Peak normalisation alone teaches the model that loudness is a feature, which it should not be.',
+      'Augment with time shift (±100 ms), background mixing at 0–15 dB SNR, and mild time stretching (0.9–1.1×). Do <em>not</em> augment with pitch shift beyond about ±10 % — it distorts formants and creates examples that do not occur in reality.',
+      'Compute log-mel features with exactly the same parameters used in the firmware: 480-sample window, 320-sample hop, 512-point FFT, 40 mel bands from 80 Hz to 7600 Hz.',
+    ],
+    pipeline: [
+      { name: 'Record', sub: 'own room, own voices' },
+      { name: 'Label & clean', sub: 'reject clipped/silent' },
+      { name: 'Augment', sub: 'shift, noise, gain' },
+      { name: 'Log-mel', sub: '49 × 40 image' },
+      { name: 'Train DS-CNN', sub: '60 epochs, Adam', highlight: true },
+      { name: 'Quantise int8', sub: 'representative set' },
+      { name: 'Export C array', sub: 'model_data.h' },
+      { name: 'Deploy & measure', sub: 'on-device scores', highlight: true },
+    ],
+    arch: [
+      'The network is a depthwise-separable CNN in the DS-CNN family. An initial strided 3×3 convolution reduces the 49 × 40 input to 25 × 20 with 32 channels, then four depthwise-separable blocks each apply a 3×3 spatial filter per channel followed by a 1×1 pointwise mix. Global average pooling collapses the spatial dimensions, dropout at 0.25 regularises, and a dense softmax produces eight class probabilities.',
+      'Every convolution uses <code>use_bias=False</code> because it is immediately followed by batch normalisation, which has its own shift parameter — a bias term there is redundant and simply adds parameters. At conversion time TFLite folds the batch-norm parameters into the preceding convolution weights, so the deployed model has no batch-norm layers at all.',
+    ],
+    archTable: [
+      { l: 'Input', s: '(49, 40, 1) int8', p: 'One second of log-mel spectrogram.' },
+      { l: 'Conv2D 3×3 s2', s: '(25, 20, 32)', p: 'Cheap spatial downsample and initial feature extraction.' },
+      { l: 'DS block ×4', s: '(25, 20, 32)', p: 'Depthwise 3×3 then pointwise 1×1; the bulk of the model capacity.' },
+      { l: 'GlobalAveragePool', s: '(32,)', p: 'Collapses time and frequency; gives shift tolerance for free.' },
+      { l: 'Dropout 0.25', s: '(32,)', p: 'Regularisation — essential with a dataset of only a few hundred clips.' },
+      { l: 'Dense + softmax', s: '(8,)', p: 'Per-keyword probability.' },
+    ],
+    hyper: [
+      { k: 'Optimiser', v: 'Adam, lr 1e-3', w: 'Converges reliably on this scale of data without a learning-rate schedule.' },
+      { k: 'Batch size', v: '64', w: 'Large enough for stable batch-norm statistics, small enough to fit a laptop CPU.' },
+      { k: 'Epochs', v: '60 with early stopping (patience 8)', w: 'The model typically peaks around epoch 30–40; early stopping prevents memorising the training set.' },
+      { k: 'Dropout', v: '0.25', w: 'Higher hurts on a small model; lower overfits a few-hundred-clip dataset.' },
+      { k: 'Mel bands', v: '40', w: 'The standard for keyword spotting. 32 loses consonant detail; 64 costs FFT time for no measurable gain.' },
+      { k: 'Window / hop', v: '30 ms / 20 ms', w: 'Speech is quasi-stationary over 30 ms; a 10 ms overlap keeps transients from falling between frames.' },
+      { k: 'Quantisation', v: 'Full int8, per-axis weights', w: 'Per-axis (per output channel) scales cost nothing at inference and recover most of the accuracy lost by per-tensor quantisation.' },
+    ],
+    training: [
+      'Split by <b>speaker</b>, not randomly. A random split puts clips of the same person saying the same word in both train and validation, which inflates validation accuracy by five to ten points and tells you nothing about how it will work for a guest.',
+      'Watch the confusion matrix, not the accuracy number. On this task the interesting failures are always specific pairs — "lights on" versus "lights off" — and the fix is more data for that pair, not more epochs.',
+      'Retrain after the first week of real use. Log every rejected utterance to the serial console, listen to the ones that should have worked, and add them to the dataset. Two rounds of this typically halves the false-reject rate.',
+      'Evaluate the quantised model, not the float one. Run the TFLite interpreter over your validation set and compare — if int8 costs more than about two points, your representative dataset is not representative.',
+    ],
+    metricsIntro: [
+      'Figures below are from a reference run: eight classes, roughly 900 own recordings plus 4 000 Speech Commands clips for the unknown class, speaker-disjoint split, measured on an ESP32-S3 at 240 MHz with PSRAM enabled.',
+    ],
+    metrics: [
+      { m: 'Validation accuracy (float32)', v: '95.8 %', d: 'Speaker-disjoint split — the honest number, not the random-split one.' },
+      { m: 'Validation accuracy (int8)', v: '95.1 %', d: 'Quantisation cost of 0.7 points, which is typical when the representative dataset is drawn from real training data.' },
+      { m: 'False accepts per hour (TV playing)', v: '0.4', d: 'With three-frame hysteresis. Without hysteresis the same model gives about 6 per hour.' },
+      { m: 'False rejects (normal speech, 2 m)', v: '3.9 %', d: 'Rises to roughly 12 % at 4 m with a fan running — the practical range limit.' },
+      { m: 'Model size', v: '58 KB', d: 'Int8 TFLite flatbuffer, embedded as a C array in flash.' },
+      { m: 'Tensor arena', v: '46 KB used of 70 KB', d: 'Allocated in PSRAM; the headroom absorbs interpreter version changes.' },
+      { m: 'Feature extraction', v: '4.1 ms', d: '49 frames of 512-point FFT plus mel projection, float on the S3 FPU.' },
+      { m: 'Inference latency', v: '15.3 ms', d: 'End-to-end Invoke() on int8 with the S3 vector extensions.' },
+      { m: 'Average power', v: '0.41 W', d: 'Idle listening with the energy gate active; peaks near 0.9 W during inference and Wi-Fi transmit.' },
+    ],
+    chart: {
+      title: 'Inference latency by platform (same int8 model)', unit: 'ms',
+      bars: [
+        { label: 'ESP32-S3 @ 240 MHz', value: 15.3 },
+        { label: 'ESP32 @ 240 MHz', value: 44.8 },
+        { label: 'ESP32 @ 160 MHz', value: 67.2 },
+        { label: 'RP2040 @ 133 MHz', value: 138.0 },
+      ],
+    },
+    deploy: [
+      'Export the int8 flatbuffer as a C array with 16-byte alignment. Unaligned model data causes hard faults on some cores and, worse, silently wrong results on others.',
+      'Register only the operators the model uses via <code>MicroMutableOpResolver</code>. The all-ops resolver adds roughly 100 KB of flash and no capability.',
+      'Put the tensor arena in PSRAM and the DMA buffers in internal SRAM. Getting this backwards halves throughput because DMA cannot reach PSRAM efficiently.',
+      'Print <code>arena_used_bytes()</code> once at boot and size the arena to that plus 30 %. Over-sizing wastes PSRAM; under-sizing fails at <code>AllocateTensors()</code> with an unhelpful message.',
+      'Version the model. Embed a build hash in the header and publish it on the MQTT status topic, so you can tell which model a given device is running when you are debugging six of them.',
+    ],
+    inference: {
+      file: 'test_tflite.py', lang: 'python',
+      body: `#!/usr/bin/env python3
+"""Verify the quantised model on the host before flashing it."""
+import numpy as np
+import tensorflow as tf
+
+interp = tf.lite.Interpreter(model_path="kws_int8.tflite")
+interp.allocate_tensors()
+inp, out = interp.get_input_details()[0], interp.get_output_details()[0]
+
+in_scale, in_zp = inp["quantization"]
+out_scale, out_zp = out["quantization"]
+print(f"input  {inp['shape']} {inp['dtype'].__name__} scale={in_scale:.5f} zp={in_zp}")
+print(f"output {out['shape']} {out['dtype'].__name__} scale={out_scale:.5f} zp={out_zp}")
+
+# x_val holds float log-mel features produced by the same log_mel() used in training.
+x_val = np.load("x_val.npy")
+y_val = np.load("y_val.npy")
+
+correct = 0
+for x, y in zip(x_val, y_val):
+    q = np.clip(np.round(x / in_scale) + in_zp, -128, 127).astype(np.int8)
+    interp.set_tensor(inp["index"], q[np.newaxis, ...])
+    interp.invoke()
+    probs = out_scale * (interp.get_tensor(out["index"])[0].astype(np.int32) - out_zp)
+    correct += int(np.argmax(probs) == y)
+
+print(f"int8 accuracy: {correct / len(y_val):.4f}")`,
+    },
+    limits: [
+      'This is a keyword spotter, not a speech recogniser. It cannot handle a phrase it was not trained on, and adding a new command means recording data and retraining — there is no way around that on this hardware.',
+      'Accuracy degrades sharply beyond about three metres, and in a room with a running extractor fan or television at conversational volume you should expect roughly a 10–15 % false-reject rate. That is a property of a single microphone with no beamforming, not of the model.',
+      'A model trained on adult voices performs noticeably worse on children, whose formants sit substantially higher. If children will use it, they must be in the training set.',
+    ],
+  },
+
+  iot: {
+    protoShort: 'Wi-Fi + MQTT',
+    intro: [
+      'The networking here is deliberately thin. The device publishes an intent string and, optionally, subscribes to a threshold-tuning topic. That is all. Because no audio ever crosses the network, the security posture of the whole system is dramatically simpler than a cloud assistant\'s.',
+    ],
+    net: {
+      nodes: [{ name: 'Voice hub', sub: 'ESP32-S3' }, { name: 'Second room hub', sub: 'optional' }],
+      protocol: 'Wi-Fi 2.4 GHz',
+      gateway: 'Home router', gatewaySub: 'IoT VLAN',
+      uplink: 'MQTT 1883/8883',
+      cloud: 'Local broker', cloudSub: 'Mosquitto on a Pi',
+      clients: [{ name: 'Home Assistant', sub: 'automations' }, { name: 'Relay nodes', sub: 'other rooms' }, { name: 'Log / dashboard', sub: 'score history' }],
+    },
+    protocol: [
+      'Intents are published as JSON on <code>home/voice/&lt;device&gt;/intent</code> with QoS 0. QoS 0 is correct here: if a "lights on" message is lost, the user will simply say it again within two seconds, and a delayed duplicate arriving thirty seconds later would be worse than a loss.',
+      'The device also publishes a rolling score log on a separate topic at QoS 0. That stream is what you use to tune thresholds from real data rather than guesses, and it is cheap enough to leave on permanently.',
+    ],
+    topics: [
+      { t: 'home/voice/voice-hub/intent', dir: 'device → broker', payload: 'JSON: device, intent, ts' },
+      { t: 'home/voice/voice-hub/score', dir: 'device → broker', payload: 'JSON: label, score, rms, noise_floor' },
+      { t: 'home/voice/voice-hub/config', dir: 'broker → device', payload: 'JSON: thresholds[], gate_multiplier' },
+      { t: 'home/voice/voice-hub/status', dir: 'device → broker (retained)', payload: '"online" / "offline" (LWT) + model hash' },
+    ],
+    cloud: [
+      'Nothing needs to leave your network. A Mosquitto broker and Home Assistant on the same Raspberry Pi is the complete backend. If you want remote access, expose Home Assistant through a reverse proxy with TLS rather than exposing the broker.',
+    ],
+    dashboard: [
+      'Feed the score topic into InfluxDB and plot score against label over time in Grafana. Two panels are enough: a scatter of accepted scores (which should cluster near 1.0) and a histogram of rejected scores (which tells you exactly how much threshold headroom you have).',
+    ],
+    mobile: [
+      'Adding the device to Home Assistant as an MQTT sensor gives you the mobile app, history and automation engine without writing anything. An automation triggered on <code>intent == "all_off"</code> can then do far more than the four relays on the board — including telling you, via a phone notification, that it heard you.',
+    ],
+    security: [
+      'No audio is transmitted or stored. The ring buffer is overwritten continuously and never written to flash — verify this yourself before trusting the claim on any voice device, including this one.',
+      'Use MQTT over TLS and per-device credentials if the broker is reachable from outside the LAN.',
+      'Put the hub on an IoT VLAN. It has a microphone; treat it as the most sensitive device on the network even though it does not transmit audio.',
+      'Enable ESP32-S3 flash encryption before deployment if physical access is a concern — the model and Wi-Fi credentials are both readable from an unencrypted flash image.',
+      'Provide a hardware mute. A physical switch that cuts the microphone supply is the only mute a user can actually verify, and it costs ₹30.',
+    ],
+  },
+
+  testing: [
+    { step: 'Run the I²S capture sketch and speak', expect: 'RMS rises from roughly −60 dBFS in silence to −30 dBFS at one metre. A flat or constant value means wiring or L/R pin trouble.' },
+    { step: 'Boot the full firmware', expect: 'Serial prints the model size, arena usage, and "Voice hub listening". The LED ring settles to a dim blue.' },
+    { step: 'Stay silent for two minutes', expect: 'The energy gate holds; almost no inference lines are printed and the noise floor value stabilises.' },
+    { step: 'Say a trained command from one metre', expect: 'The ring turns cyan while thinking, then green; a 2.4 kHz beep sounds, the relay clicks, and an intent message appears on the broker within roughly 100 ms of the word ending.' },
+    { step: 'Say an untrained word', expect: 'The log shows <code>_unknown</code> with a high score and no action is taken. If the device fires, your unknown class is under-trained.' },
+    { step: 'Play television audio for one hour with nobody present', expect: 'Zero or at most one false trigger. More than that means the threshold or the negative dataset needs work.' },
+    { step: 'Check timing in the serial log', expect: 'Feature extraction 3–5 ms, inference 12–18 ms. Substantially slower means PSRAM is off or the CPU is not at 240 MHz.' },
+    { step: 'Measure current draw at 5 V', expect: 'Roughly 70–90 mA idle listening, briefly 180 mA during inference plus Wi-Fi transmit.' },
+  ],
+
+  output: [
+    'The serial log during a successful recognition, showing the energy gate opening, the feature and inference timings, and the hysteresis counter reaching three:',
+    {
+      file: 'serial-monitor.txt', lang: 'plain',
+      body: `arena used 47104 B, model 59392 B
+Voice hub listening — audio stays on this device
+
+_background  0.97  feat 4102 us  inf 15281 us  run 0
+_unknown     0.81  feat 4098 us  inf 15266 us  run 0
+lights_on    0.71  feat 4110 us  inf 15302 us  run 0
+lights_on    0.94  feat 4104 us  inf 15288 us  run 1
+lights_on    0.97  feat 4099 us  inf 15274 us  run 2
+lights_on    0.96  feat 4107 us  inf 15291 us  run 3
+  -> intent lights_on  relay 0 ON  published
+
+_background  0.99  feat 4101 us  inf 15279 us  run 0
+fan_off      0.66  feat 4106 us  inf 15285 us  run 0   (below threshold 0.78)
+fan_off      0.83  feat 4103 us  inf 15277 us  run 1
+fan_off      0.88  feat 4108 us  inf 15294 us  run 2
+fan_off      0.91  feat 4100 us  inf 15281 us  run 3
+  -> intent fan_off   relay 1 OFF published`,
+    },
+  ],
+
+  troubleshoot: [
+    {
+      sym: 'The microphone reads a constant value or pure noise',
+      cause: 'Wrong I²S bit width, a floating L/R pin, or the data pin on a GPIO that cannot be routed to I²S input.',
+      fix: 'Set <code>I2S_BITS_PER_SAMPLE_32BIT</code>, not 16-bit — the INMP441 sends 24 bits in a 32-bit slot. Tie L/R firmly to GND. Verify the data pin: on the ESP32-S3 most GPIO can be routed via the matrix, but the strapping pins and the USB pins cannot.',
+    },
+    {
+      sym: '<code>AllocateTensors()</code> fails, or the board reboots in setup()',
+      cause: 'PSRAM is not enabled in the board menu, so <code>heap_caps_malloc(..., MALLOC_CAP_SPIRAM)</code> returns null and the interpreter dereferences it.',
+      fix: 'Set <b>Tools → PSRAM → OPI PSRAM</b> and confirm with <code>ESP.getPsramSize()</code> at boot — it should print 8 388 608. Also check the arena is at least <code>arena_used_bytes()</code>; grow it in 8 KB steps until allocation succeeds.',
+    },
+    {
+      sym: 'Accuracy is excellent in training and terrible on the device',
+      cause: 'The firmware feature extraction does not match the training feature extraction. This is by far the most common TinyML audio failure.',
+      fix: 'Check every parameter against the training script: sample rate, window length, hop length, FFT size, number of mel bands, mel frequency range, log versus log10, and whether pre-emphasis is applied in both. Dump one spectrogram from the device over serial and compare it numerically against the Python output for the same WAV file — they should agree to three decimal places.',
+    },
+    {
+      sym: 'The hub triggers on the television',
+      cause: 'Insufficient negative training data, or hysteresis disabled.',
+      fix: 'Record fifteen minutes of that television and add it to the <code>_unknown</code> class, then retrain. Confirm the three-frame run requirement is active. Raising the threshold is the last resort — it trades false accepts for false rejects rather than fixing the model.',
+    },
+    {
+      sym: 'It works for you and not for anyone else in the house',
+      cause: 'Single-speaker training data. The model has learned your voice, not the words.',
+      fix: 'Every regular user needs to contribute recordings — ideally 30–50 clips per keyword each. This is not optional; it is the difference between a demo and a device.',
+    },
+    {
+      sym: 'Audio dropouts and erratic scores when Wi-Fi is busy',
+      cause: 'The Wi-Fi stack runs on core 0 by default and is competing with the audio task.',
+      fix: 'Raise the audio task priority to 5 or above, keep the DMA buffer count at 8 or more, and move the MQTT client work into <code>loop()</code> on core 1 as this sketch does. If it persists, reduce the MQTT publish rate — radio transmit bursts are the usual culprit.',
+    },
+  ],
+
+  perf: [
+    'The energy gate is the single biggest power lever. Tuning it so the device runs inference on 5 % of frames rather than 100 % cuts average power by roughly six times.',
+    'Precompute the mel filterbank and the Hann window at boot rather than per frame — recomputing <code>cosf()</code> 480 times per frame costs more than the FFT.',
+    'Store the mel filterbank sparsely: most weights are zero, and skipping them (<code>if (row[k] > 0)</code>) roughly halves the mel projection cost.',
+    'For battery operation, add a two-stage cascade — a tiny 8 KB wake-word model gating the full command model — and put the CPU in light sleep between energy-gate checks.',
+  ],
+
+  safety: [
+    'A voice-controlled relay can switch a load while nobody is watching. Never put a heater, an iron or anything with a thermal runaway mode on a voice-controlled channel without an independent thermal cut-out.',
+    'Fit a physical microphone mute switch. Software mute is not verifiable by the user, and a device with an unverifiable microphone in a bedroom is a reasonable thing for people to object to.',
+  ],
+
+  future: [
+    'Add a <b>second microphone and simple delay-and-sum beamforming</b>. Two INMP441s 60 mm apart give roughly 4–6 dB of directional gain, which is worth more in a noisy kitchen than any model improvement.',
+    'Implement <b>two-stage cascade detection</b> — a tiny always-on wake word gating the full command model — for a large reduction in average power.',
+    'Add <b>speaker verification</b> so the hub only accepts commands from enrolled household voices. A small embedding model plus cosine similarity is enough for a home threat model.',
+    'Add <b>on-device text-to-speech confirmation</b> using a small concatenative engine, so the hub can say "lights on" instead of beeping.',
+    'Support <b>OTA model updates</b> so retraining does not require a USB cable.',
+  ],
+
+  faq: [
+    { q: 'Can this run on a plain ESP32 instead of an S3?', a: 'Yes, with caveats. Inference goes from about 15 ms to about 45 ms, and without PSRAM you must shrink the model and the ring buffer to fit in internal SRAM — realistically that means four or five keywords instead of eight. It works, and it is a legitimate cheaper build, but the S3\'s vector extensions and PSRAM are exactly what this workload wants and the ₹450 difference buys a lot.' },
+    { q: 'Why not just use Alexa or Google Assistant?', a: 'If you are happy with a cloud microphone, they are better at general speech than this will ever be. The reason to build this is that the audio genuinely does not leave the device — which you can verify, because you have the source. It also keeps working when your broadband does not, and it responds in about 120 ms rather than 800 ms because there is no round trip.' },
+    { q: 'How many keywords can it handle?', a: 'Practically, eight to twelve. The model size grows only in the final dense layer, so the compute cost is nearly flat, but confusability grows quickly: adding "kitchen light on" alongside "kitchen fan on" means the model must discriminate on one word inside an otherwise identical phrase, and accuracy on that pair drops. Distinct-sounding commands are worth more than clever ones.' },
+    { q: 'Do I have to use Edge Impulse?', a: 'No. Edge Impulse gives you the data pipeline, augmentation and deployment export in a browser, which is genuinely convenient and a reasonable first path. The TensorFlow script here does the same thing with full visibility into every step, which matters when something goes wrong. Both deploy to the same TFLite Micro runtime.' },
+    { q: 'Why does "off" get recognised worse than "on"?', a: 'Acoustics. "On" is a voiced vowel with strong low-frequency energy; "off" ends in an unvoiced fricative that is quiet, broadband and easily masked by room noise. This is why per-keyword thresholds exist. If it remains a problem, change the command — "lights dark" is recognised far more reliably than "lights off" and users adapt within a day.' },
+    { q: 'How much does the enclosure matter?', a: 'A great deal, and it is routinely underestimated. A microphone glued directly to a plastic case picks up every knock on the desk. A port hole that is too small acts as a low-pass filter and kills the consonant energy the model depends on. Always do final threshold tuning with the case closed and the unit in its permanent position.' },
+    { q: 'Can I add a new command without retraining everything?', a: 'Not with this architecture — the output layer size and the class semantics are baked into the model. You retrain, which takes about fifteen minutes on a laptop once your dataset is in place. If you expect to add commands often, look at a few-shot approach using an embedding model plus a nearest-neighbour classifier, at the cost of a larger model and lower accuracy.' },
+  ],
+
+  refs: [
+    { t: 'Zhang et al., "Hello Edge: Keyword Spotting on Microcontrollers" (DS-CNN architecture)', u: 'https://arxiv.org/abs/1711.07128', s: 'arXiv:1711.07128' },
+    { t: 'Warden, "Speech Commands: A Dataset for Limited-Vocabulary Speech Recognition"', u: 'https://arxiv.org/abs/1804.03209', s: 'arXiv:1804.03209' },
+    { t: 'TensorFlow Lite for Microcontrollers — official guide', u: 'https://ai.google.dev/edge/litert/microcontrollers/overview', s: 'Google AI Edge' },
+    { t: 'Post-training integer quantisation — TensorFlow documentation', u: 'https://www.tensorflow.org/lite/performance/post_training_integer_quant', s: 'TensorFlow' },
+    { t: 'INMP441 omnidirectional MEMS microphone with I²S — datasheet', u: 'https://invensense.tdk.com/wp-content/uploads/2015/02/INMP441.pdf', s: 'TDK InvenSense' },
+    { t: 'ESP32-S3 Technical Reference Manual — I²S peripheral and vector instructions', u: 'https://www.espressif.com/sites/default/files/documentation/esp32-s3_technical_reference_manual_en.pdf', s: 'Espressif Systems' },
+    { t: 'Davis & Mermelstein, "Comparison of parametric representations for monosyllabic word recognition" (origin of MFCC)', u: 'https://doi.org/10.1109/TASSP.1980.1163420', s: 'IEEE TASSP, 1980' },
+    { t: 'Edge Impulse — keyword spotting tutorial', u: 'https://docs.edgeimpulse.com/docs/tutorials/end-to-end-tutorials/audio-classification', s: 'Edge Impulse' },
+  ],
+
+  images: ['esp32', 'neural', 'grafana'],
+  imageCaptions: [
+    'An ESP32-class development board. The S3 variant used here adds 8 MB of PSRAM and vector instructions aimed at exactly this kind of int8 inference workload.',
+    'A schematic feed-forward neural network. The keyword spotter here is a convolutional variant, but the same layer-and-weights structure underlies it.',
+    'A time-series dashboard of the kind used to plot recognition scores over time while tuning per-keyword thresholds.',
+  ],
+},
+
 ];
