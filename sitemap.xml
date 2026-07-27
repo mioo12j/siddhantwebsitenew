@@ -762,5 +762,23 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://siddhantkumar.in/projects/docs/high-altitude-telemetry-node.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkumar.in/projects/docs/smart-cctv-motion-alerts.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkumar.in/projects/docs/perimeter-laser-trip-sensor.html</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <!-- docs:end -->
 </urlset>
