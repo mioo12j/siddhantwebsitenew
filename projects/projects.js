@@ -92,18 +92,28 @@ const yEl=qs('#year'); if(yEl) yEl.textContent=new Date().getFullYear();
     qsa('.chip-btn',filterWrap).forEach(b=>b.addEventListener('click',()=>{activeCat=b.dataset.cat;buildFilters();render();}));
   }
 
+  // Documentation slugs are published by the build in projects-data.js.
+  // A card with a documentation page becomes a link to that full build guide.
+  const DOCS = window.PROJECT_DOCS || {};
+  const docHref = p => DOCS[p.no] ? 'docs/' + DOCS[p.no] + '.html' : null;
+
   function cardHTML(p,idx){
     const feat=p.featured?'<span class="featbadge">Featured</span>':`<span class="cat">${esc(p.cat)}</span>`;
-    const link=p.url?`<a class="open-link" href="${esc(p.url)}">View project ${ARR}</a>`:'';
+    const doc=docHref(p);
+    const href=doc||p.url||null;
+    const label=doc?'Read the guide':'View project';
+    const link=href?`<span class="open-link">${label} ${ARR}</span>`:'';
     const tags=(p.tags||[]).slice(0,3).map(t=>`<span>${esc(t)}</span>`).join('');
-    return `<article class="pcard${p.featured?' featured':''}" data-i="${idx}">
-      <div class="pcard-top"><span class="picon">${ICON}</span>${feat}</div>
+    const inner=`<div class="pcard-top"><span class="picon">${ICON}</span>${feat}</div>
       <span class="pno">${p.no||''}</span>
       <h3>${esc(p.title)}</h3>
       <p>${esc(p.desc)}</p>
       <div class="tags">${tags}</div>
-      ${link}
-    </article>`;
+      ${link}`;
+    return href
+      ? `<a class="pcard${p.featured?' featured':''} linked" data-i="${idx}" href="${esc(href)}"
+           aria-label="${esc(p.title)} — ${label.toLowerCase()}">${inner}</a>`
+      : `<article class="pcard${p.featured?' featured':''}" data-i="${idx}">${inner}</article>`;
   }
 
   function render(){
