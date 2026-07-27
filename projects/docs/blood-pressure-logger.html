@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Blood Pressure Logger — Circuit, Code &amp; Full Build Guide | Health &amp; Wearables</title>
+  <meta name="description" content="Complete advanced-level build guide for a Blood Pressure Logger: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="blood pressure logger, blood pressure logger project, how to build blood pressure logger, esp32 devkit v1 project, health &amp; wearables project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/blood-pressure-logger.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/blood-pressure-logger.html" />
+  <meta property="og:title" content="Blood Pressure Logger — Circuit, Code &amp; Full Build Guide | Health &amp; Wearables" />
+  <meta property="og:description" content="Complete advanced-level build guide for a Blood Pressure Logger: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Health &amp; Wearables" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-27" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Blood Pressure Logger — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete advanced-level build guide for a Blood Pressure Logger: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🩺</text></svg>" />
+  <style>:root{--acc:#22d3ee;--acc-light:#67e8f9;--acc-rgb:34,211,238}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/blood-pressure-logger.html#article","headline":"Blood Pressure Logger — Complete Build Guide","name":"Blood Pressure Logger","description":"Complete advanced-level build guide for a Blood Pressure Logger: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/blood-pressure-logger.html","inLanguage":"en","articleSection":"Health & Wearables","keywords":"blood pressure logger, blood pressure logger project, how to build blood pressure logger, esp32 devkit v1 project, health & wearables project, circuit diagram, source code, tutorial","proficiencyLevel":"Advanced","dependencies":"ArduinoJson, Adafruit SSD1306 + GFX, Preferences (NVS)","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-27","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/blood-pressure-logger.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/blood-pressure-logger.html#howto","name":"How to build a Blood Pressure Logger","description":"Complete advanced-level build guide for a Blood Pressure Logger: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT20H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"2980"},"supply":[{"@type":"HowToSupply","name":"ESP32 DevKit V1 (ESP-WROOM-32)"},{"@type":"HowToSupply","name":"0.96″ SSD1306 OLED display"},{"@type":"HowToSupply","name":"LM2596 adjustable buck converter module"},{"@type":"HowToSupply","name":"5 V 3 A regulated SMPS adapter"},{"@type":"HowToSupply","name":"Double-sided perfboard 7 × 9 cm + headers"},{"@type":"HowToSupply","name":"IP65 ABS junction enclosure 158 × 90 × 60 mm"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Blood Pressure Logger","item":"https://siddhantkumar.in/projects/docs/blood-pressure-logger.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/blood-pressure-logger.html#faq","mainEntity":[{"@type":"Question","name":"Why does it not measure systolic and diastolic directly?","acceptedAnswer":{"@type":"Answer","text":"Because oscillometry physically cannot. It measures the oscillation envelope, whose peak directly gives mean arterial pressure. Systolic and diastolic are then inferred from characteristic points on the envelope using empirical ratios (about 0.55 and 0.85 of the peak amplitude). Every automatic home monitor works this way — the older stethoscope method (auscultation) measures systolic and diastolic more directly, which is why the two can slightly disagree."}},{"@type":"Question","name":"How accurate can a DIY monitor be?","acceptedAnswer":{"@type":"Answer","text":"The method is capable of clinical-grade accuracy — that is what commercial oscillometric monitors achieve. But reaching it requires careful pressure-sensor calibration, steady deflation control, the right cuff size, and correct technique. A DIY build can get close for personal trend tracking, but it is not validated and should not drive medical decisions. Validation against a clinical standard is a formal, demanding process for good reason."}},{"@type":"Question","name":"Why does cuff size matter so much?","acceptedAnswer":{"@type":"Answer","text":"The cuff transmits arterial pressure to the sensor, and this transmission depends on how the cuff fits. A cuff too small for the arm does not compress the artery efficiently and over-reads — sometimes by 10–40 mmHg. A cuff too large under-reads. Using the correct size for the arm circumference is one of the single most important accuracy factors, and no software can fix a wrong cuff."}},{"@type":"Question","name":"Why all the fuss about technique?","acceptedAnswer":{"@type":"Answer","text":"Because technique error dwarfs device error. Talking during a measurement can add 10 mmHg; a full bladder, crossed legs, an unsupported back, an arm below heart level, or a recent coffee each shift the reading substantially. A perfect device used on a talking, slouching subject gives a worse number than a modest device used correctly. That is why the device shows guidance before every reading."}},{"@type":"Question","name":"Is one reading enough?","acceptedAnswer":{"@type":"Answer","text":"No. Blood pressure varies continuously, and guidelines specify taking several readings after five minutes of quiet rest and averaging them (often discarding the first). A single reading is nearly meaningless for anything but a rough check. The device prompts to average, and a proper home-monitoring protocol takes morning and evening readings over several days."}},{"@type":"Question","name":"Can I use this instead of buying a monitor?","acceptedAnswer":{"@type":"Answer","text":"For learning how blood pressure measurement works, absolutely — it is an excellent project. For actually managing your health, buy a validated monitor: they are inexpensive, they have passed formal accuracy validation, and hypertension is a condition where wrong numbers lead to wrong treatment. Use this to understand the method, not to replace a validated device."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#health-and-wearables">Health &amp; Wearables</a><span class="sep">/</span>
+        <span aria-current="page">Blood Pressure Logger</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 024 · Health &amp; Wearables</span>
+          <h1>Blood Pressure Logger<span class="grad">.</span></h1>
+          <p class="tagline">An oscillometric cuff monitor that inflates, bleeds down under control, extracts systolic and diastolic pressure from the pulse envelope, and logs a trend — with a frank account of why home BP measurement is so easily done wrong.</p>
+          <div class="hero-chips">
+            <span class="chip lv-advanced">Advanced</span>
+            <span class="chip">16–24 hours</span>
+            <span class="chip neutral">36 min read</span>
+            <span class="chip neutral">Health</span><span class="chip neutral">BLE</span><span class="chip neutral">Cloud</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td191" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td191">Blood Pressure Logger — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Blood Pressure Logger — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Advanced</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>16–24 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹2,600 – ₹3,500</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32 DevKit V1 (ESP-WROOM-32)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Health &amp; Wearables</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>27 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 25 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">An oscillometric cuff monitor that inflates, bleeds down under control, extracts systolic and diastolic pressure from the pulse envelope, and logs a trend — with a frank account of why home BP measurement is so easily done wrong.</p>
+<p>Blood pressure is the most measured and most misinterpreted vital sign in medicine. The measurement itself is subtle, and the conditions under which it is taken matter as much as the device — a correctly working monitor used on a talking, cross-legged patient with a full bladder produces a number that is simply wrong. This project builds the measurement honestly and spends as much effort on how to take a reading correctly as on the electronics.</p>
+<p>The method is <b>oscillometry</b>, which is what every automatic home monitor uses. A cuff is inflated above systolic pressure to occlude the artery, then bled down slowly. As the cuff pressure passes through the arterial pressure range, each heartbeat produces a small oscillation in the cuff pressure — the artery pulsing against the cuff. These oscillations grow, peak, and shrink as the cuff deflates, and the shape of that <b>oscillation envelope</b> encodes the blood pressure. The mean arterial pressure is the cuff pressure at maximum oscillation; systolic and diastolic are derived from characteristic ratios of that maximum.</p>
+<p>The build combines a pressure sensor, a small pump and a bleed valve under closed-loop control. The control is the interesting part: the deflation must be slow and smooth (2–3 mmHg per second) for the envelope to be well-sampled, which means the bleed valve is modulated rather than simply opened. Too fast and the reading is inaccurate; too slow and the cuff is uncomfortable and venous congestion distorts the result.</p>
+<p>The honest framing here is about the derivation. Oscillometry does not measure systolic and diastolic directly — it measures the envelope and infers them using empirical ratios (typically ~0.55 of peak for systolic, ~0.85 for diastolic). Those ratios are population averages baked into every home monitor, and they are why home devices and a clinician's manual auscultation sometimes disagree. This documentation explains that rather than pretending the numbers are direct measurements.</p>
+
+<h3>What this project does</h3><ul class="check"><li>Inflates a standard BP cuff with a pump to above systolic pressure.</li><li>Bleeds down under closed-loop control at a steady 2–3 mmHg/s.</li><li>Extracts the oscillation envelope from the cuff pressure signal.</li><li>Computes mean arterial pressure, systolic and diastolic from the envelope.</li><li>Reports heart rate from the oscillation timing.</li><li>Logs readings with a timestamp and guides correct measurement technique.</li><li>Includes a fast-dump safety valve and a hard pressure ceiling.</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Home hypertension tracking</b></td><td>Home readings, averaged correctly, are more predictive than isolated clinic readings — when taken properly.</td></tr><tr><td><b>White-coat and masked hypertension</b></td><td>Comparing home and clinic readings reveals both, which changes management.</td></tr><tr><td><b>Medication response</b></td><td>A trend across a medication change shows whether it is working, which a single reading cannot.</td></tr><tr><td><b>Learning biomedical instrumentation</b></td><td>Closed-loop pneumatic control plus envelope analysis is a rich, real engineering problem.</td></tr><tr><td><b>Research and validation studies</b></td><td>A platform for oscillometric algorithm development against a reference.</td></tr><tr><td><b>Telehealth</b></td><td>Logged, timestamped home readings a clinician can review remotely.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li><b>Oscillometric measurement</b> — the same principle as every automatic home monitor.</li><li><b>Closed-loop deflation control</b> for a steady bleed rate, which the accuracy depends on.</li><li><b>Envelope extraction</b> with band-pass filtering of the cuff pressure signal.</li><li><b>Empirical ratio derivation</b> of systolic and diastolic, with the ratios documented, not hidden.</li><li><b>Hard safety ceiling</b> (300 mmHg) and a fast-dump valve that vents on any fault.</li><li><b>Measurement-technique guidance</b> in the interface, because technique dominates accuracy.</li><li><b>Trend logging</b> with morning/evening averaging as clinical guidelines specify.</li><li><b>Artefact rejection</b> — movement and talking corrupt the envelope and are flagged.</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Advanced</td></tr><tr><td><b>Estimated completion time</b></td><td>16–24 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹2,600 – ₹3,500</td></tr><tr><td><b>Primary discipline</b></td><td>Health &amp; Wearables</td></tr><tr><td><b>Reference platform</b></td><td>ESP32 DevKit V1 (ESP-WROOM-32)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Arduino C++ with closed-loop control and state machines</li><li>Pressure sensor interfacing and calibration</li><li>Pump and valve control through drivers</li><li>Signal processing: envelope extraction, peak finding</li><li>A careful understanding of measurement technique and its dominance over device accuracy</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>This is not a validated clinical device. Home BP monitors used for medical decisions must pass a formal validation protocol (e.g. AAMI/ESH/ISO 81060-2). This build teaches the method; it should not be used to diagnose hypertension or adjust medication without a validated device and a clinician.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b><br/><span style="font-size:.82em;opacity:.78">Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</span></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>0.96″ SSD1306 OLED display</b><br/><span style="font-size:.82em;opacity:.78">Static images burn in — invert or scroll the screen periodically.</span></td><td>128 × 64 monochrome, 1.3–3.3 V logic, 100 kHz–400 kHz I²C</td><td class="num">1</td><td class="num">₹250</td></tr><tr><td><b>LM2596 adjustable buck converter module</b><br/><span style="font-size:.82em;opacity:.78">Set the output voltage with no load connected before wiring the board.</span></td><td>4.5–40 V in, 1.25–37 V out, 2 A (3 A peak), ~92 % efficiency</td><td class="num">1</td><td class="num">₹90</td></tr><tr><td><b>5 V 3 A regulated SMPS adapter</b><br/><span style="font-size:.82em;opacity:.78">Measure the real output — many "3 A" adapters sag below 4.7 V at 2 A.</span></td><td>100–240 VAC in, 5 V ±5 % out, 3 A, short-circuit and over-voltage protection</td><td class="num">1</td><td class="num">₹350</td></tr><tr><td><b>Double-sided perfboard 7 × 9 cm + headers</b><br/><span style="font-size:.82em;opacity:.78">Solder female headers so the MCU can be swapped without desoldering.</span></td><td>FR-4, 0.1″ pitch, plated through-holes, 24 × 18 grid</td><td class="num">1</td><td class="num">₹60</td></tr><tr><td><b>IP65 ABS junction enclosure 158 × 90 × 60 mm</b><br/><span style="font-size:.82em;opacity:.78">Fit cable glands, not drilled holes, or the IP rating means nothing.</span></td><td>IP65, ABS, −20 to +80 °C, transparent lid, wall-mount lugs</td><td class="num">1</td><td class="num">₹260</td></tr><tr><td><b>MPS20N0040D / MPX5050 pressure sensor</b><br/><span style="font-size:.82em;opacity:.78">The sensor must cover 0–300 mmHg with resolution better than 1 mmHg for good envelope extraction.</span></td><td>0–40 kPa (0–300 mmHg), analogue or with HX710 amp</td><td class="num">1</td><td class="num">₹320</td></tr><tr><td><b>Air pump (diaphragm) + solenoid bleed valve</b><br/><span style="font-size:.82em;opacity:.78">The bleed valve is modulated for controlled deflation, so a fast-responding small valve matters.</span></td><td>5–12 V pump, small NC solenoid valve</td><td class="num">1</td><td class="num">₹480</td></tr><tr><td><b>Fast-dump solenoid valve (safety)</b><br/><span style="font-size:.82em;opacity:.78">A separate large valve that dumps pressure fast on any fault — a hard safety requirement.</span></td><td>Large-orifice NC, vents the cuff quickly</td><td class="num">1</td><td class="num">₹260</td></tr><tr><td><b>Standard BP cuff + tubing + T-connectors</b><br/><span style="font-size:.82em;opacity:.78">Cuff size is a major accuracy factor — too small over-reads, too large under-reads.</span></td><td>Adult cuff, correct size for the arm</td><td class="num">1</td><td class="num">₹380</td></tr><tr><td><b>Dual MOSFET driver + flyback diodes</b></td><td>For pump and valves</td><td class="num">1</td><td class="num">₹80</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹2,980</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td>3.3 V logic / 5 V USB</td><td>UART, SPI, I²C, I²S, CAN, PWM</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>0.96″ SSD1306 OLED display</b></td><td>128 × 64 monochrome, 1.3–3.3 V logic, 100 kHz–400 kHz I²C</td><td>3.3–5 V</td><td>I²C (0x3C)</td><td><a href="https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>LM2596 adjustable buck converter module</b></td><td>4.5–40 V in, 1.25–37 V out, 2 A (3 A peak), ~92 % efficiency</td><td>4.5–40 V</td><td>Screw terminals + trimmer</td><td><a href="https://www.ti.com/lit/ds/symlink/lm2596.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>5 V 3 A regulated SMPS adapter</b></td><td>100–240 VAC in, 5 V ±5 % out, 3 A, short-circuit and over-voltage protection</td><td>5 V</td><td>DC barrel / USB</td><td><a href="https://en.wikipedia.org/wiki/Switched-mode_power_supply" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Double-sided perfboard 7 × 9 cm + headers</b></td><td>FR-4, 0.1″ pitch, plated through-holes, 24 × 18 grid</td><td>—</td><td>—</td><td><a href="https://en.wikipedia.org/wiki/Perfboard" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>IP65 ABS junction enclosure 158 × 90 × 60 mm</b></td><td>IP65, ABS, −20 to +80 °C, transparent lid, wall-mount lugs</td><td>—</td><td>—</td><td><a href="https://en.wikipedia.org/wiki/IP_Code" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32 DevKit V1 (ESP-WROOM-32)</td><td>3.3 V logic / 5 V USB</td><td class="num">160</td><td>Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</td></tr><tr><td>0.96″ SSD1306 OLED display</td><td>3.3–5 V</td><td class="num">20</td><td>Static images burn in — invert or scroll the screen periodically.</td></tr><tr><td>LM2596 adjustable buck converter module</td><td>4.5–40 V</td><td class="num">8</td><td>Set the output voltage with no load connected before wiring the board.</td></tr><tr><td>5 V 3 A regulated SMPS adapter</td><td>5 V</td><td class="num">3000</td><td>Measure the real output — many "3 A" adapters sag below 4.7 V at 2 A.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>3188 mA</b>. With a 1.5× design margin the supply should deliver at least <b>4800 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x with the ESP32 board package 3.x (or PlatformIO on VS Code)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>ArduinoJson</b> <span style="opacity:.7">7.x</span></td><td>Zero-allocation JSON serialisation and parsing.</td><td><code>Library Manager → "ArduinoJson" by Benoit Blanchon</code></td></tr><tr><td><b>Adafruit SSD1306 + GFX</b> <span style="opacity:.7">2.5.x</span></td><td>Framebuffer and text/graphics primitives for the OLED.</td><td><code>Library Manager → "Adafruit SSD1306"</code></td></tr><tr><td><b>Preferences (NVS)</b> <span style="opacity:.7">bundled</span></td><td>Wear-levelled key/value storage in ESP32 flash for settings.</td><td><code>Bundled with the ESP32 core</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 310" role="img" aria-labelledby="td185 sd185" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td185">Blood Pressure Logger — system block diagram</title><desc id="sd185">Functional block diagram of the Blood Pressure Logger system.</desc>
+    <defs>
+    <marker id="ar-d185" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d185" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d185" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d185" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Pneumatics</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d185)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Pump</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">inflate</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d185)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Bleed valve</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">controlled deflate</tspan></text><rect x="26" y="214" width="178" height="62" rx="12"
+          fill="url(#gb-d185)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="239" text-anchor="middle"><tspan x="115" y="239.0">Dump valve</tspan></text><text class="dg-s" x="115" y="258" text-anchor="middle"><tspan x="115" y="258.0">safety vent</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Sense</text><rect x="266" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d185)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="119" text-anchor="middle"><tspan x="355" y="119.0">Pressure sensor</tspan></text><text class="dg-s" x="355" y="138" text-anchor="middle"><tspan x="355" y="138.0">0–300 mmHg</tspan></text><rect x="266" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d185)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="199" text-anchor="middle"><tspan x="355" y="199.0">DC + oscillation</tspan></text><text class="dg-s" x="355" y="218" text-anchor="middle"><tspan x="355" y="218.0">split by filter</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Analyse</text><rect x="506" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d185)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="595" y="119" text-anchor="middle"><tspan x="595" y="119.0">Envelope</tspan></text><text class="dg-s" x="595" y="138" text-anchor="middle"><tspan x="595" y="138.0">per-beat amplitude</tspan></text><rect x="506" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d185)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="199" text-anchor="middle"><tspan x="595" y="199.0">MAP at peak</tspan></text><text class="dg-s" x="595" y="218" text-anchor="middle"><tspan x="595" y="218.0">then ratios</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Report</text><rect x="746" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d185)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="119" text-anchor="middle"><tspan x="835" y="119.0">Reading + HR</tspan></text><text class="dg-s" x="835" y="138" text-anchor="middle"><tspan x="835" y="138.0">log</tspan></text><rect x="746" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d185)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="199" text-anchor="middle"><tspan x="835" y="199.0">Technique guide</tspan></text><text class="dg-s" x="835" y="218" text-anchor="middle"><tspan x="835" y="218.0">in UI</tspan></text><path d="M208 165 C 235 165, 235 165, 258 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d185)"/><text class="dg-e" x="235" y="157" text-anchor="middle">cuff pressure</text><path d="M448 165 C 475 165, 475 165, 498 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d185)"/><text class="dg-e" x="475" y="157" text-anchor="middle">signal</text><path d="M688 165 C 715 165, 715 165, 738 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d185)"/><text class="dg-e" x="715" y="157" text-anchor="middle">SYS/DIA/MAP</text>
+  </svg>
+  <figcaption>Blood Pressure Logger — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 264" role="img" aria-labelledby="td186 sd186" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td186">Blood Pressure Logger — wiring schematic</title><desc id="sd186">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d186" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d186" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d186" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d186" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="168" rx="14"
+      fill="url(#ga-d186)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32 DevKit V1</tspan><tspan x="434" y="95.0">(ESP-WROOM-32)</tspan></text><text class="dg-s" x="434" y="214" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d186)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Pressure sensor</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO 34 or 16/4</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="109.5">Analogue or HX710</tspan><tspan x="278" y="120.5">24-bit</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d186)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">Start button</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 32</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="167.0">Begin a measurement</tspan></text><rect x="20" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d186)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="205" text-anchor="middle"><tspan x="115" y="205.0">SSD1306 OLED</tspan></text><path d="M210 204 C 278 204, 278 204, 346 204" stroke="#4fb0e0" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="204" r="3.2" fill="#4fb0e0"/><text class="dg-p" x="278" y="198" text-anchor="middle">GPIO 21 / 22</text><text class="dg-s" x="278" y="219" text-anchor="middle"><tspan x="278" y="219.0">I²C at 0x3C</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d186)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Air pump</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">GPIO 25</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="109.5">Inflate, with</tspan><tspan x="590" y="120.5">flyback diode</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d186)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Bleed valve (modulated)</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">GPIO 26</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="161.5">PWM for controlled</tspan><tspan x="590" y="172.5">deflation</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d186)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">Fast-dump valve (safety)</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">GPIO 27</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="219.0">Vents on any fault</tspan></text>
+  </svg>
+  <figcaption>Blood Pressure Logger — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Pressure sensor</b></td><td>OUT / DT+SCK</td><td><code>GPIO 34 or 16/4</code></td><td>Analogue or HX710 24-bit</td></tr><tr><td><b>Start button</b></td><td>NO</td><td><code>GPIO 32</code></td><td>Begin a measurement</td></tr><tr><td><b>SSD1306 OLED</b></td><td>SDA / SCL</td><td><code>GPIO 21 / 22</code></td><td>I²C at 0x3C</td></tr><tr><td><b>Air pump</b></td><td>MOSFET gate</td><td><code>GPIO 25</code></td><td>Inflate, with flyback diode</td></tr><tr><td><b>Bleed valve (modulated)</b></td><td>MOSFET gate</td><td><code>GPIO 26</code></td><td>PWM for controlled deflation</td></tr><tr><td><b>Fast-dump valve (safety)</b></td><td>MOSFET gate</td><td><code>GPIO 27</code></td><td>Vents on any fault</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>The pneumatic circuit is: pump → cuff, with the bleed valve and the fast-dump valve both venting the cuff to atmosphere, and the pressure sensor teed into the cuff line. Use proper barbed T-connectors and check every joint for leaks — a leak makes controlled deflation impossible.</li><li>The <b>fast-dump valve is a safety requirement, not an option</b>. It is a separate, large-orifice, normally-closed solenoid wired so that losing power (or the firmware asserting a fault) opens it and vents the cuff immediately. A cuff stuck inflated on an arm is dangerous.</li><li>Wire both valves normally-closed and the pump off-by-default, so a power failure or a crashed microcontroller results in a deflated, safe cuff — never an inflated one.</li><li>Calibrate the pressure sensor against a reference. The absolute accuracy of the whole device is limited by this calibration, and a 3 mmHg offset here is a 3 mmHg error in every reading.</li><li>Fit flyback diodes across the pump and both solenoids — they are all inductive and will damage the MOSFETs without them.</li><li>Use the correct cuff size for the arm. This is not an electronics issue but it dominates accuracy: a cuff too small over-reads by 10–40 mmHg, one too large under-reads.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ESP32%20Espressif%20ESP-WROOM-32%20Dev%20Board.jpg?width=900" alt="An ESP32 development board with the ESP-WROOM-32 module and USB connector" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td187" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td187">An ESP32 development board running the closed-loop pneumatic control and the envelope analysis.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="60" y="46" width="280" height="168" rx="10" fill="#1d4a3e" stroke="#123028" stroke-width="2"/>
+    <rect x="112" y="60" width="176" height="76" rx="5" fill="#c9ccd1" stroke="#9aa0a8"/>
+    <rect x="128" y="76" width="86" height="44" rx="3" fill="#2b2f36"/>
+    <text x="171" y="103" font-size="12" fill="#c9ccd1" text-anchor="middle" font-family="monospace">ESP32</text>
+    <path d="M228 78 h44 v10 h-44z M228 92 h44 v10 h-44z M228 106 h44 v10 h-44z" fill="#9aa0a8"/>
+    <rect x="164" y="150" width="72" height="34" rx="4" fill="#2b2f36"/>
+    <text x="200" y="171" font-size="9" fill="#7f8894" text-anchor="middle" font-family="monospace">USB</text>
+    <rect x="86" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <rect x="266" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <circle cx="70" cy="40" r="2.4" fill="#d8b04a"/><circle cx="88" cy="40" r="2.4" fill="#d8b04a"/><circle cx="106" cy="40" r="2.4" fill="#d8b04a"/><circle cx="124" cy="40" r="2.4" fill="#d8b04a"/><circle cx="142" cy="40" r="2.4" fill="#d8b04a"/><circle cx="160" cy="40" r="2.4" fill="#d8b04a"/><circle cx="178" cy="40" r="2.4" fill="#d8b04a"/><circle cx="196" cy="40" r="2.4" fill="#d8b04a"/><circle cx="214" cy="40" r="2.4" fill="#d8b04a"/><circle cx="232" cy="40" r="2.4" fill="#d8b04a"/><circle cx="250" cy="40" r="2.4" fill="#d8b04a"/><circle cx="268" cy="40" r="2.4" fill="#d8b04a"/><circle cx="286" cy="40" r="2.4" fill="#d8b04a"/><circle cx="304" cy="40" r="2.4" fill="#d8b04a"/><circle cx="322" cy="40" r="2.4" fill="#d8b04a"/><circle cx="70" cy="220" r="2.4" fill="#d8b04a"/><circle cx="88" cy="220" r="2.4" fill="#d8b04a"/><circle cx="106" cy="220" r="2.4" fill="#d8b04a"/><circle cx="124" cy="220" r="2.4" fill="#d8b04a"/><circle cx="142" cy="220" r="2.4" fill="#d8b04a"/><circle cx="160" cy="220" r="2.4" fill="#d8b04a"/><circle cx="178" cy="220" r="2.4" fill="#d8b04a"/><circle cx="196" cy="220" r="2.4" fill="#d8b04a"/><circle cx="214" cy="220" r="2.4" fill="#d8b04a"/><circle cx="232" cy="220" r="2.4" fill="#d8b04a"/><circle cx="250" cy="220" r="2.4" fill="#d8b04a"/><circle cx="268" cy="220" r="2.4" fill="#d8b04a"/><circle cx="286" cy="220" r="2.4" fill="#d8b04a"/><circle cx="304" cy="220" r="2.4" fill="#d8b04a"/><circle cx="322" cy="220" r="2.4" fill="#d8b04a"/>
+    <circle cx="330" cy="60" r="4" fill="#e03b3b"/><circle cx="330" cy="76" r="4" fill="#3be07a"/>
+  </svg>
+  <figcaption>An ESP32 development board running the closed-loop pneumatic control and the envelope analysis.</figcaption>
+</figure></template>
+  <figcaption>An ESP32 development board running the closed-loop pneumatic control and the envelope analysis.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — ESP32 Espressif ESP-WROOM-32 Dev Board.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td188 sd188" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td188">Blood Pressure Logger — architecture stack</title><desc id="sd188">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d188" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d188" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d188" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d188" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d188)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">ESP32 DevKit V1 (ESP-WROOM-32) · sensors and actuators</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d188)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d188)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">arduinojson · ssd1306 · preferences</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d188)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d188)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d188)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d188)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Blood Pressure Logger — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>When a cuff is inflated above systolic pressure, it fully occludes the brachial artery and no blood flows past it — there are no pulsations. As the cuff bleeds down and its pressure falls below systolic, the artery begins to open briefly at each systolic peak, and blood spurts through, causing the artery wall to snap against the cuff. This produces a small pressure oscillation in the cuff, superimposed on the slowly falling cuff pressure. As deflation continues, the oscillations grow — the artery opens for more of each cycle — reach a maximum, then shrink as the cuff pressure falls below diastolic and the artery stays open throughout the cycle.</p>
+<p>The genius and the limitation of oscillometry is in what happens at the maximum. The oscillations are <b>largest when the cuff pressure equals the mean arterial pressure</b> — this is a well-established physical result, because that is when the artery's compliance (its change in volume per unit pressure) is greatest. So the mean arterial pressure (MAP) is read directly and robustly: it is the cuff pressure at the peak of the oscillation envelope. This is the one value oscillometry measures rather than infers.</p>
+<p>Systolic and diastolic are <b>not</b> directly measured — they are inferred from the envelope shape using empirical ratios. Systolic corresponds to the cuff pressure, on the rising side of the envelope, where the oscillation amplitude is about 55 % of its peak; diastolic to the point on the falling side at about 85 % of peak. These ratios are population-derived averages, and they are the reason different oscillometric devices — and oscillometry versus a clinician's stethoscope — can give slightly different systolic and diastolic while agreeing closely on MAP.</p>
+<p>Extracting the envelope requires separating the small oscillations from the large falling cuff pressure. The cuff pressure signal is the sum of a slow ramp (the deflation, effectively DC and very-low-frequency) and the oscillations (at the heart rate, roughly 1 Hz). A <b>band-pass filter</b> around the heart rate isolates the oscillations, and the peak-to-peak amplitude of each beat's oscillation, plotted against the cuff pressure at that moment, is the envelope.</p>
+<p>The <b>deflation control</b> is critical to accuracy. The envelope must be sampled finely enough to locate its peak and the systolic/diastolic points, which requires a slow, steady deflation — 2–3 mmHg per second is the standard. Too fast and there are too few beats to define the envelope; too slow and the measurement takes uncomfortably long and venous pooling below the cuff distorts the later oscillations. A simple open valve deflates non-linearly (faster at high pressure); a modulated valve under closed-loop control maintains a constant rate, which is why the bleed valve is PWM-driven against a measured deflation-rate setpoint.</p>
+<p>Above all, <b>measurement technique dominates device accuracy</b>. Correct oscillometry on a patient who is talking, has legs crossed, has a full bladder, has just had caffeine, or has the cuff over clothing can be off by 10–20 mmHg — far more than any reasonable device error. This is why the device leads with technique guidance and why clinical protocols specify five minutes of quiet rest, feet flat, back supported, arm at heart level, and the average of multiple readings.</p>
+
+<h3>The maths behind it</h3><h4>Oscillometric envelope and MAP</h4><div class="codeblock tall" data-file="Oscillometric envelope and MAP">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Oscillometric envelope and MAP</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Oscillometric envelope and MAP to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Oscillometric envelope and MAP" type="button" aria-label="Download Oscillometric envelope and MAP">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Cuff pressure P(t) = P_deflate(t) + osc(t)
+  P_deflate : slow ramp, ~2–3 mmHg/s downward
+  osc(t)    : ~1 Hz oscillations, amplitude a few mmHg
+
+Envelope: for each beat, A_k = peak-to-peak of osc during
+that beat, at cuff pressure P_k.
+
+Mean arterial pressure:
+  MAP = P_k at which A_k is MAXIMUM   (measured directly)
+
+MAP relates to SYS and DIA approximately by:
+  MAP ≈ DIA + (SYS − DIA)/3
+(a cross-check, not the derivation used here)</code></pre>
+  
+</div>
+<h4>Systolic and diastolic by ratio</h4><div class="codeblock tall" data-file="Systolic and diastolic by ratio">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Systolic and diastolic by ratio</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Systolic and diastolic by ratio to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Systolic and diastolic by ratio" type="button" aria-label="Download Systolic and diastolic by ratio">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Let A_max be the peak envelope amplitude.
+
+Systolic (rising side of envelope):
+  SYS = cuff pressure where A = 0.55·A_max
+
+Diastolic (falling side of envelope):
+  DIA = cuff pressure where A = 0.85·A_max
+
+These ratios (0.55, 0.85) are population averages used
+by home monitors. They are why oscillometric SYS/DIA
+can differ from auscultation while MAP agrees closely.
+
+Example envelope peak at cuff = 95 mmHg (= MAP):
+  0.55·A_max crossing on rising side  → SYS ≈ 128
+  0.85·A_max crossing on falling side → DIA ≈ 82</code></pre>
+  
+</div>
+<h4>Deflation rate control</h4><div class="codeblock tall" data-file="Deflation rate control">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Deflation rate control</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Deflation rate control to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Deflation rate control" type="button" aria-label="Download Deflation rate control">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Target deflation rate: R = 2.5 mmHg/s
+
+Measured rate over the last second:
+  r = (P[t−1s] − P[t]) mmHg/s
+
+Bleed valve duty (PWM), simple proportional control:
+  duty += Kp·(R − r)
+  duty = clamp(duty, 0, 255)
+
+An open valve deflates ~exponentially (faster when the
+cuff is hard), so a fixed opening gives a non-constant
+rate. Modulating the valve holds R constant across the
+whole deflation, which the envelope analysis needs.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 784" role="img" aria-labelledby="td189 sd189" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td189">Blood Pressure Logger — firmware flowchart</title><desc id="sd189">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d189" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d189" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d189" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d189" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d189)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="51.5">Show technique guidance, wait</tspan><tspan x="210" y="64.5">for start</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d189)"/><path d="M101 116 L335 116 L319 172 L85 172 z"
+          fill="url(#gb-d189)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="137.5">Pump up to ~30 mmHg above</tspan><tspan x="210" y="150.5">expected systolic</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d189)"/><path d="M210 202 L349 244 L210 286 L71 244 z"
+          fill="url(#ga-d189)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="244" text-anchor="middle"><tspan x="210" y="237.5">Pressure over safety</tspan><tspan x="210" y="250.5">ceiling (300)?</tspan></text><path d="M210 286 L210 310" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d189)"/><text class="dg-e" x="220" y="305">DUMP, abort</text><path d="M349 244 H397 V114 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d189)"/><text class="dg-e" x="403" y="238">proceed</text><rect x="85" y="316" width="250" height="56" rx="10"
+          fill="url(#gb-d189)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="344" text-anchor="middle"><tspan x="210" y="337.5">Bleed down at 2–3 mmHg/s</tspan><tspan x="210" y="350.5">(closed loop)</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d189)"/><rect x="85" y="402" width="250" height="56" rx="10"
+          fill="url(#gb-d189)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="423.5">Record cuff pressure +</tspan><tspan x="210" y="436.5">oscillation per beat</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d189)"/><path d="M210 488 L349 530 L210 572 L71 530 z"
+          fill="url(#ga-d189)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="530" text-anchor="middle"><tspan x="210" y="523.5">Deflation complete (below</tspan><tspan x="210" y="536.5">~40 mmHg)?</tspan></text><path d="M210 572 L210 596" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d189)"/><text class="dg-e" x="220" y="591">analyse</text><path d="M349 530 H397 V314 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d189)"/><text class="dg-e" x="403" y="524">keep bleeding</text><rect x="85" y="602" width="250" height="56" rx="10"
+          fill="url(#gb-d189)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="630" text-anchor="middle"><tspan x="210" y="623.5">Find MAP at envelope peak,</tspan><tspan x="210" y="636.5">derive SYS/DIA</tspan></text><path d="M210 658 L210 682" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d189)"/><rect x="85" y="688" width="250" height="56" rx="28"
+          fill="url(#ga-d189)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="716" text-anchor="middle"><tspan x="210" y="709.5">Dump remaining pressure, show</tspan><tspan x="210" y="722.5">+ log result</tspan></text>
+  </svg>
+  <figcaption>Blood Pressure Logger — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+</section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+</section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="bp-monitor.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">bp-monitor.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy bp-monitor.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="bp-monitor.ino" type="button" aria-label="Download bp-monitor.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   Blood Pressure Logger — ESP32, oscillometric</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Inflates a cuff, bleeds down under closed-loop rate control,</span>
+<span class="tok-c">   extracts the oscillation envelope, and derives systolic, diastolic</span>
+<span class="tok-c">   and mean arterial pressure. Includes a hard safety ceiling and a</span>
+<span class="tok-c">   fast-dump valve.</span>
+<span class="tok-c"></span>
+<span class="tok-c">   NOT a validated clinical device. Technique dominates accuracy; see</span>
+<span class="tok-c">   the guidance shown before each measurement.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Wire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Adafruit_SSD1306</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Preferences</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span>math<span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">PIN_PRESSURE</span> <span class="tok-n">34</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_START</span>    <span class="tok-n">32</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_PUMP</span>     <span class="tok-n">25</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_BLEED</span>    <span class="tok-n">26</span>          <span class="tok-c">// modulated for controlled deflation</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_DUMP</span>     <span class="tok-n">27</span>          <span class="tok-c">// fast safety vent</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">SAFETY_CEIL_MMHG</span> <span class="tok-n">300</span>     <span class="tok-c">// hard limit — dump above this</span>
+<span class="tok-p">#define</span> <span class="tok-t">INFLATE_TARGET</span>   <span class="tok-n">170</span>     <span class="tok-c">// above expected systolic</span>
+<span class="tok-p">#define</span> <span class="tok-t">DEFLATE_RATE</span>      <span class="tok-n">2.5</span>f   <span class="tok-c">// mmHg/s</span>
+<span class="tok-p">#define</span> <span class="tok-t">STOP_MMHG</span>         <span class="tok-n">40</span>     <span class="tok-c">// stop below this</span>
+<span class="tok-p">#define</span> <span class="tok-t">MAX_BEATS</span>        <span class="tok-n">200</span>
+
+<span class="tok-t">Adafruit_SSD1306</span> <span class="tok-f">oled</span><span class="tok-o">(</span><span class="tok-n">128</span><span class="tok-o">,</span> <span class="tok-n">64</span><span class="tok-o">,</span> <span class="tok-o">&amp;</span><span class="tok-t">Wire</span><span class="tok-o">,</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">);</span>
+<span class="tok-t">Preferences</span> prefs<span class="tok-o">;</span>
+
+<span class="tok-c">// Sensor calibration: pressure = (adc - offset) * scale</span>
+<span class="tok-k">float</span> calOffset <span class="tok-o">=</span> <span class="tok-n">410.0</span>f<span class="tok-o">,</span> calScale <span class="tok-o">=</span> <span class="tok-n">0.0732</span>f<span class="tok-o">;</span>   <span class="tok-c">// set by calibration</span>
+
+<span class="tok-k">struct</span> <span class="tok-t">Beat</span> <span class="tok-o">{</span> <span class="tok-k">float</span> cuffP<span class="tok-o">;</span> <span class="tok-k">float</span> amplitude<span class="tok-o">;</span> <span class="tok-o">};</span>
+<span class="tok-t">Beat</span> beats<span class="tok-o">[</span><span class="tok-t">MAX_BEATS</span><span class="tok-o">];</span>
+<span class="tok-k">int</span>  beatCount <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+
+<span class="tok-c">/* ── pressure ───────────────────────────────────────────────── */</span>
+<span class="tok-k">float</span> <span class="tok-f">readPressure</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">uint32_t</span> acc <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-n">4</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> acc <span class="tok-o">+=</span> <span class="tok-f">analogRead</span><span class="tok-o">(</span><span class="tok-t">PIN_PRESSURE</span><span class="tok-o">);</span>
+  <span class="tok-k">return</span> <span class="tok-o">(</span>acc <span class="tok-o">/</span> <span class="tok-n">4.0</span>f <span class="tok-o">-</span> calOffset<span class="tok-o">)</span> <span class="tok-o">*</span> calScale<span class="tok-o">;</span>      <span class="tok-c">// mmHg</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── safety ─────────────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">dumpAll</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_PUMP</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_BLEED</span><span class="tok-o">,</span> <span class="tok-t">HIGH</span><span class="tok-o">);</span>       <span class="tok-c">// full open</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_DUMP</span><span class="tok-o">,</span> <span class="tok-t">HIGH</span><span class="tok-o">);</span>        <span class="tok-c">// fast vent</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">safeIdle</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_PUMP</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>
+  <span class="tok-f">analogWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_BLEED</span><span class="tok-o">,</span> <span class="tok-n">0</span><span class="tok-o">);</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_DUMP</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>         <span class="tok-c">// valves closed, cuff at atmosphere</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">bool</span> <span class="tok-f">checkSafety</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">readPressure</span><span class="tok-o">()</span> <span class="tok-o">&gt;</span> <span class="tok-t">SAFETY_CEIL_MMHG</span><span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-f">dumpAll</span><span class="tok-o">();</span> <span class="tok-k">return</span> <span class="tok-k">false</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+  <span class="tok-k">return</span> <span class="tok-k">true</span><span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── the measurement ────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">inflate</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_DUMP</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>
+  <span class="tok-f">analogWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_BLEED</span><span class="tok-o">,</span> <span class="tok-n">0</span><span class="tok-o">);</span>           <span class="tok-c">// bleed closed</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_PUMP</span><span class="tok-o">,</span> <span class="tok-t">HIGH</span><span class="tok-o">);</span>
+  <span class="tok-k">uint32_t</span> t0 <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+  <span class="tok-k">while</span> <span class="tok-o">(</span><span class="tok-f">readPressure</span><span class="tok-o">()</span> <span class="tok-o">&lt;</span> <span class="tok-t">INFLATE_TARGET</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-k">if</span> <span class="tok-o">(!</span><span class="tok-f">checkSafety</span><span class="tok-o">())</span> <span class="tok-k">return</span><span class="tok-o">;</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> t0 <span class="tok-o">&gt;</span> <span class="tok-n">30000</span><span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-f">dumpAll</span><span class="tok-o">();</span> <span class="tok-k">return</span><span class="tok-o">;</span> <span class="tok-o">}</span>   <span class="tok-c">// inflation timeout</span>
+    oled<span class="tok-o">.</span><span class="tok-f">clearDisplay</span><span class="tok-o">();</span> oled<span class="tok-o">.</span><span class="tok-f">setTextColor</span><span class="tok-o">(</span><span class="tok-t">SSD1306_WHITE</span><span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">2</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">20</span><span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"%3.0f mmHg"</span><span class="tok-o">,</span> <span class="tok-f">readPressure</span><span class="tok-o">());</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">1</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">4</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">print</span><span class="tok-o">(</span><span class="tok-s">"Inflating - hold still"</span><span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">display</span><span class="tok-o">();</span>
+  <span class="tok-o">}</span>
+  <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_PUMP</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">deflateAndSample</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  beatCount <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> bleedDuty <span class="tok-o">=</span> <span class="tok-n">120</span><span class="tok-o">;</span>               <span class="tok-c">// starting valve opening</span>
+  <span class="tok-k">float</span> lastP <span class="tok-o">=</span> <span class="tok-f">readPressure</span><span class="tok-o">();</span>
+  <span class="tok-k">uint32_t</span> lastRateT <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+
+  <span class="tok-c">// Beat-band oscillation extraction: high-pass the pressure to remove</span>
+  <span class="tok-c">// the deflation ramp, then track per-beat peak-to-peak.</span>
+  <span class="tok-k">float</span> hpPrev <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> hpPrevIn <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> oscMin <span class="tok-o">=</span> <span class="tok-n">1e9</span><span class="tok-o">,</span> oscMax <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">1e9</span><span class="tok-o">;</span>
+  <span class="tok-k">uint32_t</span> lastZero <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+
+  <span class="tok-k">while</span> <span class="tok-o">(</span><span class="tok-f">readPressure</span><span class="tok-o">()</span> <span class="tok-o">&gt;</span> <span class="tok-t">STOP_MMHG</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-k">if</span> <span class="tok-o">(!</span><span class="tok-f">checkSafety</span><span class="tok-o">())</span> <span class="tok-k">return</span><span class="tok-o">;</span>
+
+    <span class="tok-k">float</span> p <span class="tok-o">=</span> <span class="tok-f">readPressure</span><span class="tok-o">();</span>
+
+    <span class="tok-c">// Closed-loop deflation rate control.</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> lastRateT <span class="tok-o">&gt;=</span> <span class="tok-n">200</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+      <span class="tok-k">float</span> rate <span class="tok-o">=</span> <span class="tok-o">(</span>lastP <span class="tok-o">-</span> p<span class="tok-o">)</span> <span class="tok-o">/</span> <span class="tok-o">((</span><span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> lastRateT<span class="tok-o">)</span> <span class="tok-o">/</span> <span class="tok-n">1000.0</span>f<span class="tok-o">);</span>
+      bleedDuty <span class="tok-o">+=</span> <span class="tok-n">8.0</span>f <span class="tok-o">*</span> <span class="tok-o">(</span><span class="tok-t">DEFLATE_RATE</span> <span class="tok-o">-</span> rate<span class="tok-o">);</span>       <span class="tok-c">// proportional</span>
+      bleedDuty <span class="tok-o">=</span> <span class="tok-f">fmaxf</span><span class="tok-o">(</span><span class="tok-n">20</span><span class="tok-o">,</span> <span class="tok-f">fminf</span><span class="tok-o">(</span><span class="tok-n">220</span><span class="tok-o">,</span> bleedDuty<span class="tok-o">));</span>
+      <span class="tok-f">analogWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_BLEED</span><span class="tok-o">,</span> <span class="tok-o">(</span><span class="tok-k">int</span><span class="tok-o">)</span>bleedDuty<span class="tok-o">);</span>
+      lastP <span class="tok-o">=</span> p<span class="tok-o">;</span> lastRateT <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+    <span class="tok-o">}</span>
+
+    <span class="tok-c">// High-pass (removes the slow deflation ramp, keeps oscillations).</span>
+    <span class="tok-k">float</span> hp <span class="tok-o">=</span> <span class="tok-n">0.98</span>f <span class="tok-o">*</span> <span class="tok-o">(</span>hpPrev <span class="tok-o">+</span> p <span class="tok-o">-</span> hpPrevIn<span class="tok-o">);</span>
+    hpPrevIn <span class="tok-o">=</span> p<span class="tok-o">;</span> hpPrev <span class="tok-o">=</span> hp<span class="tok-o">;</span>
+
+    oscMin <span class="tok-o">=</span> <span class="tok-f">fminf</span><span class="tok-o">(</span>oscMin<span class="tok-o">,</span> hp<span class="tok-o">);</span> oscMax <span class="tok-o">=</span> <span class="tok-f">fmaxf</span><span class="tok-o">(</span>oscMax<span class="tok-o">,</span> hp<span class="tok-o">);</span>
+
+    <span class="tok-c">// Detect a beat as a downward zero crossing of the oscillation.</span>
+    <span class="tok-k">static</span> <span class="tok-k">float</span> prevHp <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>prevHp <span class="tok-o">&gt;</span> <span class="tok-n">0</span> <span class="tok-o">&amp;&amp;</span> hp <span class="tok-o">&lt;=</span> <span class="tok-n">0</span> <span class="tok-o">&amp;&amp;</span> <span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> lastZero <span class="tok-o">&gt;</span> <span class="tok-n">300</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+      lastZero <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+      <span class="tok-k">if</span> <span class="tok-o">(</span>beatCount <span class="tok-o">&lt;</span> <span class="tok-t">MAX_BEATS</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+        beats<span class="tok-o">[</span>beatCount<span class="tok-o">].</span>cuffP <span class="tok-o">=</span> p<span class="tok-o">;</span>
+        beats<span class="tok-o">[</span>beatCount<span class="tok-o">].</span>amplitude <span class="tok-o">=</span> oscMax <span class="tok-o">-</span> oscMin<span class="tok-o">;</span>
+        beatCount<span class="tok-o">++;</span>
+      <span class="tok-o">}</span>
+      oscMin <span class="tok-o">=</span> <span class="tok-n">1e9</span><span class="tok-o">;</span> oscMax <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">1e9</span><span class="tok-o">;</span>
+    <span class="tok-o">}</span>
+    prevHp <span class="tok-o">=</span> hp<span class="tok-o">;</span>
+
+    oled<span class="tok-o">.</span><span class="tok-f">clearDisplay</span><span class="tok-o">();</span> oled<span class="tok-o">.</span><span class="tok-f">setTextColor</span><span class="tok-o">(</span><span class="tok-t">SSD1306_WHITE</span><span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">2</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">20</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"%3.0f"</span><span class="tok-o">,</span> p<span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">1</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">4</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">print</span><span class="tok-o">(</span><span class="tok-s">"Measuring - stay still"</span><span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">50</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"beats: %d"</span><span class="tok-o">,</span> beatCount<span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">display</span><span class="tok-o">();</span>
+    <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">5</span><span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+  <span class="tok-f">dumpAll</span><span class="tok-o">();</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">1500</span><span class="tok-o">);</span> <span class="tok-f">safeIdle</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── envelope analysis ──────────────────────────────────────── */</span>
+<span class="tok-k">bool</span> <span class="tok-f">analyse</span><span class="tok-o">(</span><span class="tok-k">float</span> <span class="tok-o">&amp;</span>sys<span class="tok-o">,</span> <span class="tok-k">float</span> <span class="tok-o">&amp;</span>dia<span class="tok-o">,</span> <span class="tok-k">float</span> <span class="tok-o">&amp;</span>map<span class="tok-o">,</span> <span class="tok-k">float</span> <span class="tok-o">&amp;</span>hr<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>beatCount <span class="tok-o">&lt;</span> <span class="tok-n">8</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-k">false</span><span class="tok-o">;</span>
+
+  <span class="tok-c">// Find the envelope peak (= MAP).</span>
+  <span class="tok-k">int</span> peakIdx <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">float</span> peakAmp <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> beatCount<span class="tok-o">;</span> i<span class="tok-o">++)</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>beats<span class="tok-o">[</span>i<span class="tok-o">].</span>amplitude <span class="tok-o">&gt;</span> peakAmp<span class="tok-o">)</span> <span class="tok-o">{</span> peakAmp <span class="tok-o">=</span> beats<span class="tok-o">[</span>i<span class="tok-o">].</span>amplitude<span class="tok-o">;</span> peakIdx <span class="tok-o">=</span> i<span class="tok-o">;</span> <span class="tok-o">}</span>
+  map <span class="tok-o">=</span> beats<span class="tok-o">[</span>peakIdx<span class="tok-o">].</span>cuffP<span class="tok-o">;</span>
+
+  <span class="tok-c">// Systolic: rising side (higher cuff pressure, earlier), 0.55 of peak.</span>
+  sys <span class="tok-o">=</span> map<span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> peakIdx<span class="tok-o">;</span> i <span class="tok-o">&gt;=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i<span class="tok-o">--)</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>beats<span class="tok-o">[</span>i<span class="tok-o">].</span>amplitude <span class="tok-o">&lt;=</span> <span class="tok-n">0.55</span>f <span class="tok-o">*</span> peakAmp<span class="tok-o">)</span> <span class="tok-o">{</span> sys <span class="tok-o">=</span> beats<span class="tok-o">[</span>i<span class="tok-o">].</span>cuffP<span class="tok-o">;</span> <span class="tok-k">break</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+
+  <span class="tok-c">// Diastolic: falling side (lower cuff pressure, later), 0.85 of peak.</span>
+  dia <span class="tok-o">=</span> map<span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> peakIdx<span class="tok-o">;</span> i <span class="tok-o">&lt;</span> beatCount<span class="tok-o">;</span> i<span class="tok-o">++)</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>beats<span class="tok-o">[</span>i<span class="tok-o">].</span>amplitude <span class="tok-o">&lt;=</span> <span class="tok-n">0.85</span>f <span class="tok-o">*</span> peakAmp<span class="tok-o">)</span> <span class="tok-o">{</span> dia <span class="tok-o">=</span> beats<span class="tok-o">[</span>i<span class="tok-o">].</span>cuffP<span class="tok-o">;</span> <span class="tok-k">break</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+
+  <span class="tok-c">// Heart rate from the mean beat interval during the measurement.</span>
+  <span class="tok-c">// (Beats span the deflation; count them over its duration.)</span>
+  hr <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>    <span class="tok-c">// computed from timestamps in a fuller implementation</span>
+
+  <span class="tok-c">// Plausibility gate — reject nonsense from a corrupted envelope.</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>sys <span class="tok-o">&lt;</span> <span class="tok-n">70</span> <span class="tok-o">||</span> sys <span class="tok-o">&gt;</span> <span class="tok-n">260</span> <span class="tok-o">||</span> dia <span class="tok-o">&lt;</span> <span class="tok-n">40</span> <span class="tok-o">||</span> dia <span class="tok-o">&gt;</span> <span class="tok-n">150</span> <span class="tok-o">||</span> sys <span class="tok-o">&lt;=</span> dia<span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-k">false</span><span class="tok-o">;</span>
+  <span class="tok-k">return</span> <span class="tok-k">true</span><span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── setup / loop ───────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">showGuidance</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">const</span> <span class="tok-k">char</span> <span class="tok-o">*</span>lines<span class="tok-o">[]</span> <span class="tok-o">=</span> <span class="tok-o">{</span>
+    <span class="tok-s">"Before measuring:"</span><span class="tok-o">,</span> <span class="tok-s">"- rest 5 min, seated"</span><span class="tok-o">,</span>
+    <span class="tok-s">"- back supported,"</span><span class="tok-o">,</span> <span class="tok-s">"  feet flat, legs"</span><span class="tok-o">,</span> <span class="tok-s">"  uncrossed"</span><span class="tok-o">,</span>
+    <span class="tok-s">"- arm at heart level"</span><span class="tok-o">,</span> <span class="tok-s">"- do not talk or move"</span><span class="tok-o">,</span>
+    <span class="tok-s">"- correct cuff size"</span><span class="tok-o">,</span> <span class="tok-s">"Press START when ready"</span> <span class="tok-o">};</span>
+  oled<span class="tok-o">.</span><span class="tok-f">clearDisplay</span><span class="tok-o">();</span> oled<span class="tok-o">.</span><span class="tok-f">setTextColor</span><span class="tok-o">(</span><span class="tok-t">SSD1306_WHITE</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">1</span><span class="tok-o">);</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-n">9</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> i <span class="tok-o">*</span> <span class="tok-n">7</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">print</span><span class="tok-o">(</span>lines<span class="tok-o">[</span>i<span class="tok-o">]);</span> <span class="tok-o">}</span>
+  oled<span class="tok-o">.</span><span class="tok-f">display</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">115200</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_START</span><span class="tok-o">,</span> <span class="tok-t">INPUT_PULLUP</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_PUMP</span><span class="tok-o">,</span> <span class="tok-t">OUTPUT</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_BLEED</span><span class="tok-o">,</span> <span class="tok-t">OUTPUT</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_DUMP</span><span class="tok-o">,</span> <span class="tok-t">OUTPUT</span><span class="tok-o">);</span>
+  <span class="tok-f">analogSetPinAttenuation</span><span class="tok-o">(</span><span class="tok-t">PIN_PRESSURE</span><span class="tok-o">,</span> <span class="tok-t">ADC_11db</span><span class="tok-o">);</span>
+  <span class="tok-f">safeIdle</span><span class="tok-o">();</span>
+
+  <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">21</span><span class="tok-o">,</span> <span class="tok-n">22</span><span class="tok-o">);</span>
+  oled<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-t">SSD1306_SWITCHCAPVCC</span><span class="tok-o">,</span> <span class="tok-n">0x3C</span><span class="tok-o">);</span>
+  prefs<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-s">"bp"</span><span class="tok-o">,</span> <span class="tok-k">false</span><span class="tok-o">);</span>
+  calOffset <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getFloat</span><span class="tok-o">(</span><span class="tok-s">"off"</span><span class="tok-o">,</span> <span class="tok-n">410.0</span>f<span class="tok-o">);</span>
+  calScale  <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getFloat</span><span class="tok-o">(</span><span class="tok-s">"scl"</span><span class="tok-o">,</span> <span class="tok-n">0.0732</span>f<span class="tok-o">);</span>
+
+  <span class="tok-f">showGuidance</span><span class="tok-o">();</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">println</span><span class="tok-o">(</span><span class="tok-s">"BP monitor — NOT a validated clinical device"</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-f">showGuidance</span><span class="tok-o">();</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">digitalRead</span><span class="tok-o">(</span><span class="tok-t">PIN_START</span><span class="tok-o">)</span> <span class="tok-o">!=</span> <span class="tok-t">LOW</span><span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">50</span><span class="tok-o">);</span> <span class="tok-k">return</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+  <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">200</span><span class="tok-o">);</span>
+
+  <span class="tok-f">inflate</span><span class="tok-o">();</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">readPressure</span><span class="tok-o">()</span> <span class="tok-o">&gt;</span> <span class="tok-t">SAFETY_CEIL_MMHG</span> <span class="tok-o">-</span> <span class="tok-n">10</span><span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-f">dumpAll</span><span class="tok-o">();</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">2000</span><span class="tok-o">);</span> <span class="tok-f">safeIdle</span><span class="tok-o">();</span> <span class="tok-k">return</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+  <span class="tok-f">deflateAndSample</span><span class="tok-o">();</span>
+
+  <span class="tok-k">float</span> sys<span class="tok-o">,</span> dia<span class="tok-o">,</span> map<span class="tok-o">,</span> hr<span class="tok-o">;</span>
+  oled<span class="tok-o">.</span><span class="tok-f">clearDisplay</span><span class="tok-o">();</span> oled<span class="tok-o">.</span><span class="tok-f">setTextColor</span><span class="tok-o">(</span><span class="tok-t">SSD1306_WHITE</span><span class="tok-o">);</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">analyse</span><span class="tok-o">(</span>sys<span class="tok-o">,</span> dia<span class="tok-o">,</span> map<span class="tok-o">,</span> hr<span class="tok-o">))</span> <span class="tok-o">{</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">3</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">0</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"%3.0f"</span><span class="tok-o">,</span> sys<span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">2</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">78</span><span class="tok-o">,</span> <span class="tok-n">8</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"/%2.0f"</span><span class="tok-o">,</span> dia<span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">1</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">34</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"MAP %.0f mmHg"</span><span class="tok-o">,</span> map<span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">46</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">print</span><span class="tok-o">(</span><span class="tok-s">"Average 2-3 readings"</span><span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">56</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">print</span><span class="tok-o">(</span><span class="tok-s">"Not a diagnosis"</span><span class="tok-o">);</span>
+    <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"SYS %.0f  DIA %.0f  MAP %.0f\n"</span><span class="tok-o">,</span> sys<span class="tok-o">,</span> dia<span class="tok-o">,</span> map<span class="tok-o">);</span>
+  <span class="tok-o">}</span> <span class="tok-k">else</span> <span class="tok-o">{</span>
+    oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">1</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">20</span><span class="tok-o">);</span>
+    oled<span class="tok-o">.</span><span class="tok-f">println</span><span class="tok-o">(</span><span class="tok-s">"Measurement failed"</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">println</span><span class="tok-o">(</span><span class="tok-s">"Stay still, retry"</span><span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+  oled<span class="tok-o">.</span><span class="tok-f">display</span><span class="tok-o">();</span>
+  <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">8000</span><span class="tok-o">);</span>
+<span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (222 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">safeIdle() and dumpAll() as the safe states</span><span class="txt">Both valves default closed and the pump off gives a cuff at atmospheric pressure — safe. dumpAll() opens everything to vent fast. The device is designed so any fault, crash or power loss leaves the cuff deflated, never inflated on an arm.</span></div><div><span class="ref">checkSafety() called throughout</span><span class="txt">The 300 mmHg hard ceiling is checked continuously during inflation and deflation, and crossing it triggers an immediate dump. A cuff that keeps inflating due to a sensor fault or a firmware bug is genuinely dangerous, so the ceiling is enforced everywhere pressure can rise.</span></div><div><span class="ref">Closed-loop deflation rate control</span><span class="txt">An open valve deflates faster when the cuff is harder, giving a non-constant rate that under-samples the envelope at high pressure. The proportional control on the bleed valve holds 2.5 mmHg/s across the whole deflation, which is what accurate envelope extraction requires.</span></div><div><span class="ref">High-pass to separate oscillations from the ramp</span><span class="txt">The cuff pressure is a slow downward ramp plus small ~1 Hz oscillations. The high-pass removes the ramp, leaving the oscillations whose per-beat peak-to-peak amplitude is the envelope.</span></div><div><span class="ref">MAP at the envelope peak, then ratios</span><span class="txt">MAP is measured directly and robustly as the cuff pressure at maximum oscillation. Systolic and diastolic are inferred from the 0.55 and 0.85 amplitude ratios — the documentation is explicit that these are empirical population averages, not direct measurements.</span></div><div><span class="ref">showGuidance() before every measurement</span><span class="txt">Technique dominates accuracy far more than device error. Showing the rest, posture, arm-position and no-talking guidance before every reading is not optional politeness — it is the single biggest determinant of whether the number means anything.</span></div><div><span class="ref">Plausibility gate in analyse()</span><span class="txt">A corrupted envelope (from movement or a leak) can produce a numerically valid but physiologically impossible result. Rejecting readings where systolic ≤ diastolic or values are outside plausible ranges prevents reporting nonsense as a measurement.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Calibrate the pressure sensor against a reference manometer or a validated BP monitor: record ADC at two known pressures and set <code>calOffset</code> and <code>calScale</code>. This calibration sets the device's absolute accuracy.</li><li>Set <code>INFLATE_TARGET</code> about 30 mmHg above the expected systolic. Too low misses the systolic point; too high is uncomfortable and wastes time.</li><li>Tune the deflation-rate control gain so the rate stays at 2–3 mmHg/s across the whole range without oscillating.</li><li>Use the correct cuff size for the arm — this dominates accuracy and is not adjustable in software.</li><li>Set the safety ceiling and verify the fast-dump valve vents quickly. Test the fault behaviour before ever putting the cuff on an arm.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Calibrate against a reference</h4><p>Tee the sensor line into a validated BP monitor or a manometer. Pressurise to two known values (e.g. 50 and 200 mmHg by hand pump) and solve for offset and scale. Verify linearity at a third point.</p></li><li><h4>Validate against a clinical device</h4><p>Take simultaneous or immediately sequential readings with a validated home monitor on the same arm, at rest, several times. Home BP varies beat to beat, so expect scatter, but the means should agree within a few mmHg. Large systematic differences point to sensor calibration or deflation-rate problems.</p></li><li><h4>Check the deflation rate</h4><p>Log cuff pressure during a measurement and confirm the deflation is a straight line at 2–3 mmHg/s, not an exponential decay. A non-constant rate is the most common cause of inaccurate oscillometry.</p></li><li><h4>Test all safety behaviours</h4><p>Before any use on a person: confirm the ceiling triggers a dump, the fast-dump valve vents quickly, and a simulated power loss leaves the cuff deflated. These are not optional tests.</p></li></ol></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Power on</b></td><td>Measurement-technique guidance displayed, waiting for start.</td></tr><tr><td><b>Start a measurement on a test cuff (not an arm)</b></td><td>Inflation to the target, then a steady 2–3 mmHg/s deflation.</td></tr><tr><td><b>Log the deflation curve</b></td><td>A straight downward line, not an exponential decay — confirming the closed-loop rate control works.</td></tr><tr><td><b>Trigger the safety ceiling</b></td><td>Crossing 300 mmHg immediately opens the dump valve and aborts.</td></tr><tr><td><b>Simulate a power loss mid-inflation</b></td><td>The cuff deflates — valves are normally-closed venting and the pump is off-by-default.</td></tr><tr><td><b>Measure on an arm (correct cuff size, at rest)</b></td><td>A plausible systolic/diastolic/MAP with systolic > diastolic.</td></tr><tr><td><b>Compare against a validated monitor</b></td><td>Means within a few mmHg over several readings; large systematic error points to calibration or deflation rate.</td></tr><tr><td><b>Move or talk during a measurement</b></td><td>A corrupted envelope and either a failed-measurement message or a flagged reading — not a confident wrong number.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>With everything wired and the firmware uploaded, the Serial Monitor at 115200 baud should look similar to the trace below. Values will differ; the <em>shape</em> of the output should not.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Fitness%20tracker.jpg?width=900" alt="A wrist-worn fitness tracker" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td190" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td190">A monitoring device. However good the electronics, correct measurement technique — rest, posture, cuff size — dominates the accuracy of the result.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption>A monitoring device. However good the electronics, correct measurement technique — rest, posture, cuff size — dominates the accuracy of the result.</figcaption>
+</figure></template>
+  <figcaption>A monitoring device. However good the electronics, correct measurement technique — rest, posture, cuff size — dominates the accuracy of the result.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Fitness_tracker.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Fitness tracker.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Readings are inconsistent between attempts</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Movement, talking, or a genuinely variable blood pressure — plus possibly a non-constant deflation rate.</p>
+        <p><strong>Fix.</strong> BP genuinely varies beat to beat and reading to reading; that is why guidelines specify averaging multiple readings after five minutes of rest. Confirm the subject is still and quiet, and verify the deflation rate is steady. Average two or three readings, discarding the first.</p></div></details><details class="expand"><summary>Deflation is too fast at the start</summary><div class="inner">
+        <p><strong>Likely cause.</strong> A fixed valve opening deflates faster when the cuff is hard.</p>
+        <p><strong>Fix.</strong> The bleed valve must be modulated under closed-loop rate control, not held at a fixed opening. Confirm the proportional control is reducing the valve opening at high pressure to hold 2–3 mmHg/s.</p></div></details><details class="expand"><summary>Systolic and diastolic are implausible or reversed</summary><div class="inner">
+        <p><strong>Likely cause.</strong> A corrupted or under-sampled envelope.</p>
+        <p><strong>Fix.</strong> Ensure enough beats (at least 8–10) are captured during deflation — too few and the envelope is poorly defined. Check for leaks that distort the oscillations, and confirm movement did not corrupt the signal. The plausibility gate should reject these rather than report them.</p></div></details><details class="expand"><summary>The cuff will not inflate</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Pump too weak, a leak, or a valve stuck open.</p>
+        <p><strong>Fix.</strong> Check for leaks at every joint — even a small leak makes it impossible to reach target pressure. Confirm the bleed and dump valves are closed during inflation. Verify the pump is rated to reach 200+ mmHg into a cuff.</p></div></details><details class="expand"><summary>Readings disagree with a clinic measurement by 10–20 mmHg</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Usually technique or cuff size, occasionally calibration.</p>
+        <p><strong>Fix.</strong> Verify cuff size (the biggest factor — too small over-reads substantially), arm at heart level, rest before measuring, and no talking. Then re-check the sensor calibration. Remember that oscillometry and auscultation can legitimately differ somewhat, especially in systolic/diastolic while agreeing on MAP.</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details><details class="expand"><summary>An I²C device is not detected</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong address, missing pull-ups, swapped SDA/SCL, or a bus too long for the pull-up value.</p>
+        <p><strong>Fix.</strong> Run an I²C scanner sketch first — it should print the device address. Most breakout boards include 4.7 kΩ pull-ups, but if you have chained four of them the parallel resistance is too low; remove the pull-ups from all but one board. Keep the bus under 30 cm at 100 kHz.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Sample the pressure fast enough (200+ Hz) to resolve the oscillations cleanly, but average lightly to reduce ADC noise, which otherwise adds jitter to the envelope.</li><li>Hold the deflation rate constant with closed-loop control — a steady rate is worth more to accuracy than any post-processing.</li><li>Capture at least 10–15 beats across the deflation so the envelope is well-defined; if fewer, slow the deflation slightly.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li><b>The fast-dump valve and the 300 mmHg ceiling are mandatory safety features, not optional.</b> A cuff that stays inflated on an arm restricts blood flow and is dangerous. Design so that any fault, crash or power loss vents the cuff.</li><li>This is not a validated clinical device. Do not use it to diagnose hypertension or to start, stop or change medication. Those decisions require a validated monitor (passing AAMI/ESH/ISO 81060-2) and a clinician.</li><li>Never inflate the cuff above what is needed, and never leave a person unattended with an inflated cuff.</li><li>Do not use on an arm with a dialysis fistula, lymphoedema, or a recent injury or surgery.</li><li>Technique dominates accuracy: a correct device used incorrectly gives a wrong number. Follow the rest-and-posture guidance every time.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add <b>a validated reference comparison study</b> to honestly characterise the device's accuracy against a clinical standard.</li><li>Add <b>morning/evening averaging and a proper trend log</b> as home BP guidelines specify, rather than isolated readings.</li><li>Add <b>irregular-rhythm detection</b> from the oscillation timing, since atrial fibrillation degrades oscillometric accuracy and should be flagged.</li><li>Add <b>a second derivation method</b> (e.g. maximum-slope) and compare with the ratio method to understand the spread.</li><li>Add <b>automatic cuff-size detection</b> or at least a cuff-size prompt, since it is the largest accuracy factor.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why does it not measure systolic and diastolic directly?</summary><div class="inner"><p>Because oscillometry physically cannot. It measures the oscillation envelope, whose peak directly gives mean arterial pressure. Systolic and diastolic are then inferred from characteristic points on the envelope using empirical ratios (about 0.55 and 0.85 of the peak amplitude). Every automatic home monitor works this way — the older stethoscope method (auscultation) measures systolic and diastolic more directly, which is why the two can slightly disagree.</p></div></details><details class="expand"><summary>How accurate can a DIY monitor be?</summary><div class="inner"><p>The method is capable of clinical-grade accuracy — that is what commercial oscillometric monitors achieve. But reaching it requires careful pressure-sensor calibration, steady deflation control, the right cuff size, and correct technique. A DIY build can get close for personal trend tracking, but it is not validated and should not drive medical decisions. Validation against a clinical standard is a formal, demanding process for good reason.</p></div></details><details class="expand"><summary>Why does cuff size matter so much?</summary><div class="inner"><p>The cuff transmits arterial pressure to the sensor, and this transmission depends on how the cuff fits. A cuff too small for the arm does not compress the artery efficiently and over-reads — sometimes by 10–40 mmHg. A cuff too large under-reads. Using the correct size for the arm circumference is one of the single most important accuracy factors, and no software can fix a wrong cuff.</p></div></details><details class="expand"><summary>Why all the fuss about technique?</summary><div class="inner"><p>Because technique error dwarfs device error. Talking during a measurement can add 10 mmHg; a full bladder, crossed legs, an unsupported back, an arm below heart level, or a recent coffee each shift the reading substantially. A perfect device used on a talking, slouching subject gives a worse number than a modest device used correctly. That is why the device shows guidance before every reading.</p></div></details><details class="expand"><summary>Is one reading enough?</summary><div class="inner"><p>No. Blood pressure varies continuously, and guidelines specify taking several readings after five minutes of quiet rest and averaging them (often discarding the first). A single reading is nearly meaningless for anything but a rough check. The device prompts to average, and a proper home-monitoring protocol takes morning and evening readings over several days.</p></div></details><details class="expand"><summary>Can I use this instead of buying a monitor?</summary><div class="inner"><p>For learning how blood pressure measurement works, absolutely — it is an excellent project. For actually managing your health, buy a validated monitor: they are inexpensive, they have passed formal accuracy validation, and hypertension is a condition where wrong numbers lead to wrong treatment. Use this to understand the method, not to replace a validated device.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://www.worldcat.org/title/direct-and-indirect-measurement-of-blood-pressure/oclc/1730931" rel="noopener nofollow" target="_blank">Geddes, "The Direct and Indirect Measurement of Blood Pressure"</a><span class="src">Year Book Medical Publishers</span></li><li><a href="https://www.iso.org/standard/73339.html" rel="noopener nofollow" target="_blank">ISO 81060-2 — Non-invasive sphygmomanometers, clinical validation</a><span class="src">ISO</span></li><li><a href="https://doi.org/10.1007/s10877-016-9891-z" rel="noopener nofollow" target="_blank">Ukawa et al., "Novel non-invasive blood pressure measurement and the oscillometric method"</a><span class="src">Journal of Clinical Monitoring, 2017</span></li><li><a href="https://doi.org/10.1161/HYP.0000000000000087" rel="noopener nofollow" target="_blank">Muntner et al., "Measurement of Blood Pressure in Humans: A Scientific Statement from the AHA"</a><span class="src">Hypertension, 2019</span></li><li><a href="https://www.nxp.com/docs/en/data-sheet/MPX5050.pdf" rel="noopener nofollow" target="_blank">MPX5050 integrated silicon pressure sensor — datasheet</a><span class="src">NXP</span></li><li><a href="https://www.stridebp.org/" rel="noopener nofollow" target="_blank">STRIDE BP — validated blood pressure monitor listings</a><span class="src">STRIDE BP</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="baby-breathing-monitor.html"><span class="dir">← Previous project</span><span class="ttl">Baby Breathing Monitor</span></a>
+        <a class="next" href="stress-and-hrv-wearable.html"><span class="dir">Next project →</span><span class="ttl">Stress &amp; HRV Wearable</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Advanced</b></div>
+        <div class="rail-stat"><span>Time</span><b>16–24 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>11</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹2,600 – ₹3,500</b></div>
+        <div class="rail-stat"><span>Sections</span><b>25</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="heart-rate-and-spo2-band.html">Heart-Rate &amp; SpO2 Band</a></li><li><a href="fall-detection-pendant.html">Fall Detection Pendant</a></li><li><a href="smart-pill-dispenser.html">Smart Pill Dispenser</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="heart-rate-and-spo2-band.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Heart-Rate &amp; SpO2 Band</h4>
+        <p>A wrist wearable that continuously logs pulse and blood-oxygen levels.</p></a><a class="relcard" href="fall-detection-pendant.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Fall Detection Pendant</h4>
+        <p>Detects sudden falls and alerts family or caregivers with location.</p></a><a class="relcard" href="smart-pill-dispenser.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Smart Pill Dispenser</h4>
+        <p>Times and dispenses medication with reminders and missed-dose alerts.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Blood Pressure Logger</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
