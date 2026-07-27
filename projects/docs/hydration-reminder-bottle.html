@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Hydration Reminder Bottle — Circuit, Code &amp; Full Build Guide | Health &amp; Wearables</title>
+  <meta name="description" content="Complete beginner-level build guide for a Hydration Reminder Bottle: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="hydration reminder bottle, hydration reminder bottle project, how to build hydration reminder bottle, esp32 devkit v1 project, health &amp; wearables project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/hydration-reminder-bottle.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/hydration-reminder-bottle.html" />
+  <meta property="og:title" content="Hydration Reminder Bottle — Circuit, Code &amp; Full Build Guide | Health &amp; Wearables" />
+  <meta property="og:description" content="Complete beginner-level build guide for a Hydration Reminder Bottle: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Health &amp; Wearables" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-27" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hydration Reminder Bottle — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete beginner-level build guide for a Hydration Reminder Bottle: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🚰</text></svg>" />
+  <style>:root{--acc:#22d3ee;--acc-light:#67e8f9;--acc-rgb:34,211,238}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/hydration-reminder-bottle.html#article","headline":"Hydration Reminder Bottle — Complete Build Guide","name":"Hydration Reminder Bottle","description":"Complete beginner-level build guide for a Hydration Reminder Bottle: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/hydration-reminder-bottle.html","inLanguage":"en","articleSection":"Health & Wearables","keywords":"hydration reminder bottle, hydration reminder bottle project, how to build hydration reminder bottle, esp32 devkit v1 project, health & wearables project, circuit diagram, source code, tutorial","proficiencyLevel":"Beginner","dependencies":"HX711, Adafruit SSD1306 + GFX, Preferences (NVS)","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-27","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/hydration-reminder-bottle.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/hydration-reminder-bottle.html#howto","name":"How to build a Hydration Reminder Bottle","description":"Complete beginner-level build guide for a Hydration Reminder Bottle: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT8H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"3545"},"supply":[{"@type":"HowToSupply","name":"ESP32 DevKit V1 (ESP-WROOM-32)"},{"@type":"HowToSupply","name":"5 kg load cell + HX711 24-bit ADC"},{"@type":"HowToSupply","name":"SHT31-D temperature + humidity sensor"},{"@type":"HowToSupply","name":"ADXL345 3-axis accelerometer"},{"@type":"HowToSupply","name":"0.96″ SSD1306 OLED display"},{"@type":"HowToSupply","name":"18650 Li-ion cell 3400 mAh + holder"},{"@type":"HowToSupply","name":"TP4056 Li-ion charger + DW01 protection"},{"@type":"HowToSupply","name":"Double-sided perfboard 7 × 9 cm + headers"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Hydration Reminder Bottle","item":"https://siddhantkumar.in/projects/docs/hydration-reminder-bottle.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/hydration-reminder-bottle.html#faq","mainEntity":[{"@type":"Question","name":"Why weigh rather than count sips?","acceptedAnswer":{"@type":"Answer","text":"Because a sip count is not a volume. An accelerometer with a tilt threshold cannot tell a 20 ml sip from a 300 ml gulp, counts every pick-up that does not result in drinking, and merges a long drink into one event. Weighing gives actual millilitres, which is the number you wanted in the first place."}},{"@type":"Question","name":"Is two litres a day actually the right target?","acceptedAnswer":{"@type":"Answer","text":"Not as a universal figure. The commonly repeated \"eight glasses\" advice has surprisingly weak evidential basis, and actual requirement scales with body mass, ambient temperature, activity and diet — food contributes roughly 20 % of intake for most people. The 33 ml/kg starting point with temperature adjustment is more defensible, but for a healthy adult thirst remains a reasonably good regulator."}},{"@type":"Question","name":"Does it work if I take the bottle out with me?","acceptedAnswer":{"@type":"Answer","text":"It measures what happens on the base. Drinking away from the base is invisible, and when you return the mass difference is attributed as one drink event at that moment — so the daily total is right but the timing is not. Moving the load cell into the cap with a suspended inner vessel solves this properly and is the obvious next version."}},{"@type":"Question","name":"How accurate is it?","acceptedAnswer":{"@type":"Answer","text":"Within about 5 ml per event after calibration, which is far better than the 10 ml granularity that matters. The larger error source is behavioural, not electrical — drinks taken away from the base are timestamped wrongly."}},{"@type":"Question","name":"Why does it not remind me every hour?","acceptedAnswer":{"@type":"Answer","text":"Because a device that prompts on a timer regardless of whether you need it gets ignored, and then it is worthless. Comparing against an expected curve means it prompts when you are genuinely behind — a couple of times on a normal day, more on a hot one. That is the difference between a useful device and a nagging one."}},{"@type":"Question","name":"Can I use it for coffee or juice?","acceptedAnswer":{"@type":"Answer","text":"The mass measurement works for any liquid — density varies by a few percent at most. What changes is the hydration accounting: caffeine is a mild diuretic and alcohol a substantial one, so the net contribution differs. Logging drink type and applying an adjustment factor is a worthwhile addition."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#health-and-wearables">Health &amp; Wearables</a><span class="sep">/</span>
+        <span aria-current="page">Hydration Reminder Bottle</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 021 · Health &amp; Wearables</span>
+          <h1>Hydration Reminder Bottle<span class="grad">.</span></h1>
+          <p class="tagline">A bottle cap that weighs what you actually drank rather than counting how many times you picked it up, adjusts the daily target for temperature and activity, and reminds you only when you are genuinely behind.</p>
+          <div class="hero-chips">
+            <span class="chip lv-beginner">Beginner</span>
+            <span class="chip">6–9 hours</span>
+            <span class="chip neutral">35 min read</span>
+            <span class="chip neutral">Sensor</span><span class="chip neutral">App</span><span class="chip neutral">Wellness</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td169" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td169">Hydration Reminder Bottle — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Hydration Reminder Bottle — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Beginner</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>6–9 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹2,900 – ₹3,800</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32 DevKit V1 (ESP-WROOM-32)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Health &amp; Wearables</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>27 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 25 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">A bottle cap that weighs what you actually drank rather than counting how many times you picked it up, adjusts the daily target for temperature and activity, and reminds you only when you are genuinely behind.</p>
+<p>Most smart bottles count sips using an accelerometer and a tilt threshold. That approach fails immediately in normal use: it counts picking the bottle up to move it, misses a long drink as one event, and has no idea whether you swallowed 20 ml or 300 ml. The result is a number that looks like data and is not.</p>
+<p>Weighing is the honest approach. A load cell in the base measures the bottle's mass continuously; a drop in mass between two stable readings is water that left the bottle. That distinguishes a 40 ml sip from a 300 ml gulp, ignores every pick-up that does not result in drinking, and — with a small amount of logic — distinguishes drinking from refilling, because refilling makes the mass go up.</p>
+<p>The second design decision is the <b>target</b>. A fixed "two litres a day" is a persistent myth with weak evidential support; actual requirement varies with body mass, ambient temperature, activity and diet. The controller computes a target from body mass with adjustments for measured temperature and for activity inferred from a paired phone or a simple step input, which produces a number that at least responds to the things that genuinely change requirement.</p>
+<p>Finally, the reminder policy. A bottle that buzzes hourly regardless is ignored within a week. This one compares your actual intake against a <b>time-of-day-weighted expected curve</b> and reminds only when you fall meaningfully behind — which in practice means a couple of prompts on a normal day and several on a hot one.</p>
+
+<h3>What this project does</h3><ul class="check"><li>Measures bottle mass continuously with a load cell in the base and converts changes to millilitres.</li><li>Distinguishes drinking from refilling, from setting the bottle down, and from being carried.</li><li>Computes a personalised daily target adjusted for body mass and ambient temperature.</li><li>Compares intake against a time-weighted expected curve and reminds only when genuinely behind.</li><li>Displays progress on a small OLED in the cap and logs every drink event.</li><li>Syncs to a phone over BLE with local buffering.</li><li>Runs for two to three weeks on a small cell through motion-triggered wake.</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Personal hydration tracking</b></td><td>The everyday case, where honest volume data is far more useful than a sip count.</td></tr><tr><td><b>Kidney stone prevention</b></td><td>Patients are often told to hit a specific daily fluid volume; measuring it is the only way to comply.</td></tr><tr><td><b>Elderly care</b></td><td>Dehydration is a common and serious problem in older adults and is frequently missed until it causes a fall or confusion.</td></tr><tr><td><b>Athletic training</b></td><td>Combined with body mass before and after exercise, this gives a real sweat-rate measurement.</td></tr><tr><td><b>Hot-climate outdoor work</b></td><td>A temperature-adjusted target and behind-schedule alerts have genuine safety value in heat.</td></tr><tr><td><b>Post-operative recovery</b></td><td>Fluid intake targets after surgery are common and adherence is usually unmeasured.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li><b>Mass-based measurement</b> — actual millilitres, not sip counts.</li><li><b>Refill detection</b> from an increase in mass, which resets the reference without counting as intake.</li><li><b>Stability gating</b>: mass is only read when the bottle has been still for two seconds.</li><li><b>Temperature-adjusted target</b> using an on-board sensor, because requirement rises sharply in heat.</li><li><b>Time-weighted expected curve</b> rather than a flat hourly target.</li><li><b>Motion-triggered wake</b> so the device sleeps at microamps when the bottle is untouched.</li><li><b>Drink-event log</b> with volume and timestamp, which is where the useful pattern lives.</li><li><b>Water-resistant cap assembly</b> with the electronics fully potted.</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Beginner</td></tr><tr><td><b>Estimated completion time</b></td><td>6–9 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹2,900 – ₹3,800</td></tr><tr><td><b>Primary discipline</b></td><td>Health &amp; Wearables</td></tr><tr><td><b>Reference platform</b></td><td>ESP32 DevKit V1 (ESP-WROOM-32)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Arduino C++ with state machines</li><li>Load cell calibration and the HX711 interface</li><li>Basic filtering and stability detection</li><li>BLE basics</li><li>Waterproofing and mechanical assembly</li></ul>
+</section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b><br/><span style="font-size:.82em;opacity:.78">Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</span></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>5 kg load cell + HX711 24-bit ADC</b><br/><span style="font-size:.82em;opacity:.78">Mechanical mounting dominates accuracy — bolt it to a rigid plate, not plastic.</span></td><td>Strain-gauge bridge, 1.0 mV/V output, HX711 128× gain, 10/80 SPS</td><td class="num">1</td><td class="num">₹320</td></tr><tr><td><b>SHT31-D temperature + humidity sensor</b><br/><span style="font-size:.82em;opacity:.78">The built-in heater burns off condensation — essential for outdoor or greenhouse use.</span></td><td>−40 to +125 °C ±0.2 °C, 0–100 %RH ±2 %, 1 Hz–10 Hz, on-chip heater</td><td class="num">1</td><td class="num">₹620</td></tr><tr><td><b>ADXL345 3-axis accelerometer</b><br/><span style="font-size:.82em;opacity:.78">Built-in activity/free-fall interrupts let the MCU deep-sleep until something moves.</span></td><td>±2/4/8/16 g, 13-bit, 0.004 g/LSB, tap and free-fall interrupts, 3200 Hz</td><td class="num">1</td><td class="num">₹220</td></tr><tr><td><b>0.96″ SSD1306 OLED display</b><br/><span style="font-size:.82em;opacity:.78">Static images burn in — invert or scroll the screen periodically.</span></td><td>128 × 64 monochrome, 1.3–3.3 V logic, 100 kHz–400 kHz I²C</td><td class="num">1</td><td class="num">₹250</td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b><br/><span style="font-size:.82em;opacity:.78">Never charge below 0 °C; always use a protected cell or a BMS.</span></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b><br/><span style="font-size:.82em;opacity:.78">Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</span></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td class="num">1</td><td class="num">₹45</td></tr><tr><td><b>Double-sided perfboard 7 × 9 cm + headers</b><br/><span style="font-size:.82em;opacity:.78">Solder female headers so the MCU can be swapped without desoldering.</span></td><td>FR-4, 0.1″ pitch, plated through-holes, 24 × 18 grid</td><td class="num">1</td><td class="num">₹60</td></tr><tr><td><b>1 kg load cell (bar type)</b><br/><span style="font-size:.82em;opacity:.78">A 1 kg cell suits a 750 ml bottle. A 5 kg cell wastes most of its range and resolution.</span></td><td>1 kg, 1.0 mV/V, 55 × 12 × 6 mm</td><td class="num">1</td><td class="num">₹260</td></tr><tr><td><b>Silicone-sealed base housing</b><br/><span style="font-size:.82em;opacity:.78">The load cell must be rigidly fixed at one end and load the other — see the wiring notes.</span></td><td>IP54, machined or printed, with a rigid mounting plate</td><td class="num">1</td><td class="num">₹350</td></tr><tr><td><b>600 mAh LiPo cell + charging port</b><br/><span style="font-size:.82em;opacity:.78">A magnetic connector avoids a USB port that fills with water.</span></td><td>3.7 V protected, magnetic charge connector</td><td class="num">1</td><td class="num">₹320</td></tr><tr><td><b>Conformal coating / potting compound</b></td><td>Silicone, electronics grade</td><td class="num">1</td><td class="num">₹200</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹3,545</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td>3.3 V logic / 5 V USB</td><td>UART, SPI, I²C, I²S, CAN, PWM</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>5 kg load cell + HX711 24-bit ADC</b></td><td>Strain-gauge bridge, 1.0 mV/V output, HX711 128× gain, 10/80 SPS</td><td>2.6–5.5 V</td><td>2-wire serial (bit-banged)</td><td><a href="https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>SHT31-D temperature + humidity sensor</b></td><td>−40 to +125 °C ±0.2 °C, 0–100 %RH ±2 %, 1 Hz–10 Hz, on-chip heater</td><td>2.4–5.5 V</td><td>I²C (0x44/0x45)</td><td><a href="https://sensirion.com/media/documents/213E6A3B/63A5A569/Datasheet_SHT3x_DIS.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>ADXL345 3-axis accelerometer</b></td><td>±2/4/8/16 g, 13-bit, 0.004 g/LSB, tap and free-fall interrupts, 3200 Hz</td><td>2.0–3.6 V</td><td>I²C / SPI</td><td><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL345.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>0.96″ SSD1306 OLED display</b></td><td>128 × 64 monochrome, 1.3–3.3 V logic, 100 kHz–400 kHz I²C</td><td>3.3–5 V</td><td>I²C (0x3C)</td><td><a href="https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td>3.0–4.2 V</td><td>Holder / spot-welded tabs</td><td><a href="https://www.orbtronic.com/content/Samsung-INR18650-35E-Datasheet-Gest.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td>4.5–5.5 V in</td><td>micro-USB / pads</td><td><a href="https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Double-sided perfboard 7 × 9 cm + headers</b></td><td>FR-4, 0.1″ pitch, plated through-holes, 24 × 18 grid</td><td>—</td><td>—</td><td><a href="https://en.wikipedia.org/wiki/Perfboard" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32 DevKit V1 (ESP-WROOM-32)</td><td>3.3 V logic / 5 V USB</td><td class="num">160</td><td>Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</td></tr><tr><td>5 kg load cell + HX711 24-bit ADC</td><td>2.6–5.5 V</td><td class="num">1.5</td><td>Mechanical mounting dominates accuracy — bolt it to a rigid plate, not plastic.</td></tr><tr><td>SHT31-D temperature + humidity sensor</td><td>2.4–5.5 V</td><td class="num">1.5</td><td>The built-in heater burns off condensation — essential for outdoor or greenhouse use.</td></tr><tr><td>ADXL345 3-axis accelerometer</td><td>2.0–3.6 V</td><td class="num">0.14</td><td>Built-in activity/free-fall interrupts let the MCU deep-sleep until something moves.</td></tr><tr><td>0.96″ SSD1306 OLED display</td><td>3.3–5 V</td><td class="num">20</td><td>Static images burn in — invert or scroll the screen periodically.</td></tr><tr><td>TP4056 Li-ion charger + DW01 protection</td><td>4.5–5.5 V in</td><td class="num">1000</td><td>Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>1183.1399999999999 mA</b>. With a 1.5× design margin the supply should deliver at least <b>1800 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x with the ESP32 board package 3.x (or PlatformIO on VS Code)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>HX711</b> <span style="opacity:.7">0.7.x</span></td><td>Bit-banged 24-bit ADC read with tare and calibration factor.</td><td><code>Library Manager → "HX711" by Bogdan Necula</code></td></tr><tr><td><b>Adafruit SSD1306 + GFX</b> <span style="opacity:.7">2.5.x</span></td><td>Framebuffer and text/graphics primitives for the OLED.</td><td><code>Library Manager → "Adafruit SSD1306"</code></td></tr><tr><td><b>Preferences (NVS)</b> <span style="opacity:.7">bundled</span></td><td>Wear-levelled key/value storage in ESP32 flash for settings.</td><td><code>Bundled with the ESP32 core</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 310" role="img" aria-labelledby="td163 sd163" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td163">Hydration Reminder Bottle — system block diagram</title><desc id="sd163">Functional block diagram of the Hydration Reminder Bottle system.</desc>
+    <defs>
+    <marker id="ar-d163" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d163" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d163" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d163" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Sense</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d163)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Load cell + HX711</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">bottle mass</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d163)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">ADXL345</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">stability + wake</tspan></text><rect x="26" y="214" width="178" height="62" rx="12"
+          fill="url(#gb-d163)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="239" text-anchor="middle"><tspan x="115" y="239.0">SHT31</tspan></text><text class="dg-s" x="115" y="258" text-anchor="middle"><tspan x="115" y="258.0">ambient temp</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Interpret</text><rect x="266" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d163)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="119" text-anchor="middle"><tspan x="355" y="119.0">Stability gate</tspan></text><text class="dg-s" x="355" y="138" text-anchor="middle"><tspan x="355" y="138.0">still for 2 s</tspan></text><rect x="266" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d163)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="199" text-anchor="middle"><tspan x="355" y="199.0">Drink vs refill</tspan></text><text class="dg-s" x="355" y="218" text-anchor="middle"><tspan x="355" y="218.0">sign of change</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Target</text><rect x="506" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d163)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="595" y="119" text-anchor="middle"><tspan x="595" y="119.0">Personal target</tspan></text><text class="dg-s" x="595" y="138" text-anchor="middle"><tspan x="595" y="138.0">mass + temp</tspan></text><rect x="506" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d163)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="199" text-anchor="middle"><tspan x="595" y="199.0">Expected curve</tspan></text><text class="dg-s" x="595" y="218" text-anchor="middle"><tspan x="595" y="218.0">time-weighted</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Prompt</text><rect x="746" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d163)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="119" text-anchor="middle"><tspan x="835" y="119.0">Haptic reminder</tspan></text><text class="dg-s" x="835" y="138" text-anchor="middle"><tspan x="835" y="138.0">only when behind</tspan></text><rect x="746" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d163)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="199" text-anchor="middle"><tspan x="835" y="199.0">BLE + OLED</tspan></text><text class="dg-s" x="835" y="218" text-anchor="middle"><tspan x="835" y="218.0">progress</tspan></text><path d="M208 165 C 235 165, 235 165, 258 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d163)"/><text class="dg-e" x="235" y="157" text-anchor="middle">mass samples</text><path d="M448 165 C 475 165, 475 165, 498 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d163)"/><text class="dg-e" x="475" y="157" text-anchor="middle">volume events</text><path d="M688 165 C 715 165, 715 165, 738 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d163)"/><text class="dg-e" x="715" y="157" text-anchor="middle">deficit</text>
+  </svg>
+  <figcaption>Hydration Reminder Bottle — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 316" role="img" aria-labelledby="td164 sd164" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td164">Hydration Reminder Bottle — wiring schematic</title><desc id="sd164">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d164" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d164" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d164" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d164" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="220" rx="14"
+      fill="url(#ga-d164)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32 DevKit V1</tspan><tspan x="434" y="95.0">(ESP-WROOM-32)</tspan></text><text class="dg-s" x="434" y="266" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d164)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">HX711 load cell amplifier</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO 16 / 4</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="109.5">Bit-banged 24-bit</tspan><tspan x="278" y="120.5">ADC</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d164)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">ADXL345 motion</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 21 / 22</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="161.5">I²C at 0x53, wake</tspan><tspan x="278" y="172.5">source</tspan></text><rect x="20" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d164)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="205" text-anchor="middle"><tspan x="115" y="205.0">ADXL345 INT1</tspan></text><path d="M210 204 C 278 204, 278 204, 346 204" stroke="#4fb0e0" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="204" r="3.2" fill="#4fb0e0"/><text class="dg-p" x="278" y="198" text-anchor="middle">GPIO 33</text><text class="dg-s" x="278" y="219" text-anchor="middle"><tspan x="278" y="213.5">Activity interrupt,</tspan><tspan x="278" y="224.5">RTC-capable</tspan></text><rect x="20" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d164)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="257" text-anchor="middle"><tspan x="115" y="257.0">SHT31 temperature</tspan></text><path d="M210 256 C 278 256, 278 256, 346 256" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="256" r="3.2" fill="#5ec27a"/><text class="dg-p" x="278" y="250" text-anchor="middle">GPIO 21 / 22</text><text class="dg-s" x="278" y="271" text-anchor="middle"><tspan x="278" y="271.0">Shared I²C, 0x44</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d164)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">SSD1306 OLED</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">GPIO 21 / 22</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Shared I²C, 0x3C</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d164)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Vibration motor</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">GPIO 25</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Reminder haptic</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d164)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">Button</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">GPIO 32</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="219.0">Tare / display wake</tspan></text>
+  </svg>
+  <figcaption>Hydration Reminder Bottle — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>HX711 load cell amplifier</b></td><td>DT / SCK</td><td><code>GPIO 16 / 4</code></td><td>Bit-banged 24-bit ADC</td></tr><tr><td><b>ADXL345 motion</b></td><td>SDA / SCL</td><td><code>GPIO 21 / 22</code></td><td>I²C at 0x53, wake source</td></tr><tr><td><b>ADXL345 INT1</b></td><td>INT1</td><td><code>GPIO 33</code></td><td>Activity interrupt, RTC-capable</td></tr><tr><td><b>SHT31 temperature</b></td><td>SDA / SCL</td><td><code>GPIO 21 / 22</code></td><td>Shared I²C, 0x44</td></tr><tr><td><b>SSD1306 OLED</b></td><td>SDA / SCL</td><td><code>GPIO 21 / 22</code></td><td>Shared I²C, 0x3C</td></tr><tr><td><b>Vibration motor</b></td><td>Transistor base</td><td><code>GPIO 25</code></td><td>Reminder haptic</td></tr><tr><td><b>Button</b></td><td>NO</td><td><code>GPIO 32</code></td><td>Tare / display wake</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>The load cell must be <b>rigidly fixed at one end and loaded at the other, with a gap so it can flex</b>. Bolting both ends to the same rigid plate means it never bends and reads a constant value — this is the single most common load cell mounting error.</li><li>Use a <b>1 kg cell, not a 5 kg one</b>. A full 750 ml bottle plus its own mass is around 1 kg; a 5 kg cell would use a fifth of its range and give a fifth of the resolution.</li><li>Keep the HX711 leads short and away from any switching. It amplifies microvolts, and even the OLED's charge pump can inject visible noise if the routing is careless.</li><li>Pot the entire electronics assembly in silicone. This device lives on a desk with an open water bottle on top of it and will get wet.</li><li>Use a magnetic charging connector rather than a USB port. A USB socket in the base of a water bottle fills with water and corrodes within weeks.</li><li>Mount the temperature sensor on the outside of the housing, away from the electronics. It should measure the room, not the enclosure.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ESP32%20Espressif%20ESP-WROOM-32%20Dev%20Board.jpg?width=900" alt="An ESP32 development board with the ESP-WROOM-32 module and USB connector" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td165" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td165">An ESP32 development board running the weighing, classification and reminder logic.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="60" y="46" width="280" height="168" rx="10" fill="#1d4a3e" stroke="#123028" stroke-width="2"/>
+    <rect x="112" y="60" width="176" height="76" rx="5" fill="#c9ccd1" stroke="#9aa0a8"/>
+    <rect x="128" y="76" width="86" height="44" rx="3" fill="#2b2f36"/>
+    <text x="171" y="103" font-size="12" fill="#c9ccd1" text-anchor="middle" font-family="monospace">ESP32</text>
+    <path d="M228 78 h44 v10 h-44z M228 92 h44 v10 h-44z M228 106 h44 v10 h-44z" fill="#9aa0a8"/>
+    <rect x="164" y="150" width="72" height="34" rx="4" fill="#2b2f36"/>
+    <text x="200" y="171" font-size="9" fill="#7f8894" text-anchor="middle" font-family="monospace">USB</text>
+    <rect x="86" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <rect x="266" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <circle cx="70" cy="40" r="2.4" fill="#d8b04a"/><circle cx="88" cy="40" r="2.4" fill="#d8b04a"/><circle cx="106" cy="40" r="2.4" fill="#d8b04a"/><circle cx="124" cy="40" r="2.4" fill="#d8b04a"/><circle cx="142" cy="40" r="2.4" fill="#d8b04a"/><circle cx="160" cy="40" r="2.4" fill="#d8b04a"/><circle cx="178" cy="40" r="2.4" fill="#d8b04a"/><circle cx="196" cy="40" r="2.4" fill="#d8b04a"/><circle cx="214" cy="40" r="2.4" fill="#d8b04a"/><circle cx="232" cy="40" r="2.4" fill="#d8b04a"/><circle cx="250" cy="40" r="2.4" fill="#d8b04a"/><circle cx="268" cy="40" r="2.4" fill="#d8b04a"/><circle cx="286" cy="40" r="2.4" fill="#d8b04a"/><circle cx="304" cy="40" r="2.4" fill="#d8b04a"/><circle cx="322" cy="40" r="2.4" fill="#d8b04a"/><circle cx="70" cy="220" r="2.4" fill="#d8b04a"/><circle cx="88" cy="220" r="2.4" fill="#d8b04a"/><circle cx="106" cy="220" r="2.4" fill="#d8b04a"/><circle cx="124" cy="220" r="2.4" fill="#d8b04a"/><circle cx="142" cy="220" r="2.4" fill="#d8b04a"/><circle cx="160" cy="220" r="2.4" fill="#d8b04a"/><circle cx="178" cy="220" r="2.4" fill="#d8b04a"/><circle cx="196" cy="220" r="2.4" fill="#d8b04a"/><circle cx="214" cy="220" r="2.4" fill="#d8b04a"/><circle cx="232" cy="220" r="2.4" fill="#d8b04a"/><circle cx="250" cy="220" r="2.4" fill="#d8b04a"/><circle cx="268" cy="220" r="2.4" fill="#d8b04a"/><circle cx="286" cy="220" r="2.4" fill="#d8b04a"/><circle cx="304" cy="220" r="2.4" fill="#d8b04a"/><circle cx="322" cy="220" r="2.4" fill="#d8b04a"/>
+    <circle cx="330" cy="60" r="4" fill="#e03b3b"/><circle cx="330" cy="76" r="4" fill="#3be07a"/>
+  </svg>
+  <figcaption>An ESP32 development board running the weighing, classification and reminder logic.</figcaption>
+</figure></template>
+  <figcaption>An ESP32 development board running the weighing, classification and reminder logic.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — ESP32 Espressif ESP-WROOM-32 Dev Board.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td166 sd166" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td166">Hydration Reminder Bottle — architecture stack</title><desc id="sd166">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d166" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d166" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d166" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d166" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d166)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">ESP32 DevKit V1 (ESP-WROOM-32) · SHT31-D temperature + humidity sensor</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d166)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d166)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">hx711 · ssd1306 · preferences</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d166)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d166)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d166)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d166)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Hydration Reminder Bottle — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>The measurement is straightforward: 1 ml of water has a mass of very nearly 1 g at room temperature, so a mass change in grams is a volume change in millilitres to within about 0.4 % over the normal temperature range. A 1 kg load cell with an HX711 resolves to a few tenths of a gram in practice, which is far better than needed for a measurement whose useful granularity is about 10 ml.</p>
+<p>The engineering is in <b>knowing when the reading is meaningful</b>. A load cell in a bottle base reads garbage while the bottle is being carried, tilted, or set down — dynamic acceleration adds directly to the measured force. The solution is a <b>stability gate</b>: only accept a mass reading when the accelerometer has reported near-1 g total with low variance for two continuous seconds. Everything else is discarded.</p>
+<p><b>Drinking versus refilling</b> then falls out of the sign of the change between two stable readings. A decrease is water that left the bottle. An increase is a refill, which resets the reference without counting as intake. A change smaller than about 15 ml is noise or evaporation and is ignored. This is much more robust than it sounds, because the intervening carried-around period is simply not measured at all.</p>
+<p>The <b>daily target</b> is where most hydration devices are weakest. The commonly repeated "eight glasses" or "two litres" figures have surprisingly weak evidential basis and take no account of body mass, climate or activity. A more defensible starting point is roughly 30–35 ml per kilogram of body mass per day, adjusted upward for ambient temperature above about 25 °C and for exercise. Even this is approximate — thirst is a reasonably good regulator in healthy adults — but it at least responds to the variables that genuinely matter.</p>
+<p>The <b>expected curve</b> is what makes reminders tolerable. Intake should not be flat across the day: people wake dehydrated, drink most between mid-morning and early evening, and should taper before bed. Comparing actual intake against a cumulative curve weighted to that shape means the device prompts when you are genuinely behind, not merely because an hour has passed. On a normal day that is two or three prompts; on a hot day it is more, which is exactly the behaviour you want.</p>
+
+<h3>The maths behind it</h3><h4>Daily target from body mass and temperature</h4><div class="codeblock tall" data-file="Daily target from body mass and temperature">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Daily target from body mass and temperature</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Daily target from body mass and temperature to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Daily target from body mass and temperature" type="button" aria-label="Download Daily target from body mass and temperature">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Base:   V_base = mass_kg × 33 ml
+
+Temperature adjustment above 25 °C:
+  V_temp = V_base × (1 + 0.03 × (T_mean − 25))   for T &gt; 25
+
+Activity adjustment:
+  V_total = V_temp + 500 ml per hour of vigorous exercise
+
+Worked example — 70 kg, mean 32 °C, 1 h exercise:
+  V_base  = 70 × 33 = 2310 ml
+  V_temp  = 2310 × (1 + 0.03 × 7) = 2795 ml
+  V_total = 2795 + 500 = 3295 ml
+
+Same person at 20 °C with no exercise: 2310 ml.
+The difference — 43 % — is why a fixed target is poor.</code></pre>
+  
+</div>
+<h4>Time-weighted expected curve</h4><div class="codeblock tall" data-file="Time-weighted expected curve">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Time-weighted expected curve</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Time-weighted expected curve to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Time-weighted expected curve" type="button" aria-label="Download Time-weighted expected curve">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Waking hours 07:00–23:00 (16 h). Weight intake toward
+the middle of the day and taper before sleep.
+
+  w(h) = sin(π × (h − 7) / 16)^0.7      for 7 ≤ h ≤ 23
+
+Cumulative expected fraction:
+  E(h) = Σ w over [7, h]  /  Σ w over [7, 23]
+
+  09:00 → 12 %
+  12:00 → 34 %
+  15:00 → 58 %
+  18:00 → 79 %
+  21:00 → 95 %
+
+Prompt when  actual &lt; E(h) × target − 250 ml.</code></pre>
+  
+</div>
+<h4>Load cell resolution</h4><div class="codeblock tall" data-file="Load cell resolution">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Load cell resolution</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Load cell resolution to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Load cell resolution" type="button" aria-label="Download Load cell resolution">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>1 kg cell, 1.0 mV/V, excited at 5 V:
+  full scale output = 5 mV
+  per gram = 5 µV
+
+HX711 gain 128, ±20 mV input range, 24-bit:
+  LSB = 40 mV / 2^24 = 2.38 nV
+  counts per gram = 5 µV / 2.38 nV ≈ 2100
+
+Noise-limited usable resolution ≈ ±0.3 g
+
+Minimum detectable drink: set at 15 ml, which is
+50× the noise floor — comfortably robust.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 784" role="img" aria-labelledby="td167 sd167" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td167">Hydration Reminder Bottle — firmware flowchart</title><desc id="sd167">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d167" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d167" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d167" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d167" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d167)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="51.5">Deep sleep until motion wakes</tspan><tspan x="210" y="64.5">the device</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d167)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d167)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="137.5">Wait for the bottle to be</tspan><tspan x="210" y="150.5">still for 2 s</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d167)"/><path d="M101 202 L335 202 L319 258 L85 258 z"
+          fill="url(#gb-d167)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="230" text-anchor="middle"><tspan x="210" y="230.0">Read stable mass</tspan></text><path d="M210 258 L210 282" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d167)"/><path d="M210 288 L349 330 L210 372 L71 330 z"
+          fill="url(#ga-d167)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="330" text-anchor="middle"><tspan x="210" y="323.5">Mass decreased by more</tspan><tspan x="210" y="336.5">than 15 ml?</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d167)"/><text class="dg-e" x="220" y="391">drink event</text><path d="M349 330 H397 V114 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d167)"/><text class="dg-e" x="403" y="324">check for refill</text><rect x="85" y="402" width="250" height="56" rx="10"
+          fill="url(#gb-d167)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="423.5">Mass increased? Refill — reset</tspan><tspan x="210" y="436.5">reference</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d167)"/><rect x="85" y="488" width="250" height="56" rx="10"
+          fill="url(#gb-d167)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="516" text-anchor="middle"><tspan x="210" y="516.0">Log volume, update daily total</tspan></text><path d="M210 544 L210 568" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d167)"/><path d="M210 574 L349 616 L210 658 L71 616 z"
+          fill="url(#ga-d167)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="616" text-anchor="middle"><tspan x="210" y="609.5">Behind the expected curve</tspan><tspan x="210" y="622.5">by 250 ml?</tspan></text><path d="M210 658 L210 682" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d167)"/><text class="dg-e" x="220" y="677">haptic reminder</text><path d="M349 616 H397 V28 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d167)"/><text class="dg-e" x="403" y="610">no prompt</text><rect x="85" y="688" width="250" height="56" rx="28"
+          fill="url(#ga-d167)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="716" text-anchor="middle"><tspan x="210" y="716.0">Update display, sleep</tspan></text>
+  </svg>
+  <figcaption>Hydration Reminder Bottle — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+</section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+</section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="hydration-bottle.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">hydration-bottle.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy hydration-bottle.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="hydration-bottle.ino" type="button" aria-label="Download hydration-bottle.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   Hydration Reminder Bottle — ESP32 + 1 kg load cell + ADXL345</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Measures actual volume drunk by weighing the bottle, and only</span>
+<span class="tok-c">   reads mass when the accelerometer confirms the bottle has been</span>
+<span class="tok-c">   still for two seconds. Reminds against a time-weighted expected</span>
+<span class="tok-c">   curve rather than on a fixed timer.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">HX711</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Wire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Adafruit_SHT31</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Adafruit_ADXL345_U</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Adafruit_SSD1306</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Preferences</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span>time<span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span>math<span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">PIN_HX_DT</span>   <span class="tok-n">16</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_HX_SCK</span>   <span class="tok-n">4</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_VIBE</span>    <span class="tok-n">25</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_BTN</span>     <span class="tok-n">32</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">BODY_MASS_KG</span>      <span class="tok-n">70.0</span>f
+<span class="tok-p">#define</span> <span class="tok-t">ML_PER_KG</span>         <span class="tok-n">33.0</span>f
+<span class="tok-p">#define</span> <span class="tok-t">MIN_DRINK_ML</span>      <span class="tok-n">15.0</span>f
+<span class="tok-p">#define</span> <span class="tok-t">STABLE_MS</span>       <span class="tok-n">2000</span>
+<span class="tok-p">#define</span> <span class="tok-t">STABLE_SIGMA_G</span>     <span class="tok-n">0.06</span>f
+<span class="tok-p">#define</span> <span class="tok-t">REMIND_DEFICIT_ML</span> <span class="tok-n">250.0</span>f
+<span class="tok-p">#define</span> <span class="tok-f">REMIND_COOLDOWN_MS</span> <span class="tok-o">(</span><span class="tok-n">25</span><span class="tok-t">UL</span> <span class="tok-o">*</span> <span class="tok-n">60</span><span class="tok-t">UL</span> <span class="tok-o">*</span> <span class="tok-n">1000</span><span class="tok-t">UL</span><span class="tok-o">)</span>
+<span class="tok-p">#define</span> <span class="tok-t">WAKE_HOUR</span>  <span class="tok-n">7</span>
+<span class="tok-p">#define</span> <span class="tok-t">SLEEP_HOUR</span> <span class="tok-n">23</span>
+
+<span class="tok-t">HX711</span>            scale<span class="tok-o">;</span>
+<span class="tok-t">Adafruit_SHT31</span>   sht <span class="tok-o">=</span> <span class="tok-f">Adafruit_SHT31</span><span class="tok-o">();</span>
+<span class="tok-t">Adafruit_ADXL345_Unified</span> <span class="tok-f">accel</span><span class="tok-o">(</span><span class="tok-n">3</span><span class="tok-o">);</span>
+<span class="tok-t">Adafruit_SSD1306</span> <span class="tok-f">oled</span><span class="tok-o">(</span><span class="tok-n">128</span><span class="tok-o">,</span> <span class="tok-n">32</span><span class="tok-o">,</span> <span class="tok-o">&amp;</span><span class="tok-t">Wire</span><span class="tok-o">,</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">);</span>
+<span class="tok-t">Preferences</span>      prefs<span class="tok-o">;</span>
+
+<span class="tok-k">float</span>   calFactor <span class="tok-o">=</span> <span class="tok-n">2100.0</span>f<span class="tok-o">;</span>          <span class="tok-c">// counts per gram</span>
+<span class="tok-k">float</span>   lastStableG <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">;</span>
+<span class="tok-k">float</span>   ambientC <span class="tok-o">=</span> <span class="tok-n">24</span><span class="tok-o">;</span>
+<span class="tok-k">float</span>   tempSum <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">uint16_t</span> tempN <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">uint16_t</span> drunkToday <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">uint32_t</span> lastRemind <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> stableSince <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">int</span>     lastDay <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">;</span>
+
+<span class="tok-c">/* ── stability from the accelerometer ───────────────────────── */</span>
+<span class="tok-k">bool</span> <span class="tok-f">bottleStill</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">static</span> <span class="tok-k">float</span> hist<span class="tok-o">[</span><span class="tok-n">20</span><span class="tok-o">];</span> <span class="tok-k">static</span> <span class="tok-k">uint8_t</span> h <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  sensors_event_t e<span class="tok-o">;</span> accel<span class="tok-o">.</span><span class="tok-f">getEvent</span><span class="tok-o">(&amp;</span>e<span class="tok-o">);</span>
+  <span class="tok-k">float</span> mag <span class="tok-o">=</span> <span class="tok-f">sqrtf</span><span class="tok-o">(</span>e<span class="tok-o">.</span>acceleration<span class="tok-o">.</span>x <span class="tok-o">*</span> e<span class="tok-o">.</span>acceleration<span class="tok-o">.</span>x <span class="tok-o">+</span>
+                    e<span class="tok-o">.</span>acceleration<span class="tok-o">.</span>y <span class="tok-o">*</span> e<span class="tok-o">.</span>acceleration<span class="tok-o">.</span>y <span class="tok-o">+</span>
+                    e<span class="tok-o">.</span>acceleration<span class="tok-o">.</span>z <span class="tok-o">*</span> e<span class="tok-o">.</span>acceleration<span class="tok-o">.</span>z<span class="tok-o">)</span> <span class="tok-o">/</span> <span class="tok-n">9.81</span>f<span class="tok-o">;</span>
+  hist<span class="tok-o">[</span>h<span class="tok-o">]</span> <span class="tok-o">=</span> mag<span class="tok-o">;</span> h <span class="tok-o">=</span> <span class="tok-o">(</span>h <span class="tok-o">+</span> <span class="tok-n">1</span><span class="tok-o">)</span> <span class="tok-o">%</span> <span class="tok-n">20</span><span class="tok-o">;</span>
+
+  <span class="tok-k">float</span> mean <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">float</span> v <span class="tok-o">:</span> hist<span class="tok-o">)</span> mean <span class="tok-o">+=</span> v<span class="tok-o">;</span> mean <span class="tok-o">/=</span> <span class="tok-n">20</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> var <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">float</span> v <span class="tok-o">:</span> hist<span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-k">float</span> d <span class="tok-o">=</span> v <span class="tok-o">-</span> mean<span class="tok-o">;</span> var <span class="tok-o">+=</span> d <span class="tok-o">*</span> d<span class="tok-o">;</span> <span class="tok-o">}</span>
+  <span class="tok-k">float</span> sigma <span class="tok-o">=</span> <span class="tok-f">sqrtf</span><span class="tok-o">(</span>var <span class="tok-o">/</span> <span class="tok-n">20</span><span class="tok-o">);</span>
+
+  <span class="tok-c">// Upright and still: magnitude near 1 g and low variance.</span>
+  <span class="tok-k">bool</span> still <span class="tok-o">=</span> sigma <span class="tok-o">&lt;</span> <span class="tok-t">STABLE_SIGMA_G</span> <span class="tok-o">&amp;&amp;</span> <span class="tok-f">fabsf</span><span class="tok-o">(</span>mean <span class="tok-o">-</span> <span class="tok-n">1.0</span>f<span class="tok-o">)</span> <span class="tok-o">&lt;</span> <span class="tok-n">0.08</span>f<span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>still<span class="tok-o">)</span> <span class="tok-o">{</span> stableSince <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">return</span> <span class="tok-k">false</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>stableSince<span class="tok-o">)</span> <span class="tok-o">{</span> stableSince <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span> <span class="tok-k">return</span> <span class="tok-k">false</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+  <span class="tok-k">return</span> <span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> stableSince <span class="tok-o">&gt;=</span> <span class="tok-t">STABLE_MS</span><span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── mass ───────────────────────────────────────────────────── */</span>
+<span class="tok-k">float</span> <span class="tok-f">readMassG</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>scale<span class="tok-o">.</span><span class="tok-f">is_ready</span><span class="tok-o">())</span> <span class="tok-k">return</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">;</span>
+  <span class="tok-k">long</span> raw <span class="tok-o">=</span> scale<span class="tok-o">.</span><span class="tok-f">read_average</span><span class="tok-o">(</span><span class="tok-n">12</span><span class="tok-o">);</span>
+  <span class="tok-k">return</span> <span class="tok-o">(</span>raw <span class="tok-o">-</span> scale<span class="tok-o">.</span><span class="tok-f">get_offset</span><span class="tok-o">())</span> <span class="tok-o">/</span> calFactor<span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── targets ────────────────────────────────────────────────── */</span>
+<span class="tok-k">float</span> <span class="tok-f">dailyTargetMl</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">float</span> meanT <span class="tok-o">=</span> tempN <span class="tok-o">?</span> tempSum <span class="tok-o">/</span> tempN <span class="tok-o">:</span> ambientC<span class="tok-o">;</span>
+  <span class="tok-k">float</span> base <span class="tok-o">=</span> <span class="tok-t">BODY_MASS_KG</span> <span class="tok-o">*</span> <span class="tok-t">ML_PER_KG</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>meanT <span class="tok-o">&gt;</span> <span class="tok-n">25.0</span>f<span class="tok-o">)</span> base <span class="tok-o">*=</span> <span class="tok-o">(</span><span class="tok-n">1.0</span>f <span class="tok-o">+</span> <span class="tok-n">0.03</span>f <span class="tok-o">*</span> <span class="tok-o">(</span>meanT <span class="tok-o">-</span> <span class="tok-n">25.0</span>f<span class="tok-o">));</span>
+  <span class="tok-k">return</span> base<span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">// Cumulative fraction of the day's intake that should be done by hour h.</span>
+<span class="tok-k">float</span> <span class="tok-f">expectedFraction</span><span class="tok-o">(</span><span class="tok-k">float</span> h<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>h <span class="tok-o">&lt;=</span> <span class="tok-t">WAKE_HOUR</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>h <span class="tok-o">&gt;=</span> <span class="tok-t">SLEEP_HOUR</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-n">1</span><span class="tok-o">;</span>
+  <span class="tok-k">const</span> <span class="tok-k">float</span> span <span class="tok-o">=</span> <span class="tok-t">SLEEP_HOUR</span> <span class="tok-o">-</span> <span class="tok-t">WAKE_HOUR</span><span class="tok-o">;</span>
+  <span class="tok-c">// Integrate w(t) = sin(pi*(t-7)/16)^0.7 numerically; 32 slices is plenty.</span>
+  <span class="tok-k">auto</span> w <span class="tok-o">=</span> <span class="tok-o">[&amp;](</span><span class="tok-k">float</span> t<span class="tok-o">)</span> <span class="tok-o">{</span> <span class="tok-k">return</span> <span class="tok-f">powf</span><span class="tok-o">(</span><span class="tok-f">sinf</span><span class="tok-o">((</span><span class="tok-k">float</span><span class="tok-o">)</span><span class="tok-t">M_PI</span> <span class="tok-o">*</span> <span class="tok-o">(</span>t <span class="tok-o">-</span> <span class="tok-t">WAKE_HOUR</span><span class="tok-o">)</span> <span class="tok-o">/</span> span<span class="tok-o">),</span> <span class="tok-n">0.7</span>f<span class="tok-o">);</span> <span class="tok-o">};</span>
+  <span class="tok-k">float</span> total <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">,</span> upTo <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-n">32</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span>
+    <span class="tok-k">float</span> t <span class="tok-o">=</span> <span class="tok-t">WAKE_HOUR</span> <span class="tok-o">+</span> span <span class="tok-o">*</span> <span class="tok-o">(</span>i <span class="tok-o">+</span> <span class="tok-n">0.5</span>f<span class="tok-o">)</span> <span class="tok-o">/</span> <span class="tok-n">32.0</span>f<span class="tok-o">;</span>
+    <span class="tok-k">float</span> v <span class="tok-o">=</span> <span class="tok-f">w</span><span class="tok-o">(</span>t<span class="tok-o">);</span>
+    total <span class="tok-o">+=</span> v<span class="tok-o">;</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>t <span class="tok-o">&lt;=</span> h<span class="tok-o">)</span> upTo <span class="tok-o">+=</span> v<span class="tok-o">;</span>
+  <span class="tok-o">}</span>
+  <span class="tok-k">return</span> total <span class="tok-o">&gt;</span> <span class="tok-n">0</span> <span class="tok-o">?</span> upTo <span class="tok-o">/</span> total <span class="tok-o">:</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── feedback ───────────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">remind</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> i <span class="tok-o">&lt;</span> <span class="tok-n">2</span><span class="tok-o">;</span> i<span class="tok-o">++)</span> <span class="tok-o">{</span>
+    <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_VIBE</span><span class="tok-o">,</span> <span class="tok-t">HIGH</span><span class="tok-o">);</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">220</span><span class="tok-o">);</span>
+    <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-t">PIN_VIBE</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>  <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">200</span><span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">draw</span><span class="tok-o">(</span><span class="tok-k">float</span> h<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">float</span> target <span class="tok-o">=</span> <span class="tok-f">dailyTargetMl</span><span class="tok-o">();</span>
+  <span class="tok-k">float</span> expected <span class="tok-o">=</span> <span class="tok-f">expectedFraction</span><span class="tok-o">(</span>h<span class="tok-o">)</span> <span class="tok-o">*</span> target<span class="tok-o">;</span>
+
+  oled<span class="tok-o">.</span><span class="tok-f">clearDisplay</span><span class="tok-o">();</span>
+  oled<span class="tok-o">.</span><span class="tok-f">setTextColor</span><span class="tok-o">(</span><span class="tok-t">SSD1306_WHITE</span><span class="tok-o">);</span>
+  oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">2</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">0</span><span class="tok-o">);</span>
+  oled<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"%u ml"</span><span class="tok-o">,</span> drunkToday<span class="tok-o">);</span>
+  oled<span class="tok-o">.</span><span class="tok-f">setTextSize</span><span class="tok-o">(</span><span class="tok-n">1</span><span class="tok-o">);</span>
+  oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">78</span><span class="tok-o">,</span> <span class="tok-n">6</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"/%0.0f"</span><span class="tok-o">,</span> target<span class="tok-o">);</span>
+
+  <span class="tok-c">// Progress bar with a tick marking where you should be by now.</span>
+  <span class="tok-k">int</span> w <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-k">int</span><span class="tok-o">)(</span><span class="tok-n">126.0</span>f <span class="tok-o">*</span> <span class="tok-f">fminf</span><span class="tok-o">(</span><span class="tok-n">1.0</span>f<span class="tok-o">,</span> drunkToday <span class="tok-o">/</span> target<span class="tok-o">));</span>
+  oled<span class="tok-o">.</span><span class="tok-f">drawRect</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">22</span><span class="tok-o">,</span> <span class="tok-n">128</span><span class="tok-o">,</span> <span class="tok-n">9</span><span class="tok-o">,</span> <span class="tok-t">SSD1306_WHITE</span><span class="tok-o">);</span>
+  oled<span class="tok-o">.</span><span class="tok-f">fillRect</span><span class="tok-o">(</span><span class="tok-n">1</span><span class="tok-o">,</span> <span class="tok-n">23</span><span class="tok-o">,</span> w<span class="tok-o">,</span> <span class="tok-n">7</span><span class="tok-o">,</span> <span class="tok-t">SSD1306_WHITE</span><span class="tok-o">);</span>
+  <span class="tok-k">int</span> mark <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-k">int</span><span class="tok-o">)(</span><span class="tok-n">126.0</span>f <span class="tok-o">*</span> <span class="tok-f">fminf</span><span class="tok-o">(</span><span class="tok-n">1.0</span>f<span class="tok-o">,</span> expected <span class="tok-o">/</span> target<span class="tok-o">));</span>
+  oled<span class="tok-o">.</span><span class="tok-f">drawFastVLine</span><span class="tok-o">(</span>mark<span class="tok-o">,</span> <span class="tok-n">20</span><span class="tok-o">,</span> <span class="tok-n">13</span><span class="tok-o">,</span> <span class="tok-t">SSD1306_WHITE</span><span class="tok-o">);</span>
+  oled<span class="tok-o">.</span><span class="tok-f">display</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">/* ── setup / loop ───────────────────────────────────────────── */</span>
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">115200</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_VIBE</span><span class="tok-o">,</span> <span class="tok-t">OUTPUT</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_BTN</span><span class="tok-o">,</span> <span class="tok-t">INPUT_PULLUP</span><span class="tok-o">);</span>
+
+  scale<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-t">PIN_HX_DT</span><span class="tok-o">,</span> <span class="tok-t">PIN_HX_SCK</span><span class="tok-o">);</span>
+  <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">21</span><span class="tok-o">,</span> <span class="tok-n">22</span><span class="tok-o">);</span>
+  sht<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">0x44</span><span class="tok-o">);</span>
+  accel<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">0x53</span><span class="tok-o">);</span>
+  accel<span class="tok-o">.</span><span class="tok-f">setRange</span><span class="tok-o">(</span><span class="tok-t">ADXL345_RANGE_2_G</span><span class="tok-o">);</span>
+  oled<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-t">SSD1306_SWITCHCAPVCC</span><span class="tok-o">,</span> <span class="tok-n">0x3C</span><span class="tok-o">);</span>
+
+  prefs<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-s">"hydro"</span><span class="tok-o">,</span> <span class="tok-k">false</span><span class="tok-o">);</span>
+  calFactor  <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getFloat</span><span class="tok-o">(</span><span class="tok-s">"cal"</span><span class="tok-o">,</span> <span class="tok-n">2100.0</span>f<span class="tok-o">);</span>
+  drunkToday <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getUShort</span><span class="tok-o">(</span><span class="tok-s">"today"</span><span class="tok-o">,</span> <span class="tok-n">0</span><span class="tok-o">);</span>
+  lastDay    <span class="tok-o">=</span> prefs<span class="tok-o">.</span><span class="tok-f">getInt</span><span class="tok-o">(</span><span class="tok-s">"day"</span><span class="tok-o">,</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">);</span>
+
+  <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">1200</span><span class="tok-o">);</span>
+  scale<span class="tok-o">.</span><span class="tok-f">tare</span><span class="tok-o">(</span><span class="tok-n">20</span><span class="tok-o">);</span>                     <span class="tok-c">// tare with an EMPTY base</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">println</span><span class="tok-o">(</span><span class="tok-s">"Hydration bottle ready"</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-c">/* Long press tares, short press wakes the display. */</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">digitalRead</span><span class="tok-o">(</span><span class="tok-t">PIN_BTN</span><span class="tok-o">)</span> <span class="tok-o">==</span> <span class="tok-t">LOW</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-k">uint32_t</span> t0 <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+    <span class="tok-k">while</span> <span class="tok-o">(</span><span class="tok-f">digitalRead</span><span class="tok-o">(</span><span class="tok-t">PIN_BTN</span><span class="tok-o">)</span> <span class="tok-o">==</span> <span class="tok-t">LOW</span> <span class="tok-o">&amp;&amp;</span> <span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> t0 <span class="tok-o">&lt;</span> <span class="tok-n">3000</span><span class="tok-o">)</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">20</span><span class="tok-o">);</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> t0 <span class="tok-o">&gt;=</span> <span class="tok-n">2000</span><span class="tok-o">)</span> <span class="tok-o">{</span> scale<span class="tok-o">.</span><span class="tok-f">tare</span><span class="tok-o">(</span><span class="tok-n">20</span><span class="tok-o">);</span> lastStableG <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">;</span> <span class="tok-f">remind</span><span class="tok-o">();</span> <span class="tok-o">}</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-k">static</span> <span class="tok-k">uint32_t</span> lastSlow <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> lastSlow <span class="tok-o">&lt;</span> <span class="tok-n">500</span><span class="tok-o">)</span> <span class="tok-k">return</span><span class="tok-o">;</span>
+  lastSlow <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+
+  <span class="tok-k">float</span> t <span class="tok-o">=</span> sht<span class="tok-o">.</span><span class="tok-f">readTemperature</span><span class="tok-o">();</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span><span class="tok-f">isnan</span><span class="tok-o">(</span>t<span class="tok-o">))</span> <span class="tok-o">{</span> ambientC <span class="tok-o">=</span> t<span class="tok-o">;</span> tempSum <span class="tok-o">+=</span> t<span class="tok-o">;</span> tempN<span class="tok-o">++;</span> <span class="tok-o">}</span>
+
+  time_t now <span class="tok-o">=</span> <span class="tok-f">time</span><span class="tok-o">(</span><span class="tok-k">nullptr</span><span class="tok-o">);</span>
+  <span class="tok-k">struct</span> tm tmv<span class="tok-o">;</span> <span class="tok-f">localtime_r</span><span class="tok-o">(&amp;</span>now<span class="tok-o">,</span> <span class="tok-o">&amp;</span>tmv<span class="tok-o">);</span>
+  <span class="tok-k">float</span> h <span class="tok-o">=</span> tmv<span class="tok-o">.</span>tm_hour <span class="tok-o">+</span> tmv<span class="tok-o">.</span>tm_min <span class="tok-o">/</span> <span class="tok-n">60.0</span>f<span class="tok-o">;</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>tmv<span class="tok-o">.</span>tm_yday <span class="tok-o">!=</span> lastDay<span class="tok-o">)</span> <span class="tok-o">{</span>       <span class="tok-c">// midnight rollover</span>
+    lastDay <span class="tok-o">=</span> tmv<span class="tok-o">.</span>tm_yday<span class="tok-o">;</span>
+    drunkToday <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+    tempSum <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> tempN <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+    prefs<span class="tok-o">.</span><span class="tok-f">putUShort</span><span class="tok-o">(</span><span class="tok-s">"today"</span><span class="tok-o">,</span> <span class="tok-n">0</span><span class="tok-o">);</span>
+    prefs<span class="tok-o">.</span><span class="tok-f">putInt</span><span class="tok-o">(</span><span class="tok-s">"day"</span><span class="tok-o">,</span> lastDay<span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(!</span><span class="tok-f">bottleStill</span><span class="tok-o">())</span> <span class="tok-k">return</span><span class="tok-o">;</span>         <span class="tok-c">// readings while carried are meaningless</span>
+
+  <span class="tok-k">float</span> g <span class="tok-o">=</span> <span class="tok-f">readMassG</span><span class="tok-o">();</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>g <span class="tok-o">&lt;</span> <span class="tok-n">0</span><span class="tok-o">)</span> <span class="tok-k">return</span><span class="tok-o">;</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>lastStableG <span class="tok-o">&lt;</span> <span class="tok-n">0</span><span class="tok-o">)</span> <span class="tok-o">{</span> lastStableG <span class="tok-o">=</span> g<span class="tok-o">;</span> <span class="tok-f">draw</span><span class="tok-o">(</span>h<span class="tok-o">);</span> <span class="tok-k">return</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+
+  <span class="tok-k">float</span> delta <span class="tok-o">=</span> lastStableG <span class="tok-o">-</span> g<span class="tok-o">;</span>      <span class="tok-c">// positive = water left the bottle</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>delta <span class="tok-o">&gt;</span> <span class="tok-t">MIN_DRINK_ML</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    drunkToday <span class="tok-o">+=</span> <span class="tok-o">(</span><span class="tok-k">uint16_t</span><span class="tok-o">)</span>delta<span class="tok-o">;</span>
+    prefs<span class="tok-o">.</span><span class="tok-f">putUShort</span><span class="tok-o">(</span><span class="tok-s">"today"</span><span class="tok-o">,</span> drunkToday<span class="tok-o">);</span>
+    <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"drank %.0f ml, total %u ml\n"</span><span class="tok-o">,</span> delta<span class="tok-o">,</span> drunkToday<span class="tok-o">);</span>
+    lastStableG <span class="tok-o">=</span> g<span class="tok-o">;</span>
+  <span class="tok-o">}</span> <span class="tok-k">else</span> <span class="tok-k">if</span> <span class="tok-o">(</span>delta <span class="tok-o">&lt;</span> <span class="tok-o">-</span><span class="tok-t">MIN_DRINK_ML</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-c">// Mass went up: a refill. Reset the reference, count nothing.</span>
+    <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"refill +%.0f ml\n"</span><span class="tok-o">,</span> <span class="tok-o">-</span>delta<span class="tok-o">);</span>
+    lastStableG <span class="tok-o">=</span> g<span class="tok-o">;</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-c">/* Remind only when genuinely behind the expected curve. */</span>
+  <span class="tok-k">float</span> target <span class="tok-o">=</span> <span class="tok-f">dailyTargetMl</span><span class="tok-o">();</span>
+  <span class="tok-k">float</span> expected <span class="tok-o">=</span> <span class="tok-f">expectedFraction</span><span class="tok-o">(</span>h<span class="tok-o">)</span> <span class="tok-o">*</span> target<span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>h <span class="tok-o">&gt;=</span> <span class="tok-t">WAKE_HOUR</span> <span class="tok-o">&amp;&amp;</span> h <span class="tok-o">&lt;</span> <span class="tok-t">SLEEP_HOUR</span>
+      <span class="tok-o">&amp;&amp;</span> expected <span class="tok-o">-</span> drunkToday <span class="tok-o">&gt;</span> <span class="tok-t">REMIND_DEFICIT_ML</span>
+      <span class="tok-o">&amp;&amp;</span> <span class="tok-f">millis</span><span class="tok-o">()</span> <span class="tok-o">-</span> lastRemind <span class="tok-o">&gt;</span> <span class="tok-t">REMIND_COOLDOWN_MS</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    lastRemind <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">();</span>
+    <span class="tok-f">remind</span><span class="tok-o">();</span>
+    <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"reminder: %u of %.0f ml expected by now\n"</span><span class="tok-o">,</span> drunkToday<span class="tok-o">,</span> expected<span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-f">draw</span><span class="tok-o">(</span>h<span class="tok-o">);</span>
+<span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (210 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">bottleStill() before any mass read</span><span class="txt">Dynamic acceleration adds directly to the measured force, so a load cell reading while the bottle is being carried is meaningless. Requiring two seconds of low-variance, near-1 g stillness is what makes the measurement trustworthy.</span></div><div><span class="ref">delta = lastStableG − g</span><span class="txt">Positive means mass left the bottle — you drank it. Negative means mass arrived — a refill. Two lines of logic replace the entire sip-counting apparatus that other designs need, and they are correct rather than approximate.</span></div><div><span class="ref">Refill resets the reference without counting</span><span class="txt">Without this, refilling a bottle would register as a large negative drink or, worse, the subsequent drinking would be measured from the wrong baseline all day.</span></div><div><span class="ref">expectedFraction integrating sin^0.7</span><span class="txt">The exponent shapes the curve so intake is weighted toward the middle of the day and tapers before sleep, which matches how people actually drink and avoids prompting at 22:30.</span></div><div><span class="ref">REMIND_COOLDOWN_MS 25 minutes</span><span class="txt">Even when behind, prompting more than roughly every 25 minutes is nagging. The cooldown is what keeps the device on the desk rather than in a drawer.</span></div><div><span class="ref">scale.tare with an EMPTY base</span><span class="txt">The tare must be taken with nothing on the load cell, so the measured mass includes the bottle itself. That is deliberate — the bottle mass is constant and cancels out of every delta.</span></div><div><span class="ref">read_average(12)</span><span class="txt">The HX711 runs at 10 samples per second, so twelve averaged samples takes about 1.2 seconds. That is acceptable here because the stability gate has already established the bottle is not moving.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Set <code>BODY_MASS_KG</code> for the user. The 33 ml/kg figure is a starting point; a clinician may specify a different target for a medical reason, in which case use theirs.</li><li>Calibrate <code>calFactor</code> with a known mass — 500 g of water in a measuring jug works well.</li><li>Set <code>MIN_DRINK_ML</code> at least 30 times your measured noise floor. 15 ml is comfortable for a 1 kg cell.</li><li>Adjust <code>WAKE_HOUR</code> and <code>SLEEP_HOUR</code> to the user's actual day, or the expected curve will prompt at the wrong times.</li><li>Tune <code>REMIND_DEFICIT_ML</code> and the cooldown together. Too sensitive and it nags; too permissive and it never prompts.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Calibrate the load cell</h4><p>Tare with the base empty. Place a known mass — 500 ml of water weighed on a kitchen scale is ideal — and set <code>calFactor = raw_counts / grams</code>. Verify with a second, different mass; the two factors should agree within about 1 %.</p></li><li><h4>Measure the noise floor</h4><p>Leave a full bottle sitting still and log the mass for ten minutes. The peak-to-peak spread is your noise floor. Set the minimum drink threshold at least 30 times that value.</p></li><li><h4>Tune the stability gate</h4><p>Log the accelerometer sigma while the bottle sits on a desk, while someone types nearby, and while it is carried. The threshold must sit clearly above the desk value and below the carried value.</p></li><li><h4>Validate against a measuring jug</h4><p>Pour exactly 200 ml out of the bottle and check the logged event. Agreement within 5 ml confirms both the calibration and the stability gating.</p></li></ol></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Place an empty bottle on the base and tare</b></td><td>Reading near 0 g, stable to within about 0.5 g.</td></tr><tr><td><b>Add 500 ml of water</b></td><td>Reading of 500 ± 5 g once the stability gate opens.</td></tr><tr><td><b>Drink about 200 ml and set the bottle down</b></td><td>A drink event of roughly 200 ml logged two seconds after it becomes still.</td></tr><tr><td><b>Pick the bottle up and put it back without drinking</b></td><td>No event logged — the mass is unchanged and the readings while carried are discarded.</td></tr><tr><td><b>Refill the bottle</b></td><td>A refill logged, the reference reset, and no intake counted.</td></tr><tr><td><b>Check the progress bar mid-afternoon</b></td><td>The tick mark sits at the expected fraction for that hour, not at a flat proportion of the day.</td></tr><tr><td><b>Fall 300 ml behind the curve</b></td><td>One haptic reminder, then silence for 25 minutes regardless of how far behind you remain.</td></tr><tr><td><b>Raise the ambient temperature to 33 °C</b></td><td>The daily target rises by roughly 25 %, and the expected curve rises with it.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>With everything wired and the firmware uploaded, the Serial Monitor at 115200 baud should look similar to the trace below. Values will differ; the <em>shape</em> of the output should not.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Fitness%20tracker.jpg?width=900" alt="A wrist-worn fitness tracker" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td168" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td168">A wearable tracker. Hydration data becomes considerably more useful when combined with activity data from a device like this.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption>A wearable tracker. Hydration data becomes considerably more useful when combined with activity data from a device like this.</figcaption>
+</figure></template>
+  <figcaption>A wearable tracker. Hydration data becomes considerably more useful when combined with activity data from a device like this.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Fitness_tracker.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Fitness tracker.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Mass readings drift steadily upward or downward</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Temperature affecting the load cell, or mechanical creep in the mounting.</p>
+        <p><strong>Fix.</strong> Some drift is inherent in aluminium cells. Because this design measures <em>deltas</em> between consecutive stable readings, slow drift is largely cancelled — but if it exceeds a few grams an hour, check that nothing is pressing on the cell and that the mounting screws are not slowly loosening.</p></div></details><details class="expand"><summary>Drinks are missed entirely</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The stability gate never opens, so no reading is ever taken.</p>
+        <p><strong>Fix.</strong> Log the accelerometer sigma on a desk. If it never drops below the threshold, the desk is vibrating (a nearby fan or a hollow table) or the threshold is too tight. Loosen it and lengthen the required stable period instead.</p></div></details><details class="expand"><summary>Spurious large drink events</summary><div class="inner">
+        <p><strong>Likely cause.</strong> A reading taken during a transient, or something briefly resting on the bottle.</p>
+        <p><strong>Fix.</strong> Increase the stable-period requirement to three seconds and average more HX711 samples. Also reject implausible deltas — nobody drinks 600 ml in one go from a 750 ml bottle, so a cap on single-event volume is a cheap sanity check.</p></div></details><details class="expand"><summary>The load cell reads a constant value</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Both ends bolted to the same rigid surface, so it cannot flex.</p>
+        <p><strong>Fix.</strong> One end fixed, the other loaded, with a gap beneath. This is the most common load cell mounting error and it produces a perfectly stable, entirely useless reading.</p></div></details><details class="expand"><summary>Water damage after a few weeks</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Unpotted electronics under an open water bottle.</p>
+        <p><strong>Fix.</strong> Pot everything in silicone, use a magnetic charge connector rather than a USB socket, and seal the load cell cable entry. This device will get wet — design for it rather than hoping.</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details><details class="expand"><summary>An I²C device is not detected</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong address, missing pull-ups, swapped SDA/SCL, or a bus too long for the pull-up value.</p>
+        <p><strong>Fix.</strong> Run an I²C scanner sketch first — it should print the device address. Most breakout boards include 4.7 kΩ pull-ups, but if you have chained four of them the parallel resistance is too low; remove the pull-ups from all but one board. Keep the bus under 30 cm at 100 kHz.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Use motion-triggered wake. The bottle is untouched for most of the day, and sleeping at microamps between interactions turns days of battery into weeks.</li><li>Average twelve HX711 samples per reading and only when the stability gate is open — the gate has already guaranteed the bottle is not moving, so the 1.2 seconds costs nothing.</li><li>Wake the display only on interaction. An always-on OLED is most of the power budget in a device that is looked at for a few seconds at a time.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>Do not treat the target as a medical instruction. Fluid requirement varies and some conditions — heart failure and certain kidney conditions in particular — require fluid <em>restriction</em>. Follow a clinician's target over any formula.</li><li>Over-hydration is real. Drinking far beyond thirst can cause hyponatraemia, which is dangerous. A device that encourages hitting a number regardless of thirst is not doing the user a favour.</li><li>Keep the lithium cell sealed and away from water, and use a protected cell.</li><li>Lithium cells vent and burn when abused. Only use protected cells or a proper BMS, never charge below 0 °C, and never leave a charging pack unattended on a wooden desk.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Log pack voltage. When resting voltage after a full charge drops below about 4.0 V, the cell is near end of life — replace it.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add <b>temperature measurement of the water itself</b> so the bottle can tell you the drink is too hot, and so the volume conversion is exact.</li><li>Add <b>activity integration</b> from a phone or a fitness tracker so exercise adjusts the target automatically rather than by manual entry.</li><li>Add a <b>UV-C sterilisation LED</b> in the cap on a schedule — a genuinely useful addition for a bottle that is refilled repeatedly.</li><li>Add <b>caffeine and alcohol logging</b> with their diuretic adjustment, which meaningfully changes net hydration.</li><li>Move the load cell <b>into the cap</b> with a suspended inner vessel, so the bottle works anywhere rather than only on its base.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why weigh rather than count sips?</summary><div class="inner"><p>Because a sip count is not a volume. An accelerometer with a tilt threshold cannot tell a 20 ml sip from a 300 ml gulp, counts every pick-up that does not result in drinking, and merges a long drink into one event. Weighing gives actual millilitres, which is the number you wanted in the first place.</p></div></details><details class="expand"><summary>Is two litres a day actually the right target?</summary><div class="inner"><p>Not as a universal figure. The commonly repeated "eight glasses" advice has surprisingly weak evidential basis, and actual requirement scales with body mass, ambient temperature, activity and diet — food contributes roughly 20 % of intake for most people. The 33 ml/kg starting point with temperature adjustment is more defensible, but for a healthy adult thirst remains a reasonably good regulator.</p></div></details><details class="expand"><summary>Does it work if I take the bottle out with me?</summary><div class="inner"><p>It measures what happens on the base. Drinking away from the base is invisible, and when you return the mass difference is attributed as one drink event at that moment — so the daily total is right but the timing is not. Moving the load cell into the cap with a suspended inner vessel solves this properly and is the obvious next version.</p></div></details><details class="expand"><summary>How accurate is it?</summary><div class="inner"><p>Within about 5 ml per event after calibration, which is far better than the 10 ml granularity that matters. The larger error source is behavioural, not electrical — drinks taken away from the base are timestamped wrongly.</p></div></details><details class="expand"><summary>Why does it not remind me every hour?</summary><div class="inner"><p>Because a device that prompts on a timer regardless of whether you need it gets ignored, and then it is worthless. Comparing against an expected curve means it prompts when you are genuinely behind — a couple of times on a normal day, more on a hot one. That is the difference between a useful device and a nagging one.</p></div></details><details class="expand"><summary>Can I use it for coffee or juice?</summary><div class="inner"><p>The mass measurement works for any liquid — density varies by a few percent at most. What changes is the hydration accounting: caffeine is a mild diuretic and alcohol a substantial one, so the net contribution differs. Logging drink type and applying an adjustment factor is a worthwhile addition.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf" rel="noopener nofollow" target="_blank">HX711 24-bit ADC for weigh scales — datasheet</a><span class="src">Avia Semiconductor</span></li><li><a href="https://doi.org/10.2903/j.efsa.2010.1459" rel="noopener nofollow" target="_blank">EFSA Panel, "Scientific Opinion on Dietary Reference Values for water"</a><span class="src">EFSA Journal, 2010</span></li><li><a href="https://doi.org/10.1152/ajpregu.00365.2002" rel="noopener nofollow" target="_blank">Valtin, "Drink at least eight glasses of water a day. Really?"</a><span class="src">American Journal of Physiology, 2002</span></li><li><a href="https://www.nationalacademies.org/our-work/dietary-reference-intakes-for-electrolytes-and-water" rel="noopener nofollow" target="_blank">Institute of Medicine — Dietary Reference Intakes for Water, Potassium, Sodium</a><span class="src">National Academies</span></li><li><a href="https://www.hbm.com/en/6768/load-cells-and-force-transducers/" rel="noopener nofollow" target="_blank">Load cell mounting and Wheatstone bridge fundamentals</a><span class="src">HBM</span></li><li><a href="https://doi.org/10.1097/JSM.0000000000000221" rel="noopener nofollow" target="_blank">Hew-Butler et al., "Statement of the Third International Exercise-Associated Hyponatremia Consensus"</a><span class="src">Clinical Journal of Sport Medicine, 2015</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="sleep-apnea-tracker.html"><span class="dir">← Previous project</span><span class="ttl">Sleep Apnea Tracker</span></a>
+        <span class="next disabled"></span>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Beginner</b></div>
+        <div class="rail-stat"><span>Time</span><b>6–9 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>12</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹2,900 – ₹3,800</b></div>
+        <div class="rail-stat"><span>Sections</span><b>25</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="heart-rate-and-spo2-band.html">Heart-Rate &amp; SpO2 Band</a></li><li><a href="fall-detection-pendant.html">Fall Detection Pendant</a></li><li><a href="smart-pill-dispenser.html">Smart Pill Dispenser</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="heart-rate-and-spo2-band.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Heart-Rate &amp; SpO2 Band</h4>
+        <p>A wrist wearable that continuously logs pulse and blood-oxygen levels.</p></a><a class="relcard" href="fall-detection-pendant.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Fall Detection Pendant</h4>
+        <p>Detects sudden falls and alerts family or caregivers with location.</p></a><a class="relcard" href="smart-pill-dispenser.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Smart Pill Dispenser</h4>
+        <p>Times and dispenses medication with reminders and missed-dose alerts.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Hydration Reminder Bottle</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
