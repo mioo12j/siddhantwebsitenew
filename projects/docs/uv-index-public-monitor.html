@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>UV Index Public Monitor — Circuit, Code &amp; Full Build Guide | Environment</title>
+  <meta name="description" content="Complete beginner-level build guide for a UV Index Public Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="uv index public monitor, uv index public monitor project, how to build uv index public monitor, esp32 devkit v1 project, environment project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/uv-index-public-monitor.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/uv-index-public-monitor.html" />
+  <meta property="og:title" content="UV Index Public Monitor — Circuit, Code &amp; Full Build Guide | Environment" />
+  <meta property="og:description" content="Complete beginner-level build guide for a UV Index Public Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Environment" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-27" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="UV Index Public Monitor — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete beginner-level build guide for a UV Index Public Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🌞</text></svg>" />
+  <style>:root{--acc:#22d3ee;--acc-light:#67e8f9;--acc-rgb:34,211,238}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/uv-index-public-monitor.html#article","headline":"UV Index Public Monitor — Complete Build Guide","name":"UV Index Public Monitor","description":"Complete beginner-level build guide for a UV Index Public Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/uv-index-public-monitor.html","inLanguage":"en","articleSection":"Environment","keywords":"uv index public monitor, uv index public monitor project, how to build uv index public monitor, esp32 devkit v1 project, environment project, circuit diagram, source code, tutorial","proficiencyLevel":"Beginner","dependencies":"WiFi (ESP32 core), PubSubClient, BH1750, Adafruit Unified Sensor, ArduinoJson, Preferences (NVS), NTPClient / configTime","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-27","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/uv-index-public-monitor.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/uv-index-public-monitor.html#howto","name":"How to build a UV Index Public Monitor","description":"Complete beginner-level build guide for a UV Index Public Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT10H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"5765"},"supply":[{"@type":"HowToSupply","name":"ESP32 DevKit V1 (ESP-WROOM-32)"},{"@type":"HowToSupply","name":"2.4″ ILI9341 SPI TFT (240 × 320)"},{"@type":"HowToSupply","name":"BH1750 digital ambient light sensor"},{"@type":"HowToSupply","name":"DS18B20 waterproof temperature probe"},{"@type":"HowToSupply","name":"20 W 12 V polycrystalline solar panel"},{"@type":"HowToSupply","name":"TP4056 Li-ion charger + DW01 protection"},{"@type":"HowToSupply","name":"18650 Li-ion cell 3400 mAh + holder"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Read UV and compute index, band and burn-time","text":"Read the UV sensor, convert to UV index, map to the international colour category, and estimate an average safe-exposure time, clamping sensibly at the extremes."},{"@type":"HowToStep","position":2,"name":"Drive the display and (optionally) the network","text":"Show the big index number, the colour band, and the burn-time and advice; log the reading; and if networked, publish the site's UV so a parks map and daily-profile record update."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"UV Index Public Monitor","item":"https://siddhantkumar.in/projects/docs/uv-index-public-monitor.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/uv-index-public-monitor.html#faq","mainEntity":[{"@type":"Question","name":"Why not just use the weather app's UV index?","acceptedAnswer":{"@type":"Answer","text":"The app forecasts a whole city. Your exact spot can differ a lot — shade, altitude, or reflective sand/snow — and this monitor measures the real UV where people actually are, which is what protects them."}},{"@type":"Question","name":"How does it work out a burn time?","acceptedAnswer":{"@type":"Answer","text":"A UV index unit is a fixed dose rate, and skin burns after a characteristic dose. So time-to-burn is roughly inversely proportional to the index. It is shown as an average for typical skin, not a personal guarantee."}},{"@type":"Question","name":"What is the biggest thing to get right?","acceptedAnswer":{"@type":"Answer","text":"Siting. The sensor must see the whole open sky through a UV-passing window and be kept clean. A shaded or dirty sensor reads low and tells people the sun is safe when it is not — the one dangerous failure mode."}},{"@type":"Question","name":"Does it need internet?","acceptedAnswer":{"@type":"Answer","text":"No. It works fully stand-alone, showing the index and advice from its own sensor. Networking only adds a city parks map and daily-profile logging as a bonus."}},{"@type":"Question","name":"Is a cheap UV sensor accurate enough?","acceptedAnswer":{"@type":"Answer","text":"It is indicative, and better with a reference calibration. For public awareness — showing that UV is high and prompting protection at the right place and time — it does the job, and it flags itself if it looks shaded or faulty."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#environment">Environment</a><span class="sep">/</span>
+        <span aria-current="page">UV Index Public Monitor</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 044 · Environment</span>
+          <h1>UV Index Public Monitor<span class="grad">.</span></h1>
+          <p class="tagline">Measures real UV at a specific park or beach and shows the live UV index and a plain-language safe-exposure time on a bright public display.</p>
+          <div class="hero-chips">
+            <span class="chip lv-beginner">Beginner</span>
+            <span class="chip">8–12 hours</span>
+            <span class="chip neutral">34 min read</span>
+            <span class="chip neutral">Sensor</span><span class="chip neutral">Display</span><span class="chip neutral">Health</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td360" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td360">UV Index Public Monitor — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>UV Index Public Monitor — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Beginner</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>8–12 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹3,800 – ₹5,200</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32 DevKit V1 (ESP-WROOM-32)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Environment</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>27 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Measures real UV at a specific park or beach and shows the live UV index and a plain-language safe-exposure time on a bright public display.</p>
+<p>The UV index on a weather app is a forecast for a whole city, and it can be badly wrong for the spot you are actually standing in: a shaded plaza, a high-altitude viewpoint, a beach with sand and water bouncing extra UV back at you, a cloudy morning that clears at noon. UV is what causes sunburn, premature skin ageing and, over years, skin cancer — and it is invisible, so people routinely under- or over-estimate it. This monitor measures the <b>actual</b> UV at one public place in real time and shows it on a bright, glanceable display with something more useful than a number: roughly how long until an unprotected person of average skin would start to burn.</p>
+<p>The sensing is straightforward and the honesty is in the interpretation. A UV sensor measures the erythemal (sunburn-weighted) UV irradiance, which converts to the standard <b>UV index</b> — the familiar 0-to-11+ scale where each unit is a fixed amount of skin-reddening UV. From the UV index and a typical skin type, the monitor estimates a safe-exposure time: at UV index 3 you might have the better part of an hour before an average unprotected person burns, at UV index 10 only a few minutes. It shows the index, a colour band (green/yellow/orange/red/purple, matching the international standard), and that burn-time in plain words, so a parent at a playground or a swimmer at a beach gets advice they can act on rather than a number they have to interpret.</p>
+<p>Because it lives in a public space, it is built to be seen and to run itself: a bright display readable in full sun, solar power so it needs no mains at a remote park or beach, and optional connectivity to log the day's UV profile and feed a network of such displays across a city's parks. It is careful to state its limits — a single low-cost UV sensor is indicative, must be sited in the open and kept clean, and burn-time is an average not a personal guarantee — but as a piece of public-health infrastructure it does something apps cannot: it tells you the truth about the sun where you are, right now, and nudges people to cover up before they get hurt.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Smart%20city.jpg?width=900" alt="A city skyline at night" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td352" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td352">A public UV display in a park or beach shows the real local UV where a citywide forecast cannot.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <path d="M120 152 a38 38 0 0 1 6-75 a52 52 0 0 1 98-14 a44 44 0 0 1 52 44 a34 34 0 0 1-8 45 z"
+      fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="150" y="172" width="100" height="44" rx="8" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="200" y="199" font-size="12" fill="var(--dg-muted)" text-anchor="middle" font-family="monospace">broker</text>
+    <line x1="200" y1="152" x2="200" y2="170" stroke="var(--dg-accent)" stroke-width="2"/>
+  </svg>
+  <figcaption>A public UV display in a park or beach shows the real local UV where a citywide forecast cannot.</figcaption>
+</figure></template>
+  <figcaption>A public UV display in a park or beach shows the real local UV where a citywide forecast cannot.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Smart_city.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Smart city.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Measures real erythemal UV and converts it to the standard UV index</li><li>Estimates a plain-language safe-exposure (burn) time from the index</li><li>Shows the index, the international colour band and advice on a bright display</li><li>Logs the day's UV profile (peak, timing) for a place</li><li>Runs on solar so it needs no mains at a park or beach</li><li>Optionally networks many displays into a city parks map</li><li>States its limits honestly — indicative, sited and cleaned, average advice</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Parks, playgrounds and beaches</b></td><td>Public-health signage that tells families the real UV and safe time at the exact spot they are enjoying, prompting sun protection.</td></tr><tr><td><b>Schools and sports grounds</b></td><td>Live UV at the field so PE and outdoor activity can be timed and protected, especially for children.</td></tr><tr><td><b>High-altitude and snow locations</b></td><td>Viewpoints and ski areas where thin air and reflective snow drive UV far above valley forecasts.</td></tr><tr><td><b>Workplace sun-safety</b></td><td>Outdoor worksites displaying live UV to trigger break and cover-up policies.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Location-true UV, not a citywide forecast</li><li>Standard UV index and the international colour categories</li><li>Actionable burn-time advice in plain language</li><li>Bright, sun-readable public display</li><li>Solar, self-contained, park/beach-ready</li><li>Optional networking for a city parks UV map</li><li>Daily UV-profile logging</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Beginner</td></tr><tr><td><b>Estimated completion time</b></td><td>8–12 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹3,800 – ₹5,200</td></tr><tr><td><b>Primary discipline</b></td><td>Environment</td></tr><tr><td><b>Reference platform</b></td><td>ESP32 DevKit V1 (ESP-WROOM-32)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Reading a UV sensor and converting irradiance to UV index</li><li>Estimating erythemal (burn) exposure time from the index and skin type</li><li>Driving a bright, sun-readable display</li><li>Solar power design for a public installation</li><li>Optional networking of public displays</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>Site the sensor in the open with a clear view of the whole sky — shade, overhangs or dirt make it read low and give dangerously reassuring advice.</p>
+<p>A single low-cost UV sensor is indicative; calibrate against a reference where possible and present readings as guidance.</p>
+<p>Burn-time is an average for a typical skin type — the display must say so; individuals vary widely.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b><br/><span style="font-size:.82em;opacity:.78">Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</span></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>2.4″ ILI9341 SPI TFT (240 × 320)</b><br/><span style="font-size:.82em;opacity:.78">Backlight is most of the current — PWM it for battery builds.</span></td><td>262 K colour, 40 MHz SPI, optional resistive touch controller</td><td class="num">1</td><td class="num">₹750</td></tr><tr><td><b>BH1750 digital ambient light sensor</b><br/><span style="font-size:.82em;opacity:.78">Far more linear than an LDR — use it whenever you need real lux, not a relative value.</span></td><td>1–65535 lx, 16-bit, ±20 %, spectral response close to the human eye</td><td class="num">1</td><td class="num">₹140</td></tr><tr><td><b>DS18B20 waterproof temperature probe</b><br/><span style="font-size:.82em;opacity:.78">Dozens can share one GPIO — you address them by ROM code.</span></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td class="num">1</td><td class="num">₹160</td></tr><tr><td><b>20 W 12 V polycrystalline solar panel</b><br/><span style="font-size:.82em;opacity:.78">Rated watts assume 1000 W/m² — plan for 60–70 % of nameplate in real installs.</span></td><td>Vmp 17.5 V, Imp 1.14 A, Voc 21.6 V, 350 × 290 mm, aluminium frame</td><td class="num">1</td><td class="num">₹1,200</td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b><br/><span style="font-size:.82em;opacity:.78">Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</span></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td class="num">1</td><td class="num">₹45</td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b><br/><span style="font-size:.82em;opacity:.78">Never charge below 0 °C; always use a protected cell or a BMS.</span></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>UV sensor (erythemal)</b><br/><span style="font-size:.82em;opacity:.78">Choose one that reports UVA/UVB or UV index; calibrate if possible</span></td><td>LTR390 / VEML6075 / Si1145-class UV sensor; erythemal/UVI output</td><td class="num">1</td><td class="num">₹350</td></tr><tr><td><b>Bright sun-readable display</b><br/><span style="font-size:.82em;opacity:.78">Must be legible in direct sunlight — the whole point</span></td><td>High-nit TFT, large LED digits, or an outdoor LED matrix behind UV-stable glazing</td><td class="num">1</td><td class="num">₹1,200</td></tr><tr><td><b>UV-transparent sensor window</b><br/><span style="font-size:.82em;opacity:.78">Ordinary acrylic blocks UV — use a UV-passing material</span></td><td>A cap/window that passes UV (many plastics block it) protecting the sensor</td><td class="num">1</td><td class="num">₹120</td></tr><tr><td><b>Outdoor pedestal/housing</b></td><td>Weatherproof housing, sensor on top facing the sky, display at eye level</td><td class="num">1</td><td class="num">₹900</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹5,765</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td>3.3 V logic / 5 V USB</td><td>UART, SPI, I²C, I²S, CAN, PWM</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>2.4″ ILI9341 SPI TFT (240 × 320)</b></td><td>262 K colour, 40 MHz SPI, optional resistive touch controller</td><td>3.3 V</td><td>SPI</td><td><a href="https://cdn-shop.adafruit.com/datasheets/ILI9341.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>BH1750 digital ambient light sensor</b></td><td>1–65535 lx, 16-bit, ±20 %, spectral response close to the human eye</td><td>2.4–3.6 V</td><td>I²C (0x23/0x5C)</td><td><a href="https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>DS18B20 waterproof temperature probe</b></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td>3.0–5.5 V</td><td>1-Wire (multi-drop)</td><td><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/DS18B20.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>20 W 12 V polycrystalline solar panel</b></td><td>Vmp 17.5 V, Imp 1.14 A, Voc 21.6 V, 350 × 290 mm, aluminium frame</td><td>12 V nominal</td><td>MC4 / screw terminals</td><td><a href="https://www.solarpowerworldonline.com/" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>TP4056 Li-ion charger + DW01 protection</b></td><td>1 A programmable CC/CV charge to 4.2 V ±1 %, over-discharge and short protection</td><td>4.5–5.5 V in</td><td>micro-USB / pads</td><td><a href="https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td>3.0–4.2 V</td><td>Holder / spot-welded tabs</td><td><a href="https://www.orbtronic.com/content/Samsung-INR18650-35E-Datasheet-Gest.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32 DevKit V1 (ESP-WROOM-32)</td><td>3.3 V logic / 5 V USB</td><td class="num">160</td><td>Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</td></tr><tr><td>2.4″ ILI9341 SPI TFT (240 × 320)</td><td>3.3 V</td><td class="num">90</td><td>Backlight is most of the current — PWM it for battery builds.</td></tr><tr><td>BH1750 digital ambient light sensor</td><td>2.4–3.6 V</td><td class="num">0.19</td><td>Far more linear than an LDR — use it whenever you need real lux, not a relative value.</td></tr><tr><td>DS18B20 waterproof temperature probe</td><td>3.0–5.5 V</td><td class="num">1.5</td><td>Dozens can share one GPIO — you address them by ROM code.</td></tr><tr><td>20 W 12 V polycrystalline solar panel</td><td>12 V nominal</td><td class="num">1140</td><td>Rated watts assume 1000 W/m² — plan for 60–70 % of nameplate in real installs.</td></tr><tr><td>TP4056 Li-ion charger + DW01 protection</td><td>4.5–5.5 V in</td><td class="num">1000</td><td>Buy the version *with* protection ICs — the bare charger will over-discharge your cell.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>2391.69 mA</b>. With a 1.5× design margin the supply should deliver at least <b>3600 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x with the ESP32 board package 3.x (or PlatformIO on VS Code)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>WiFi (ESP32 core)</b> <span style="opacity:.7">bundled</span></td><td>Station/AP connection management for the ESP32.</td><td><code>Bundled with the ESP32 Arduino core</code></td></tr><tr><td><b>PubSubClient</b> <span style="opacity:.7">2.8</span></td><td>Lightweight MQTT 3.1.1 client for constrained devices.</td><td><code>Library Manager → "PubSubClient" by Nick O'Leary</code></td></tr><tr><td><b>BH1750</b> <span style="opacity:.7">1.3.0</span></td><td>Digital lux readings with selectable resolution modes.</td><td><code>Library Manager → "BH1750" by Christopher Laws</code></td></tr><tr><td><b>Adafruit Unified Sensor</b> <span style="opacity:.7">1.1.x</span></td><td>Common sensor event abstraction; a dependency of most Adafruit drivers.</td><td><code>Library Manager → "Adafruit Unified Sensor"</code></td></tr><tr><td><b>ArduinoJson</b> <span style="opacity:.7">7.x</span></td><td>Zero-allocation JSON serialisation and parsing.</td><td><code>Library Manager → "ArduinoJson" by Benoit Blanchon</code></td></tr><tr><td><b>Preferences (NVS)</b> <span style="opacity:.7">bundled</span></td><td>Wear-levelled key/value storage in ESP32 flash for settings.</td><td><code>Bundled with the ESP32 core</code></td></tr><tr><td><b>NTPClient / configTime</b> <span style="opacity:.7">bundled</span></td><td>Wall-clock time from an NTP server for timestamping.</td><td><code>Bundled (`configTime()` on ESP32)</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td353 sd353" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td353">UV Index Public Monitor — system block diagram</title><desc id="sd353">Functional block diagram of the UV Index Public Monitor system.</desc>
+    <defs>
+    <marker id="ar-d353" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d353" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d353" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d353" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Measure sky</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d353)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">UV sensor</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">erythemal → UVI</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d353)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Visible (opt)</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">BH1750 cross-check</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Interpret</text><rect x="266" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d353)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="79" text-anchor="middle"><tspan x="355" y="79.0">ESP32</tspan></text><text class="dg-s" x="355" y="98" text-anchor="middle"><tspan x="355" y="98.0">UVI + burn-time</tspan></text><rect x="266" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d353)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="159" text-anchor="middle"><tspan x="355" y="159.0">Category</tspan></text><text class="dg-s" x="355" y="178" text-anchor="middle"><tspan x="355" y="178.0">colour band</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Show</text><rect x="506" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d353)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="119" text-anchor="middle"><tspan x="595" y="119.0">Bright display</tspan></text><text class="dg-s" x="595" y="138" text-anchor="middle"><tspan x="595" y="138.0">index + advice</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Network (opt)</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d353)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Parks map</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">city UV</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d353)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Log</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">daily profile</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d353)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d353)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d353)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>UV Index Public Monitor — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 316" role="img" aria-labelledby="td354 sd354" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td354">UV Index Public Monitor — wiring schematic</title><desc id="sd354">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d354" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d354" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d354" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d354" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="220" rx="14"
+      fill="url(#ga-d354)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32 DevKit V1</tspan><tspan x="434" y="95.0">(ESP-WROOM-32)</tspan></text><text class="dg-s" x="434" y="266" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d354)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">UV sensor</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO 21/22</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="109.5">Erythemal UV / UVI</tspan><tspan x="278" y="120.5">(I²C)</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d354)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">BH1750 (opt)</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 21/22</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="161.5">Visible light</tspan><tspan x="278" y="172.5">(cross-check)</tspan></text><rect x="20" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d354)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="205" text-anchor="middle"><tspan x="115" y="205.0">DS18B20</tspan></text><path d="M210 204 C 278 204, 278 204, 346 204" stroke="#4fb0e0" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="204" r="3.2" fill="#4fb0e0"/><text class="dg-p" x="278" y="198" text-anchor="middle">GPIO 4</text><text class="dg-s" x="278" y="219" text-anchor="middle"><tspan x="278" y="213.5">Enclosure temp</tspan><tspan x="278" y="224.5">(sensor health)</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d354)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Bright display</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">GPIO 18/19/23/5</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Public UV readout</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d354)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Wi-Fi (opt)</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">—</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="161.5">Networked UV map +</tspan><tspan x="590" y="172.5">logging</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d354)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">TP4056</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">VIN / 3V3 reg</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="219.0">Solar-charged supply</tspan></text><rect x="658" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d354)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="257" text-anchor="middle"><tspan x="753" y="257.0">Solar panel</tspan></text><path d="M658 256 C 590 256, 590 256, 522 256" stroke="#3cc7c0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="256" r="3.2" fill="#3cc7c0"/><text class="dg-p" x="590" y="250" text-anchor="middle">TP4056 IN</text><text class="dg-s" x="590" y="271" text-anchor="middle"><tspan x="590" y="271.0">6 V panel → charger</tspan></text>
+  </svg>
+  <figcaption>UV Index Public Monitor — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>UV sensor</b></td><td>SDA/SCL</td><td><code>GPIO 21/22</code></td><td>Erythemal UV / UVI (I²C)</td></tr><tr><td><b>BH1750 (opt)</b></td><td>SDA/SCL</td><td><code>GPIO 21/22</code></td><td>Visible light (cross-check)</td></tr><tr><td><b>DS18B20</b></td><td>DQ</td><td><code>GPIO 4</code></td><td>Enclosure temp (sensor health)</td></tr><tr><td><b>Bright display</b></td><td>SPI/parallel</td><td><code>GPIO 18/19/23/5</code></td><td>Public UV readout</td></tr><tr><td><b>Wi-Fi (opt)</b></td><td>on-chip</td><td><code>—</code></td><td>Networked UV map + logging</td></tr><tr><td><b>TP4056</b></td><td>OUT</td><td><code>VIN / 3V3 reg</code></td><td>Solar-charged supply</td></tr><tr><td><b>Solar panel</b></td><td>+/–</td><td><code>TP4056 IN</code></td><td>6 V panel → charger</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Mount the UV sensor on top of the housing facing straight up at the open sky, behind a UV-transparent window — ordinary acrylic blocks UV and would make the reading meaningless.</li><li>Keep the sensor clear of any shade, overhang or nearby wall that blocks part of the sky or reflects onto it.</li><li>Drive the bright display on its own supply headroom; a large LED display can draw significant current and must not brown out the sensor node.</li><li>Add an enclosure-temperature sensor so you can flag over-heating, which affects both the sensor and the display.</li><li>Angle the solar panel for the site and size it for the display's daytime draw plus overnight standby.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/OLED%20display%20module.jpg?width=900" alt="A small monochrome OLED display module" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td355" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td355">A bright, sun-readable display presents the UV index, colour band and safe-exposure advice at a glance.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="30" y="34" width="340" height="192" rx="10" fill="var(--dg-box-b)" stroke="var(--dg-stroke)"/>
+    <rect x="30" y="34" width="340" height="28" rx="10" fill="var(--dg-chip)"/>
+    <circle cx="48" cy="48" r="4" fill="#e05f5f"/><circle cx="62" cy="48" r="4" fill="#e0b45f"/><circle cx="76" cy="48" r="4" fill="#5fe08a"/>
+    <rect x="44" y="76" width="140" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="58" y="98" font-size="10" fill="var(--dg-muted)">TEMPERATURE</text>
+    <text x="58" y="126" font-size="24" fill="var(--dg-accent)" font-family="monospace">27.4°</text>
+    <rect x="198" y="76" width="158" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="210,126 236,110 262,118 288,94 314,104 340,86" fill="none" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="44" y="152" width="312" height="60" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="56,196 86,180 116,188 146,160 176,172 206,146 236,158 266,138 296,150 340,128"
+      fill="none" stroke="var(--dg-accent)" stroke-width="2" opacity=".8"/>
+  </svg>
+  <figcaption>A bright, sun-readable display presents the UV index, colour band and safe-exposure advice at a glance.</figcaption>
+</figure></template>
+  <figcaption>A bright, sun-readable display presents the UV index, colour band and safe-exposure advice at a glance.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:OLED_display_module.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — OLED display module.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 486" role="img" aria-labelledby="td356 sd356" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td356">UV Index Public Monitor — architecture stack</title><desc id="sd356">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d356" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d356" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d356" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d356" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d356)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="72.0">ESP32 DevKit V1 (ESP-WROOM-32) · BH1750 digital ambient light sensor ·</tspan><tspan x="48" y="84.0">DS18B20 waterproof temperature probe</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d356)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d356)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">wifi · pubsub · bh1750lib · unified</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d356)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d356)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d356)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d356)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Transport layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">Optional Wi-Fi + MQTT → city parks UV map · TLS · retry and backoff</tspan></text><path d="M330 368 L330 381" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d356)"/><rect x="30" y="382" width="600" height="74" rx="12"
+        fill="url(#gb-d356)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="408">Presentation layer</text><text class="dg-s" x="48" y="430"><tspan x="48" y="430.0">dashboard · mobile notifications · historical charts</tspan></text>
+  </svg>
+  <figcaption>UV Index Public Monitor — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>The quantity that matters for health is not raw UV power but <b>erythemally-weighted</b> UV — UV weighted by how effectively each wavelength reddens skin, since shorter-wavelength UVB burns far more per watt than UVA. The internationally standardised <b>UV index</b> is built directly on this: it is the erythemal irradiance scaled so that each index unit equals a fixed amount of skin-reddening UV (25 mW/m² of erythemal irradiance per unit). That standardisation is what lets a single number mean the same thing everywhere and map to the familiar colour categories — low (green) through extreme (purple) — that public-health bodies use worldwide. A good UV sensor either reports the index directly or an erythemal irradiance the firmware converts.</p>
+<p>The monitor's value over a forecast is <b>locality and truth</b>. A citywide UV forecast cannot know that this particular spot is shaded until noon, sits at altitude where thinner air lets more UV through, or is a beach where sand and water reflect additional UV onto people. By measuring the sky at the actual location, the display reflects the sun people are really under — which can differ substantially from the app in their pocket. This demands correct <b>siting</b>: the sensor must see the whole open sky, behind a UV-transparent window, unshaded and clean, because a sensor under an overhang or a dusty cover reads low and would hand out dangerously reassuring advice.</p>
+<p>What turns the index into action is the <b>safe-exposure (burn) time</b>. Because a UV index unit is a fixed dose rate, and skin has a characteristic dose at which it starts to redden (the minimal erythemal dose, which depends on skin type), you can estimate how long until an unprotected average person begins to burn: high index means the dose accumulates fast, so the time is short; low index means it is long. The display shows this in plain language — "about X minutes to burn without protection" — alongside the index and colour, which is far more actionable to a passer-by than a bare number. Crucially, it is framed as an average for a typical skin type, because the minimal erythemal dose varies several-fold between very fair and very dark skin, and the display says so rather than implying a personal guarantee.</p>
+<p>Everything else serves getting that message to people reliably in a public place. The display must be genuinely <b>readable in direct sunlight</b> — the environment it exists to describe is the one that washes out ordinary screens — so it uses a high-brightness panel or large LEDs. It runs on <b>solar</b> so it can stand at a remote beach or hilltop with no mains. And optionally it joins a <b>network</b> of such displays, logging each site's daily UV profile (when the peak occurs, how high it reaches) and feeding a city map so people can see, and planners can study, how UV varies across a city's public spaces. It is modest infrastructure with a real public-health job: making an invisible, cumulative hazard visible at the moment and place people are exposed to it.</p>
+
+<h3>The maths behind it</h3><h4>UV index from erythemal irradiance</h4><div class="codeblock tall" data-file="UV index from erythemal irradiance">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">UV index from erythemal irradiance</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy UV index from erythemal irradiance to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="UV index from erythemal irradiance" type="button" aria-label="Download UV index from erythemal irradiance">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>The UV index is defined from erythemal irradiance E_er:
+
+  UVI = E_er (mW/m²) / 25
+
+i.e. 1 index unit = 25 mW/m² of skin-reddening UV.
+A sensor giving E_er (or UVA/UVB it converts) yields UVI
+directly. Categories: 0–2 low, 3–5 moderate, 6–7 high,
+8–10 very high, 11+ extreme.</code></pre>
+  
+</div>
+<h4>Safe-exposure (burn) time</h4><div class="codeblock tall" data-file="Safe-exposure (burn) time">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Safe-exposure (burn) time</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Safe-exposure (burn) time to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Safe-exposure (burn) time" type="button" aria-label="Download Safe-exposure (burn) time">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Skin burns after a minimal erythemal dose (MED),
+which depends on skin type. As a rate:
+
+  dose_rate ∝ UVI
+  t_burn (min) ≈ MED_factor / UVI
+
+A common rule of thumb for average (type II–III) skin:
+  t_burn ≈ 200 / (UVI × skin_factor)  minutes
+Stronger for fair skin, longer for darker skin. Display it
+as AVERAGE guidance, never a personal guarantee.</code></pre>
+  
+</div>
+<h4>Reflective and altitude enhancement (why local matters)</h4><div class="codeblock tall" data-file="Reflective and altitude enhancement (why local matters)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Reflective and altitude enhancement (why local matters)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Reflective and altitude enhancement (why local matters) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Reflective and altitude enhancement (why local matters)" type="button" aria-label="Download Reflective and altitude enhancement (why local matters)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Local UV can exceed a valley forecast because:
+
+  • altitude: +~10–12% UV per 1000 m of elevation
+  • snow reflects up to ~80% of UV back onto you
+  • sand ~15%, water ~10% add to direct UV
+
+A sensor measures the ACTUAL local UV including these,
+which a citywide forecast cannot capture.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 756" role="img" aria-labelledby="td357 sd357" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td357">UV Index Public Monitor — firmware flowchart</title><desc id="sd357">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d357" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d357" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d357" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d357" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d357)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Read UV sensor</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d357)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d357)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="144.0">Convert to UV index</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d357)"/><rect x="85" y="202" width="250" height="56" rx="10"
+          fill="url(#gb-d357)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="230" text-anchor="middle"><tspan x="210" y="223.5">Compute burn-time + colour</tspan><tspan x="210" y="236.5">band</tspan></text><path d="M210 258 L210 282" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d357)"/><path d="M210 288 L349 330 L210 372 L71 330 z"
+          fill="url(#ga-d357)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="330" text-anchor="middle"><tspan x="210" y="330.0">UV index high (≥ 8)?</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d357)"/><text class="dg-e" x="220" y="391">Show strong-protection advice</text><path d="M349 330 H397 V286 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d357)"/><text class="dg-e" x="403" y="324">Show standard advice</text><path d="M101 402 L335 402 L319 458 L85 458 z"
+          fill="url(#gb-d357)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="430.0">Show strong-protection advice</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d357)"/><path d="M101 488 L335 488 L319 544 L85 544 z"
+          fill="url(#gb-d357)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="516" text-anchor="middle"><tspan x="210" y="516.0">Show standard advice</tspan></text><path d="M210 544 L210 568" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d357)"/><rect x="85" y="574" width="250" height="56" rx="10"
+          fill="url(#gb-d357)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="602" text-anchor="middle"><tspan x="210" y="602.0">Update display; log; (network)</tspan></text><path d="M210 630 L210 654" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d357)"/><rect x="85" y="660" width="250" height="56" rx="28"
+          fill="url(#ga-d357)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="688" text-anchor="middle"><tspan x="210" y="688.0">Wait interval</tspan></text>
+  </svg>
+  <figcaption>UV Index Public Monitor — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Site and mount the UV sensor correctly</h4><p>Fix the UV sensor on top of the housing facing straight up, behind a UV-transparent window, with an unobstructed view of the whole sky — no overhangs, branches or walls in its hemisphere.</p>
+<p>Confirm the window material actually passes UV; many clear plastics block it and would silently kill the reading.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Bad siting is the dangerous failure here: a shaded or dirty sensor reads low and tells people the sun is safe when it is not. Open sky, UV-passing window, kept clean.</p></div>
+  </aside></li><li><h4>Fit the bright display</h4><p>Mount a high-brightness display or large LED digits at eye level, behind UV-stable glazing, angled to avoid direct glare while staying legible in full sun.</p>
+<p>Give the display its own current headroom so it never browns out the sensor node.</p></li><li><h4>Set up solar and optional networking</h4><p>Angle and size the solar panel for the display's daytime draw plus standby; add Wi-Fi if joining a parks network and logging daily profiles.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Read UV and compute index, band and burn-time</h4><p>Read the UV sensor, convert to UV index, map to the international colour category, and estimate an average safe-exposure time, clamping sensibly at the extremes.</p><div class="codeblock tall" data-file="uv-advice.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">uv-advice.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy uv-advice.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="uv-advice.ino" type="button" aria-label="Download uv-advice.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">struct</span> <span class="tok-t">UVInfo</span> <span class="tok-o">{</span> <span class="tok-k">float</span> uvi<span class="tok-o">;</span> <span class="tok-k">const</span> <span class="tok-k">char</span> <span class="tok-o">*</span>band<span class="tok-o">;</span> <span class="tok-k">uint32_t</span> burnMin<span class="tok-o">;</span> <span class="tok-k">const</span> <span class="tok-k">char</span> <span class="tok-o">*</span>advice<span class="tok-o">;</span> <span class="tok-o">};</span>
+
+<span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> <span class="tok-f">uvBand</span><span class="tok-o">(</span><span class="tok-k">float</span> uvi<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>uvi <span class="tok-o">&lt;</span> <span class="tok-n">3</span><span class="tok-o">)</span>  <span class="tok-k">return</span> <span class="tok-s">"LOW"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>uvi <span class="tok-o">&lt;</span> <span class="tok-n">6</span><span class="tok-o">)</span>  <span class="tok-k">return</span> <span class="tok-s">"MODERATE"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>uvi <span class="tok-o">&lt;</span> <span class="tok-n">8</span><span class="tok-o">)</span>  <span class="tok-k">return</span> <span class="tok-s">"HIGH"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>uvi <span class="tok-o">&lt;</span> <span class="tok-n">11</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-s">"VERY HIGH"</span><span class="tok-o">;</span>
+  <span class="tok-k">return</span> <span class="tok-s">"EXTREME"</span><span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">// Average burn time for typical (type II–III) skin; guidance only.</span>
+<span class="tok-k">uint32_t</span> <span class="tok-f">burnMinutes</span><span class="tok-o">(</span><span class="tok-k">float</span> uvi<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>uvi <span class="tok-o">&lt;</span> <span class="tok-n">0.5</span>f<span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-n">999</span><span class="tok-o">;</span>                 <span class="tok-c">// effectively no burn risk</span>
+  <span class="tok-k">float</span> t <span class="tok-o">=</span> <span class="tok-n">200.0</span>f <span class="tok-o">/</span> <span class="tok-o">(</span>uvi <span class="tok-o">*</span> <span class="tok-n">1.0</span>f<span class="tok-o">);</span>            <span class="tok-c">// skin_factor = 1 (average)</span>
+  <span class="tok-k">return</span> <span class="tok-o">(</span><span class="tok-k">uint32_t</span><span class="tok-o">)</span><span class="tok-f">constrain</span><span class="tok-o">(</span>t<span class="tok-o">,</span> <span class="tok-n">5.0</span>f<span class="tok-o">,</span> <span class="tok-n">999.0</span>f<span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> <span class="tok-f">uvAdvice</span><span class="tok-o">(</span><span class="tok-k">float</span> uvi<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>uvi <span class="tok-o">&lt;</span> <span class="tok-n">3</span><span class="tok-o">)</span>  <span class="tok-k">return</span> <span class="tok-s">"Enjoy — minimal protection needed"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>uvi <span class="tok-o">&lt;</span> <span class="tok-n">6</span><span class="tok-o">)</span>  <span class="tok-k">return</span> <span class="tok-s">"Hat + sunscreen; seek shade midday"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>uvi <span class="tok-o">&lt;</span> <span class="tok-n">8</span><span class="tok-o">)</span>  <span class="tok-k">return</span> <span class="tok-s">"Cover up, SPF30+, shade 11-3"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>uvi <span class="tok-o">&lt;</span> <span class="tok-n">11</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-s">"Avoid sun midday; full protection"</span><span class="tok-o">;</span>
+  <span class="tok-k">return</span> <span class="tok-s">"Stay in shade; extreme risk"</span><span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-t">UVInfo</span> <span class="tok-f">uvInfo</span><span class="tok-o">(</span><span class="tok-k">float</span> erythemal_mWm2<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">float</span> uvi <span class="tok-o">=</span> erythemal_mWm2 <span class="tok-o">/</span> <span class="tok-n">25.0</span>f<span class="tok-o">;</span>         <span class="tok-c">// definition of the UV index</span>
+  <span class="tok-k">return</span> <span class="tok-o">{</span> uvi<span class="tok-o">,</span> <span class="tok-f">uvBand</span><span class="tok-o">(</span>uvi<span class="tok-o">),</span> <span class="tok-f">burnMinutes</span><span class="tok-o">(</span>uvi<span class="tok-o">),</span> <span class="tok-f">uvAdvice</span><span class="tok-o">(</span>uvi<span class="tok-o">)</span> <span class="tok-o">};</span>
+<span class="tok-o">}</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">float uvi = erythemal_mWm2 / 25.0f</span><span class="txt">Applies the exact definition of the UV index — 25 mW/m² of erythemal irradiance per index unit — turning the sensor's measurement into the standard scale.</span></div><div><span class="ref">const char* uvBand(float uvi)</span><span class="txt">Maps the index to the internationally standardised colour categories, so the display speaks the same language as every public UV forecast.</span></div><div><span class="ref">float t = 200.0f / (uvi * 1.0f)</span><span class="txt">Estimates the average time to burn as inversely proportional to the index, since a UV index unit is a fixed dose rate — higher index, faster dose, shorter time.</span></div><div><span class="ref">constrain(t, 5.0f, 999.0f)</span><span class="txt">Clamps the estimate to sensible bounds so extreme UV never shows an alarmingly precise "2 minutes" and near-zero UV does not show an infinite time.</span></div></div></li><li><h4>Drive the display and (optionally) the network</h4><p>Show the big index number, the colour band, and the burn-time and advice; log the reading; and if networked, publish the site's UV so a parks map and daily-profile record update.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Cross-check the UV reading against a visible-light sensor: if it is bright daylight but UV reads near zero, the sensor is shaded, dirty or faulty — flag it rather than reassure.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="uv-public-monitor.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">uv-public-monitor.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy uv-public-monitor.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="uv-public-monitor.ino" type="button" aria-label="Download uv-public-monitor.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   UV Index Public Monitor — ESP32 + UV sensor + bright display</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Measures real erythemal UV at a public place, shows the UV index,</span>
+<span class="tok-c">   international colour band and an average safe-exposure time, logs the</span>
+<span class="tok-c">   daily profile, and optionally feeds a city parks UV map. Solar.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">WiFi</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">PubSubClient</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Wire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">BH1750</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Preferences</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+
+<span class="tok-c">// Replace with your UV sensor's driver (LTR390 / VEML6075 / Si1145).</span>
+<span class="tok-p">#include</span> <span class="tok-s">"UvSensor.h"</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">PIN_TFT_DC</span>  <span class="tok-n">16</span>
+<span class="tok-p">#define</span> <span class="tok-t">INTERVAL_MS</span> <span class="tok-n">30000</span><span class="tok-t">UL</span>   <span class="tok-c">// update every 30 s</span>
+
+<span class="tok-t">UvSensor</span>    uv<span class="tok-o">;</span>
+<span class="tok-t">BH1750</span>      vis<span class="tok-o">;</span>              <span class="tok-c">// visible-light cross-check</span>
+<span class="tok-t">Preferences</span> prefs<span class="tok-o">;</span>
+<span class="tok-t">WiFiClient</span>  net<span class="tok-o">;</span>
+<span class="tok-t">PubSubClient</span> <span class="tok-f">mqtt</span><span class="tok-o">(</span>net<span class="tok-o">);</span>
+
+<span class="tok-k">float</span> <span class="tok-t">UV_CAL</span><span class="tok-o">;</span>                 <span class="tok-c">// reference-calibration scale</span>
+<span class="tok-k">float</span> dayPeakUVI <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">int</span> dayPeakHour <span class="tok-o">=</span> <span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">;</span>
+
+<span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> <span class="tok-f">uvBand</span><span class="tok-o">(</span><span class="tok-k">float</span> u<span class="tok-o">){</span>
+  <span class="tok-k">if</span><span class="tok-o">(</span>u<span class="tok-o">&lt;</span><span class="tok-n">3</span><span class="tok-o">)</span><span class="tok-k">return</span> <span class="tok-s">"LOW"</span><span class="tok-o">;</span> <span class="tok-k">if</span><span class="tok-o">(</span>u<span class="tok-o">&lt;</span><span class="tok-n">6</span><span class="tok-o">)</span><span class="tok-k">return</span> <span class="tok-s">"MODERATE"</span><span class="tok-o">;</span> <span class="tok-k">if</span><span class="tok-o">(</span>u<span class="tok-o">&lt;</span><span class="tok-n">8</span><span class="tok-o">)</span><span class="tok-k">return</span> <span class="tok-s">"HIGH"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span><span class="tok-o">(</span>u<span class="tok-o">&lt;</span><span class="tok-n">11</span><span class="tok-o">)</span><span class="tok-k">return</span> <span class="tok-s">"VERY HIGH"</span><span class="tok-o">;</span> <span class="tok-k">return</span> <span class="tok-s">"EXTREME"</span><span class="tok-o">;</span>
+<span class="tok-o">}</span>
+<span class="tok-k">uint32_t</span> <span class="tok-f">burnMinutes</span><span class="tok-o">(</span><span class="tok-k">float</span> u<span class="tok-o">){</span>
+  <span class="tok-k">if</span><span class="tok-o">(</span>u<span class="tok-o">&lt;</span><span class="tok-n">0.5</span>f<span class="tok-o">)</span><span class="tok-k">return</span> <span class="tok-n">999</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> t<span class="tok-o">=</span><span class="tok-n">200.0</span>f<span class="tok-o">/(</span>u<span class="tok-o">*</span><span class="tok-n">1.0</span>f<span class="tok-o">);</span> <span class="tok-k">return</span> <span class="tok-o">(</span><span class="tok-k">uint32_t</span><span class="tok-o">)</span><span class="tok-f">constrain</span><span class="tok-o">(</span>t<span class="tok-o">,</span><span class="tok-n">5.0</span>f<span class="tok-o">,</span><span class="tok-n">999.0</span>f<span class="tok-o">);</span>
+<span class="tok-o">}</span>
+<span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> <span class="tok-f">uvAdvice</span><span class="tok-o">(</span><span class="tok-k">float</span> u<span class="tok-o">){</span>
+  <span class="tok-k">if</span><span class="tok-o">(</span>u<span class="tok-o">&lt;</span><span class="tok-n">3</span><span class="tok-o">)</span><span class="tok-k">return</span> <span class="tok-s">"Minimal protection needed"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span><span class="tok-o">(</span>u<span class="tok-o">&lt;</span><span class="tok-n">6</span><span class="tok-o">)</span><span class="tok-k">return</span> <span class="tok-s">"Hat + sunscreen; shade midday"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span><span class="tok-o">(</span>u<span class="tok-o">&lt;</span><span class="tok-n">8</span><span class="tok-o">)</span><span class="tok-k">return</span> <span class="tok-s">"Cover up, SPF30+, shade 11-3"</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span><span class="tok-o">(</span>u<span class="tok-o">&lt;</span><span class="tok-n">11</span><span class="tok-o">)</span><span class="tok-k">return</span> <span class="tok-s">"Avoid midday sun; full protection"</span><span class="tok-o">;</span>
+  <span class="tok-k">return</span> <span class="tok-s">"Stay in shade; extreme risk"</span><span class="tok-o">;</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">showDisplay</span><span class="tok-o">(</span><span class="tok-k">float</span> uvi<span class="tok-o">,</span> <span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> band<span class="tok-o">,</span> <span class="tok-k">uint32_t</span> burn<span class="tok-o">,</span> <span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> adv<span class="tok-o">,</span>
+                 <span class="tok-k">bool</span> suspect<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-c">// Big index, colour band, burn-time and advice on a bright panel.</span>
+  <span class="tok-f">displayClear</span><span class="tok-o">();</span>
+  <span class="tok-f">displayBigNumber</span><span class="tok-o">(</span>uvi<span class="tok-o">);</span>
+  <span class="tok-f">displayBand</span><span class="tok-o">(</span>band<span class="tok-o">);</span>                     <span class="tok-c">// coloured per UVI category</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>burn <span class="tok-o">&lt;</span> <span class="tok-n">999</span><span class="tok-o">)</span> <span class="tok-f">displayBurn</span><span class="tok-o">(</span>burn<span class="tok-o">);</span>     <span class="tok-c">// "~%u min to burn"</span>
+  <span class="tok-f">displayAdvice</span><span class="tok-o">(</span>adv<span class="tok-o">);</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>suspect<span class="tok-o">)</span> <span class="tok-f">displayFlag</span><span class="tok-o">(</span><span class="tok-s">"sensor check"</span><span class="tok-o">);</span> <span class="tok-c">// shaded/dirty/faulty</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">115200</span><span class="tok-o">);</span>
+  <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">21</span><span class="tok-o">,</span><span class="tok-n">22</span><span class="tok-o">);</span>
+  uv<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">();</span>
+  vis<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-t">BH1750</span><span class="tok-o">::</span><span class="tok-t">CONTINUOUS_HIGH_RES_MODE</span><span class="tok-o">);</span>
+  prefs<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-s">"uv"</span><span class="tok-o">,</span><span class="tok-k">true</span><span class="tok-o">);</span> <span class="tok-t">UV_CAL</span><span class="tok-o">=</span>prefs<span class="tok-o">.</span><span class="tok-f">getFloat</span><span class="tok-o">(</span><span class="tok-s">"cal"</span><span class="tok-o">,</span><span class="tok-n">1.0</span>f<span class="tok-o">);</span> prefs<span class="tok-o">.</span><span class="tok-f">end</span><span class="tok-o">();</span>
+  <span class="tok-f">displayInit</span><span class="tok-o">();</span>
+  <span class="tok-t">WiFi</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-t">WIFI_SSID</span><span class="tok-o">,</span><span class="tok-t">WIFI_PASS</span><span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">setServer</span><span class="tok-o">(</span><span class="tok-t">MQTT_HOST</span><span class="tok-o">,</span><span class="tok-n">1883</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">()</span> <span class="tok-o">{</span>
+  <span class="tok-k">if</span><span class="tok-o">(!</span>mqtt<span class="tok-o">.</span><span class="tok-f">connected</span><span class="tok-o">()&amp;&amp;</span><span class="tok-t">WiFi</span><span class="tok-o">.</span><span class="tok-f">status</span><span class="tok-o">()==</span><span class="tok-t">WL_CONNECTED</span><span class="tok-o">)</span> mqtt<span class="tok-o">.</span><span class="tok-f">connect</span><span class="tok-o">(</span><span class="tok-s">"uv-1"</span><span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">loop</span><span class="tok-o">();</span>
+
+  <span class="tok-k">float</span> erythemal <span class="tok-o">=</span> uv<span class="tok-o">.</span><span class="tok-f">readErythemal_mWm2</span><span class="tok-o">()</span> <span class="tok-o">*</span> <span class="tok-t">UV_CAL</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> uvi <span class="tok-o">=</span> erythemal <span class="tok-o">/</span> <span class="tok-n">25.0</span>f<span class="tok-o">;</span>              <span class="tok-c">// UV index definition</span>
+  <span class="tok-k">float</span> lux <span class="tok-o">=</span> vis<span class="tok-o">.</span><span class="tok-f">readLightLevel</span><span class="tok-o">();</span>
+
+  <span class="tok-c">// Cross-check: bright daylight but ~zero UV =&gt; sensor shaded/dirty/faulty.</span>
+  <span class="tok-k">bool</span> suspect <span class="tok-o">=</span> <span class="tok-o">(</span>lux <span class="tok-o">&gt;</span> <span class="tok-n">20000.0</span>f <span class="tok-o">&amp;&amp;</span> uvi <span class="tok-o">&lt;</span> <span class="tok-n">0.5</span>f<span class="tok-o">);</span>
+
+  <span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> band <span class="tok-o">=</span> <span class="tok-f">uvBand</span><span class="tok-o">(</span>uvi<span class="tok-o">);</span>
+  <span class="tok-k">uint32_t</span> burn <span class="tok-o">=</span> <span class="tok-f">burnMinutes</span><span class="tok-o">(</span>uvi<span class="tok-o">);</span>
+  <span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> adv <span class="tok-o">=</span> <span class="tok-f">uvAdvice</span><span class="tok-o">(</span>uvi<span class="tok-o">);</span>
+  <span class="tok-f">showDisplay</span><span class="tok-o">(</span>uvi<span class="tok-o">,</span> band<span class="tok-o">,</span> burn<span class="tok-o">,</span> adv<span class="tok-o">,</span> suspect<span class="tok-o">);</span>
+
+  <span class="tok-c">// daily profile</span>
+  <span class="tok-k">int</span> hr <span class="tok-o">=</span> <span class="tok-f">nowHour</span><span class="tok-o">();</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>uvi <span class="tok-o">&gt;</span> dayPeakUVI<span class="tok-o">)</span> <span class="tok-o">{</span> dayPeakUVI <span class="tok-o">=</span> uvi<span class="tok-o">;</span> dayPeakHour <span class="tok-o">=</span> hr<span class="tok-o">;</span> <span class="tok-o">}</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-t">WiFi</span><span class="tok-o">.</span><span class="tok-f">status</span><span class="tok-o">()==</span><span class="tok-t">WL_CONNECTED</span><span class="tok-o">)</span> <span class="tok-o">{</span>
+    <span class="tok-k">char</span> b<span class="tok-o">[</span><span class="tok-n">200</span><span class="tok-o">];</span>
+    <span class="tok-f">snprintf</span><span class="tok-o">(</span>b<span class="tok-o">,</span><span class="tok-k">sizeof</span> b<span class="tok-o">,</span>
+      <span class="tok-s">"{\"site\":1,\"uvi\":%.1f,\"band\":\"%s\",\"burn_min\":%u,"</span>
+      <span class="tok-s">"\"peak\":%.1f,\"suspect\":%d}"</span><span class="tok-o">,</span>
+      uvi<span class="tok-o">,</span> band<span class="tok-o">,</span> burn<span class="tok-o">,</span> dayPeakUVI<span class="tok-o">,</span> suspect<span class="tok-o">?</span><span class="tok-n">1</span><span class="tok-o">:</span><span class="tok-n">0</span><span class="tok-o">);</span>
+    mqtt<span class="tok-o">.</span><span class="tok-f">publish</span><span class="tok-o">(</span><span class="tok-s">"uv/site/1/reading"</span><span class="tok-o">,</span> b<span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-t">INTERVAL_MS</span><span class="tok-o">);</span>
+<span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (98 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">float uvi = erythemal / 25.0f</span><span class="txt">Converts the calibrated erythemal irradiance to the standard UV index by its defining constant, so the displayed number is the real, comparable index.</span></div><div><span class="ref">bool suspect = (lux &gt; 20000.0f &amp;&amp; uvi &lt; 0.5f)</span><span class="txt">Cross-checks UV against visible light: bright daylight with near-zero UV means the UV sensor is shaded, dirty or faulty, so the display flags itself rather than handing out falsely reassuring advice.</span></div><div><span class="ref">if (burn &lt; 999) displayBurn(burn)</span><span class="txt">Shows the average time-to-burn only when there is a real burn risk, keeping the public advice concrete and actionable at high UV and uncluttered at low UV.</span></div><div><span class="ref">if (uvi &gt; dayPeakUVI)</span><span class="txt">Tracks the day's peak UV and when it occurred, building the per-site daily profile that the network logs and maps.</span></div><div><span class="ref">mqtt.publish("uv/site/1/reading"</span><span class="txt">Publishes the site's live UV, band and peak so a city parks map and daily-profile record can aggregate many displays.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Set UV_CAL from a reference calibration so the displayed index matches a trusted UV meter.</li><li>Choose the skin-type factor and burn-time framing text; always present it as average guidance.</li><li>Set the display brightness/day-night behaviour and the update interval.</li><li>Enable Wi-Fi/MQTT and daily-profile logging if joining a parks network.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Reference UV</h4><p>Compare the node against a calibrated UV-index meter across a range (morning to midday) and set UV_CAL so they agree.</p></li><li><h4>Siting check</h4><p>Confirm the sensor sees the full open sky and that the window passes UV; verify readings track the sun's arc and are not clipped by shade.</p></li><li><h4>Cross-check logic</h4><p>Validate the visible-light cross-check by shading only the UV sensor and confirming the display flags "sensor check".</p></li></ol></section>
+
+<section id="connectivity" aria-labelledby="h-connectivity"><h2 id="h-connectivity">Network Architecture &amp; Connectivity</h2>
+<div class="diagram-scroll"><figure class="diagram diagram-network">
+  <svg viewBox="0 0 760 232" role="img" aria-labelledby="td358 sd358" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td358">UV Index Public Monitor — network topology</title><desc id="sd358">Path taken by telemetry from field node to end user.</desc>
+    <defs>
+    <marker id="ar-d358" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d358" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d358" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d358" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="100" y="26" text-anchor="middle">Edge nodes</text><text class="dg-col" x="321" y="26" text-anchor="middle">Gateway</text><text class="dg-col" x="543" y="26" text-anchor="middle">Cloud</text><text class="dg-col" x="769" y="26" text-anchor="middle">Clients</text><rect x="16" y="52" width="168" height="52" rx="11"
+        fill="url(#gb-d358)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="74" text-anchor="middle"><tspan x="100" y="74.0">UV display</tspan></text><text class="dg-s" x="100" y="92" text-anchor="middle">ESP32 + sensor</text><path d="M184 78 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d358)"/><rect x="16" y="118" width="168" height="52" rx="11"
+        fill="url(#gb-d358)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="140" text-anchor="middle"><tspan x="100" y="140.0">Other parks</tspan></text><text class="dg-s" x="100" y="158" text-anchor="middle">more displays</text><path d="M184 144 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d358)"/><text class="dg-e" x="215" y="46" text-anchor="middle">Wi-Fi 2.4 GHz</text><rect x="246" y="92" width="150" height="60" rx="11"
+        fill="url(#ga-d358)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="321" y="114" text-anchor="middle"><tspan x="321" y="114.0">Router</tspan></text><text class="dg-s" x="321" y="132" text-anchor="middle">per site</text><path d="M396 122 H460" stroke="var(--dg-accent)" stroke-width="1.6" fill="none" marker-end="url(#arh-d358)"/><text class="dg-e" x="432" y="112" text-anchor="middle">MQTT 1883</text><rect x="468" y="88" width="150" height="68" rx="11"
+        fill="url(#ga-d358)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="543" y="110" text-anchor="middle"><tspan x="543" y="110.0">Broker + parks map</tspan></text><text class="dg-s" x="543" y="128" text-anchor="middle">live + daily profile</text><rect x="690" y="52" width="158" height="52" rx="11"
+        fill="url(#gb-d358)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="74" text-anchor="middle"><tspan x="769" y="74.0">Parks map</tspan></text><text class="dg-s" x="769" y="92" text-anchor="middle">city UV</text><path d="M618 122 C 652 122, 656 78, 682 78"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d358)"/><rect x="690" y="118" width="158" height="52" rx="11"
+        fill="url(#gb-d358)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="140" text-anchor="middle"><tspan x="769" y="140.0">Phone</tspan></text><text class="dg-s" x="769" y="158" text-anchor="middle">high-UV alerts</text><path d="M618 122 C 652 122, 656 144, 682 144"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d358)"/>
+  </svg>
+  <figcaption>UV Index Public Monitor — network topology</figcaption>
+</figure></div>
+<h3>Communication protocol</h3><p>Each display optionally publishes its live UV index, band and daily peak. Networking is a bonus — the display works fully stand-alone — so a park with no connectivity still protects the people in front of it.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Topic / endpoint</th><th scope="col">Direction</th><th scope="col">Payload</th></tr></thead>
+    <tbody><tr><td><code>uv/site/1/reading</code></td><td>node → broker</td><td>UVI, band, burn-time, daily peak, suspect flag</td></tr><tr><td><code>uv/site/1/status</code></td><td>node → broker</td><td>battery, calibration date, sensor health</td></tr><tr><td><code>uv/site/1/config</code></td><td>broker → node</td><td>calibration, display settings</td></tr></tbody>
+  </table></div><p class="tbl-caption">Message contract between the device and the broker.</p>
+<h3>Cloud platform configuration</h3><p>A broker feeds a city parks map of live UV and archives each site's daily profile, useful for public-health messaging and for studying how UV varies across a city's open spaces.</p>
+
+<h3>Dashboard setup</h3><p>A parks map coloured by live UV index, with per-site daily curves showing when and how high UV peaks at each location.</p>
+<h3>Mobile app integration</h3><p>Optional alerts when a favourite park hits very-high/extreme UV, prompting sun protection or a change of plans.</p>
+<h3>Security considerations</h3><ul class="check"><li>Sign readings so a public map cannot be spoofed with false "safe" UV values.</li><li>Keep the stand-alone display fully functional without the network — connectivity must never gate the public-health message.</li><li>Flag and surface any "sensor check" condition so a mis-sited display is corrected quickly.</li></ul></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Compare to a UV meter at midday</b></td><td>Displayed UV index matches the reference after calibration</td></tr><tr><td><b>Move through the day</b></td><td>Index rises to a midday peak and falls; daily peak/time logged</td></tr><tr><td><b>Shade only the UV sensor in daylight</b></td><td>Cross-check flags "sensor check"; advice not falsely reassuring</td></tr><tr><td><b>Read the display in direct sun</b></td><td>Index, colour and advice remain legible</td></tr><tr><td><b>Check burn-time at low and extreme UV</b></td><td>Sensible clamped values with average-guidance framing</td></tr><tr><td><b>Run a solar day/night cycle</b></td><td>Battery covers the bright display's daytime draw; recovers overnight</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>The display shows a large UV-index number, the colour band, and a burn-time with plain advice; if networked, a parks map shows each site's live UV and daily peak.</p>
+<div class="codeblock tall" data-file="uv-reading.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">uv-reading.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy uv-reading.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="uv-reading.json" type="button" aria-label="Download uv-reading.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "site": <span class="tok-n">1</span>,
+  "uvi": <span class="tok-n">9.2</span>,
+  "band": "VERY HIGH",
+  "burn_min": <span class="tok-n">22</span>,
+  "peak": <span class="tok-n">9.6</span>,
+  "suspect": <span class="tok-n">0</span>
+}</code></pre>
+  
+</div>
+
+<p>Here the live UV index is 9.2 (Very High), with an average burn time of about 22 minutes and a day-peak of 9.6 — a clear, local, actionable public-health message the citywide forecast could not give.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ESP32%20Espressif%20ESP-WROOM-32%20Dev%20Board.jpg?width=900" alt="An ESP32 development board with the ESP-WROOM-32 module and USB connector" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td359" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td359">ESP32 module converting the UV sensor reading into the standard index and plain-language guidance.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="60" y="46" width="280" height="168" rx="10" fill="#1d4a3e" stroke="#123028" stroke-width="2"/>
+    <rect x="112" y="60" width="176" height="76" rx="5" fill="#c9ccd1" stroke="#9aa0a8"/>
+    <rect x="128" y="76" width="86" height="44" rx="3" fill="#2b2f36"/>
+    <text x="171" y="103" font-size="12" fill="#c9ccd1" text-anchor="middle" font-family="monospace">ESP32</text>
+    <path d="M228 78 h44 v10 h-44z M228 92 h44 v10 h-44z M228 106 h44 v10 h-44z" fill="#9aa0a8"/>
+    <rect x="164" y="150" width="72" height="34" rx="4" fill="#2b2f36"/>
+    <text x="200" y="171" font-size="9" fill="#7f8894" text-anchor="middle" font-family="monospace">USB</text>
+    <rect x="86" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <rect x="266" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <circle cx="70" cy="40" r="2.4" fill="#d8b04a"/><circle cx="88" cy="40" r="2.4" fill="#d8b04a"/><circle cx="106" cy="40" r="2.4" fill="#d8b04a"/><circle cx="124" cy="40" r="2.4" fill="#d8b04a"/><circle cx="142" cy="40" r="2.4" fill="#d8b04a"/><circle cx="160" cy="40" r="2.4" fill="#d8b04a"/><circle cx="178" cy="40" r="2.4" fill="#d8b04a"/><circle cx="196" cy="40" r="2.4" fill="#d8b04a"/><circle cx="214" cy="40" r="2.4" fill="#d8b04a"/><circle cx="232" cy="40" r="2.4" fill="#d8b04a"/><circle cx="250" cy="40" r="2.4" fill="#d8b04a"/><circle cx="268" cy="40" r="2.4" fill="#d8b04a"/><circle cx="286" cy="40" r="2.4" fill="#d8b04a"/><circle cx="304" cy="40" r="2.4" fill="#d8b04a"/><circle cx="322" cy="40" r="2.4" fill="#d8b04a"/><circle cx="70" cy="220" r="2.4" fill="#d8b04a"/><circle cx="88" cy="220" r="2.4" fill="#d8b04a"/><circle cx="106" cy="220" r="2.4" fill="#d8b04a"/><circle cx="124" cy="220" r="2.4" fill="#d8b04a"/><circle cx="142" cy="220" r="2.4" fill="#d8b04a"/><circle cx="160" cy="220" r="2.4" fill="#d8b04a"/><circle cx="178" cy="220" r="2.4" fill="#d8b04a"/><circle cx="196" cy="220" r="2.4" fill="#d8b04a"/><circle cx="214" cy="220" r="2.4" fill="#d8b04a"/><circle cx="232" cy="220" r="2.4" fill="#d8b04a"/><circle cx="250" cy="220" r="2.4" fill="#d8b04a"/><circle cx="268" cy="220" r="2.4" fill="#d8b04a"/><circle cx="286" cy="220" r="2.4" fill="#d8b04a"/><circle cx="304" cy="220" r="2.4" fill="#d8b04a"/><circle cx="322" cy="220" r="2.4" fill="#d8b04a"/>
+    <circle cx="330" cy="60" r="4" fill="#e03b3b"/><circle cx="330" cy="76" r="4" fill="#3be07a"/>
+  </svg>
+  <figcaption>ESP32 module converting the UV sensor reading into the standard index and plain-language guidance.</figcaption>
+</figure></template>
+  <figcaption>ESP32 module converting the UV sensor reading into the standard index and plain-language guidance.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — ESP32 Espressif ESP-WROOM-32 Dev Board.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>UV reads low on a clearly sunny day</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Sensor shaded/dirty, or window blocks UV</p>
+        <p><strong>Fix.</strong> Re-site for full open sky; clean the window; confirm the window passes UV; the cross-check should flag this</p></div></details><details class="expand"><summary>Display unreadable in sunlight</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Low-brightness panel</p>
+        <p><strong>Fix.</strong> Use a high-nit display or large LEDs; reduce glare with placement/glazing</p></div></details><details class="expand"><summary>Index disagrees with a reference meter</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Uncalibrated sensor</p>
+        <p><strong>Fix.</strong> Calibrate UV_CAL against a trusted UV-index meter across a range</p></div></details><details class="expand"><summary>Burn-time looks alarmingly precise</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Presenting an average as a personal guarantee</p>
+        <p><strong>Fix.</strong> Frame as average guidance for typical skin; clamp extremes; state individual variation</p></div></details><details class="expand"><summary>Display browns out at midday</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Bright display draw exceeds solar/battery</p>
+        <p><strong>Fix.</strong> Give the display its own headroom; oversize the panel/battery; dim slightly if needed</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details><details class="expand"><summary>An I²C device is not detected</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong address, missing pull-ups, swapped SDA/SCL, or a bus too long for the pull-up value.</p>
+        <p><strong>Fix.</strong> Run an I²C scanner sketch first — it should print the device address. Most breakout boards include 4.7 kΩ pull-ups, but if you have chained four of them the parallel resistance is too low; remove the pull-ups from all but one board. Keep the bus under 30 cm at 100 kHz.</p></div></details><details class="expand"><summary>Wi-Fi connects but MQTT never does (state -2)</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong broker address or port, a firewall in the way, or the broker requiring credentials the sketch is not sending.</p>
+        <p><strong>Fix.</strong> Test from a laptop on the same network first: <code>mosquitto_sub -h &lt;broker&gt; -t "#" -v</code>. If that works, the problem is on the device — check the IP literal, port 1883 (or 8883 for TLS), and that <code>client.setServer()</code> runs before <code>connect()</code>. PubSubClient state codes are documented in its header.</p></div></details><details class="expand"><summary>Readings arrive for a while and then stop</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The Wi-Fi or MQTT session dropped and the sketch never reconnects, or the broker dropped the client on keep-alive timeout.</p>
+        <p><strong>Fix.</strong> Never assume the link stays up. Check <code>WiFi.status()</code> and <code>client.connected()</code> at the top of every loop and reconnect with exponential backoff. Add a watchdog so a wedged network stack reboots the device instead of going silent.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Update every ~30 s — UV changes slowly enough that faster is unnecessary and costs display power.</li><li>Dim or duty-cycle the bright display when no one is around (e.g. at night) to save solar budget.</li><li>Do the trivial index/burn-time maths on-device; there is no heavy computation here.</li><li>Cache the day's peak locally so the profile survives brief resets.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Batch several samples into one MQTT publish. Radio time, not CPU time, dominates the energy budget.</li><li>Set the MQTT keep-alive to a value that matches your reporting interval so the broker does not churn reconnections.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>Site for full open sky and keep the sensor clean — a low reading gives dangerously reassuring advice.</li><li>Present burn-time as average guidance for a typical skin type; individuals, especially fair-skinned and children, vary and need more caution.</li><li>Make clear the display is a public-health aid, not a substitute for personal sun-protection judgement.</li><li>Use UV-stable materials for the housing and glazing so the installation itself does not degrade in the sun it measures.</li><li>Lithium cells vent and burn when abused. Only use protected cells or a proper BMS, never charge below 0 °C, and never leave a charging pack unattended on a wooden desk.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Clean the sensor window regularly; dust and grime cut UV and bias the reading low.</li><li>Re-verify calibration against a reference periodically; UV sensors can drift.</li><li>Check the display legibility and brightness, and the solar panel cleanliness.</li><li>Confirm the siting is still clear as trees grow or structures change around the installation.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Log pack voltage. When resting voltage after a full charge drops below about 4.0 V, the cell is near end of life — replace it.</li><li>Wash the panel every few weeks in dusty conditions; a visible dust film costs 15–25 % of the harvest.</li><li>Keep the broker and dashboard containers patched, and rotate device credentials at least once a year.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add a skin-type selector (button) so a user can get advice tuned to their skin.</li><li>Add spoken/multilingual advice and larger accessibility features for public spaces.</li><li>Correlate logged UV with local ozone and cloud data to explain and forecast site UV.</li><li>Integrate with park PA/signage to broadcast sun-safety reminders at high-UV times.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add over-the-air firmware updates so you never have to physically reach a deployed node again.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why not just use the weather app's UV index?</summary><div class="inner"><p>The app forecasts a whole city. Your exact spot can differ a lot — shade, altitude, or reflective sand/snow — and this monitor measures the real UV where people actually are, which is what protects them.</p></div></details><details class="expand"><summary>How does it work out a burn time?</summary><div class="inner"><p>A UV index unit is a fixed dose rate, and skin burns after a characteristic dose. So time-to-burn is roughly inversely proportional to the index. It is shown as an average for typical skin, not a personal guarantee.</p></div></details><details class="expand"><summary>What is the biggest thing to get right?</summary><div class="inner"><p>Siting. The sensor must see the whole open sky through a UV-passing window and be kept clean. A shaded or dirty sensor reads low and tells people the sun is safe when it is not — the one dangerous failure mode.</p></div></details><details class="expand"><summary>Does it need internet?</summary><div class="inner"><p>No. It works fully stand-alone, showing the index and advice from its own sensor. Networking only adds a city parks map and daily-profile logging as a bonus.</p></div></details><details class="expand"><summary>Is a cheap UV sensor accurate enough?</summary><div class="inner"><p>It is indicative, and better with a reference calibration. For public awareness — showing that UV is high and prompting protection at the right place and time — it does the job, and it flags itself if it looks shaded or faulty.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://www.who.int/news-room/questions-and-answers/item/radiation-the-ultraviolet-(uv)-index" rel="noopener nofollow" target="_blank">WHO — UV index and sun protection</a><span class="src">WHO</span></li><li><a href="https://en.wikipedia.org/wiki/Ultraviolet_index" rel="noopener nofollow" target="_blank">Ultraviolet index — definition and categories</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Sunburn" rel="noopener nofollow" target="_blank">Erythema and minimal erythemal dose</a><span class="src">Reference</span></li><li><a href="https://optoelectronics.liteon.com/" rel="noopener nofollow" target="_blank">LTR390 / VEML6075 UV sensors (datasheets)</a><span class="src">Manufacturer</span></li><li><a href="https://en.wikipedia.org/wiki/Ultraviolet" rel="noopener nofollow" target="_blank">UV, altitude and surface reflectance</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="flood-level-sensor.html"><span class="dir">← Previous project</span><span class="ttl">Flood Level Sensor</span></a>
+        <span class="next disabled"></span>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Beginner</b></div>
+        <div class="rail-stat"><span>Time</span><b>8–12 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>11</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹3,800 – ₹5,200</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="city-air-pollution-node.html">City Air Pollution Node</a></li><li><a href="river-water-quality-buoy.html">River Water Quality Buoy</a></li><li><a href="noise-pollution-mapper.html">Noise Pollution Mapper</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="city-air-pollution-node.html">
+        <span class="rc">Environment</span>
+        <h4>City Air Pollution Node</h4>
+        <p>A low-cost node feeding distributed, street-level air-quality maps.</p></a><a class="relcard" href="river-water-quality-buoy.html">
+        <span class="rc">Environment</span>
+        <h4>River Water Quality Buoy</h4>
+        <p>Floating sensor logging pH, turbidity and dissolved oxygen in rivers.</p></a><a class="relcard" href="noise-pollution-mapper.html">
+        <span class="rc">Environment</span>
+        <h4>Noise Pollution Mapper</h4>
+        <p>Measures urban sound levels to build city-wide noise heat maps.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>UV Index Public Monitor</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
