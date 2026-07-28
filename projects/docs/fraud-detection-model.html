@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Fraud Detection Model — Circuit, Code &amp; Full Build Guide | Predictive ML</title>
+  <meta name="description" content="Complete advanced-level build guide for a Fraud Detection Model: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="fraud detection model, fraud detection model project, how to build fraud detection model, cpu/gpu workstation or server project, predictive ml project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/fraud-detection-model.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/fraud-detection-model.html" />
+  <meta property="og:title" content="Fraud Detection Model — Circuit, Code &amp; Full Build Guide | Predictive ML" />
+  <meta property="og:description" content="Complete advanced-level build guide for a Fraud Detection Model: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Predictive ML" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Fraud Detection Model — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete advanced-level build guide for a Fraud Detection Model: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🛡️</text></svg>" />
+  <style>:root{--acc:#818cf8;--acc-light:#a5b4fc;--acc-rgb:129,140,248}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/fraud-detection-model.html#article","headline":"Fraud Detection Model — Complete Build Guide","name":"Fraud Detection Model","description":"Complete advanced-level build guide for a Fraud Detection Model: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/fraud-detection-model.html","inLanguage":"en","articleSection":"Predictive ML","keywords":"fraud detection model, fraud detection model project, how to build fraud detection model, cpu/gpu workstation or server project, predictive ml project, circuit diagram, source code, tutorial","proficiencyLevel":"Advanced","dependencies":"Python, scikit-learn, pandas, NumPy","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-28","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/fraud-detection-model.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/fraud-detection-model.html#howto","name":"How to build a Fraud Detection Model","description":"Complete advanced-level build guide for a Fraud Detection Model: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT16H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"0"},"supply":[],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Score and decide with a cost-tuned threshold","text":"Score each transaction's fraud probability and flag it against a threshold tuned to error costs, routing to review."},{"@type":"HowToStep","position":2,"name":"Manage false-alarm volume and drift","text":"Tune to keep false-alarm volume manageable for the review team, and retrain regularly as fraud patterns adapt."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Fraud Detection Model","item":"https://siddhantkumar.in/projects/docs/fraud-detection-model.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/fraud-detection-model.html#faq","mainEntity":[{"@type":"Question","name":"Why is accuracy the wrong metric?","acceptedAnswer":{"@type":"Answer","text":"Because fraud is extremely rare. A model that predicts \"not fraud\" for everything is over 99% accurate yet catches zero fraud. Under severe imbalance, accuracy is actively misleading — you must use precision (are flags real?) and recall (is fraud caught?) instead."}},{"@type":"Question","name":"How do you handle the imbalance?","acceptedAnswer":{"@type":"Answer","text":"By taking it seriously: resampling (over/under-sampling), class weighting (penalise missing the rare class), or framing it as anomaly detection (model \"normal\", flag deviations) — combined with features that expose fraud patterns, which often matter more than the model."}},{"@type":"Question","name":"Why do false positives matter so much?","acceptedAnswer":{"@type":"Answer","text":"Because legitimate transactions vastly outnumber fraud, so even a low false-positive rate produces a large absolute number of false alarms — blocked payments, angry customers, and a swamped review team. Managing false-alarm volume is central."}},{"@type":"Question","name":"What decides the threshold?","acceptedAnswer":{"@type":"Answer","text":"The business cost trade-off: how much fraud you catch (recall) versus how many false alarms you cause (precision), tuned to the actual costs of a missed fraud versus a wrongful decline — not to any accuracy figure."}},{"@type":"Question","name":"Why must it be retrained?","acceptedAnswer":{"@type":"Answer","text":"Because fraud is adversarial — fraudsters actively adapt to evade detection — so the target drifts and a static model decays. Continual retraining and drift monitoring are required, and serious deployments keep humans in the loop."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#predictive-ml">Predictive ML</a><span class="sep">/</span>
+        <span aria-current="page">Fraud Detection Model</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project A21 · Predictive ML</span>
+          <h1>Fraud Detection Model<span class="grad">.</span></h1>
+          <p class="tagline">Flags suspicious transactions in real time with anomaly detection — where fraud is rare, so the class imbalance and the cost of errors define everything.</p>
+          <div class="hero-chips">
+            <span class="chip lv-advanced">Advanced</span>
+            <span class="chip">12–18 hours</span>
+            <span class="chip neutral">24 min read</span>
+            <span class="chip neutral">Anomaly</span><span class="chip neutral">Finance</span><span class="chip neutral">ML</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1062" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1062">Fraud Detection Model — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Fraud Detection Model — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Advanced</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>12–18 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>Software; compute-light to moderate</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>CPU/GPU workstation or server</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Predictive ML</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>28 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Flags suspicious transactions in real time with anomaly detection — where fraud is rare, so the class imbalance and the cost of errors define everything.</p>
+<p>Fraud detection — spotting the tiny fraction of transactions that are criminal among the vast majority that are legitimate — is one of the highest-value applications of machine learning, protecting payments, banking and commerce. This project builds a model that <b>flags suspicious transactions in real time</b>. But its defining lesson is not the algorithm; it is that fraud detection is dominated by a single brutal fact — <b>fraud is extremely rare</b> — which reshapes how you build, train and, above all, <b>evaluate</b> the model.</p>
+<p>That rarity — a severe <b>class imbalance</b>, often well under 1% of transactions are fraud — breaks the naïve approach. A model that simply predicts "not fraud" for everything achieves >99% <b>accuracy</b> while catching <i>zero</i> fraud, which is why <b>accuracy is a worse-than-useless metric here</b>. The project is really about the techniques that actually work under imbalance: choosing the right <b>metrics</b> (precision, recall, and their trade-off), handling imbalance (resampling, class weighting, <b>anomaly detection</b> that models "normal" and flags deviations), and engineering features that expose fraud patterns.</p>
+<p>The value is real-time protection, and the honesty is about the <b>cost of errors</b>, which is asymmetric and business-critical. A <b>false negative</b> (missed fraud) means money lost; a <b>false positive</b> (a legitimate transaction wrongly flagged) means a blocked payment and an angry customer — and there are <i>far</i> more legitimate transactions, so even a low false-positive <i>rate</i> produces a flood of false alarms. So the whole game is tuning the <b>precision/recall trade-off</b> to the business's costs, not chasing accuracy. It is also honest that fraud <b>adapts</b> (an adversarial, drifting target requiring constant retraining), that decisions affecting people need care and often human review, and that labels are noisy. Built with imbalance-aware methods and cost-driven evaluation, it is both a genuinely valuable system and the definitive lesson in machine learning where the classes are rare and the errors are not equal.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Artificial%20neural%20network.svg?width=900" alt="A schematic of a feed-forward artificial neural network" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1053" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1053">A fraud detection model flags the rare criminal transactions among a flood of legitimate ones in real time.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <line x1="79" y1="91" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="117" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="143" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="169" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="65" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="91" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="117" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="143" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="169" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="195" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="65" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="91" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="117" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="143" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="169" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="195" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="104" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="130" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="156" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/>
+    <text x="70" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">input</text>
+    <text x="205" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">hidden</text>
+    <text x="340" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">output</text>
+  </svg>
+  <figcaption>A fraud detection model flags the rare criminal transactions among a flood of legitimate ones in real time.</figcaption>
+</figure></template>
+  <figcaption>A fraud detection model flags the rare criminal transactions among a flood of legitimate ones in real time.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Artificial_neural_network.svg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Artificial neural network.svg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Flags suspicious transactions in real time</li><li>Handles severe class imbalance (fraud is rare)</li><li>Uses anomaly detection / imbalance-aware methods</li><li>Evaluates with precision/recall, not accuracy</li><li>Tunes the precision/recall trade-off to error costs</li><li>Engineers features that expose fraud patterns</li><li>Supports human review of flagged cases</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Payment / card fraud</b></td><td>Real-time transaction risk scoring.</td></tr><tr><td><b>Banking / account fraud</b></td><td>Detecting anomalous account activity.</td></tr><tr><td><b>E-commerce</b></td><td>Flagging suspicious orders.</td></tr><tr><td><b>Imbalanced-ML learning</b></td><td>Rare-event detection done right.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Imbalanced-classification / anomaly detection</li><li>Precision/recall (not accuracy) evaluation</li><li>Resampling / class weighting</li><li>Cost-aware threshold tuning</li><li>Real-time scoring</li><li>Retraining for adaptive fraud</li><li>Honest about false-positive floods and adversarial drift</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Advanced</td></tr><tr><td><b>Estimated completion time</b></td><td>12–18 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>Software; compute-light to moderate</td></tr><tr><td><b>Primary discipline</b></td><td>Predictive ML</td></tr><tr><td><b>Reference platform</b></td><td>CPU/GPU workstation or server</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Imbalanced classification and anomaly detection</li><li>Precision/recall and cost-aware evaluation</li><li>Resampling / class weighting</li><li>Threshold tuning to business costs</li><li>Handling adversarial drift and retraining</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>Fraud is rare — accuracy is worse than useless; use precision/recall.</p>
+<p>Handle severe imbalance (resampling/weighting/anomaly detection).</p>
+<p>Errors are asymmetric and unequal in count — false positives flood.</p>
+<p>Fraud adapts — an adversarial, drifting target needing retraining.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>Compute</b></td><td>CPU/GPU for training and real-time scoring</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>ML libraries</b></td><td>Imbalanced-learning / anomaly detection</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Transaction data</b><br/><span style="font-size:.82em;opacity:.78">Fraud is rare</span></td><td>Labelled transactions (very imbalanced)</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Review workflow</b><br/><span style="font-size:.82em;opacity:.78">Decisions affect people</span></td><td>Human review of flagged cases</td><td class="num">1</td><td class="num">—</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹0</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2>
+<p>This is a pure-software ML system — no electronic hardware to specify. The "platform" is a computer: a CPU handles most models and real-time scoring; a GPU helps for large-scale training.</p>
+<p>Memory scales with transaction volume and features; a real deployment adds a low-latency scoring service, a labelled-data pipeline, and a human-review queue. Everything else is the software stack, models and libraries below.</p></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Python 3.11 + ML (imbalanced classification)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>Python</b> <span style="opacity:.7">3.11+</span></td><td>Runtime for the analysis, training and service code.</td><td><code>sudo apt install python3 python3-venv python3-pip</code></td></tr><tr><td><b>scikit-learn</b> <span style="opacity:.7">1.5+</span></td><td>Classical models, preprocessing pipelines and evaluation metrics.</td><td><code>pip install scikit-learn</code></td></tr><tr><td><b>pandas</b> <span style="opacity:.7">2.2+</span></td><td>Tabular data loading, cleaning and time-series resampling.</td><td><code>pip install pandas</code></td></tr><tr><td><b>NumPy</b> <span style="opacity:.7">1.26+</span></td><td>Vectorised array maths underpinning every other library here.</td><td><code>pip install numpy</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td1054 sd1054" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1054">Fraud Detection Model — system block diagram</title><desc id="sd1054">Functional block diagram of the Fraud Detection Model system.</desc>
+    <defs>
+    <marker id="ar-d1054" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1054" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1054" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1054" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Transaction</text><rect x="26" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d1054)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="119" text-anchor="middle"><tspan x="115" y="119.0">Features</tspan></text><text class="dg-s" x="115" y="138" text-anchor="middle"><tspan x="115" y="138.0">signals</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Score</text><rect x="266" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d1054)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="79" text-anchor="middle"><tspan x="355" y="79.0">Model</tspan></text><text class="dg-s" x="355" y="98" text-anchor="middle"><tspan x="355" y="98.0">imbalance-aware</tspan></text><rect x="266" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d1054)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="159" text-anchor="middle"><tspan x="355" y="159.0">Fraud prob</tspan></text><text class="dg-s" x="355" y="178" text-anchor="middle"><tspan x="355" y="178.0">risk</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Decide</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d1054)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Threshold</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">cost-tuned</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d1054)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Precision/recall</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">trade-off</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Act</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d1054)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Flag</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">review/block</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d1054)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Retrain</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">adapts</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1054)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1054)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1054)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Fraud Detection Model — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>The "wiring" is the detection data flow — a transaction is scored in real time by an imbalance-aware model; a cost-tuned threshold decides whether to flag it for action or review.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 264" role="img" aria-labelledby="td1055 sd1055" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1055">Fraud Detection Model — wiring schematic</title><desc id="sd1055">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d1055" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1055" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1055" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1055" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="168" rx="14"
+      fill="url(#ga-d1055)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">CPU/GPU workstation</tspan><tspan x="434" y="95.0">or server</tspan></text><text class="dg-s" x="434" y="214" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d1055)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Transaction</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">—</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">Risk signals</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d1055)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">Model</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">—</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="167.0">Fraud probability</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d1055)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Threshold (cost-tuned)</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">—</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Flag / allow</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d1055)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Review / action</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">—</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Block/confirm</tspan></text>
+  </svg>
+  <figcaption>Fraud Detection Model — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Transaction</b></td><td>features</td><td><code>—</code></td><td>Risk signals</td></tr><tr><td><b>Model</b></td><td>score</td><td><code>—</code></td><td>Fraud probability</td></tr><tr><td><b>Threshold (cost-tuned)</b></td><td>decide</td><td><code>—</code></td><td>Flag / allow</td></tr><tr><td><b>Review / action</b></td><td>human</td><td><code>—</code></td><td>Block/confirm</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Engineer features that expose fraud patterns (amount, velocity, location, history).</li><li>Score each transaction with an imbalance-aware / anomaly-detection model.</li><li>Apply a threshold tuned to error costs (not accuracy).</li><li>Flag suspicious transactions for action and/or human review.</li><li>Retrain regularly — fraud adapts.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Datacenter%20servers.jpg?width=900" alt="Racks of servers in a data centre" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1056" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1056">Fraud is rare, so accuracy is meaningless — precision, recall and a cost-tuned threshold define the model.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <path d="M120 152 a38 38 0 0 1 6-75 a52 52 0 0 1 98-14 a44 44 0 0 1 52 44 a34 34 0 0 1-8 45 z"
+      fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="150" y="172" width="100" height="44" rx="8" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="200" y="199" font-size="12" fill="var(--dg-muted)" text-anchor="middle" font-family="monospace">broker</text>
+    <line x1="200" y1="152" x2="200" y2="170" stroke="var(--dg-accent)" stroke-width="2"/>
+  </svg>
+  <figcaption>Fraud is rare, so accuracy is meaningless — precision, recall and a cost-tuned threshold define the model.</figcaption>
+</figure></template>
+  <figcaption>Fraud is rare, so accuracy is meaningless — precision, recall and a cost-tuned threshold define the model.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Datacenter_servers.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Datacenter servers.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td1057 sd1057" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1057">Fraud Detection Model — architecture stack</title><desc id="sd1057">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d1057" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1057" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1057" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1057" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d1057)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">ESP32 DevKit V1 (ESP-WROOM-32) · sensors and actuators</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d1057)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d1057)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">python · sklearn · pandas · numpy</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d1057)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d1057)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d1057)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d1057)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Fraud Detection Model — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>Fraud detection looks like a classification problem — label each transaction fraud or not — but it is dominated by one property that changes everything: <b>fraud is extremely rare</b>. In real data, the fraudulent fraction is often well under 1%, sometimes a fraction of that. This <b>severe class imbalance</b> is not a detail to handle at the end; it is the central fact that dictates how you train, what algorithms work, and — most importantly — how you must <b>measure</b> the model. Internalising that is the whole point of the project.</p>
+<p>The first casualty of imbalance is the metric everyone reaches for: <b>accuracy is worthless here, actively misleading</b>. A model that predicts "not fraud" for <i>every</i> transaction is >99% accurate and catches <b>zero</b> fraud — a perfect illustration of why accuracy on imbalanced data is meaningless. The right metrics are <b>precision</b> (of the transactions we flagged, how many were truly fraud?) and <b>recall</b> (of all the fraud, how much did we catch?), along with their trade-off (the precision-recall curve). These directly express what the business cares about, and they are the only honest way to judge a rare-event detector.</p>
+<p>The techniques that <i>work</i> under imbalance follow from taking it seriously. You can <b>resample</b> (oversample fraud or undersample legitimate transactions to rebalance training), use <b>class weighting</b> (penalise missing the rare class more heavily), or frame it as <b>anomaly detection</b> — model what "normal" transactions look like and flag those that deviate, which is natural when fraud is rare and varied. Alongside, <b>feature engineering</b> exposes fraud signatures: transaction amount and its unusualness for this customer, <b>velocity</b> (many transactions in a short time), location/device anomalies, and deviation from the customer's history. Good features often matter more than the choice of model.</p>
+<p>The deepest lesson, and where the honesty lives, is the <b>asymmetric and unequal cost of errors</b>. A <b>false negative</b> — missed fraud — costs money directly. A <b>false positive</b> — a legitimate transaction wrongly declined — costs a blocked payment, a frustrated customer, and support burden. These costs are <i>different</i>, and crucially there are <b>vastly more legitimate transactions than fraud</b>, so even a <b>low false-positive rate produces a large absolute number of false alarms</b> that can swamp a review team and anger real customers. The entire operational challenge is therefore <b>tuning the decision threshold to the business's cost trade-off</b> — how much recall (caught fraud) you buy at the price of how much precision (false alarms) — not maximising some single accuracy number. Three further honest realities complete the picture: fraud is <b>adversarial and drifting</b> (fraudsters actively adapt to evade detection, so the target moves and models must be <b>retrained continually</b>); decisions <b>affect real people</b> (a wrongful decline or accusation has consequences), so serious deployments keep <b>human review</b> in the loop and watch for bias; and <b>labels are noisy</b> (some fraud is never discovered, some flags are wrong). Built with imbalance-aware methods, precision/recall-and-cost-driven evaluation, and a threshold tuned to real error costs, the model delivers genuine value — real-time protection — while teaching the essential discipline of machine learning when the thing you're hunting is rare and the mistakes are not created equal.</p>
+
+<h3>The maths behind it</h3><h4>Why accuracy fails</h4><div class="codeblock tall" data-file="Why accuracy fails">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Why accuracy fails</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Why accuracy fails to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Why accuracy fails" type="button" aria-label="Download Why accuracy fails">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>fraud ≈ 0.2% of transactions
+"predict not-fraud always" → 99.8% accuracy, 0 fraud caught
+
+→ ACCURACY IS MEANINGLESS on imbalanced data.</code></pre>
+  
+</div>
+<h4>The right metrics</h4><div class="codeblock tall" data-file="The right metrics">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">The right metrics</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy The right metrics to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="The right metrics" type="button" aria-label="Download The right metrics">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>precision = TP / (TP + FP)   # of flags, how many are real fraud
+recall    = TP / (TP + FN)   # of all fraud, how much we catch
+
+Tune the precision/recall trade-off (PR curve) to the business.</code></pre>
+  
+</div>
+<h4>Cost-tuned threshold (the real game)</h4><div class="codeblock tall" data-file="Cost-tuned threshold (the real game)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Cost-tuned threshold (the real game)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Cost-tuned threshold (the real game) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Cost-tuned threshold (the real game)" type="button" aria-label="Download Cost-tuned threshold (the real game)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>flag if fraud_score ≥ threshold
+
+false negative (miss)  → money lost
+false positive (false alarm) → blocked payment + angry customer
+  and legit ≫ fraud → low FP RATE still = MANY false alarms
+
+choose threshold by expected COST, not accuracy.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 670" role="img" aria-labelledby="td1058 sd1058" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1058">Fraud Detection Model — firmware flowchart</title><desc id="sd1058">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d1058" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1058" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1058" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1058" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d1058)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Transaction arrives</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1058)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d1058)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="144.0">Engineer features / score</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1058)"/><path d="M210 202 L349 244 L210 286 L71 244 z"
+          fill="url(#ga-d1058)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="244" text-anchor="middle"><tspan x="210" y="237.5">Score above cost-tuned</tspan><tspan x="210" y="250.5">threshold?</tspan></text><path d="M210 286 L210 310" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1058)"/><text class="dg-e" x="220" y="305">Flag (review/block)</text><path d="M349 244 H397 V200 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d1058)"/><text class="dg-e" x="403" y="238">Allow</text><path d="M101 316 L335 316 L319 372 L85 372 z"
+          fill="url(#gb-d1058)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="344" text-anchor="middle"><tspan x="210" y="344.0">Flag (review/block)</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1058)"/><path d="M101 402 L335 402 L319 458 L85 458 z"
+          fill="url(#gb-d1058)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="430.0">Allow</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1058)"/><rect x="85" y="488" width="250" height="56" rx="10"
+          fill="url(#gb-d1058)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="516" text-anchor="middle"><tspan x="210" y="516.0">Human review where needed</tspan></text><path d="M210 544 L210 568" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1058)"/><rect x="85" y="574" width="250" height="56" rx="28"
+          fill="url(#ga-d1058)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="602" text-anchor="middle"><tspan x="210" y="595.5">Feed back + retrain (fraud</tspan><tspan x="210" y="608.5">adapts)</tspan></text>
+  </svg>
+  <figcaption>Fraud Detection Model — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Engineer features and handle imbalance</h4><p>Engineer fraud-relevant features and handle the severe imbalance (resampling, class weighting, or anomaly detection).</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Fraud is rare, so accuracy is worthless — a "never fraud" model is >99% accurate and catches nothing. Evaluate with precision/recall, and remember there are far more legitimate transactions than fraud, so even a low false-positive rate produces a flood of false alarms and angry customers.</p></div>
+  </aside></li><li><h4>Score and tune the threshold to cost</h4><p>Score transactions and set the decision threshold by the business cost trade-off between missed fraud and false alarms.</p></li><li><h4>Review, feed back and retrain</h4><p>Route flags to human review where needed, and retrain regularly because fraud adapts.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Score and decide with a cost-tuned threshold</h4><p>Score each transaction's fraud probability and flag it against a threshold tuned to error costs, routing to review.</p><div class="codeblock tall" data-file="fraud.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">fraud.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy fraud.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="fraud.py" type="button" aria-label="Download fraud.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">def</span> <span class="tok-f">score</span><span class="tok-o">(</span>txn<span class="tok-o">,</span> model<span class="tok-o">,</span> features<span class="tok-o">):</span>
+    <span class="tok-k">return</span> <span class="tok-f">float</span><span class="tok-o">(</span>model<span class="tok-o">.</span><span class="tok-f">predict_proba</span><span class="tok-o">([</span><span class="tok-f">features</span><span class="tok-o">(</span>txn<span class="tok-o">)])[</span><span class="tok-n">0</span><span class="tok-o">][</span><span class="tok-n">1</span><span class="tok-o">])</span>   <span class="tok-c"># fraud probability</span>
+
+<span class="tok-k">def</span> <span class="tok-f">decide</span><span class="tok-o">(</span>txn<span class="tok-o">,</span> model<span class="tok-o">,</span> features<span class="tok-o">,</span> threshold<span class="tok-o">):</span>
+    <span class="tok-c"># threshold TUNED TO COST (precision/recall), NOT accuracy</span>
+    p <span class="tok-o">=</span> <span class="tok-f">score</span><span class="tok-o">(</span>txn<span class="tok-o">,</span> model<span class="tok-o">,</span> features<span class="tok-o">)</span>
+    <span class="tok-k">if</span> p <span class="tok-o">&gt;=</span> threshold<span class="tok-o">:</span>
+        <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"action"</span><span class="tok-o">:</span> <span class="tok-s">"flag"</span><span class="tok-o">,</span> <span class="tok-s">"score"</span><span class="tok-o">:</span> <span class="tok-f">round</span><span class="tok-o">(</span>p<span class="tok-o">,</span> <span class="tok-n">3</span><span class="tok-o">),</span> <span class="tok-s">"route"</span><span class="tok-o">:</span> <span class="tok-s">"review"</span><span class="tok-o">}</span>  <span class="tok-c"># people-affecting</span>
+    <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"action"</span><span class="tok-o">:</span> <span class="tok-s">"allow"</span><span class="tok-o">,</span> <span class="tok-s">"score"</span><span class="tok-o">:</span> <span class="tok-f">round</span><span class="tok-o">(</span>p<span class="tok-o">,</span> <span class="tok-n">3</span><span class="tok-o">)}</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">return float(model.predict_proba([features(txn)])[0][1])   # fraud probability</span><span class="txt">The model outputs a fraud probability from engineered features — a score, not a hard label, so the threshold can be tuned.</span></div><div><span class="ref"># threshold TUNED TO COST (precision/recall), NOT accuracy</span><span class="txt">The decision threshold is set by the business cost trade-off between missed fraud and false alarms — the real operational lever.</span></div><div><span class="ref">return {"action": "flag", "score": round(p, 3), "route": "review"}  # people-affecting</span><span class="txt">Flags route to human review because these decisions affect real people — a wrongful decline has consequences.</span></div></div></li><li><h4>Manage false-alarm volume and drift</h4><p>Tune to keep false-alarm volume manageable for the review team, and retrain regularly as fraud patterns adapt.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Think in absolute numbers, not rates: with legit transactions vastly outnumbering fraud, a 1% false-positive rate can bury a review team. Tune the threshold to the false-alarm volume the business can actually handle.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="fraud_detection.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">fraud_detection.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy fraud_detection.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="fraud_detection.py" type="button" aria-label="Download fraud_detection.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">#!/usr/bin/env python3</span>
+<span class="tok-s">"""</span>
+<span class="tok-s">Fraud Detection Model</span>
+<span class="tok-s"></span>
+<span class="tok-s">Flags rare fraudulent transactions in real time. The defining fact is</span>
+<span class="tok-s">IMBALANCE (fraud is very rare), which makes ACCURACY MEANINGLESS. Use</span>
+<span class="tok-s">precision/recall, handle imbalance (resample/weight/anomaly detection),</span>
+<span class="tok-s">and TUNE THE THRESHOLD TO ERROR COSTS. Fraud adapts -&gt; retrain; decisions</span>
+<span class="tok-s">affect people -&gt; human review.</span>
+<span class="tok-s">"""</span>
+<span class="tok-k">class</span> <span class="tok-t">FraudDetector</span><span class="tok-o">:</span>
+    <span class="tok-k">def</span> <span class="tok-f">__init__</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> model<span class="tok-o">,</span> features<span class="tok-o">,</span> threshold<span class="tok-o">):</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>model <span class="tok-o">=</span> model<span class="tok-o">;</span> <span class="tok-k">self</span><span class="tok-o">.</span>features <span class="tok-o">=</span> features
+        <span class="tok-k">self</span><span class="tok-o">.</span>threshold <span class="tok-o">=</span> threshold          <span class="tok-c"># cost-tuned, NOT accuracy-tuned</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">score</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> txn<span class="tok-o">):</span>
+        <span class="tok-k">return</span> <span class="tok-f">float</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">.</span>model<span class="tok-o">.</span><span class="tok-f">predict_proba</span><span class="tok-o">([</span><span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">features</span><span class="tok-o">(</span>txn<span class="tok-o">)])[</span><span class="tok-n">0</span><span class="tok-o">][</span><span class="tok-n">1</span><span class="tok-o">])</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">decide</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> txn<span class="tok-o">):</span>
+        p <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">score</span><span class="tok-o">(</span>txn<span class="tok-o">)</span>
+        <span class="tok-k">if</span> p <span class="tok-o">&gt;=</span> <span class="tok-k">self</span><span class="tok-o">.</span>threshold<span class="tok-o">:</span>
+            <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"action"</span><span class="tok-o">:</span> <span class="tok-s">"flag"</span><span class="tok-o">,</span> <span class="tok-s">"score"</span><span class="tok-o">:</span> <span class="tok-f">round</span><span class="tok-o">(</span>p<span class="tok-o">,</span> <span class="tok-n">3</span><span class="tok-o">),</span> <span class="tok-s">"route"</span><span class="tok-o">:</span> <span class="tok-s">"human_review"</span><span class="tok-o">}</span>
+        <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"action"</span><span class="tok-o">:</span> <span class="tok-s">"allow"</span><span class="tok-o">,</span> <span class="tok-s">"score"</span><span class="tok-o">:</span> <span class="tok-f">round</span><span class="tok-o">(</span>p<span class="tok-o">,</span> <span class="tok-n">3</span><span class="tok-o">)}</span>
+
+    <span class="tok-o">@</span>staticmethod
+    <span class="tok-k">def</span> <span class="tok-f">evaluate</span><span class="tok-o">(</span>y_true<span class="tok-o">,</span> y_prob<span class="tok-o">,</span> threshold<span class="tok-o">):</span>
+        pred <span class="tok-o">=</span> <span class="tok-o">[</span><span class="tok-n">1</span> <span class="tok-k">if</span> p <span class="tok-o">&gt;=</span> threshold <span class="tok-k">else</span> <span class="tok-n">0</span> <span class="tok-k">for</span> p <span class="tok-k">in</span> y_prob<span class="tok-o">]</span>
+        tp <span class="tok-o">=</span> <span class="tok-f">sum</span><span class="tok-o">(</span>t <span class="tok-k">and</span> p <span class="tok-k">for</span> t<span class="tok-o">,</span> p <span class="tok-k">in</span> <span class="tok-f">zip</span><span class="tok-o">(</span>y_true<span class="tok-o">,</span> pred<span class="tok-o">))</span>
+        fp <span class="tok-o">=</span> <span class="tok-f">sum</span><span class="tok-o">((</span><span class="tok-k">not</span> t<span class="tok-o">)</span> <span class="tok-k">and</span> p <span class="tok-k">for</span> t<span class="tok-o">,</span> p <span class="tok-k">in</span> <span class="tok-f">zip</span><span class="tok-o">(</span>y_true<span class="tok-o">,</span> pred<span class="tok-o">))</span>
+        fn <span class="tok-o">=</span> <span class="tok-f">sum</span><span class="tok-o">(</span>t <span class="tok-k">and</span> <span class="tok-o">(</span><span class="tok-k">not</span> p<span class="tok-o">)</span> <span class="tok-k">for</span> t<span class="tok-o">,</span> p <span class="tok-k">in</span> <span class="tok-f">zip</span><span class="tok-o">(</span>y_true<span class="tok-o">,</span> pred<span class="tok-o">))</span>
+        <span class="tok-k">return</span> <span class="tok-o">{</span>                              <span class="tok-c"># NOT accuracy</span>
+            <span class="tok-s">"precision"</span><span class="tok-o">:</span> tp <span class="tok-o">/</span> <span class="tok-o">(</span>tp <span class="tok-o">+</span> fp <span class="tok-o">+</span> <span class="tok-n">1e-9</span><span class="tok-o">),</span>   <span class="tok-c"># false-alarm control</span>
+            <span class="tok-s">"recall"</span><span class="tok-o">:</span>    tp <span class="tok-o">/</span> <span class="tok-o">(</span>tp <span class="tok-o">+</span> fn <span class="tok-o">+</span> <span class="tok-n">1e-9</span><span class="tok-o">),</span>   <span class="tok-c"># fraud caught</span>
+            <span class="tok-s">"false_alarms_abs"</span><span class="tok-o">:</span> fp<span class="tok-o">,</span>               <span class="tok-c"># legit &gt;&gt; fraud -&gt; watch this</span>
+        <span class="tok-o">}</span>
+
+<span class="tok-k">if</span> __name__ <span class="tok-o">==</span> <span class="tok-s">"__main__"</span><span class="tok-o">:</span>
+    det <span class="tok-o">=</span> <span class="tok-f">FraudDetector</span><span class="tok-o">(</span>trained_model<span class="tok-o">,</span> make_features<span class="tok-o">,</span> threshold<span class="tok-o">=</span><span class="tok-n">0.7</span><span class="tok-o">)</span>
+    <span class="tok-f">print</span><span class="tok-o">(</span><span class="tok-t">FraudDetector</span><span class="tok-o">.</span><span class="tok-f">evaluate</span><span class="tok-o">(</span><span class="tok-t">Y_TEST</span><span class="tok-o">,</span> <span class="tok-t">PROBS</span><span class="tok-o">,</span> threshold<span class="tok-o">=</span><span class="tok-n">0.7</span><span class="tok-o">))</span>
+    <span class="tok-c"># Tune threshold to cost; retrain as fraud drifts; keep humans in the loop.</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (40 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">self.threshold = threshold          # cost-tuned, NOT accuracy-tuned</span><span class="txt">The threshold is the core control, set by error costs rather than accuracy — the operational heart of fraud detection.</span></div><div><span class="ref">return {"action": "flag", "score": round(p, 3), "route": "human_review"}</span><span class="txt">Flagged transactions go to human review, because these are people-affecting decisions that should not be fully automated.</span></div><div><span class="ref">return {                              # NOT accuracy</span><span class="txt">Evaluation deliberately reports precision/recall and false-alarm counts, never accuracy, which is meaningless under imbalance.</span></div><div><span class="ref">"false_alarms_abs": fp,               # legit &gt;&gt; fraud -&gt; watch this</span><span class="txt">The absolute false-alarm count is tracked because, with legit transactions vastly outnumbering fraud, even a low rate floods the review team.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Configure fraud-relevant features and imbalance handling.</li><li>Configure the model / anomaly detector.</li><li>Configure the decision threshold to error costs (precision/recall).</li><li>Configure review routing and retraining cadence.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Metrics</h4><p>Evaluate with precision/recall and PR curves; never accuracy.</p></li><li><h4>Threshold</h4><p>Tune to the business cost trade-off and the false-alarm volume review can handle.</p></li><li><h4>Drift</h4><p>Monitor for adversarial drift; retrain regularly.</p></li></ol></section>
+
+<section id="model" aria-labelledby="h-model"><h2 id="h-model">Dataset, Model &amp; Training</h2><h3>Dataset</h3><p>Highly imbalanced labelled transactions (fraud ≪ legitimate). Labels are noisy (undiscovered fraud, wrong flags).</p>
+<p>Feature engineering (amount, velocity, history deviation) often matters more than model choice.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Dataset</th><th scope="col">Size</th><th scope="col">Licence</th><th scope="col">Use here</th></tr></thead>
+    <tbody><tr><td><b>Labelled transactions</b></td><td>Large, ≪1% fraud</td><td>Sensitive/regulated</td><td>Train/evaluate (imbalanced)</td></tr><tr><td><b>Engineered features</b></td><td>Derived</td><td>—</td><td>Amount/velocity/history signals</td></tr><tr><td><b>Held-out (time-aware) test</b></td><td>Future period</td><td>—</td><td>Honest, drift-aware evaluation</td></tr><tr><td><b>Review outcomes</b></td><td>Growing</td><td>Sensitive</td><td>Feedback / retraining labels</td></tr></tbody>
+  </table></div>
+<h3>Data preprocessing</h3><ul class="plain"><li>Engineer fraud-relevant features (amount, velocity, location/device, history deviation).</li><li>Handle imbalance: resampling, class weighting, or anomaly-detection framing.</li><li>Split time-aware (fraud drifts); avoid leakage.</li></ul>
+
+<div class="diagram-scroll"><figure class="diagram diagram-pipeline">
+  <svg viewBox="0 0 772 250" role="img" aria-labelledby="td1059 sd1059" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1059">Fraud Detection Model — ML pipeline</title><desc id="sd1059">From raw data through training to deployed inference.</desc>
+    <defs>
+    <marker id="ar-d1059" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1059" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1059" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1059" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="20" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d1059)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="38" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="58" text-anchor="middle">1</text><text class="dg-b" x="95" y="82" text-anchor="middle"><tspan x="95" y="82.0">Transaction</tspan></text><text class="dg-s" x="95" y="104" text-anchor="middle"><tspan x="95" y="104.0">features</tspan></text><path d="M174 77 H206" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1059)"/><rect x="214" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d1059)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="232" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="232" y="58" text-anchor="middle">2</text><text class="dg-b" x="289" y="82" text-anchor="middle"><tspan x="289" y="82.0">Imbalance handling</tspan></text><text class="dg-s" x="289" y="104" text-anchor="middle"><tspan x="289" y="104.0">resample/weight</tspan></text><path d="M368 77 H400" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1059)"/><rect x="408" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d1059)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="426" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="426" y="58" text-anchor="middle">3</text><text class="dg-b" x="483" y="82" text-anchor="middle"><tspan x="483" y="82.0">Model / anomaly</tspan></text><text class="dg-s" x="483" y="104" text-anchor="middle"><tspan x="483" y="104.0">score</tspan></text><path d="M562 77 H594" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1059)"/><rect x="602" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d1059)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="620" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="620" y="58" text-anchor="middle">4</text><text class="dg-b" x="677" y="82" text-anchor="middle"><tspan x="677" y="82.0">Threshold</tspan></text><text class="dg-s" x="677" y="104" text-anchor="middle"><tspan x="677" y="104.0">cost-tuned</tspan></text><path d="M677 122 V136 H95 V148"
+            stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1059)"/><rect x="20" y="152" width="150" height="82" rx="12"
+        fill="url(#gb-d1059)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="38" cy="170" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="174" text-anchor="middle">5</text><text class="dg-b" x="95" y="198" text-anchor="middle"><tspan x="95" y="198.0">Flag + review</tspan></text><text class="dg-s" x="95" y="220" text-anchor="middle"><tspan x="95" y="220.0">act</tspan></text>
+  </svg>
+  <figcaption>Fraud Detection Model — ML pipeline</figcaption>
+</figure></div>
+
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Layer / stage</th><th scope="col">Shape or configuration</th><th scope="col">Purpose</th></tr></thead>
+    <tbody><tr><td><b>Feature engineering</b></td><td><code>amount/velocity/history</code></td><td>Expose fraud patterns</td></tr><tr><td><b>Imbalance handling</b></td><td><code>resample / class weight</code></td><td>Learn the rare class</td></tr><tr><td><b>Model</b></td><td><code>classifier / anomaly detector</code></td><td>Score fraud risk</td></tr><tr><td><b>Threshold</b></td><td><code>cost-tuned (PR trade-off)</code></td><td>Business-optimal flags</td></tr><tr><td><b>Retraining</b></td><td><code>ongoing</code></td><td>Adapt to drifting fraud</td></tr></tbody>
+  </table></div>
+
+<h3>Hyperparameters</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Hyperparameter</th><th scope="col">Value</th><th scope="col">Why</th></tr></thead>
+    <tbody><tr><td><b>Class weight / sampling</b></td><td><code>tuned</code></td><td>Learn rare fraud</td></tr><tr><td><b>Decision threshold</b></td><td><code>cost-tuned</code></td><td>Precision vs recall</td></tr><tr><td><b>Feature set</b></td><td><code>rich</code></td><td>Often &gt; model choice</td></tr><tr><td><b>Retrain cadence</b></td><td><code>frequent</code></td><td>Adversarial drift</td></tr></tbody>
+  </table></div>
+<h3>Training process</h3><ul class="plain"><li>Handle imbalance (resample/weight or anomaly detection); engineer strong features.</li><li>Evaluate with precision/recall and PR curves — never accuracy.</li><li>Split time-aware; plan continual retraining as fraud adapts.</li></ul></section>
+
+<section id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation">Evaluation, Metrics &amp; Deployment</h2><p>The honest metrics are precision, recall and their trade-off at a cost-tuned threshold — accuracy is meaningless under this imbalance.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">What it tells you</th></tr></thead>
+    <tbody><tr><td><b>Precision</b></td><td><code>cost-tuned</code></td><td>False-alarm control</td></tr><tr><td><b>Recall</b></td><td><code>cost-tuned</code></td><td>Fraud caught</td></tr><tr><td><b>PR-AUC</b></td><td><code>primary</code></td><td>Imbalance-appropriate</td></tr><tr><td><b>Accuracy</b></td><td><code>IGNORE</code></td><td>Misleading here</td></tr></tbody>
+  </table></div><p class="tbl-caption">Figures from the reference training run described above — reproduce them before trusting your own changes.</p>
+<figure class="diagram diagram-chart">
+  <svg viewBox="0 0 620 192" role="img" aria-labelledby="td1060 sd1060" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1060">Precision vs recall trade-off</title><desc id="sd1060">Catching more fraud (recall) costs precision (more false alarms); the threshold is tuned to business error costs, not accuracy (illustrative).</desc>
+    <defs>
+    <marker id="ar-d1060" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1060" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1060" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1060" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <line x1="190" y1="26" x2="190" y2="178" stroke="var(--dg-stroke)" stroke-width="1"/><text class="dg-b" x="178" y="45" text-anchor="end">High-precision setting</text><rect x="191" y="33" width="294.14141414141415" height="20" rx="5" fill="url(#ga-d1060)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="494.14141414141415" y="47">92 %</text><text class="dg-b" x="178" y="83" text-anchor="end">Balanced</text><rect x="191" y="71" width="249.38076416337287" height="20" rx="5" fill="url(#ga-d1060)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="449.3807641633729" y="85">78 %</text><text class="dg-b" x="178" y="121" text-anchor="end">High-recall setting</text><rect x="191" y="109" width="191.83135704874837" height="20" rx="5" fill="url(#ga-d1060)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="391.8313570487484" y="123">60 %</text><text class="dg-b" x="178" y="159" text-anchor="end">Accuracy (misleading)</text><rect x="191" y="147" width="316.5217391304348" height="20" rx="5" fill="url(#ga-d1060)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="516.5217391304348" y="161">99 %</text>
+  </svg>
+  <figcaption>Precision vs recall trade-off</figcaption>
+</figure>
+
+
+<h3>Inference example</h3><div class="codeblock tall" data-file="fraud.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">fraud.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy fraud.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="fraud.py" type="button" aria-label="Download fraud.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">def</span> <span class="tok-f">score</span><span class="tok-o">(</span>transaction<span class="tok-o">,</span> model<span class="tok-o">,</span> features<span class="tok-o">):</span>
+    x <span class="tok-o">=</span> <span class="tok-f">features</span><span class="tok-o">(</span>transaction<span class="tok-o">)</span>                <span class="tok-c"># amount/velocity/history deviation</span>
+    <span class="tok-k">return</span> <span class="tok-f">float</span><span class="tok-o">(</span>model<span class="tok-o">.</span><span class="tok-f">predict_proba</span><span class="tok-o">([</span>x<span class="tok-o">])[</span><span class="tok-n">0</span><span class="tok-o">][</span><span class="tok-n">1</span><span class="tok-o">])</span>   <span class="tok-c"># fraud probability</span>
+
+<span class="tok-k">def</span> <span class="tok-f">decide</span><span class="tok-o">(</span>transaction<span class="tok-o">,</span> model<span class="tok-o">,</span> features<span class="tok-o">,</span> threshold<span class="tok-o">):</span>
+    <span class="tok-c"># threshold is TUNED TO COST, not accuracy.</span>
+    p <span class="tok-o">=</span> <span class="tok-f">score</span><span class="tok-o">(</span>transaction<span class="tok-o">,</span> model<span class="tok-o">,</span> features<span class="tok-o">)</span>
+    <span class="tok-k">if</span> p <span class="tok-o">&gt;=</span> threshold<span class="tok-o">:</span>
+        <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"action"</span><span class="tok-o">:</span> <span class="tok-s">"flag"</span><span class="tok-o">,</span> <span class="tok-s">"fraud_score"</span><span class="tok-o">:</span> <span class="tok-f">round</span><span class="tok-o">(</span>p<span class="tok-o">,</span> <span class="tok-n">3</span><span class="tok-o">),</span>
+                <span class="tok-s">"route"</span><span class="tok-o">:</span> <span class="tok-s">"human_review"</span><span class="tok-o">}</span>     <span class="tok-c"># decisions affect people</span>
+    <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"action"</span><span class="tok-o">:</span> <span class="tok-s">"allow"</span><span class="tok-o">,</span> <span class="tok-s">"fraud_score"</span><span class="tok-o">:</span> <span class="tok-f">round</span><span class="tok-o">(</span>p<span class="tok-o">,</span> <span class="tok-n">3</span><span class="tok-o">)}</span>
+    <span class="tok-c"># Legit &gt;&gt; fraud: even a low FP RATE = many false alarms. Retrain often.</span></code></pre>
+  
+</div>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Known limitations</span><p>Accuracy is meaningless — use precision/recall and cost-tuned thresholds.</p>
+<p>Legit ≫ fraud, so even low false-positive rates flood review with false alarms.</p>
+<p>Fraud is adversarial and drifts — constant retraining needed.</p>
+<p>Decisions affect people; keep human review and watch for bias.</p></div>
+  </aside></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Baseline "never fraud"</b></td><td>>99% accuracy, 0 recall — shows accuracy is useless</td></tr><tr><td><b>Evaluate precision/recall</b></td><td>Meaningful assessment</td></tr><tr><td><b>Lower the threshold</b></td><td>More recall, more false alarms</td></tr><tr><td><b>Count absolute false alarms</b></td><td>Large even at low FP rate (legit ≫ fraud)</td></tr><tr><td><b>Simulate fraud drift</b></td><td>Performance decays — retrain</td></tr><tr><td><b>Flagged case</b></td><td>Routed to human review</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>Real-time fraud flags with precision/recall-based evaluation and cost-tuned thresholds, routed to review.</p>
+<div class="codeblock tall" data-file="fraud-eval.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">fraud-eval.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy fraud-eval.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="fraud-eval.json" type="button" aria-label="Download fraud-eval.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "precision": <span class="tok-n">0.82</span>,
+  "recall": <span class="tok-n">0.64</span>,
+  "false_alarms_abs": <span class="tok-n">1240</span>,
+  "accuracy": "ignored (meaningless here)",
+  "threshold": <span class="tok-n">0.70</span>,
+  "note": "tune to cost; legit &gt;&gt; fraud floods <span class="tok-k">false</span> alarms; fraud adapts"
+}</code></pre>
+  
+</div>
+
+<p>An honest evaluation: precision and recall (not accuracy), with the absolute false-alarm count front and centre — because even a good rate produces many false alarms when legitimate transactions vastly outnumber fraud.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Grafana%20dashboard.png?width=900" alt="A Grafana time-series dashboard" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1061" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1061">Legitimate transactions vastly outnumber fraud, so even a low false-positive rate floods review with false alarms.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="30" y="34" width="340" height="192" rx="10" fill="var(--dg-box-b)" stroke="var(--dg-stroke)"/>
+    <rect x="30" y="34" width="340" height="28" rx="10" fill="var(--dg-chip)"/>
+    <circle cx="48" cy="48" r="4" fill="#e05f5f"/><circle cx="62" cy="48" r="4" fill="#e0b45f"/><circle cx="76" cy="48" r="4" fill="#5fe08a"/>
+    <rect x="44" y="76" width="140" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="58" y="98" font-size="10" fill="var(--dg-muted)">TEMPERATURE</text>
+    <text x="58" y="126" font-size="24" fill="var(--dg-accent)" font-family="monospace">27.4°</text>
+    <rect x="198" y="76" width="158" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="210,126 236,110 262,118 288,94 314,104 340,86" fill="none" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="44" y="152" width="312" height="60" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="56,196 86,180 116,188 146,160 176,172 206,146 236,158 266,138 296,150 340,128"
+      fill="none" stroke="var(--dg-accent)" stroke-width="2" opacity=".8"/>
+  </svg>
+  <figcaption>Legitimate transactions vastly outnumber fraud, so even a low false-positive rate floods review with false alarms.</figcaption>
+</figure></template>
+  <figcaption>Legitimate transactions vastly outnumber fraud, so even a low false-positive rate floods review with false alarms.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Grafana_dashboard.png" rel="noopener nofollow" target="_blank">Wikimedia Commons — Grafana dashboard.png</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>High accuracy, catches no fraud</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Imbalance + wrong metric</p>
+        <p><strong>Fix.</strong> Ignore accuracy; use precision/recall; handle imbalance</p></div></details><details class="expand"><summary>Too many false alarms</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Threshold too low / weak features</p>
+        <p><strong>Fix.</strong> Raise threshold to cost; better features</p></div></details><details class="expand"><summary>Misses too much fraud</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Threshold too high / imbalance</p>
+        <p><strong>Fix.</strong> Lower threshold; resample/weight; anomaly detection</p></div></details><details class="expand"><summary>Degrades over time</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Adversarial drift</p>
+        <p><strong>Fix.</strong> Retrain regularly; monitor drift</p></div></details><details class="expand"><summary>Unfair/biased decisions</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Data/proxies</p>
+        <p><strong>Fix.</strong> Audit fairness; human review; mitigate bias</p></div></details><details class="expand"><summary>Leakage inflates results</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Non-time-aware split</p>
+        <p><strong>Fix.</strong> Time-aware split; avoid future info</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Never use accuracy — evaluate precision/recall and PR curves.</li><li>Handle imbalance (resample/weight/anomaly detection).</li><li>Tune the threshold to error costs and false-alarm volume.</li><li>Retrain regularly for adversarial drift; engineer strong features.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>Decisions affect people — keep human review for flagged cases; a wrongful decline has consequences.</li><li>Watch for and mitigate bias; audit fairness of decisions.</li><li>Transaction data is sensitive/regulated — secure and handle it lawfully.</li><li>Fraud adapts — do not treat a static model as reliable; monitor and retrain.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Retrain frequently as fraud patterns drift.</li><li>Monitor precision/recall and false-alarm volume in production.</li><li>Refresh features and feedback labels from review outcomes.</li><li>Audit fairness and data handling.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add graph/network features (fraud rings).</li><li>Add real-time streaming and adaptive thresholds.</li><li>Add explainability for review and appeals.</li><li>Add active learning from review outcomes.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why is accuracy the wrong metric?</summary><div class="inner"><p>Because fraud is extremely rare. A model that predicts "not fraud" for everything is over 99% accurate yet catches zero fraud. Under severe imbalance, accuracy is actively misleading — you must use precision (are flags real?) and recall (is fraud caught?) instead.</p></div></details><details class="expand"><summary>How do you handle the imbalance?</summary><div class="inner"><p>By taking it seriously: resampling (over/under-sampling), class weighting (penalise missing the rare class), or framing it as anomaly detection (model "normal", flag deviations) — combined with features that expose fraud patterns, which often matter more than the model.</p></div></details><details class="expand"><summary>Why do false positives matter so much?</summary><div class="inner"><p>Because legitimate transactions vastly outnumber fraud, so even a low false-positive rate produces a large absolute number of false alarms — blocked payments, angry customers, and a swamped review team. Managing false-alarm volume is central.</p></div></details><details class="expand"><summary>What decides the threshold?</summary><div class="inner"><p>The business cost trade-off: how much fraud you catch (recall) versus how many false alarms you cause (precision), tuned to the actual costs of a missed fraud versus a wrongful decline — not to any accuracy figure.</p></div></details><details class="expand"><summary>Why must it be retrained?</summary><div class="inner"><p>Because fraud is adversarial — fraudsters actively adapt to evade detection — so the target drifts and a static model decays. Continual retraining and drift monitoring are required, and serious deployments keep humans in the loop.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Data_analysis_techniques_for_fraud_detection" rel="noopener nofollow" target="_blank">Fraud detection</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Oversampling_and_undersampling_in_data_analysis" rel="noopener nofollow" target="_blank">Class imbalance problem</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Precision_and_recall" rel="noopener nofollow" target="_blank">Precision and recall</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Anomaly_detection" rel="noopener nofollow" target="_blank">Anomaly detection</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Accuracy_paradox" rel="noopener nofollow" target="_blank">Accuracy paradox</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="energy-demand-forecaster.html"><span class="dir">← Previous project</span><span class="ttl">Energy Demand Forecaster</span></a>
+        <a class="next" href="recommendation-engine.html"><span class="dir">Next project →</span><span class="ttl">Recommendation Engine</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Advanced</b></div>
+        <div class="rail-stat"><span>Time</span><b>12–18 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>4</b></div>
+        <div class="rail-stat"><span>Cost</span><b>Software; compute-light to moderate</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="stock-trend-predictor.html">Stock Trend Predictor</a></li><li><a href="energy-demand-forecaster.html">Energy Demand Forecaster</a></li><li><a href="recommendation-engine.html">Recommendation Engine</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="stock-trend-predictor.html">
+        <span class="rc">Predictive ML</span>
+        <h4>Stock Trend Predictor</h4>
+        <p>Time-series models that forecast market direction and volatility.</p></a><a class="relcard" href="energy-demand-forecaster.html">
+        <span class="rc">Predictive ML</span>
+        <h4>Energy Demand Forecaster</h4>
+        <p>Predicts electricity load for grids and homes to plan supply.</p></a><a class="relcard" href="recommendation-engine.html">
+        <span class="rc">Predictive ML</span>
+        <h4>Recommendation Engine</h4>
+        <p>Personalizes content and products with collaborative filtering.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Fraud Detection Model</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
