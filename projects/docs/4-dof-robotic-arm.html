@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>4-DOF Robotic Arm — Circuit, Code &amp; Full Build Guide | Robotics</title>
+  <meta name="description" content="Complete advanced-level build guide for a 4-DOF Robotic Arm: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="4-dof robotic arm, 4-dof robotic arm project, how to build 4-dof robotic arm, arduino uno r3 project, robotics project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/4-dof-robotic-arm.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/4-dof-robotic-arm.html" />
+  <meta property="og:title" content="4-DOF Robotic Arm — Circuit, Code &amp; Full Build Guide | Robotics" />
+  <meta property="og:description" content="Complete advanced-level build guide for a 4-DOF Robotic Arm: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Robotics" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="4-DOF Robotic Arm — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete advanced-level build guide for a 4-DOF Robotic Arm: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🦾</text></svg>" />
+  <style>:root{--acc:#34d399;--acc-light:#6ee7b7;--acc-rgb:52,211,153}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/4-dof-robotic-arm.html#article","headline":"4-DOF Robotic Arm — Complete Build Guide","name":"4-DOF Robotic Arm","description":"Complete advanced-level build guide for a 4-DOF Robotic Arm: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/4-dof-robotic-arm.html","inLanguage":"en","articleSection":"Robotics","keywords":"4-dof robotic arm, 4-dof robotic arm project, how to build 4-dof robotic arm, arduino uno r3 project, robotics project, circuit diagram, source code, tutorial","proficiencyLevel":"Advanced","dependencies":"ESP32Servo / Servo, Preferences (NVS)","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-28","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/4-dof-robotic-arm.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/4-dof-robotic-arm.html#howto","name":"How to build a 4-DOF Robotic Arm","description":"Complete advanced-level build guide for a 4-DOF Robotic Arm: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT20H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"8140"},"supply":[{"@type":"HowToSupply","name":"Arduino Uno R3 (ATmega328P)"},{"@type":"HowToSupply","name":"MG996R metal-gear servo"},{"@type":"HowToSupply","name":"SG90 9 g micro servo"},{"@type":"HowToSupply","name":"5 V 3 A regulated SMPS adapter"},{"@type":"HowToSupply","name":"830-point solderless breadboard + jumper set"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Solve inverse kinematics and check reach","text":"From a target point compute the joint angles with geometry, and reject targets outside the reachable workspace."},{"@type":"HowToStep","position":2,"name":"Ease joints to the target and grasp","text":"Move all joints from their current angles to the IK targets together over a short time (easing), then operate the gripper — smooth, coordinated motion that does not jerk or fling the load."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"4-DOF Robotic Arm","item":"https://siddhantkumar.in/projects/docs/4-dof-robotic-arm.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/4-dof-robotic-arm.html#faq","mainEntity":[{"@type":"Question","name":"What is the difference between forward and inverse kinematics?","acceptedAnswer":{"@type":"Answer","text":"Forward kinematics computes where the gripper is from the joint angles (one definite answer). Inverse kinematics computes the joint angles needed to put the gripper at a target point — harder (multiple or no solutions) but far more useful, because it lets you command a position."}},{"@type":"Question","name":"Why only 4 degrees of freedom?","acceptedAnswer":{"@type":"Answer","text":"4-DOF is enough to command a position (and one orientation) — enough to pick things up — while staying simple to understand fully. Controlling full position and orientation needs 6+ DOF, which is what industrial arms use."}},{"@type":"Question","name":"Why does the shoulder need the strongest servo?","acceptedAnswer":{"@type":"Answer","text":"Because torque grows with load times distance from the joint, and the shoulder carries the entire outstretched arm and its load. It works hardest and sets the payload limit, so it needs the most torque — and a stable base, or the arm tips itself over."}},{"@type":"Question","name":"Why ease the joints instead of snapping to the angles?","acceptedAnswer":{"@type":"Answer","text":"Snapping jerks the arm, overshoots, and can fling a grasped object. Easing every joint from its current to its target angle together produces smooth, coordinated motion — coordination matters as much as the endpoints."}},{"@type":"Question","name":"How accurate is it?","acceptedAnswer":{"@type":"Answer","text":"Usefully but not precisely. Hobby servos have limited resolution, repeatability and no external feedback, so it will reach near a point rather than to the millimetre reliably. That honest limit is exactly why serious arms use precision actuators and closed-loop control."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#robotics">Robotics</a><span class="sep">/</span>
+        <span aria-current="page">4-DOF Robotic Arm</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 093 · Robotics</span>
+          <h1>4-DOF Robotic Arm<span class="grad">.</span></h1>
+          <p class="tagline">A four-jointed arm with a gripper that reaches to a point in space and picks things up — an accessible introduction to manipulation and kinematics.</p>
+          <div class="hero-chips">
+            <span class="chip lv-advanced">Advanced</span>
+            <span class="chip">14–22 hours</span>
+            <span class="chip neutral">29 min read</span>
+            <span class="chip neutral">Robot</span><span class="chip neutral">Servos</span><span class="chip neutral">Control</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td801" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td801">4-DOF Robotic Arm — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>4-DOF Robotic Arm — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Advanced</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>14–22 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹2,800 – ₹5,000</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>Arduino Uno R3 (ATmega328P)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Robotics</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>28 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#mechanics"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Mechanical Assembly &amp; Motion</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#mechanics"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Mechanical Assembly &amp; Motion</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">A four-jointed arm with a gripper that reaches to a point in space and picks things up — an accessible introduction to manipulation and kinematics.</p>
+<p>A mobile robot moves <i>itself</i> through space; a robotic arm moves the <i>world</i> — reaching out to a chosen point, orienting a gripper, and picking, placing or manipulating an object. That is a fundamentally different and richer problem, and its core is <b>kinematics</b>: the relationship between the arm's joint angles and where its gripper ends up in space. This project builds a <b>4-degree-of-freedom (4-DOF)</b> arm — base rotation, shoulder, elbow, and a gripper — and the control to make it reach and grasp, an accessible but genuine introduction to robotic manipulation.</p>
+<p>The arm is a chain of links driven by <b>servo motors</b> at each joint: the base servo swings the arm left/right, the shoulder and elbow servos raise and extend it, and the gripper servo opens and closes to grasp. Controlling it has two directions. <b>Forward kinematics</b> answers "given these joint angles, where is the gripper?" — a matter of chaining the link geometry. <b>Inverse kinematics</b> answers the more useful and harder question "to put the gripper <i>here</i>, what joint angles do I need?" — which for a simple arm can be solved with geometry and trigonometry, and is what lets you command a position rather than fiddling each joint by hand.</p>
+<p>On top of the kinematics sit the practicalities of a real arm: <b>smooth motion</b> (moving joints gradually and in coordination, not snapping, to avoid jerking the arm and its load), <b>reach and workspace</b> (the arm can only reach points its geometry allows — the envelope matters), <b>payload and torque</b> (a servo has limited torque, and a load far from a joint demands more — the shoulder works hardest), and safe, stable operation. It is honest that hobby servos have limited precision, repeatability and payload, and that industrial arms use far more capable actuators and 6+ DOF for full position <i>and</i> orientation control. But as a 4-DOF servo arm with forward and inverse kinematics, coordinated motion and a working gripper, it teaches the real substance of manipulation — kinematics, workspace, torque and control — in a build you can hold in your hand.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Robot%20arm.jpg?width=900" alt="A multi-axis robotic arm" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td794" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td794">A 4-DOF servo arm reaches to a point and grasps — an accessible introduction to robotic manipulation and kinematics.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="128" y="88" width="144" height="82" rx="14" fill="#26405e" stroke="#16283c" stroke-width="2"/>
+    <rect x="146" y="104" width="108" height="34" rx="6" fill="#0f1a28"/>
+    <circle cx="172" cy="121" r="8" fill="#3ad0e0"/><circle cx="228" cy="121" r="8" fill="#3ad0e0"/>
+    <rect x="96" y="118" width="34" height="24" rx="8" fill="#1c3149"/>
+    <rect x="270" y="118" width="34" height="24" rx="8" fill="#1c3149"/>
+    <circle cx="146" cy="186" r="24" fill="#1a1d22" stroke="#3a4150" stroke-width="4"/>
+    <circle cx="254" cy="186" r="24" fill="#1a1d22" stroke="#3a4150" stroke-width="4"/>
+    <rect x="192" y="58" width="16" height="32" rx="6" fill="#1c3149"/><circle cx="200" cy="54" r="8" fill="#3ad0e0"/>
+  </svg>
+  <figcaption>A 4-DOF servo arm reaches to a point and grasps — an accessible introduction to robotic manipulation and kinematics.</figcaption>
+</figure></template>
+  <figcaption>A 4-DOF servo arm reaches to a point and grasps — an accessible introduction to robotic manipulation and kinematics.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Robot_arm.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Robot arm.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Reaches its gripper to a chosen point in space</li><li>Drives 4 joints (base, shoulder, elbow, gripper) with servos</li><li>Computes forward kinematics (angles → position)</li><li>Computes inverse kinematics (position → angles)</li><li>Moves joints smoothly and in coordination</li><li>Opens/closes a gripper to pick and place</li><li>Respects its reachable workspace, torque and payload limits</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Manipulation education</b></td><td>Kinematics, workspace and torque in a hands-on arm.</td></tr><tr><td><b>Pick-and-place demos</b></td><td>Simple sorting/placing of light objects.</td></tr><tr><td><b>Automation prototyping</b></td><td>A base for feeders, sorters and desktop automation.</td></tr><tr><td><b>Robotics research learning</b></td><td>Forward/inverse kinematics and coordinated control.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Servo-driven 4-DOF arm + gripper</li><li>Forward and inverse kinematics</li><li>Coordinated, smooth (eased) joint motion</li><li>Workspace/reach awareness</li><li>Torque/payload-conscious design</li><li>Pick-and-place sequencing</li><li>Honest about hobby-servo precision and DOF limits</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Advanced</td></tr><tr><td><b>Estimated completion time</b></td><td>14–22 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹2,800 – ₹5,000</td></tr><tr><td><b>Primary discipline</b></td><td>Robotics</td></tr><tr><td><b>Reference platform</b></td><td>Arduino Uno R3 (ATmega328P)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Servo control and coordinated multi-joint motion</li><li>Forward kinematics (link geometry chaining)</li><li>Inverse kinematics (geometric/trigonometric solution)</li><li>Workspace, reach and torque/payload reasoning</li><li>Pick-and-place sequencing and gripping</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>Manipulation's core is kinematics: joint angles ↔ gripper position.</p>
+<p>Inverse kinematics lets you command a position, not fiddle each joint.</p>
+<p>Move joints smoothly and in coordination to avoid jerk.</p>
+<p>Respect workspace, torque and payload — a servo arm has real limits.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>Arduino Uno R3 (ATmega328P)</b><br/><span style="font-size:.82em;opacity:.78">2 KB of SRAM is the real constraint — keep strings in PROGMEM.</span></td><td>16 MHz AVR, 32 KB flash, 2 KB SRAM, 1 KB EEPROM, 14 digital I/O (6 PWM), 6× 10-bit ADC</td><td class="num">1</td><td class="num">₹700</td></tr><tr><td><b>MG996R metal-gear servo</b><br/><span style="font-size:.82em;opacity:.78">Draws up to 2.5 A stalled — a 6 V 5 A supply per 4–6 servos is realistic.</span></td><td>11 kg·cm at 6 V, 0.17 s/60°, metal gears, dual ball bearings</td><td class="num">1</td><td class="num">₹380</td></tr><tr><td><b>SG90 9 g micro servo</b><br/><span style="font-size:.82em;opacity:.78">Stall current hits 700 mA — never power servos from the board 5 V rail.</span></td><td>1.8 kg·cm at 4.8 V, 0.1 s/60°, 180° travel, plastic gears, 50 Hz PWM</td><td class="num">1</td><td class="num">₹130</td></tr><tr><td><b>5 V 3 A regulated SMPS adapter</b><br/><span style="font-size:.82em;opacity:.78">Measure the real output — many "3 A" adapters sag below 4.7 V at 2 A.</span></td><td>100–240 VAC in, 5 V ±5 % out, 3 A, short-circuit and over-voltage protection</td><td class="num">1</td><td class="num">₹350</td></tr><tr><td><b>830-point solderless breadboard + jumper set</b><br/><span style="font-size:.82em;opacity:.78">Fine for prototyping; move to perfboard before anything permanent.</span></td><td>830 tie points, 2 power rails, 0.1″ pitch; 65 male-male jumpers</td><td class="num">1</td><td class="num">₹180</td></tr><tr><td><b>Servos (joints)</b><br/><span style="font-size:.82em;opacity:.78">Shoulder needs the most torque</span></td><td>3× higher-torque servos (base/shoulder/elbow) + 1 gripper servo</td><td class="num">4</td><td class="num">₹4,800</td></tr><tr><td><b>Arm structure + gripper</b></td><td>Laser-cut/3D-printed links, brackets and a gripper</td><td class="num">1</td><td class="num">₹900</td></tr><tr><td><b>Servo power supply</b><br/><span style="font-size:.82em;opacity:.78">Servos draw far more than an MCU pin can give</span></td><td>5–6 V supply able to drive all servos (amps)</td><td class="num">1</td><td class="num">₹400</td></tr><tr><td><b>Heavy base</b></td><td>Weighted/clamped base for stability</td><td class="num">1</td><td class="num">₹300</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹8,140</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>Arduino Uno R3 (ATmega328P)</b></td><td>16 MHz AVR, 32 KB flash, 2 KB SRAM, 1 KB EEPROM, 14 digital I/O (6 PWM), 6× 10-bit ADC</td><td>5 V logic, 7–12 V barrel in</td><td>UART, SPI, I²C</td><td><a href="https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>MG996R metal-gear servo</b></td><td>11 kg·cm at 6 V, 0.17 s/60°, metal gears, dual ball bearings</td><td>4.8–7.2 V</td><td>PWM 50 Hz</td><td><a href="https://components101.com/motors/mg996r-servo-motor-datasheet" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>SG90 9 g micro servo</b></td><td>1.8 kg·cm at 4.8 V, 0.1 s/60°, 180° travel, plastic gears, 50 Hz PWM</td><td>4.8–6 V</td><td>PWM 500–2400 µs</td><td><a href="https://components101.com/servo-motor-basics-pinout-datasheet" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>5 V 3 A regulated SMPS adapter</b></td><td>100–240 VAC in, 5 V ±5 % out, 3 A, short-circuit and over-voltage protection</td><td>5 V</td><td>DC barrel / USB</td><td><a href="https://en.wikipedia.org/wiki/Switched-mode_power_supply" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>830-point solderless breadboard + jumper set</b></td><td>830 tie points, 2 power rails, 0.1″ pitch; 65 male-male jumpers</td><td>—</td><td>—</td><td><a href="https://learn.sparkfun.com/tutorials/how-to-use-a-breadboard" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>Arduino Uno R3 (ATmega328P)</td><td>5 V logic, 7–12 V barrel in</td><td class="num">45</td><td>2 KB of SRAM is the real constraint — keep strings in PROGMEM.</td></tr><tr><td>MG996R metal-gear servo</td><td>4.8–7.2 V</td><td class="num">500</td><td>Draws up to 2.5 A stalled — a 6 V 5 A supply per 4–6 servos is realistic.</td></tr><tr><td>SG90 9 g micro servo</td><td>4.8–6 V</td><td class="num">200</td><td>Stall current hits 700 mA — never power servos from the board 5 V rail.</td></tr><tr><td>5 V 3 A regulated SMPS adapter</td><td>5 V</td><td class="num">3000</td><td>Measure the real output — many "3 A" adapters sag below 4.7 V at 2 A.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>3745 mA</b>. With a 1.5× design margin the supply should deliver at least <b>5700 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x (AVR core 1.8.6)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Select <b>Tools → Board → Arduino AVR Boards</b> and the matching board. Clone boards with a CH340 USB bridge need the CH340 driver on Windows and macOS.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>ESP32Servo / Servo</b> <span style="opacity:.7">3.0.x</span></td><td>50 Hz PWM generation with correct pulse widths for hobby servos.</td><td><code>Library Manager → "ESP32Servo" by Kevin Harrington</code></td></tr><tr><td><b>Preferences (NVS)</b> <span style="opacity:.7">bundled</span></td><td>Wear-levelled key/value storage in ESP32 flash for settings.</td><td><code>Bundled with the ESP32 core</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td795 sd795" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td795">4-DOF Robotic Arm — system block diagram</title><desc id="sd795">Functional block diagram of the 4-DOF Robotic Arm system.</desc>
+    <defs>
+    <marker id="ar-d795" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d795" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d795" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d795" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Command</text><rect x="26" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d795)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="119" text-anchor="middle"><tspan x="115" y="119.0">Target (x,y,z)</tspan></text><text class="dg-s" x="115" y="138" text-anchor="middle"><tspan x="115" y="138.0">or pick/place</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Plan</text><rect x="266" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d795)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="79" text-anchor="middle"><tspan x="355" y="79.0">Inverse kin.</tspan></text><text class="dg-s" x="355" y="98" text-anchor="middle"><tspan x="355" y="98.0">pos → angles</tspan></text><rect x="266" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d795)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="159" text-anchor="middle"><tspan x="355" y="159.0">Reachable?</tspan></text><text class="dg-s" x="355" y="178" text-anchor="middle"><tspan x="355" y="178.0">workspace</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Move</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d795)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Ease joints</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">coordinated</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d795)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">4 servos</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">base/sh/el/grip</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Grasp</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d795)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Gripper</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">open/close</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d795)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Place</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">sequence</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d795)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d795)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d795)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>4-DOF Robotic Arm — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 316" role="img" aria-labelledby="td796 sd796" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td796">4-DOF Robotic Arm — wiring schematic</title><desc id="sd796">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d796" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d796" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d796" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d796" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="220" rx="14"
+      fill="url(#ga-d796)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">Arduino Uno R3</tspan><tspan x="434" y="95.0">(ATmega328P)</tspan></text><text class="dg-s" x="434" y="266" text-anchor="middle">5 V logic, 7–12 V barrel in</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d796)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Base servo</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">D3</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">Rotate (θ0)</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d796)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">Shoulder servo</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">D5</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="167.0">Lift (θ1)</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d796)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Elbow servo</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">D6</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Extend (θ2)</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d796)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Gripper servo</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">D9</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Open/close</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d796)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">Servo supply 5–6V</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">ext</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="219.0">Power (amps)</tspan></text><rect x="658" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d796)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="257" text-anchor="middle"><tspan x="753" y="257.0">Common ground</tspan></text><path d="M658 256 C 590 256, 590 256, 522 256" stroke="#3cc7c0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="256" r="3.2" fill="#3cc7c0"/><text class="dg-p" x="590" y="250" text-anchor="middle">GND</text><text class="dg-s" x="590" y="271" text-anchor="middle"><tspan x="590" y="271.0">Shared</tspan></text>
+  </svg>
+  <figcaption>4-DOF Robotic Arm — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Base servo</b></td><td>PWM</td><td><code>D3</code></td><td>Rotate (θ0)</td></tr><tr><td><b>Shoulder servo</b></td><td>PWM</td><td><code>D5</code></td><td>Lift (θ1)</td></tr><tr><td><b>Elbow servo</b></td><td>PWM</td><td><code>D6</code></td><td>Extend (θ2)</td></tr><tr><td><b>Gripper servo</b></td><td>PWM</td><td><code>D9</code></td><td>Open/close</td></tr><tr><td><b>Servo supply 5–6V</b></td><td>V+</td><td><code>ext</code></td><td>Power (amps)</td></tr><tr><td><b>Common ground</b></td><td>GND</td><td><code>GND</code></td><td>Shared</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Power the servos from a dedicated 5–6 V supply able to source several amps — not the MCU's 5 V pin.</li><li>Tie the servo-supply ground to the MCU ground (common ground) so the PWM signals are referenced correctly.</li><li>Give the base a heavy or clamped mount — the arm will tip a light base when it reaches out.</li><li>Route servo wires so they do not bind the joints through their range of motion.</li><li>Add capacitance across the servo supply to absorb current surges.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Servo%20motor%20sg90.jpg?width=900" alt="An SG90 hobby micro servo with its horn attached" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td797" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td797">Inverse kinematics turns a target position into base, shoulder and elbow angles, revealing the reachable workspace.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="120" y="96" width="130" height="84" rx="10" fill="#4a525e" stroke="#333a45" stroke-width="2"/>
+    <rect x="250" y="126" width="52" height="24" rx="4" fill="#8a919b"/>
+    <circle cx="302" cy="138" r="18" fill="#2b2f36" stroke="#6a727e" stroke-width="3"/>
+    <rect x="96" y="112" width="26" height="52" rx="4" fill="#2b2f36"/>
+    <line x1="96" y1="126" x2="60" y2="126" stroke="#e05050" stroke-width="3"/>
+    <line x1="96" y1="150" x2="60" y2="150" stroke="#2b2f36" stroke-width="3"/>
+    <line x1="132" y1="96" x2="132" y2="180" stroke="#333a45" stroke-width="2"/><line x1="152" y1="96" x2="152" y2="180" stroke="#333a45" stroke-width="2"/><line x1="172" y1="96" x2="172" y2="180" stroke="#333a45" stroke-width="2"/><line x1="192" y1="96" x2="192" y2="180" stroke="#333a45" stroke-width="2"/><line x1="212" y1="96" x2="212" y2="180" stroke="#333a45" stroke-width="2"/><line x1="232" y1="96" x2="232" y2="180" stroke="#333a45" stroke-width="2"/>
+  </svg>
+  <figcaption>Inverse kinematics turns a target position into base, shoulder and elbow angles, revealing the reachable workspace.</figcaption>
+</figure></template>
+  <figcaption>Inverse kinematics turns a target position into base, shoulder and elbow angles, revealing the reachable workspace.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Servo_motor_sg90.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Servo motor sg90.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td798 sd798" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td798">4-DOF Robotic Arm — architecture stack</title><desc id="sd798">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d798" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d798" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d798" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d798" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d798)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">Arduino Uno R3 (ATmega328P) · sensors and actuators</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d798)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d798)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">servo · preferences</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d798)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d798)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d798)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d798)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>4-DOF Robotic Arm — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>A manipulator's defining question is <b>kinematics</b>: how the angles of its joints determine where its end-effector — the gripper — sits and points in space. Everything about controlling an arm flows from this relationship. A 4-DOF arm has four controllable joints; here, base rotation places the arm's working plane, the shoulder and elbow set the reach and height within that plane, and the gripper grasps. Four degrees of freedom is enough to command a <b>position</b> (and one orientation) — enough to pick things up — while remaining simple enough to understand fully, which is exactly why it is the right teaching arm.</p>
+<p><b>Forward kinematics</b> is the direct calculation: given the joint angles, chain the fixed link lengths and joint rotations to find the gripper's position. It is unambiguous — a set of angles yields exactly one gripper pose — and it is how you predict where the arm <i>will</i> be. But it answers the wrong question for actual use: nobody wants to hand-pick four angles and hope the gripper lands where they want. The useful question is the inverse.</p>
+<p><b>Inverse kinematics</b> asks: to put the gripper at a target point, what joint angles are required? This is harder — there can be multiple solutions (elbow-up vs elbow-down), or none if the point is out of reach — but for a simple arm it yields to <b>geometry and trigonometry</b>: the base angle comes from the target's direction, and the shoulder/elbow angles come from solving the two-link reach triangle to the target (the law of cosines). Solving inverse kinematics is what turns the arm from a set of fiddly joints into a device you command by <i>position</i> — "go here" — which is the whole point of manipulation control. It also naturally reveals the <b>workspace</b>: the set of points the arm can actually reach, bounded by its link lengths and joint ranges. A target outside the workspace has no solution, and the controller must recognise and reject it rather than straining the servos.</p>
+<p>Around the kinematics sit the physical realities that make an arm behave — or misbehave. <b>Motion must be smooth and coordinated</b>: snapping servos to new angles jerks the arm, overshoots, and can fling a grasped object, so joints are eased to their targets together over a short time. <b>Torque and payload</b> govern what the arm can do: a servo produces limited torque, and a load or link mass acting at a distance from a joint imposes a torque that grows with that distance — the <b>shoulder</b>, carrying the whole outstretched arm, works hardest and sets the payload limit, which is why it needs the strongest servo and a stable, heavy base (or the arm tips itself over). The design is honest about the ceiling on all this: hobby servos have limited <b>precision and repeatability</b> (they will not hit a point to the millimetre reliably), limited payload, and no force feedback, and industrial arms use precision actuators and <b>6+ DOF</b> to control full position <i>and</i> orientation. But within those honest limits, a 4-DOF servo arm with real forward and inverse kinematics, coordinated smooth motion, and a working gripper delivers the genuine substance of robotic manipulation — the part that transfers directly to serious robotics.</p>
+
+<h3>The maths behind it</h3><h4>Forward kinematics (planar 2-link + base)</h4><div class="codeblock tall" data-file="Forward kinematics (planar 2-link + base)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Forward kinematics (planar 2-link + base)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Forward kinematics (planar 2-link + base) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Forward kinematics (planar 2-link + base)" type="button" aria-label="Download Forward kinematics (planar 2-link + base)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Base rotates by θ0; shoulder θ1, elbow θ2; links L1, L2:
+
+  r = L1·cos θ1 + L2·cos(θ1+θ2)     (reach in the plane)
+  z = L1·sin θ1 + L2·sin(θ1+θ2)     (height)
+  x = r·cos θ0,   y = r·sin θ0       (rotate into 3-D)
+
+Angles → a single, definite gripper position.</code></pre>
+  
+</div>
+<h4>Inverse kinematics (position → angles)</h4><div class="codeblock tall" data-file="Inverse kinematics (position → angles)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Inverse kinematics (position → angles)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Inverse kinematics (position → angles) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Inverse kinematics (position → angles)" type="button" aria-label="Download Inverse kinematics (position → angles)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Target (x,y,z): θ0 = atan2(y, x)
+  r = √(x²+y²),  reach D = √(r² + z²)
+
+Elbow (law of cosines):
+  θ2 = ± acos( (D² − L1² − L2²) / (2·L1·L2) )
+Shoulder:
+  θ1 = atan2(z, r) − atan2(L2·sin θ2, L1 + L2·cos θ2)
+
+No solution if D &gt; L1+L2 → OUT OF REACH (reject).</code></pre>
+  
+</div>
+<h4>Torque / payload (why the shoulder works hardest)</h4><div class="codeblock tall" data-file="Torque / payload (why the shoulder works hardest)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Torque / payload (why the shoulder works hardest)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Torque / payload (why the shoulder works hardest) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Torque / payload (why the shoulder works hardest)" type="button" aria-label="Download Torque / payload (why the shoulder works hardest)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Joint torque ≈ Σ (weight_i × horizontal_distance_i)
+
+A load m at reach R needs torque ~ m·g·R at the shoulder.
+Farther out → more torque. Shoulder carries the whole arm
+→ strongest servo + heavy/stable base (or it tips).</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 756" role="img" aria-labelledby="td799 sd799" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td799">4-DOF Robotic Arm — firmware flowchart</title><desc id="sd799">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d799" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d799" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d799" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d799" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d799)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="51.5">Command a target (x,y,z) /</tspan><tspan x="210" y="64.5">pick</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d799)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d799)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="137.5">Inverse kinematics → joint</tspan><tspan x="210" y="150.5">angles</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d799)"/><path d="M210 202 L349 244 L210 286 L71 244 z"
+          fill="url(#ga-d799)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="244" text-anchor="middle"><tspan x="210" y="244.0">Within workspace / torque?</tspan></text><path d="M210 286 L210 310" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d799)"/><text class="dg-e" x="220" y="305">Ease joints to target (coordinated)</text><path d="M349 244 H397 V200 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d799)"/><text class="dg-e" x="403" y="238">Reject: out of reach</text><path d="M101 316 L335 316 L319 372 L85 372 z"
+          fill="url(#gb-d799)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="344" text-anchor="middle"><tspan x="210" y="344.0">Reject: out of reach</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d799)"/><path d="M101 402 L335 402 L319 458 L85 458 z"
+          fill="url(#gb-d799)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="423.5">Ease joints to target</tspan><tspan x="210" y="436.5">(coordinated)</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d799)"/><rect x="85" y="488" width="250" height="56" rx="10"
+          fill="url(#gb-d799)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="516" text-anchor="middle"><tspan x="210" y="516.0">Close gripper (grasp)</tspan></text><path d="M210 544 L210 568" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d799)"/><path d="M101 574 L335 574 L319 630 L85 630 z"
+          fill="url(#gb-d799)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="602" text-anchor="middle"><tspan x="210" y="602.0">Move to place point + open</tspan></text><path d="M210 630 L210 654" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d799)"/><rect x="85" y="660" width="250" height="56" rx="28"
+          fill="url(#ga-d799)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="688" text-anchor="middle"><tspan x="210" y="688.0">Return to rest</tspan></text>
+  </svg>
+  <figcaption>4-DOF Robotic Arm — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Build the arm and power the servos properly</h4><p>Assemble the base, shoulder, elbow and gripper with the strongest servo at the shoulder, on a heavy/clamped base. Power all servos from a dedicated multi-amp 5–6 V supply with a common ground to the MCU.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Never power the servos from the MCU's 5 V pin — they draw far more current than it can supply, causing brownouts and resets. Use a separate supply, common ground, and a stable base or the reaching arm will tip over.</p></div>
+  </aside></li><li><h4>Calibrate joints and implement kinematics</h4><p>Calibrate each servo's angle range and zero, measure the link lengths, and implement forward and inverse kinematics.</p></li><li><h4>Add coordinated motion and gripping</h4><p>Ease joints to IK targets in coordination, add workspace checks, and sequence pick-and-place with the gripper.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Solve inverse kinematics and check reach</h4><p>From a target point compute the joint angles with geometry, and reject targets outside the reachable workspace.</p><div class="codeblock tall" data-file="ik.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">ik.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy ik.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="ik.ino" type="button" aria-label="Download ik.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">const</span> <span class="tok-k">float</span> <span class="tok-t">L1</span> <span class="tok-o">=</span> <span class="tok-n">105.0</span><span class="tok-o">,</span> <span class="tok-t">L2</span> <span class="tok-o">=</span> <span class="tok-n">98.0</span><span class="tok-o">;</span>   <span class="tok-c">// link lengths (mm)</span>
+
+<span class="tok-k">struct</span> <span class="tok-t">Angles</span> <span class="tok-o">{</span> <span class="tok-k">float</span> base<span class="tok-o">,</span> shoulder<span class="tok-o">,</span> elbow<span class="tok-o">;</span> <span class="tok-k">bool</span> reachable<span class="tok-o">;</span> <span class="tok-o">};</span>
+
+<span class="tok-t">Angles</span> <span class="tok-f">inverseKinematics</span><span class="tok-o">(</span><span class="tok-k">float</span> x<span class="tok-o">,</span> <span class="tok-k">float</span> y<span class="tok-o">,</span> <span class="tok-k">float</span> z<span class="tok-o">){</span>
+  <span class="tok-t">Angles</span> a<span class="tok-o">;</span> a<span class="tok-o">.</span>reachable <span class="tok-o">=</span> <span class="tok-k">true</span><span class="tok-o">;</span>
+  a<span class="tok-o">.</span>base <span class="tok-o">=</span> <span class="tok-f">atan2</span><span class="tok-o">(</span>y<span class="tok-o">,</span> x<span class="tok-o">);</span>                          <span class="tok-c">// base points at target</span>
+  <span class="tok-k">float</span> r <span class="tok-o">=</span> <span class="tok-f">sqrt</span><span class="tok-o">(</span>x<span class="tok-o">*</span>x <span class="tok-o">+</span> y<span class="tok-o">*</span>y<span class="tok-o">);</span>                     <span class="tok-c">// horizontal reach</span>
+  <span class="tok-k">float</span> <span class="tok-t">D</span> <span class="tok-o">=</span> <span class="tok-f">sqrt</span><span class="tok-o">(</span>r<span class="tok-o">*</span>r <span class="tok-o">+</span> z<span class="tok-o">*</span>z<span class="tok-o">);</span>                      <span class="tok-c">// distance to target</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-t">D</span> <span class="tok-o">&gt;</span> <span class="tok-o">(</span><span class="tok-t">L1</span> <span class="tok-o">+</span> <span class="tok-t">L2</span><span class="tok-o">)</span> <span class="tok-o">||</span> <span class="tok-t">D</span> <span class="tok-o">&lt;</span> <span class="tok-f">fabs</span><span class="tok-o">(</span><span class="tok-t">L1</span> <span class="tok-o">-</span> <span class="tok-t">L2</span><span class="tok-o">)){</span>        <span class="tok-c">// outside the workspace</span>
+    a<span class="tok-o">.</span>reachable <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span> <span class="tok-k">return</span> a<span class="tok-o">;</span>                <span class="tok-c">// reject: don't strain servos</span>
+  <span class="tok-o">}</span>
+  <span class="tok-k">float</span> c2 <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-t">D</span><span class="tok-o">*</span><span class="tok-t">D</span> <span class="tok-o">-</span> <span class="tok-t">L1</span><span class="tok-o">*</span><span class="tok-t">L1</span> <span class="tok-o">-</span> <span class="tok-t">L2</span><span class="tok-o">*</span><span class="tok-t">L2</span><span class="tok-o">)</span> <span class="tok-o">/</span> <span class="tok-o">(</span><span class="tok-n">2</span><span class="tok-o">*</span><span class="tok-t">L1</span><span class="tok-o">*</span><span class="tok-t">L2</span><span class="tok-o">);</span>
+  a<span class="tok-o">.</span>elbow <span class="tok-o">=</span> <span class="tok-f">acos</span><span class="tok-o">(</span><span class="tok-f">constrain</span><span class="tok-o">(</span>c2<span class="tok-o">,</span> <span class="tok-o">-</span><span class="tok-n">1.0</span><span class="tok-o">,</span> <span class="tok-n">1.0</span><span class="tok-o">));</span>       <span class="tok-c">// law of cosines</span>
+  a<span class="tok-o">.</span>shoulder <span class="tok-o">=</span> <span class="tok-f">atan2</span><span class="tok-o">(</span>z<span class="tok-o">,</span> r<span class="tok-o">)</span>
+             <span class="tok-o">-</span> <span class="tok-f">atan2</span><span class="tok-o">(</span><span class="tok-t">L2</span><span class="tok-o">*</span><span class="tok-f">sin</span><span class="tok-o">(</span>a<span class="tok-o">.</span>elbow<span class="tok-o">),</span> <span class="tok-t">L1</span> <span class="tok-o">+</span> <span class="tok-t">L2</span><span class="tok-o">*</span><span class="tok-f">cos</span><span class="tok-o">(</span>a<span class="tok-o">.</span>elbow<span class="tok-o">));</span>
+  <span class="tok-k">return</span> a<span class="tok-o">;</span>
+<span class="tok-o">}</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">a.base = atan2(y, x);                          // base points at target</span><span class="txt">The base angle simply aims the arm's working plane at the target's horizontal direction.</span></div><div><span class="ref">if (D &gt; (L1 + L2) || D &lt; fabs(L1 - L2)){        // outside the workspace</span><span class="txt">A target farther than the arm can stretch (or nearer than it can fold) has no solution — the controller rejects it instead of straining the servos into a pose they cannot reach.</span></div><div><span class="ref">a.elbow = acos(constrain(c2, -1.0, 1.0));       // law of cosines</span><span class="txt">The elbow angle comes from the law of cosines on the two-link reach triangle — the heart of the inverse-kinematics solution.</span></div><div><span class="ref">a.shoulder = atan2(z, r)</span><span class="txt">The shoulder angle combines the direction to the target with the elbow geometry so the gripper lands on the point.</span></div></div></li><li><h4>Ease joints to the target and grasp</h4><p>Move all joints from their current angles to the IK targets together over a short time (easing), then operate the gripper — smooth, coordinated motion that does not jerk or fling the load.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Ease, do not snap. Interpolate every joint from its current angle to its target over the same short interval so the arm moves as one smooth motion rather than each joint jumping independently.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="robot_arm.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">robot_arm.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy robot_arm.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="robot_arm.ino" type="button" aria-label="Download robot_arm.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   4-DOF Robotic Arm — reach + pick-and-place</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Inverse kinematics turns a target point into joint angles (with a</span>
+<span class="tok-c">   workspace check), coordinated easing moves all joints smoothly, and</span>
+<span class="tok-c">   a gripper picks and places. Servos on a dedicated supply, common</span>
+<span class="tok-c">   ground, heavy base. Honest about hobby-servo precision/payload.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Servo</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-t">Servo</span> base<span class="tok-o">,</span> shoulder<span class="tok-o">,</span> elbow<span class="tok-o">,</span> gripper<span class="tok-o">;</span>
+<span class="tok-k">const</span> <span class="tok-k">float</span> <span class="tok-t">L1</span><span class="tok-o">=</span><span class="tok-n">105</span><span class="tok-o">,</span> <span class="tok-t">L2</span><span class="tok-o">=</span><span class="tok-n">98</span><span class="tok-o">;</span>                 <span class="tok-c">// mm</span>
+
+<span class="tok-k">struct</span> <span class="tok-t">Angles</span> <span class="tok-o">{</span> <span class="tok-k">float</span> base<span class="tok-o">,</span> shoulder<span class="tok-o">,</span> elbow<span class="tok-o">;</span> <span class="tok-k">bool</span> reachable<span class="tok-o">;</span> <span class="tok-o">};</span>
+
+<span class="tok-t">Angles</span> <span class="tok-f">ik</span><span class="tok-o">(</span><span class="tok-k">float</span> x<span class="tok-o">,</span><span class="tok-k">float</span> y<span class="tok-o">,</span><span class="tok-k">float</span> z<span class="tok-o">){</span>
+  <span class="tok-t">Angles</span> a<span class="tok-o">;</span> a<span class="tok-o">.</span>reachable<span class="tok-o">=</span><span class="tok-k">true</span><span class="tok-o">;</span>
+  a<span class="tok-o">.</span>base <span class="tok-o">=</span> <span class="tok-f">atan2</span><span class="tok-o">(</span>y<span class="tok-o">,</span>x<span class="tok-o">);</span>
+  <span class="tok-k">float</span> r<span class="tok-o">=</span><span class="tok-f">sqrt</span><span class="tok-o">(</span>x<span class="tok-o">*</span>x<span class="tok-o">+</span>y<span class="tok-o">*</span>y<span class="tok-o">),</span> <span class="tok-t">D</span><span class="tok-o">=</span><span class="tok-f">sqrt</span><span class="tok-o">(</span>r<span class="tok-o">*</span>r<span class="tok-o">+</span>z<span class="tok-o">*</span>z<span class="tok-o">);</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-t">D</span> <span class="tok-o">&gt;</span> <span class="tok-t">L1</span><span class="tok-o">+</span><span class="tok-t">L2</span> <span class="tok-o">||</span> <span class="tok-t">D</span> <span class="tok-o">&lt;</span> <span class="tok-f">fabs</span><span class="tok-o">(</span><span class="tok-t">L1</span><span class="tok-o">-</span><span class="tok-t">L2</span><span class="tok-o">)){</span> a<span class="tok-o">.</span>reachable<span class="tok-o">=</span><span class="tok-k">false</span><span class="tok-o">;</span> <span class="tok-k">return</span> a<span class="tok-o">;</span> <span class="tok-o">}</span>
+  <span class="tok-k">float</span> c2<span class="tok-o">=(</span><span class="tok-t">D</span><span class="tok-o">*</span><span class="tok-t">D</span><span class="tok-o">-</span><span class="tok-t">L1</span><span class="tok-o">*</span><span class="tok-t">L1</span><span class="tok-o">-</span><span class="tok-t">L2</span><span class="tok-o">*</span><span class="tok-t">L2</span><span class="tok-o">)/(</span><span class="tok-n">2</span><span class="tok-o">*</span><span class="tok-t">L1</span><span class="tok-o">*</span><span class="tok-t">L2</span><span class="tok-o">);</span>
+  a<span class="tok-o">.</span>elbow <span class="tok-o">=</span> <span class="tok-f">acos</span><span class="tok-o">(</span><span class="tok-f">constrain</span><span class="tok-o">(</span>c2<span class="tok-o">,-</span><span class="tok-n">1.0</span><span class="tok-o">,</span><span class="tok-n">1.0</span><span class="tok-o">));</span>
+  a<span class="tok-o">.</span>shoulder <span class="tok-o">=</span> <span class="tok-f">atan2</span><span class="tok-o">(</span>z<span class="tok-o">,</span>r<span class="tok-o">)</span> <span class="tok-o">-</span> <span class="tok-f">atan2</span><span class="tok-o">(</span><span class="tok-t">L2</span><span class="tok-o">*</span><span class="tok-f">sin</span><span class="tok-o">(</span>a<span class="tok-o">.</span>elbow<span class="tok-o">),</span> <span class="tok-t">L1</span><span class="tok-o">+</span><span class="tok-t">L2</span><span class="tok-o">*</span><span class="tok-f">cos</span><span class="tok-o">(</span>a<span class="tok-o">.</span>elbow<span class="tok-o">));</span>
+  <span class="tok-k">return</span> a<span class="tok-o">;</span>
+<span class="tok-o">}</span>
+<span class="tok-k">int</span> <span class="tok-f">deg</span><span class="tok-o">(</span><span class="tok-k">float</span> rad<span class="tok-o">){</span> <span class="tok-k">return</span> <span class="tok-f">constrain</span><span class="tok-o">((</span><span class="tok-k">int</span><span class="tok-o">)(</span>rad<span class="tok-o">*</span><span class="tok-n">180.0</span><span class="tok-o">/</span><span class="tok-t">PI</span><span class="tok-o">),</span> <span class="tok-n">0</span><span class="tok-o">,</span> <span class="tok-n">180</span><span class="tok-o">);</span> <span class="tok-o">}</span>
+
+<span class="tok-c">// Ease ALL joints together from current to target (smooth, coordinated).</span>
+<span class="tok-k">void</span> <span class="tok-f">moveTo</span><span class="tok-o">(</span><span class="tok-k">int</span> b<span class="tok-o">,</span><span class="tok-k">int</span> s<span class="tok-o">,</span><span class="tok-k">int</span> e<span class="tok-o">,</span><span class="tok-k">int</span> steps<span class="tok-o">=</span><span class="tok-n">40</span><span class="tok-o">){</span>
+  <span class="tok-k">int</span> b0<span class="tok-o">=</span>base<span class="tok-o">.</span><span class="tok-f">read</span><span class="tok-o">(),</span> s0<span class="tok-o">=</span>shoulder<span class="tok-o">.</span><span class="tok-f">read</span><span class="tok-o">(),</span> e0<span class="tok-o">=</span>elbow<span class="tok-o">.</span><span class="tok-f">read</span><span class="tok-o">();</span>
+  <span class="tok-k">for</span> <span class="tok-o">(</span><span class="tok-k">int</span> i<span class="tok-o">=</span><span class="tok-n">1</span><span class="tok-o">;</span>i<span class="tok-o">&lt;=</span>steps<span class="tok-o">;</span>i<span class="tok-o">++){</span>
+    <span class="tok-k">float</span> t<span class="tok-o">=(</span><span class="tok-k">float</span><span class="tok-o">)</span>i<span class="tok-o">/</span>steps<span class="tok-o">;</span>                <span class="tok-c">// 0..1</span>
+    base<span class="tok-o">.</span><span class="tok-f">write</span><span class="tok-o">(</span>b0<span class="tok-o">+(</span>b<span class="tok-o">-</span>b0<span class="tok-o">)*</span>t<span class="tok-o">);</span>
+    shoulder<span class="tok-o">.</span><span class="tok-f">write</span><span class="tok-o">(</span>s0<span class="tok-o">+(</span>s<span class="tok-o">-</span>s0<span class="tok-o">)*</span>t<span class="tok-o">);</span>
+    elbow<span class="tok-o">.</span><span class="tok-f">write</span><span class="tok-o">(</span>e0<span class="tok-o">+(</span>e<span class="tok-o">-</span>e0<span class="tok-o">)*</span>t<span class="tok-o">);</span>
+    <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">15</span><span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+<span class="tok-o">}</span>
+<span class="tok-k">void</span> <span class="tok-f">grip</span><span class="tok-o">(</span><span class="tok-k">bool</span> close<span class="tok-o">){</span> gripper<span class="tok-o">.</span><span class="tok-f">write</span><span class="tok-o">(</span>close<span class="tok-o">?</span><span class="tok-n">60</span><span class="tok-o">:</span><span class="tok-n">120</span><span class="tok-o">);</span> <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">400</span><span class="tok-o">);</span> <span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">reachAndPick</span><span class="tok-o">(</span><span class="tok-k">float</span> x<span class="tok-o">,</span><span class="tok-k">float</span> y<span class="tok-o">,</span><span class="tok-k">float</span> z<span class="tok-o">){</span>
+  <span class="tok-t">Angles</span> a <span class="tok-o">=</span> <span class="tok-f">ik</span><span class="tok-o">(</span>x<span class="tok-o">,</span>y<span class="tok-o">,</span>z<span class="tok-o">);</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>a<span class="tok-o">.</span>reachable<span class="tok-o">){</span> <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">println</span><span class="tok-o">(</span><span class="tok-s">"OUT OF REACH"</span><span class="tok-o">);</span> <span class="tok-k">return</span><span class="tok-o">;</span> <span class="tok-o">}</span>  <span class="tok-c">// honest reject</span>
+  <span class="tok-f">grip</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>                              <span class="tok-c">// open</span>
+  <span class="tok-f">moveTo</span><span class="tok-o">(</span><span class="tok-f">deg</span><span class="tok-o">(</span>a<span class="tok-o">.</span>base<span class="tok-o">),</span> <span class="tok-f">deg</span><span class="tok-o">(</span>a<span class="tok-o">.</span>shoulder<span class="tok-o">),</span> <span class="tok-f">deg</span><span class="tok-o">(</span>a<span class="tok-o">.</span>elbow<span class="tok-o">));</span>
+  <span class="tok-f">grip</span><span class="tok-o">(</span><span class="tok-k">true</span><span class="tok-o">);</span>                               <span class="tok-c">// grasp</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">(){</span>
+  base<span class="tok-o">.</span><span class="tok-f">attach</span><span class="tok-o">(</span><span class="tok-n">3</span><span class="tok-o">);</span> shoulder<span class="tok-o">.</span><span class="tok-f">attach</span><span class="tok-o">(</span><span class="tok-n">5</span><span class="tok-o">);</span> elbow<span class="tok-o">.</span><span class="tok-f">attach</span><span class="tok-o">(</span><span class="tok-n">6</span><span class="tok-o">);</span> gripper<span class="tok-o">.</span><span class="tok-f">attach</span><span class="tok-o">(</span><span class="tok-n">9</span><span class="tok-o">);</span>
+  <span class="tok-f">moveTo</span><span class="tok-o">(</span><span class="tok-n">90</span><span class="tok-o">,</span><span class="tok-n">90</span><span class="tok-o">,</span><span class="tok-n">90</span><span class="tok-o">);</span> <span class="tok-f">grip</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>            <span class="tok-c">// rest pose</span>
+  <span class="tok-f">reachAndPick</span><span class="tok-o">(</span><span class="tok-n">120</span><span class="tok-o">,</span> <span class="tok-n">40</span><span class="tok-o">,</span> <span class="tok-n">20</span><span class="tok-o">);</span>                <span class="tok-c">// pick at a point</span>
+  <span class="tok-f">moveTo</span><span class="tok-o">(</span><span class="tok-n">30</span><span class="tok-o">,</span> <span class="tok-n">90</span><span class="tok-o">,</span> <span class="tok-n">90</span><span class="tok-o">);</span> <span class="tok-f">grip</span><span class="tok-o">(</span><span class="tok-k">false</span><span class="tok-o">);</span>          <span class="tok-c">// move to place point + release</span>
+  <span class="tok-f">moveTo</span><span class="tok-o">(</span><span class="tok-n">90</span><span class="tok-o">,</span><span class="tok-n">90</span><span class="tok-o">,</span><span class="tok-n">90</span><span class="tok-o">);</span>                         <span class="tok-c">// return to rest</span>
+<span class="tok-o">}</span>
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">(){}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (56 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">if (D &gt; L1+L2 || D &lt; fabs(L1-L2)){ a.reachable=false; return a; }</span><span class="txt">The workspace check rejects unreachable targets — the arm never strains servos toward a point its geometry cannot reach.</span></div><div><span class="ref">void moveTo(int b,int s,int e,int steps=40){</span><span class="txt">Every joint is eased from its current to its target angle over the same steps, so the arm moves as one smooth, coordinated motion instead of snapping.</span></div><div><span class="ref">if (!a.reachable){ Serial.println("OUT OF REACH"); return; }  // honest reject</span><span class="txt">Commanding a position out of the workspace is reported and refused — honest handling rather than a servo strain or a wild pose.</span></div><div><span class="ref">grip(true);                               // grasp</span><span class="txt">With the gripper positioned by inverse kinematics, closing it picks the object — the payoff of commanding by position.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Configure servo pins, per-joint angle ranges/zeros, and the link lengths.</li><li>Configure the easing steps/speed for smooth coordinated motion.</li><li>Configure gripper open/close angles and pick/place points.</li><li>Configure workspace limits and out-of-reach handling.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Joint zeros/ranges</h4><p>Calibrate each servo's angle so the arm's geometric zero matches the model, and set safe joint limits.</p></li><li><h4>Link lengths</h4><p>Measure L1/L2 accurately — kinematic accuracy depends on them.</p></li><li><h4>Reach accuracy</h4><p>Command known points and measure where the gripper lands; note hobby-servo repeatability limits.</p></li></ol></section>
+
+<section id="mechanics" aria-labelledby="h-mechanics"><h2 id="h-mechanics">Mechanical Assembly &amp; Motion</h2><h3>Mechanical assembly</h3><ul class="plain"><li>A serial chain: a rotating base, a shoulder joint, an elbow joint, and a gripper at the end — four servos in all.</li><li>Links sized for the desired reach; the shoulder joint bears the most load, so it uses the strongest servo.</li><li>A heavy or clamped base for stability — an outstretched arm will tip a light base.</li><li>Servo wiring routed so it does not bind the joints anywhere in their range.</li></ul>
+<h3>Motion logic</h3><p>Motion is coordinated multi-joint servo control: to reach a point, inverse kinematics gives the four target angles, and all joints are eased to them together over a short time rather than snapped.</p>
+<p>Easing (interpolating each joint from its current to its target angle) keeps the motion smooth, avoids overshoot, and stops the arm from flinging a grasped object — coordination matters as much as the endpoints.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">State</th><th scope="col">Left motor</th><th scope="col">Right motor</th><th scope="col">Result</th></tr></thead>
+    <tbody><tr><td><b>Reach to point</b></td><td>(base + shoulder)</td><td>(elbow + gripper)</td><td>Gripper arrives via IK</td></tr><tr><td><b>Elbow-up vs elbow-down</b></td><td>Shoulder high</td><td>Elbow bent up</td><td>Choose reachable/safe solution</td></tr><tr><td><b>Grasp</b></td><td>Arm holds pose</td><td>Gripper closes</td><td>Pick object</td></tr><tr><td><b>Carry</b></td><td>Ease slowly</td><td>Ease slowly</td><td>Smooth, no fling</td></tr><tr><td><b>Out of workspace</b></td><td>—</td><td>—</td><td>Reject (no IK solution)</td></tr><tr><td><b>Rest</b></td><td>Folded</td><td>Gripper open</td><td>Stable park pose</td></tr></tbody>
+  </table></div>
+<h3>Sensor integration</h3><ul class="plain"><li>Servo positions are commanded open-loop (hobby servos have internal position control but no external feedback to the MCU).</li><li>Optional: a gripper force/limit sensor or a camera for closed-loop pick accuracy.</li><li>Optional: current sensing on the servo supply to detect stall/overload.</li></ul>
+<h3>Actuator explanation</h3><p>Four servos: base (rotate), shoulder (lift, highest torque), elbow (extend), and gripper (grasp).</p>
+<p>All powered from a dedicated multi-amp 5–6 V supply with common ground to the MCU; the controller eases each servo from its current to its target angle in coordination.</p>
+<h3>Kinematics</h3><p>Forward kinematics chains the link geometry to find the gripper from the angles; inverse kinematics solves the reach triangle with trigonometry to find the angles for a target point, and reveals the reachable workspace.</p><div class="codeblock tall" data-file="kinematics">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">kinematics</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy kinematics to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="kinematics" type="button" aria-label="Download kinematics">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Forward:  r = L1·cosθ1 + L2·cos(θ1+θ2);  z = L1·sinθ1 + L2·sin(θ1+θ2)
+          x = r·cosθ0;  y = r·sinθ0
+
+Inverse:  θ0 = atan2(y,x);  D = √(x²+y²+z²)
+          θ2 = acos((D²−L1²−L2²)/(2 L1 L2))    # elbow (law of cosines)
+          θ1 = atan2(z,√(x²+y²)) − atan2(L2 sinθ2, L1+L2 cosθ2)
+          if D &gt; L1+L2:  OUT OF REACH</code></pre>
+  
+</div>
+</section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Command a reachable point</b></td><td>Gripper arrives near the point (IK works)</td></tr><tr><td><b>Command an out-of-reach point</b></td><td>"OUT OF REACH" — rejected, servos not strained</td></tr><tr><td><b>Move between two points</b></td><td>Smooth, coordinated (eased) motion</td></tr><tr><td><b>Pick a light object</b></td><td>Gripper grasps and carries without flinging</td></tr><tr><td><b>Reach fully outstretched with a load</b></td><td>Shoulder works hardest; base stable (no tip)</td></tr><tr><td><b>Repeat a target several times</b></td><td>Some spread — note servo repeatability</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>An arm that reaches commanded points, respects its workspace, moves smoothly, and picks and places light objects.</p>
+<div class="codeblock tall" data-file="ik-result.txt">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">ik-result.txt</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy ik-result.txt to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="ik-result.txt" type="button" aria-label="Download ik-result.txt">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>target: (120, 40, 20) mm
+base: 18 deg   shoulder: 62 deg   elbow: 74 deg
+reachable: yes
+motion: eased over 40 steps -&gt; gripper at ~(119, 41, 21) mm
+grip: closed (object picked)</code></pre>
+  
+</div>
+
+<p>Inverse kinematics turned the target point into joint angles, the arm eased smoothly to it, and the gripper picked the object — manipulation commanded by position, not by fiddling joints.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/DC%20motor.jpg?width=900" alt="A brushed DC gear motor" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td800" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td800">The shoulder joint carries the whole outstretched arm, so it works hardest and needs the most torque and a stable base.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="120" y="96" width="130" height="84" rx="10" fill="#4a525e" stroke="#333a45" stroke-width="2"/>
+    <rect x="250" y="126" width="52" height="24" rx="4" fill="#8a919b"/>
+    <circle cx="302" cy="138" r="18" fill="#2b2f36" stroke="#6a727e" stroke-width="3"/>
+    <rect x="96" y="112" width="26" height="52" rx="4" fill="#2b2f36"/>
+    <line x1="96" y1="126" x2="60" y2="126" stroke="#e05050" stroke-width="3"/>
+    <line x1="96" y1="150" x2="60" y2="150" stroke="#2b2f36" stroke-width="3"/>
+    <line x1="132" y1="96" x2="132" y2="180" stroke="#333a45" stroke-width="2"/><line x1="152" y1="96" x2="152" y2="180" stroke="#333a45" stroke-width="2"/><line x1="172" y1="96" x2="172" y2="180" stroke="#333a45" stroke-width="2"/><line x1="192" y1="96" x2="192" y2="180" stroke="#333a45" stroke-width="2"/><line x1="212" y1="96" x2="212" y2="180" stroke="#333a45" stroke-width="2"/><line x1="232" y1="96" x2="232" y2="180" stroke="#333a45" stroke-width="2"/>
+  </svg>
+  <figcaption>The shoulder joint carries the whole outstretched arm, so it works hardest and needs the most torque and a stable base.</figcaption>
+</figure></template>
+  <figcaption>The shoulder joint carries the whole outstretched arm, so it works hardest and needs the most torque and a stable base.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:DC_motor.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — DC motor.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>MCU resets when arm moves</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Servos on MCU power</p>
+        <p><strong>Fix.</strong> Dedicated multi-amp servo supply; common ground; add capacitance</p></div></details><details class="expand"><summary>Arm tips over</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Light base / long reach</p>
+        <p><strong>Fix.</strong> Heavy or clamped base; keep loads within payload</p></div></details><details class="expand"><summary>Gripper misses the point</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong link lengths / servo zeros</p>
+        <p><strong>Fix.</strong> Re-measure L1/L2; recalibrate joint zeros</p></div></details><details class="expand"><summary>Jerky motion / flings load</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Snapping servos</p>
+        <p><strong>Fix.</strong> Ease all joints together over time</p></div></details><details class="expand"><summary>Shoulder struggles/stalls</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Torque/payload exceeded</p>
+        <p><strong>Fix.</strong> Stronger shoulder servo; lighter load; shorter reach</p></div></details><details class="expand"><summary>Unreachable points attempted</summary><div class="inner">
+        <p><strong>Likely cause.</strong> No workspace check</p>
+        <p><strong>Fix.</strong> Reject targets with no IK solution</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Solve inverse kinematics to command position, not joints.</li><li>Reject out-of-workspace targets rather than straining servos.</li><li>Ease all joints together for smooth, coordinated motion.</li><li>Design for torque/payload — strongest servo at the shoulder, stable base.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Wrap constant strings in <code>F("...")</code> so they stay in flash — an Uno only has 2 KB of SRAM.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>Keep hands and objects clear of the arm's workspace while it moves — even a small servo arm can pinch.</li><li>Power servos from a proper supply; brownouts cause uncommanded motion.</li><li>Use a stable, heavy base so the arm cannot tip and fall.</li><li>Stay within the servos' torque/payload; a stalled servo overheats and can be damaged.</li><li>Hobby servos lack force feedback and precise repeatability — do not rely on them for anything safety-critical.</li><li>Moving parts pinch. Keep fingers, cables and hair out of gear trains and wheels, and always test motion with the drivetrain unloaded and the robot on blocks first.</li><li>Motors are inductive — always fit a flyback diode across a DC coil, or use a driver that already has one, or the back-EMF spike will destroy your GPIO.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-check joint zeros and link measurements periodically.</li><li>Watch for servo wear/backlash that degrades accuracy.</li><li>Keep the base fixings tight and the wiring free of the joints.</li><li>Verify the servo supply holds voltage under load.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Listen for gear chatter. A servo that buzzes at rest is either stripped or fighting a mechanical bind — fix it before it burns out.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add a 5th/6th DOF (wrist) for full orientation control.</li><li>Add a camera for visual servoing / closed-loop picking.</li><li>Add trajectory planning (via-points, speed profiles).</li><li>Add force/current sensing for compliant, safer grasping.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>What is the difference between forward and inverse kinematics?</summary><div class="inner"><p>Forward kinematics computes where the gripper is from the joint angles (one definite answer). Inverse kinematics computes the joint angles needed to put the gripper at a target point — harder (multiple or no solutions) but far more useful, because it lets you command a position.</p></div></details><details class="expand"><summary>Why only 4 degrees of freedom?</summary><div class="inner"><p>4-DOF is enough to command a position (and one orientation) — enough to pick things up — while staying simple to understand fully. Controlling full position and orientation needs 6+ DOF, which is what industrial arms use.</p></div></details><details class="expand"><summary>Why does the shoulder need the strongest servo?</summary><div class="inner"><p>Because torque grows with load times distance from the joint, and the shoulder carries the entire outstretched arm and its load. It works hardest and sets the payload limit, so it needs the most torque — and a stable base, or the arm tips itself over.</p></div></details><details class="expand"><summary>Why ease the joints instead of snapping to the angles?</summary><div class="inner"><p>Snapping jerks the arm, overshoots, and can fling a grasped object. Easing every joint from its current to its target angle together produces smooth, coordinated motion — coordination matters as much as the endpoints.</p></div></details><details class="expand"><summary>How accurate is it?</summary><div class="inner"><p>Usefully but not precisely. Hobby servos have limited resolution, repeatability and no external feedback, so it will reach near a point rather than to the millimetre reliably. That honest limit is exactly why serious arms use precision actuators and closed-loop control.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Robotic_arm" rel="noopener nofollow" target="_blank">Robot arm / manipulator</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Forward_kinematics" rel="noopener nofollow" target="_blank">Forward kinematics</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Inverse_kinematics" rel="noopener nofollow" target="_blank">Inverse kinematics</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Degrees_of_freedom_(mechanics)" rel="noopener nofollow" target="_blank">Degrees of freedom (mechanics)</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Servomotor" rel="noopener nofollow" target="_blank">Servo motor control</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="obstacle-avoiding-rover.html"><span class="dir">← Previous project</span><span class="ttl">Obstacle-Avoiding Rover</span></a>
+        <span class="next disabled"></span>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Advanced</b></div>
+        <div class="rail-stat"><span>Time</span><b>14–22 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>9</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹2,800 – ₹5,000</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="line-following-delivery-bot.html">Line-Following Delivery Bot</a></li><li><a href="obstacle-avoiding-rover.html">Obstacle-Avoiding Rover</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="line-following-delivery-bot.html">
+        <span class="rc">Robotics</span>
+        <h4>Line-Following Delivery Bot</h4>
+        <p>An indoor courier that follows a path to ferry items autonomously.</p></a><a class="relcard" href="obstacle-avoiding-rover.html">
+        <span class="rc">Robotics</span>
+        <h4>Obstacle-Avoiding Rover</h4>
+        <p>An ultrasonic buggy that navigates around obstacles on its own.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>4-DOF Robotic Arm</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
