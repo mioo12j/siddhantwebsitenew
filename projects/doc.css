@@ -224,6 +224,15 @@ html[data-theme="light"] .btn.solid{color:#fff}
 .rail-stat b{color:var(--fg);font-weight:600}
 .rail-stat span{color:var(--fg-mute)}
 
+/* ── responsive side-rail hiding (MUST come after the base .doc-toc-wrap
+   and .doc-aside-right rules above) ─────────────────────────────────
+   These have the same specificity as the base display:flex declarations,
+   so with the base rules defined later than the earlier media queries the
+   sidebars would otherwise stay visible on mobile and overlap the article.
+   Declaring the hide here — after the base rules — makes it win the cascade. */
+@media(max-width:1240px){.doc-aside-right{display:none}}
+@media(max-width:940px){.doc-toc-wrap{display:none}}
+
 /* ── article body ─────────────────────────────────────────────── */
 .doc-body{min-width:0;max-width:var(--doc-max);padding-bottom:3rem;overflow-wrap:break-word}
 .doc-body a:not(.btn){overflow-wrap:anywhere}
