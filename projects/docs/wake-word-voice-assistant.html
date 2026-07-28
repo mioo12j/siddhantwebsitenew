@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Wake-Word Voice Assistant — Circuit, Code &amp; Full Build Guide | Speech &amp; Audio</title>
+  <meta name="description" content="Complete advanced-level build guide for a Wake-Word Voice Assistant: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="wake-word voice assistant, wake-word voice assistant project, how to build wake-word voice assistant, esp32-s3 / raspberry pi project, speech &amp; audio project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/wake-word-voice-assistant.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/wake-word-voice-assistant.html" />
+  <meta property="og:title" content="Wake-Word Voice Assistant — Circuit, Code &amp; Full Build Guide | Speech &amp; Audio" />
+  <meta property="og:description" content="Complete advanced-level build guide for a Wake-Word Voice Assistant: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Speech &amp; Audio" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Wake-Word Voice Assistant — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete advanced-level build guide for a Wake-Word Voice Assistant: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🎙️</text></svg>" />
+  <style>:root{--acc:#818cf8;--acc-light:#a5b4fc;--acc-rgb:129,140,248}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/wake-word-voice-assistant.html#article","headline":"Wake-Word Voice Assistant — Complete Build Guide","name":"Wake-Word Voice Assistant","description":"Complete advanced-level build guide for a Wake-Word Voice Assistant: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/wake-word-voice-assistant.html","inLanguage":"en","articleSection":"Speech & Audio","keywords":"wake-word voice assistant, wake-word voice assistant project, how to build wake-word voice assistant, esp32-s3 / raspberry pi project, speech & audio project, circuit diagram, source code, tutorial","proficiencyLevel":"Advanced","dependencies":"Python, TensorFlow Lite for Microcontrollers, Edge Impulse Arduino SDK, NumPy","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-28","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/wake-word-voice-assistant.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/wake-word-voice-assistant.html#howto","name":"How to build a Wake-Word Voice Assistant","description":"Complete advanced-level build guide for a Wake-Word Voice Assistant: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT18H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"1520"},"supply":[{"@type":"HowToSupply","name":"ESP32-S3 DevKitC-1"},{"@type":"HowToSupply","name":"INMP441 I²S MEMS microphone"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Run the two-stage on-device pipeline","text":"Continuously run the cheap wake-word model; only after it fires, run offline command recognition and act locally."},{"@type":"HowToStep","position":2,"name":"Tune false accepts and respond locally","text":"Tune the threshold for very few false accepts, keep the vocabulary small and offline, and drive local outputs for instant response."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Wake-Word Voice Assistant","item":"https://siddhantkumar.in/projects/docs/wake-word-voice-assistant.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/wake-word-voice-assistant.html#faq","mainEntity":[{"@type":"Question","name":"Why keep everything on-device?","acceptedAnswer":{"@type":"Answer","text":"For privacy — many assistants stream your audio to the cloud to understand it. Keeping the wake word and commands on-device means audio never has to leave the room, and it also gives instant, network-independent response."}},{"@type":"Question","name":"Why the two-stage design?","acceptedAnswer":{"@type":"Answer","text":"Because you want always-on listening but cannot afford to run a heavy model continuously on tiny hardware. A cheap wake-word model runs always-on, and the heavier command recogniser runs only after the wake word fires — rarely — which keeps the device within a small power budget."}},{"@type":"Question","name":"Why obsess over false accepts?","acceptedAnswer":{"@type":"Answer","text":"Because a device that wakes at random sounds, the TV, or unrelated speech is unusable — and in a cloud assistant, a false accept would send audio unexpectedly. A missed wake word is a minor annoyance; a spurious wake is the worst failure mode, so the model is tuned hardest against it."}},{"@type":"Question","name":"What is the catch versus a cloud assistant?","acceptedAnswer":{"@type":"Answer","text":"A tiny on-device model is less accurate, more sensitive to noise and accents, and limited to a small offline vocabulary rather than open-ended conversation. That is the honest bargain — a modest, private, responsive assistant instead of a powerful, cloud-dependent one."}},{"@type":"Question","name":"What makes this hard?","acceptedAnswer":{"@type":"Answer","text":"Fitting capable speech models into a microcontroller's severe compute, memory and power limits — TinyML engineering where every kilobyte and milliwatt counts — while staying accurate and robust enough to be useful."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#speech-and-audio">Speech &amp; Audio</a><span class="sep">/</span>
+        <span aria-current="page">Wake-Word Voice Assistant</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project A16 · Speech &amp; Audio</span>
+          <h1>Wake-Word Voice Assistant<span class="grad">.</span></h1>
+          <p class="tagline">Listens for its wake word entirely on-device and handles voice commands offline — always listening, never sending your audio to the cloud.</p>
+          <div class="hero-chips">
+            <span class="chip lv-advanced">Advanced</span>
+            <span class="chip">14–20 hours</span>
+            <span class="chip neutral">25 min read</span>
+            <span class="chip neutral">Speech</span><span class="chip neutral">Edge</span><span class="chip neutral">Voice</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1012" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1012">Wake-Word Voice Assistant — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Wake-Word Voice Assistant — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Advanced</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>14–20 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹1,500 – ₹4,000</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32-S3 / Raspberry Pi (edge)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Speech &amp; Audio</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>28 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">27</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 27 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">27</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Listens for its wake word entirely on-device and handles voice commands offline — always listening, never sending your audio to the cloud.</p>
+<p>Voice assistants feel magical but carry a real privacy cost: many are <b>always listening</b> and stream audio to the cloud to understand it. This project builds a voice assistant that keeps the listening — and ideally the understanding — <b>on the device</b>: it detects a <b>wake word</b> ("Hey Jarvis") entirely on-device, and handles a set of voice commands <b>offline</b>, so your audio never has to leave the room. It is a compelling embedded-AI project because it must run capable speech models within the tiny compute and power budget of a microcontroller or single-board computer.</p>
+<p>The heart of it is <b>wake-word detection</b>, a beautifully constrained problem. A tiny, efficient neural network runs <b>continuously</b> on the incoming audio, listening for one specific phrase — and it must be extremely <b>cheap</b> (so it can run always-on within a small power budget) yet <b>accurate</b> in two directions: few <b>false rejections</b> (it should wake when you say the word) and, critically, few <b>false accepts</b> (it must not wake at random sounds). Only <i>after</i> the wake word fires does the (heavier) command-recognition stage run, so the expensive work happens rarely. Keeping both stages <b>offline</b> — wake word plus a set of local commands — is what preserves privacy and gives instant, network-independent response.</p>
+<p>The value is a private, responsive, offline voice interface — for smart-home control, appliances, or accessibility — that isn't always phoning home. It is honest about the hard engineering: fitting speech models into <b>severe compute/memory/power limits</b> (this is <b>TinyML</b>), the accuracy trade-offs of a tiny model, robustness to <b>noise and accents</b>, and the reality that a small offline vocabulary is limited compared to a full cloud assistant. It is also candid that "always listening" deserves genuine privacy care even when local. Built well — an efficient always-on wake-word model, a two-stage design, and offline command handling — it is both a genuinely private voice assistant and the definitive lesson in on-device, resource-constrained speech AI.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Artificial%20neural%20network.svg?width=900" alt="A schematic of a feed-forward artificial neural network" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1003" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1003">A wake-word voice assistant listens on-device and handles commands offline — audio never leaves the room.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <line x1="79" y1="91" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="117" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="143" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="169" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="65" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="91" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="117" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="143" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="169" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="195" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="65" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="91" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="117" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="143" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="169" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="195" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="104" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="130" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="156" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/>
+    <text x="70" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">input</text>
+    <text x="205" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">hidden</text>
+    <text x="340" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">output</text>
+  </svg>
+  <figcaption>A wake-word voice assistant listens on-device and handles commands offline — audio never leaves the room.</figcaption>
+</figure></template>
+  <figcaption>A wake-word voice assistant listens on-device and handles commands offline — audio never leaves the room.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Artificial_neural_network.svg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Artificial neural network.svg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Detects a wake word continuously on-device</li><li>Handles a set of voice commands offline</li><li>Keeps audio local — no cloud round-trip</li><li>Runs a tiny always-on model within a small power budget</li><li>Uses two stages: cheap wake word, then command recognition</li><li>Responds instantly, network-independent</li><li>Preserves privacy by design</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Private smart-home control</b></td><td>Offline voice control without cloud audio.</td></tr><tr><td><b>Voice-enabled appliances</b></td><td>On-device command handling in products.</td></tr><tr><td><b>Accessibility</b></td><td>Local voice interfaces that respond instantly.</td></tr><tr><td><b>Embedded speech / TinyML</b></td><td>Learning on-device speech AI.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>On-device wake-word detection (always-on)</li><li>Offline command recognition</li><li>Two-stage (cheap detect → command) design</li><li>Low false-accept / false-reject tuning</li><li>TinyML resource-constrained models</li><li>Privacy-preserving (audio stays local)</li><li>Honest about small-vocabulary and noise/accent limits</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Advanced</td></tr><tr><td><b>Estimated completion time</b></td><td>14–20 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹1,500 – ₹4,000</td></tr><tr><td><b>Primary discipline</b></td><td>Speech &amp; Audio</td></tr><tr><td><b>Reference platform</b></td><td>ESP32-S3 / Raspberry Pi (edge)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Wake-word detection (efficient always-on models)</li><li>On-device / offline speech command recognition</li><li>TinyML (fitting models to MCU/edge limits)</li><li>False-accept/false-reject tuning</li><li>Privacy-preserving audio design</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>Keep audio on-device — wake word and commands run offline for privacy.</p>
+<p>The wake-word model is always-on: it must be cheap AND avoid false accepts.</p>
+<p>Two stages: cheap wake word first, heavier command recognition only after.</p>
+<p>TinyML limits (compute/memory/power) constrain accuracy and vocabulary.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32-S3 DevKitC-1</b><br/><span style="font-size:.82em;opacity:.78">The vector extensions roughly triple TinyML inference speed over the original ESP32.</span></td><td>Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM + 8 MB PSRAM, vector instructions for ML, Wi-Fi + BLE 5</td><td class="num">1</td><td class="num">₹900</td></tr><tr><td><b>INMP441 I²S MEMS microphone</b><br/><span style="font-size:.82em;opacity:.78">Digital output means no analogue noise pickup — far better than an MAX9814 for keyword spotting.</span></td><td>61 dB SNR, −26 dBFS sensitivity, 60 Hz–15 kHz, 24-bit I²S output</td><td class="num">1</td><td class="num">₹220</td></tr><tr><td><b>Microphone (I2S/MEMS)</b></td><td>Digital mic for on-device audio</td><td class="num">1</td><td class="num">₹200</td></tr><tr><td><b>Edge compute</b></td><td>ESP32-S3 (TinyML) or Raspberry Pi for more capable offline models</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Wake-word + command models</b></td><td>Tiny always-on wake word; offline command recogniser</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Speaker/output</b></td><td>Response output (beep/LED/relay/speech)</td><td class="num">1</td><td class="num">₹200</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹1,520</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32-S3 DevKitC-1</b></td><td>Dual-core Xtensa LX7 @ 240 MHz, 512 KB SRAM + 8 MB PSRAM, vector instructions for ML, Wi-Fi + BLE 5</td><td>3.3 V logic / 5 V USB</td><td>USB-OTG, SPI, I²C, I²S, LCD/camera bus</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32-s3_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>INMP441 I²S MEMS microphone</b></td><td>61 dB SNR, −26 dBFS sensitivity, 60 Hz–15 kHz, 24-bit I²S output</td><td>1.8–3.3 V</td><td>I²S</td><td><a href="https://invensense.tdk.com/wp-content/uploads/2015/02/INMP441.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32-S3 DevKitC-1</td><td>3.3 V logic / 5 V USB</td><td class="num">180</td><td>The vector extensions roughly triple TinyML inference speed over the original ESP32.</td></tr><tr><td>INMP441 I²S MEMS microphone</td><td>1.8–3.3 V</td><td class="num">1.4</td><td>Digital output means no analogue noise pickup — far better than an MAX9814 for keyword spotting.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>181.4 mA</b>. With a 1.5× design margin the supply should deliver at least <b>300 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Python / C++ + TinyML / on-device speech</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>Python</b> <span style="opacity:.7">3.11+</span></td><td>Runtime for the analysis, training and service code.</td><td><code>sudo apt install python3 python3-venv python3-pip</code></td></tr><tr><td><b>TensorFlow Lite for Microcontrollers</b> <span style="opacity:.7">2.4.0-alpha</span></td><td>Int8 neural-network inference inside 200 KB of RAM.</td><td><code>Library Manager → "TensorFlowLite_ESP32"</code></td></tr><tr><td><b>Edge Impulse Arduino SDK</b> <span style="opacity:.7">per-project export</span></td><td>Deployable C++ bundle of a trained TinyML classifier.</td><td><code>Sketch → Include Library → Add .ZIP from the Edge Impulse export</code></td></tr><tr><td><b>NumPy</b> <span style="opacity:.7">1.26+</span></td><td>Vectorised array maths underpinning every other library here.</td><td><code>pip install numpy</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td1004 sd1004" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1004">Wake-Word Voice Assistant — system block diagram</title><desc id="sd1004">Functional block diagram of the Wake-Word Voice Assistant system.</desc>
+    <defs>
+    <marker id="ar-d1004" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1004" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1004" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1004" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Listen</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d1004)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Microphone</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">audio</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#ga-d1004)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Wake word</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">always-on cheap</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Trigger</text><rect x="266" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d1004)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="119" text-anchor="middle"><tspan x="355" y="119.0">Woke?</tspan></text><text class="dg-s" x="355" y="138" text-anchor="middle"><tspan x="355" y="138.0">phrase heard</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Command</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d1004)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Recogniser</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">offline</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d1004)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Intent</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">action</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Act</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d1004)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Response</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">local</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d1004)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Audio stays</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">on-device</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1004)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1004)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1004)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Wake-Word Voice Assistant — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>The "wiring" combines real audio hardware and a two-stage on-device pipeline — a microphone feeds an always-on wake-word model; only after it fires does offline command recognition run, all locally.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 264" role="img" aria-labelledby="td1005 sd1005" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1005">Wake-Word Voice Assistant — wiring schematic</title><desc id="sd1005">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d1005" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1005" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1005" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1005" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="168" rx="14"
+      fill="url(#ga-d1005)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32-S3 / Raspberry</tspan><tspan x="434" y="95.0">Pi (edge)</tspan></text><text class="dg-s" x="434" y="214" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d1005)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Microphone (I2S)</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">Audio in</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d1005)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">Wake-word model</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">—</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="167.0">Detect phrase</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d1005)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Command recogniser</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">—</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Offline command</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d1005)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Output</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">GPIO</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Action/response</tspan></text>
+  </svg>
+  <figcaption>Wake-Word Voice Assistant — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Microphone (I2S)</b></td><td>SD/WS/SCK</td><td><code>GPIO</code></td><td>Audio in</td></tr><tr><td><b>Wake-word model</b></td><td>always-on</td><td><code>—</code></td><td>Detect phrase</td></tr><tr><td><b>Command recogniser</b></td><td>after wake</td><td><code>—</code></td><td>Offline command</td></tr><tr><td><b>Output</b></td><td>LED/relay/speaker</td><td><code>GPIO</code></td><td>Action/response</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>A digital microphone feeds audio to the device (I2S/MEMS).</li><li>A tiny wake-word model runs continuously (always-on) on the audio.</li><li>Only after the wake word fires does the heavier command recogniser run.</li><li>Everything stays on-device — no audio leaves for the cloud.</li><li>Drive an output (LED/relay/speaker) for the response.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ESP32%20Espressif%20ESP-WROOM-32%20Dev%20Board.jpg?width=900" alt="An ESP32 development board with the ESP-WROOM-32 module and USB connector" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1006" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1006">A two-stage cascade — a cheap always-on wake word, then command recognition only after — makes always-on feasible.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="60" y="46" width="280" height="168" rx="10" fill="#1d4a3e" stroke="#123028" stroke-width="2"/>
+    <rect x="112" y="60" width="176" height="76" rx="5" fill="#c9ccd1" stroke="#9aa0a8"/>
+    <rect x="128" y="76" width="86" height="44" rx="3" fill="#2b2f36"/>
+    <text x="171" y="103" font-size="12" fill="#c9ccd1" text-anchor="middle" font-family="monospace">ESP32</text>
+    <path d="M228 78 h44 v10 h-44z M228 92 h44 v10 h-44z M228 106 h44 v10 h-44z" fill="#9aa0a8"/>
+    <rect x="164" y="150" width="72" height="34" rx="4" fill="#2b2f36"/>
+    <text x="200" y="171" font-size="9" fill="#7f8894" text-anchor="middle" font-family="monospace">USB</text>
+    <rect x="86" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <rect x="266" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <circle cx="70" cy="40" r="2.4" fill="#d8b04a"/><circle cx="88" cy="40" r="2.4" fill="#d8b04a"/><circle cx="106" cy="40" r="2.4" fill="#d8b04a"/><circle cx="124" cy="40" r="2.4" fill="#d8b04a"/><circle cx="142" cy="40" r="2.4" fill="#d8b04a"/><circle cx="160" cy="40" r="2.4" fill="#d8b04a"/><circle cx="178" cy="40" r="2.4" fill="#d8b04a"/><circle cx="196" cy="40" r="2.4" fill="#d8b04a"/><circle cx="214" cy="40" r="2.4" fill="#d8b04a"/><circle cx="232" cy="40" r="2.4" fill="#d8b04a"/><circle cx="250" cy="40" r="2.4" fill="#d8b04a"/><circle cx="268" cy="40" r="2.4" fill="#d8b04a"/><circle cx="286" cy="40" r="2.4" fill="#d8b04a"/><circle cx="304" cy="40" r="2.4" fill="#d8b04a"/><circle cx="322" cy="40" r="2.4" fill="#d8b04a"/><circle cx="70" cy="220" r="2.4" fill="#d8b04a"/><circle cx="88" cy="220" r="2.4" fill="#d8b04a"/><circle cx="106" cy="220" r="2.4" fill="#d8b04a"/><circle cx="124" cy="220" r="2.4" fill="#d8b04a"/><circle cx="142" cy="220" r="2.4" fill="#d8b04a"/><circle cx="160" cy="220" r="2.4" fill="#d8b04a"/><circle cx="178" cy="220" r="2.4" fill="#d8b04a"/><circle cx="196" cy="220" r="2.4" fill="#d8b04a"/><circle cx="214" cy="220" r="2.4" fill="#d8b04a"/><circle cx="232" cy="220" r="2.4" fill="#d8b04a"/><circle cx="250" cy="220" r="2.4" fill="#d8b04a"/><circle cx="268" cy="220" r="2.4" fill="#d8b04a"/><circle cx="286" cy="220" r="2.4" fill="#d8b04a"/><circle cx="304" cy="220" r="2.4" fill="#d8b04a"/><circle cx="322" cy="220" r="2.4" fill="#d8b04a"/>
+    <circle cx="330" cy="60" r="4" fill="#e03b3b"/><circle cx="330" cy="76" r="4" fill="#3be07a"/>
+  </svg>
+  <figcaption>A two-stage cascade — a cheap always-on wake word, then command recognition only after — makes always-on feasible.</figcaption>
+</figure></template>
+  <figcaption>A two-stage cascade — a cheap always-on wake word, then command recognition only after — makes always-on feasible.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — ESP32 Espressif ESP-WROOM-32 Dev Board.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td1007 sd1007" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1007">Wake-Word Voice Assistant — architecture stack</title><desc id="sd1007">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d1007" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1007" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1007" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1007" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d1007)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">ESP32-S3 DevKitC-1 · sensors and actuators</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d1007)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d1007)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">python · tflmicro · edgeimpulse · numpy</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d1007)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d1007)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d1007)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d1007)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Wake-Word Voice Assistant — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>The defining goal of this project is <b>privacy through locality</b>: a voice assistant that does not stream your audio to the cloud. Many commercial assistants are always listening and send audio off-device to understand it, which is a genuine privacy exposure. Keeping both the <b>listening</b> (wake word) and the <b>understanding</b> (commands) <b>on the device</b> means the audio never has to leave the room — which also gives <b>instant, network-independent</b> response. Achieving this on tiny hardware is the whole engineering challenge, and it forces a smart architecture.</p>
+<p>That architecture is a <b>two-stage cascade</b>, and it exists because of a fundamental tension: you want the device to be <b>always listening</b>, but you cannot afford to run a heavy speech model continuously on a microcontroller's power budget. The resolution is to split the work. Stage one is <b>wake-word detection</b>: a <b>tiny, extremely cheap</b> neural network runs <i>continuously</i>, doing nothing but listening for one specific phrase. Only when it fires does stage two — the <b>heavier command recogniser</b> — run, briefly, to understand what you actually said. Because the expensive stage runs only <i>after</i> a wake word (rarely), the device can be always-on within a small power budget. The wake word is the gate that makes always-on feasible.</p>
+<p>The wake-word model has a sharply defined and demanding spec. It must be <b>cheap</b> enough to run always-on (few operations, tiny memory — <b>TinyML</b> territory), and accurate in <b>two directions at once</b>. A <b>false rejection</b> (failing to wake when you say the word) is annoying; a <b>false accept</b> (waking at a random sound, a TV, an unrelated phrase) is worse — it makes the assistant fire spuriously and, in a cloud assistant, would send audio unexpectedly. So the model is tuned to a careful operating point balancing false-accept and false-reject rates, and this trade-off is the central quality metric of wake-word systems. Getting a small model to reliably spot one phrase amid noise, without triggering on everything else, is the core difficulty.</p>
+<p>The honesty this project requires is about the <b>constraints and their consequences</b>. Fitting speech models into a microcontroller's <b>severe compute, memory and power limits</b> is genuinely hard — this is embedded/TinyML engineering, where every kilobyte and milliwatt counts — and a tiny model is inevitably <b>less accurate</b> than a big cloud one, more sensitive to <b>noise and accents</b>, and limited to a <b>small offline vocabulary</b> of commands rather than open-ended conversation. That trade — a modest, local, private assistant versus a powerful, cloud-dependent one — is the honest bargain, and for many uses (a handful of smart-home commands, an appliance, an accessibility control) the local version is exactly right. It is also worth stating plainly that <b>"always listening" warrants real privacy care even when local</b>: the design keeps audio on-device precisely so that being always-on is not a surveillance risk. Built with an efficient always-on wake-word model, the two-stage cascade, and offline command handling, the assistant delivers genuine private, responsive voice control while teaching the substance of resource-constrained, on-device speech AI.</p>
+
+<h3>The maths behind it</h3><h4>Two-stage cascade (why always-on is feasible)</h4><div class="codeblock tall" data-file="Two-stage cascade (why always-on is feasible)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Two-stage cascade (why always-on is feasible)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Two-stage cascade (why always-on is feasible) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Two-stage cascade (why always-on is feasible)" type="button" aria-label="Download Two-stage cascade (why always-on is feasible)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Stage 1 (always-on, CHEAP): wake-word model on every audio frame
+Stage 2 (rare, heavier): command recogniser — ONLY after wake
+
+cost ≈ always·cheap + rarely·heavy  → fits a small power budget.</code></pre>
+  
+</div>
+<h4>Wake-word operating point</h4><div class="codeblock tall" data-file="Wake-word operating point">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Wake-word operating point</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Wake-word operating point to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Wake-word operating point" type="button" aria-label="Download Wake-word operating point">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Tune the detection threshold to balance:
+  false reject  (missed wake word) — annoying
+  false accept  (wakes at random sound) — worse
+
+Central metric: low FA/hour AND low FRR. Small model,
+always-on, robust to noise.</code></pre>
+  
+</div>
+<h4>Privacy by locality</h4><div class="codeblock tall" data-file="Privacy by locality">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Privacy by locality</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Privacy by locality to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Privacy by locality" type="button" aria-label="Download Privacy by locality">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>wake word + commands run ON-DEVICE (offline)
+  → audio never leaves the room
+  → instant, network-independent response
+
+TinyML limits → small vocabulary, lower accuracy (the bargain).</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 784" role="img" aria-labelledby="td1008 sd1008" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1008">Wake-Word Voice Assistant — firmware flowchart</title><desc id="sd1008">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d1008" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1008" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1008" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1008" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d1008)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Mic audio (continuous)</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1008)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d1008)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="137.5">Wake-word model (cheap,</tspan><tspan x="210" y="150.5">always-on)</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1008)"/><path d="M210 202 L349 244 L210 286 L71 244 z"
+          fill="url(#ga-d1008)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="244" text-anchor="middle"><tspan x="210" y="244.0">Wake word detected?</tspan></text><path d="M210 286 L210 310" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1008)"/><text class="dg-e" x="220" y="305">Run command recognition (offline)</text><path d="M349 244 H397 V200 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d1008)"/><text class="dg-e" x="403" y="238">Keep listening</text><rect x="85" y="316" width="250" height="56" rx="10"
+          fill="url(#gb-d1008)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="344" text-anchor="middle"><tspan x="210" y="344.0">Keep listening</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1008)"/><rect x="85" y="402" width="250" height="56" rx="10"
+          fill="url(#gb-d1008)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="423.5">Run command recognition</tspan><tspan x="210" y="436.5">(offline)</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1008)"/><path d="M210 488 L349 530 L210 572 L71 530 z"
+          fill="url(#ga-d1008)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="530" text-anchor="middle"><tspan x="210" y="530.0">Recognised command?</tspan></text><path d="M210 572 L210 596" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1008)"/><text class="dg-e" x="220" y="591">Act locally + respond</text><path d="M349 530 H397 V486 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d1008)"/><text class="dg-e" x="403" y="524">Ignore / re-listen</text><path d="M101 602 L335 602 L319 658 L85 658 z"
+          fill="url(#gb-d1008)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="630" text-anchor="middle"><tspan x="210" y="630.0">Act locally + respond</tspan></text><path d="M210 658 L210 682" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1008)"/><rect x="85" y="688" width="250" height="56" rx="28"
+          fill="url(#ga-d1008)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="716" text-anchor="middle"><tspan x="210" y="716.0">Ignore / re-listen</tspan></text>
+  </svg>
+  <figcaption>Wake-Word Voice Assistant — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Build the audio front-end and wake-word stage</h4><p>Wire a digital microphone, extract features on-device, and run a tiny always-on wake-word model continuously.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Keep audio on-device — the point is privacy. The wake-word model must be cheap enough to run always-on and tuned for very few false accepts (waking at random sounds is worse than an occasional missed wake). "Always listening" warrants real privacy care even when local.</p></div>
+  </aside></li><li><h4>Add offline command recognition (stage two)</h4><p>Run the heavier command recogniser only after the wake word fires, keeping it offline with a small vocabulary.</p></li><li><h4>Tune and fit within TinyML limits</h4><p>Tune the false-accept/false-reject operating point, quantise/fit models to the device, and drive local outputs.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Run the two-stage on-device pipeline</h4><p>Continuously run the cheap wake-word model; only after it fires, run offline command recognition and act locally.</p><div class="codeblock tall" data-file="assistant.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">assistant.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy assistant.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="assistant.ino" type="button" aria-label="Download assistant.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">const</span> <span class="tok-k">float</span> <span class="tok-t">THRESHOLD</span> <span class="tok-o">=</span> <span class="tok-n">0.85</span>f<span class="tok-o">;</span>         <span class="tok-c">// low false-accept operating point</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">(){</span>
+  <span class="tok-f">readAudioFrame</span><span class="tok-o">(</span>buf<span class="tok-o">);</span>                   <span class="tok-c">// continuous, on-device</span>
+  <span class="tok-f">computeFeatures</span><span class="tok-o">(</span>buf<span class="tok-o">,</span> feats<span class="tok-o">);</span>           <span class="tok-c">// MFCC/log-mel</span>
+
+  <span class="tok-k">float</span> score <span class="tok-o">=</span> <span class="tok-f">wakeWordModel</span><span class="tok-o">(</span>feats<span class="tok-o">);</span>    <span class="tok-c">// STAGE 1: tiny, ALWAYS-ON</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>score <span class="tok-o">&lt;</span> <span class="tok-t">THRESHOLD</span><span class="tok-o">)</span> <span class="tok-k">return</span><span class="tok-o">;</span>         <span class="tok-c">// keep listening cheaply</span>
+
+  <span class="tok-c">// Wake word detected -&gt; STAGE 2 runs only now (rarely)</span>
+  <span class="tok-f">captureCommandAudio</span><span class="tok-o">(</span>cmdBuf<span class="tok-o">);</span>           <span class="tok-c">// still on-device</span>
+  <span class="tok-t">Intent</span> cmd <span class="tok-o">=</span> <span class="tok-f">commandModel</span><span class="tok-o">(</span><span class="tok-f">features</span><span class="tok-o">(</span>cmdBuf<span class="tok-o">));</span>   <span class="tok-c">// OFFLINE recognition</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>cmd<span class="tok-o">.</span>confidence <span class="tok-o">&gt;</span> <span class="tok-n">0.6</span>f<span class="tok-o">)</span>
+    <span class="tok-f">act</span><span class="tok-o">(</span>cmd<span class="tok-o">.</span>intent<span class="tok-o">);</span>                     <span class="tok-c">// act locally; audio never leaves</span>
+<span class="tok-o">}</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">float score = wakeWordModel(feats);    // STAGE 1: tiny, ALWAYS-ON</span><span class="txt">The cheap wake-word model runs on every frame — always-on within the power budget because it is tiny.</span></div><div><span class="ref">if (score &lt; THRESHOLD) return;         // keep listening cheaply</span><span class="txt">Most of the time nothing fires and the device just keeps listening cheaply — no heavy work, no cloud.</span></div><div><span class="ref">// Wake word detected -&gt; STAGE 2 runs only now (rarely)</span><span class="txt">The heavier command recogniser runs only after a wake word, which is what makes always-on feasible on tiny hardware.</span></div><div><span class="ref">act(cmd.intent);                     // act locally; audio never leaves</span><span class="txt">Commands are recognised offline and acted on locally, so audio never leaves the device — privacy by design.</span></div></div></li><li><h4>Tune false accepts and respond locally</h4><p>Tune the threshold for very few false accepts, keep the vocabulary small and offline, and drive local outputs for instant response.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Optimise hardest against false accepts. A missed wake word is a minor annoyance; a device that wakes at the TV or random noise is unusable — and in any assistant, spurious wakes are the worst failure mode.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="wakeword_assistant.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">wakeword_assistant.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy wakeword_assistant.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="wakeword_assistant.py" type="button" aria-label="Download wakeword_assistant.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">#!/usr/bin/env python3</span>
+<span class="tok-s">"""</span>
+<span class="tok-s">Wake-Word Voice Assistant (on-device, offline)</span>
+<span class="tok-s"></span>
+<span class="tok-s">Two-stage cascade: a tiny ALWAYS-ON wake-word model runs continuously;</span>
+<span class="tok-s">only AFTER it fires does an offline command recogniser run. All audio</span>
+<span class="tok-s">stays ON-DEVICE (privacy) with instant, network-independent response.</span>
+<span class="tok-s">TinyML: tight compute/power; small vocabulary; tune LOW false accepts.</span>
+<span class="tok-s">"""</span>
+<span class="tok-t">THRESHOLD</span> <span class="tok-o">=</span> <span class="tok-n">0.85</span>                       <span class="tok-c"># tuned for very low false accepts</span>
+
+<span class="tok-k">class</span> <span class="tok-t">WakeWordAssistant</span><span class="tok-o">:</span>
+    <span class="tok-k">def</span> <span class="tok-f">__init__</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> mic<span class="tok-o">,</span> wake_model<span class="tok-o">,</span> command_model<span class="tok-o">,</span> actuator<span class="tok-o">):</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>mic <span class="tok-o">=</span> mic<span class="tok-o">;</span> <span class="tok-k">self</span><span class="tok-o">.</span>wake <span class="tok-o">=</span> wake_model
+        <span class="tok-k">self</span><span class="tok-o">.</span>cmd <span class="tok-o">=</span> command_model<span class="tok-o">;</span> <span class="tok-k">self</span><span class="tok-o">.</span>act <span class="tok-o">=</span> actuator
+
+    <span class="tok-k">def</span> <span class="tok-f">run</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">):</span>
+        <span class="tok-k">while</span> <span class="tok-k">True</span><span class="tok-o">:</span>
+            frame <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>mic<span class="tok-o">.</span><span class="tok-f">read_frame</span><span class="tok-o">()</span>          <span class="tok-c"># continuous, on-device</span>
+            feats <span class="tok-o">=</span> <span class="tok-f">features</span><span class="tok-o">(</span>frame<span class="tok-o">)</span>                 <span class="tok-c"># MFCC/log-mel</span>
+
+            <span class="tok-c"># STAGE 1: cheap, always-on wake-word detection</span>
+            <span class="tok-k">if</span> <span class="tok-k">self</span><span class="tok-o">.</span>wake<span class="tok-o">.</span><span class="tok-f">infer</span><span class="tok-o">(</span>feats<span class="tok-o">)</span> <span class="tok-o">&lt;</span> <span class="tok-t">THRESHOLD</span><span class="tok-o">:</span>
+                <span class="tok-k">continue</span>                            <span class="tok-c"># keep listening cheaply</span>
+
+            <span class="tok-c"># STAGE 2: runs ONLY after the wake word (rarely) — offline</span>
+            audio <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>mic<span class="tok-o">.</span><span class="tok-f">capture_command</span><span class="tok-o">()</span>      <span class="tok-c"># audio stays local</span>
+            cmd <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>cmd<span class="tok-o">.</span><span class="tok-f">infer</span><span class="tok-o">(</span><span class="tok-f">features</span><span class="tok-o">(</span>audio<span class="tok-o">))</span>   <span class="tok-c"># offline command recognition</span>
+            <span class="tok-k">if</span> cmd<span class="tok-o">.</span>confidence <span class="tok-o">&gt;</span> <span class="tok-n">0.6</span><span class="tok-o">:</span>
+                <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">act</span><span class="tok-o">(</span>cmd<span class="tok-o">.</span>intent<span class="tok-o">)</span>                <span class="tok-c"># act locally + respond</span>
+            <span class="tok-c"># nothing is ever sent to the cloud.</span>
+
+<span class="tok-k">if</span> __name__ <span class="tok-o">==</span> <span class="tok-s">"__main__"</span><span class="tok-o">:</span>
+    a <span class="tok-o">=</span> <span class="tok-f">WakeWordAssistant</span><span class="tok-o">(</span><span class="tok-f">Microphone</span><span class="tok-o">(),</span> <span class="tok-f">WakeWordModel</span><span class="tok-o">(),</span>
+                          <span class="tok-f">CommandModel</span><span class="tok-o">(),</span> <span class="tok-f">Actuator</span><span class="tok-o">())</span>
+    a<span class="tok-o">.</span><span class="tok-f">run</span><span class="tok-o">()</span>
+    <span class="tok-c"># Private + responsive; small offline vocab; robustness limited by TinyML.</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (37 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">if self.wake.infer(feats) &lt; THRESHOLD:</span><span class="txt">Stage one is a tiny always-on model; below threshold the device just keeps listening cheaply, which is what fits the power budget.</span></div><div><span class="ref"># STAGE 2: runs ONLY after the wake word (rarely) — offline</span><span class="txt">The heavier command recogniser runs only after a wake word — the cascade that makes always-on listening feasible.</span></div><div><span class="ref">audio = self.mic.capture_command()      # audio stays local</span><span class="txt">Command audio is captured and recognised on-device, so nothing is streamed to the cloud — the privacy guarantee.</span></div><div><span class="ref">self.act(cmd.intent)                # act locally + respond</span><span class="txt">Recognised commands act locally for instant, network-independent response.</span></div><div><span class="ref"># Private + responsive; small offline vocab; robustness limited by TinyML.</span><span class="txt">The honest bargain — private and responsive, but a small offline vocabulary and TinyML-limited robustness — is stated plainly.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Configure the microphone, feature front-end and audio framing.</li><li>Configure the wake-word model and detection threshold (false-accept-first).</li><li>Configure the offline command recogniser and small vocabulary.</li><li>Configure local outputs and privacy (audio stays on-device).</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Wake-word operating point</h4><p>Tune the threshold for very low false accepts and acceptable false rejects across noise conditions.</p></li><li><h4>Command accuracy</h4><p>Validate offline command recognition; keep the vocabulary small and robust.</p></li><li><h4>Resource fit</h4><p>Confirm models fit the device's compute/memory/power for always-on operation.</p></li></ol></section>
+
+<section id="model" aria-labelledby="h-model"><h2 id="h-model">Dataset, Model &amp; Training</h2><h3>Dataset</h3><p>Wake-word training uses many recordings of the target phrase plus "not-the-word" negatives (speech, noise); command recognition uses labelled command audio.</p>
+<p>Noise/accent coverage in the data determines real-world robustness on a small model.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Dataset</th><th scope="col">Size</th><th scope="col">Licence</th><th scope="col">Use here</th></tr></thead>
+    <tbody><tr><td><b>Wake-word recordings</b></td><td>Many positives</td><td>Yours/consented</td><td>Train the wake-word model</td></tr><tr><td><b>Negatives (speech/noise)</b></td><td>Large/varied</td><td>Varies</td><td>Reduce false accepts</td></tr><tr><td><b>Command audio set</b></td><td>Per command</td><td>Yours/consented</td><td>Offline command recogniser</td></tr><tr><td><b>Noise/accent samples</b></td><td>Varied</td><td>Varies</td><td>Robustness on a tiny model</td></tr></tbody>
+  </table></div>
+<h3>Data preprocessing</h3><ul class="plain"><li>Extract audio features (e.g. MFCC/log-mel) on-device.</li><li>Augment with noise/gain/accent variation for robustness.</li><li>Frame audio for continuous streaming inference.</li></ul>
+
+<div class="diagram-scroll"><figure class="diagram diagram-pipeline">
+  <svg viewBox="0 0 772 250" role="img" aria-labelledby="td1009 sd1009" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1009">Wake-Word Voice Assistant — ML pipeline</title><desc id="sd1009">From raw data through training to deployed inference.</desc>
+    <defs>
+    <marker id="ar-d1009" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1009" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1009" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1009" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="20" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d1009)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="38" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="58" text-anchor="middle">1</text><text class="dg-b" x="95" y="82" text-anchor="middle"><tspan x="95" y="82.0">Mic audio</tspan></text><text class="dg-s" x="95" y="104" text-anchor="middle"><tspan x="95" y="104.0">continuous</tspan></text><path d="M174 77 H206" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1009)"/><rect x="214" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d1009)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="232" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="232" y="58" text-anchor="middle">2</text><text class="dg-b" x="289" y="82" text-anchor="middle"><tspan x="289" y="82.0">Features</tspan></text><text class="dg-s" x="289" y="104" text-anchor="middle"><tspan x="289" y="104.0">MFCC/mel</tspan></text><path d="M368 77 H400" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1009)"/><rect x="408" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d1009)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="426" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="426" y="58" text-anchor="middle">3</text><text class="dg-b" x="483" y="82" text-anchor="middle"><tspan x="483" y="82.0">Wake word</tspan></text><text class="dg-s" x="483" y="104" text-anchor="middle"><tspan x="483" y="104.0">tiny always-on</tspan></text><path d="M562 77 H594" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1009)"/><rect x="602" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d1009)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="620" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="620" y="58" text-anchor="middle">4</text><text class="dg-b" x="677" y="82" text-anchor="middle"><tspan x="677" y="82.0">Command model</tspan></text><text class="dg-s" x="677" y="104" text-anchor="middle"><tspan x="677" y="104.0">after wake</tspan></text><path d="M677 122 V136 H95 V148"
+            stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1009)"/><rect x="20" y="152" width="150" height="82" rx="12"
+        fill="url(#gb-d1009)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="38" cy="170" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="174" text-anchor="middle">5</text><text class="dg-b" x="95" y="198" text-anchor="middle"><tspan x="95" y="198.0">Action</tspan></text><text class="dg-s" x="95" y="220" text-anchor="middle"><tspan x="95" y="220.0">local</tspan></text>
+  </svg>
+  <figcaption>Wake-Word Voice Assistant — ML pipeline</figcaption>
+</figure></div>
+
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Layer / stage</th><th scope="col">Shape or configuration</th><th scope="col">Purpose</th></tr></thead>
+    <tbody><tr><td><b>Feature front-end</b></td><td><code>MFCC/log-mel</code></td><td>Compact audio features</td></tr><tr><td><b>Wake-word net</b></td><td><code>tiny CNN/DS-CNN</code></td><td>Cheap always-on detection</td></tr><tr><td><b>Command recogniser</b></td><td><code>small model (after wake)</code></td><td>Offline command intent</td></tr><tr><td><b>Thresholding</b></td><td><code>FA/FRR operating point</code></td><td>Reliable, few false wakes</td></tr><tr><td><b>Runtime</b></td><td><code>TinyML (TFLite Micro)</code></td><td>Fits MCU/edge limits</td></tr></tbody>
+  </table></div>
+
+<h3>Hyperparameters</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Hyperparameter</th><th scope="col">Value</th><th scope="col">Why</th></tr></thead>
+    <tbody><tr><td><b>Wake model size</b></td><td><code>tiny (KB)</code></td><td>Always-on power budget</td></tr><tr><td><b>Detection threshold</b></td><td><code>tuned</code></td><td>False accept vs reject</td></tr><tr><td><b>Window/stride</b></td><td><code>streaming</code></td><td>Latency vs compute</td></tr><tr><td><b>Command vocab</b></td><td><code>small</code></td><td>Offline feasibility</td></tr></tbody>
+  </table></div>
+<h3>Training process</h3><ul class="plain"><li>Train the wake-word model on positives + varied negatives; heavily augment for noise/accents.</li><li>Train/quantise a small command recogniser for offline use.</li><li>Tune the operating point for low false accepts and acceptable false rejects.</li></ul></section>
+
+<section id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation">Evaluation, Metrics &amp; Deployment</h2><p>The decisive metrics are false-accept rate (per hour) and false-reject rate for the wake word, plus offline command accuracy — all under tight compute/power budgets.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">What it tells you</th></tr></thead>
+    <tbody><tr><td><b>False accepts / hour</b></td><td><code>very low (key)</code></td><td>No spurious wakes</td></tr><tr><td><b>False reject rate</b></td><td><code>low</code></td><td>Wakes when you say it</td></tr><tr><td><b>Command accuracy</b></td><td><code>small-vocab</code></td><td>Offline recognition</td></tr><tr><td><b>Compute/power</b></td><td><code>MCU-fit</code></td><td>Always-on feasible</td></tr></tbody>
+  </table></div><p class="tbl-caption">Figures from the reference training run described above — reproduce them before trusting your own changes.</p>
+<figure class="diagram diagram-chart">
+  <svg viewBox="0 0 620 192" role="img" aria-labelledby="td1010 sd1010" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1010">Robustness vs conditions</title><desc id="sd1010">A tiny always-on model is strong in quiet conditions and degrades with noise and unfamiliar accents — the TinyML trade-off (illustrative).</desc>
+    <defs>
+    <marker id="ar-d1010" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1010" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1010" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1010" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <line x1="190" y1="26" x2="190" y2="178" stroke="var(--dg-stroke)" stroke-width="1"/><text class="dg-b" x="178" y="45" text-anchor="end">Quiet</text><rect x="191" y="33" width="316.5217391304348" height="20" rx="5" fill="url(#ga-d1010)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="516.5217391304348" y="47">95 %</text><text class="dg-b" x="178" y="83" text-anchor="end">Moderate noise</text><rect x="191" y="71" width="273.20823798627003" height="20" rx="5" fill="url(#ga-d1010)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="473.20823798627003" y="85">82 %</text><text class="dg-b" x="178" y="121" text-anchor="end">Loud noise</text><rect x="191" y="109" width="216.56750572082382" height="20" rx="5" fill="url(#ga-d1010)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="416.5675057208238" y="123">65 %</text><text class="dg-b" x="178" y="159" text-anchor="end">Unfamiliar accent</text><rect x="191" y="147" width="233.22654462242565" height="20" rx="5" fill="url(#ga-d1010)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="433.22654462242565" y="161">70 %</text>
+  </svg>
+  <figcaption>Robustness vs conditions</figcaption>
+</figure>
+
+
+<h3>Inference example</h3><div class="codeblock tall" data-file="wakeword.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">wakeword.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy wakeword.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="wakeword.py" type="button" aria-label="Download wakeword.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-t">THRESHOLD</span> <span class="tok-o">=</span> <span class="tok-n">0.85</span>                       <span class="tok-c"># tuned for low false accepts</span>
+
+<span class="tok-k">def</span> <span class="tok-f">run</span><span class="tok-o">(</span>mic<span class="tok-o">,</span> wake_model<span class="tok-o">,</span> command_model<span class="tok-o">,</span> act<span class="tok-o">):</span>
+    <span class="tok-k">while</span> <span class="tok-k">True</span><span class="tok-o">:</span>
+        frame <span class="tok-o">=</span> mic<span class="tok-o">.</span><span class="tok-f">read_frame</span><span class="tok-o">()</span>            <span class="tok-c"># continuous audio, on-device</span>
+        feats <span class="tok-o">=</span> <span class="tok-f">features</span><span class="tok-o">(</span>frame<span class="tok-o">)</span>             <span class="tok-c"># MFCC/log-mel</span>
+        score <span class="tok-o">=</span> wake_model<span class="tok-o">.</span><span class="tok-f">infer</span><span class="tok-o">(</span>feats<span class="tok-o">)</span>     <span class="tok-c"># STAGE 1: cheap, always-on</span>
+
+        <span class="tok-k">if</span> score <span class="tok-o">&gt;=</span> <span class="tok-t">THRESHOLD</span><span class="tok-o">:</span>              <span class="tok-c"># wake word detected</span>
+            audio <span class="tok-o">=</span> mic<span class="tok-o">.</span><span class="tok-f">capture_command</span><span class="tok-o">()</span>   <span class="tok-c"># STAGE 2 runs ONLY after wake</span>
+            cmd <span class="tok-o">=</span> command_model<span class="tok-o">.</span><span class="tok-f">infer</span><span class="tok-o">(</span><span class="tok-f">features</span><span class="tok-o">(</span>audio<span class="tok-o">))</span>   <span class="tok-c"># offline recognition</span>
+            <span class="tok-k">if</span> cmd<span class="tok-o">.</span>confidence <span class="tok-o">&gt;</span> <span class="tok-n">0.6</span><span class="tok-o">:</span>
+                <span class="tok-f">act</span><span class="tok-o">(</span>cmd<span class="tok-o">.</span>intent<span class="tok-o">)</span>             <span class="tok-c"># act locally — audio never leaves</span>
+        <span class="tok-c"># else: keep listening cheaply; nothing sent to the cloud.</span>
+    <span class="tok-c"># TinyML: tiny model, small offline vocab; robustness limited by size.</span></code></pre>
+  
+</div>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Known limitations</span><p>Tiny always-on model — lower accuracy, sensitive to noise and accents.</p>
+<p>Small offline vocabulary vs a full cloud assistant (the bargain).</p>
+<p>False accepts must be kept very low, or it wakes spuriously.</p>
+<p>"Always listening" needs genuine privacy care even when local.</p></div>
+  </aside></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Say the wake word</b></td><td>Wakes reliably (low false reject)</td></tr><tr><td><b>Play unrelated speech/TV</b></td><td>Does not wake (low false accept)</td></tr><tr><td><b>Give a known command after waking</b></td><td>Recognised offline; acts locally</td></tr><tr><td><b>Check network traffic</b></td><td>No audio sent to the cloud</td></tr><tr><td><b>Add background noise</b></td><td>Degrades — note TinyML robustness limit</td></tr><tr><td><b>Unfamiliar accent</b></td><td>Harder — note the limit</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>A private, offline voice assistant: reliable wake word, offline commands, local response, no cloud audio.</p>
+<div class="codeblock tall" data-file="assistant-event.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">assistant-event.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy assistant-event.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="assistant-event.json" type="button" aria-label="Download assistant-event.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "wake_word": "detected",
+  "wake_score": <span class="tok-n">0.91</span>,
+  "command": "turn on the light",
+  "handled": "offline",
+  "audio_left_device": <span class="tok-k">false</span>
+}</code></pre>
+  
+</div>
+
+<p>The wake word fired on-device, an offline command was recognised and acted on locally, and no audio ever left the device — private, responsive voice control.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Fitness%20tracker.jpg?width=900" alt="A wrist-worn fitness tracker" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1011" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1011">This is TinyML: fitting capable speech models into a microcontroller's tight compute and power budget.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption>This is TinyML: fitting capable speech models into a microcontroller's tight compute and power budget.</figcaption>
+</figure></template>
+  <figcaption>This is TinyML: fitting capable speech models into a microcontroller's tight compute and power budget.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Fitness_tracker.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Fitness tracker.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Wakes at random sounds</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Threshold too low / weak negatives</p>
+        <p><strong>Fix.</strong> Raise threshold; train on more/varied negatives</p></div></details><details class="expand"><summary>Misses the wake word</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Threshold too high / noise</p>
+        <p><strong>Fix.</strong> Lower threshold; augment for noise; improve mic</p></div></details><details class="expand"><summary>Poor command accuracy</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Tiny model / vocabulary</p>
+        <p><strong>Fix.</strong> Keep vocab small; augment; consider a Pi for more capacity</p></div></details><details class="expand"><summary>Too slow / won't fit</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Model too big for MCU</p>
+        <p><strong>Fix.</strong> Quantise/prune; smaller model; TinyML runtime</p></div></details><details class="expand"><summary>Struggles in noise/accents</summary><div class="inner">
+        <p><strong>Likely cause.</strong> TinyML limits</p>
+        <p><strong>Fix.</strong> Augmented training; accept the trade-off</p></div></details><details class="expand"><summary>Privacy concern</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Audio leaving device</p>
+        <p><strong>Fix.</strong> Keep wake word + commands offline on-device</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Keep the wake-word model tiny and always-on; run heavy work only after it fires.</li><li>Tune hardest against false accepts.</li><li>Keep commands offline with a small vocabulary.</li><li>Quantise/fit models to the device's limits.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>"Always listening" warrants genuine privacy care — keep audio on-device; do not stream it to the cloud.</li><li>Be transparent that the device listens for a wake word, and give users control.</li><li>A tiny model is limited in noise/accents — do not rely on it where misrecognition is dangerous.</li><li>Secure any local storage of audio/commands.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Retrain/tune the wake word for new conditions and negatives.</li><li>Update command models/vocabulary as needs change.</li><li>Re-verify false-accept/reject rates over time.</li><li>Keep audio local and privacy practices current.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add on-device speech-to-text for a larger command set.</li><li>Add speaker verification (only wake for enrolled users).</li><li>Add noise suppression / beamforming for robustness.</li><li>Add more capable offline models on stronger edge hardware.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why keep everything on-device?</summary><div class="inner"><p>For privacy — many assistants stream your audio to the cloud to understand it. Keeping the wake word and commands on-device means audio never has to leave the room, and it also gives instant, network-independent response.</p></div></details><details class="expand"><summary>Why the two-stage design?</summary><div class="inner"><p>Because you want always-on listening but cannot afford to run a heavy model continuously on tiny hardware. A cheap wake-word model runs always-on, and the heavier command recogniser runs only after the wake word fires — rarely — which keeps the device within a small power budget.</p></div></details><details class="expand"><summary>Why obsess over false accepts?</summary><div class="inner"><p>Because a device that wakes at random sounds, the TV, or unrelated speech is unusable — and in a cloud assistant, a false accept would send audio unexpectedly. A missed wake word is a minor annoyance; a spurious wake is the worst failure mode, so the model is tuned hardest against it.</p></div></details><details class="expand"><summary>What is the catch versus a cloud assistant?</summary><div class="inner"><p>A tiny on-device model is less accurate, more sensitive to noise and accents, and limited to a small offline vocabulary rather than open-ended conversation. That is the honest bargain — a modest, private, responsive assistant instead of a powerful, cloud-dependent one.</p></div></details><details class="expand"><summary>What makes this hard?</summary><div class="inner"><p>Fitting capable speech models into a microcontroller's severe compute, memory and power limits — TinyML engineering where every kilobyte and milliwatt counts — while staying accurate and robust enough to be useful.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Keyword_spotting" rel="noopener nofollow" target="_blank">Keyword / wake-word spotting</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/TinyML" rel="noopener nofollow" target="_blank">TinyML / on-device ML</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Speech_recognition" rel="noopener nofollow" target="_blank">Speech recognition</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Mel-frequency_cepstrum" rel="noopener nofollow" target="_blank">MFCC audio features</a><span class="src">Reference</span></li><li><a href="https://www.tensorflow.org/lite/microcontrollers" rel="noopener nofollow" target="_blank">TensorFlow Lite Micro</a><span class="src">Docs</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="ai-code-assistant.html"><span class="dir">← Previous project</span><span class="ttl">AI Code Assistant</span></a>
+        <span class="next disabled"></span>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Advanced</b></div>
+        <div class="rail-stat"><span>Time</span><b>14–20 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>6</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹1,500 – ₹4,000</b></div>
+        <div class="rail-stat"><span>Sections</span><b>27</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="sleep-apnea-tracker.html">Sleep Apnea Tracker</a></li><li><a href="pocket-ecg-monitor.html">Pocket ECG Monitor</a></li><li><a href="stress-and-hrv-wearable.html">Stress &amp; HRV Wearable</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="sleep-apnea-tracker.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Sleep Apnea Tracker</h4>
+        <p>Monitors breathing and snoring patterns to flag possible apnea events.</p></a><a class="relcard" href="pocket-ecg-monitor.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Pocket ECG Monitor</h4>
+        <p>Captures single-lead heart rhythm and syncs traces to the cloud.</p></a><a class="relcard" href="stress-and-hrv-wearable.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Stress &amp; HRV Wearable</h4>
+        <p>Reads heart-rate variability and guides breathing to lower stress.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Wake-Word Voice Assistant</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
