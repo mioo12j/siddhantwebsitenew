@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Multilingual Chatbot — Circuit, Code &amp; Full Build Guide | NLP &amp; LLM</title>
+  <meta name="description" content="Complete advanced-level build guide for a Multilingual Chatbot: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="multilingual chatbot, multilingual chatbot project, how to build multilingual chatbot, cpu/gpu workstation or server project, nlp &amp; llm project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/multilingual-chatbot.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/multilingual-chatbot.html" />
+  <meta property="og:title" content="Multilingual Chatbot — Circuit, Code &amp; Full Build Guide | NLP &amp; LLM" />
+  <meta property="og:description" content="Complete advanced-level build guide for a Multilingual Chatbot: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="NLP &amp; LLM" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Multilingual Chatbot — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete advanced-level build guide for a Multilingual Chatbot: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🗣️</text></svg>" />
+  <style>:root{--acc:#818cf8;--acc-light:#a5b4fc;--acc-rgb:129,140,248}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/multilingual-chatbot.html#article","headline":"Multilingual Chatbot — Complete Build Guide","name":"Multilingual Chatbot","description":"Complete advanced-level build guide for a Multilingual Chatbot: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/multilingual-chatbot.html","inLanguage":"en","articleSection":"NLP & LLM","keywords":"multilingual chatbot, multilingual chatbot project, how to build multilingual chatbot, cpu/gpu workstation or server project, nlp & llm project, circuit diagram, source code, tutorial","proficiencyLevel":"Advanced","dependencies":"Python, Hugging Face Transformers, sentence-transformers, FastAPI + Uvicorn, SQLite","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-28","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/multilingual-chatbot.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/multilingual-chatbot.html#howto","name":"How to build a Multilingual Chatbot","description":"Complete advanced-level build guide for a Multilingual Chatbot: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT18H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"0"},"supply":[],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Detect language, use context, reply in-language","text":"Detect the user's language, add conversation context, and generate a reply in that language with a multilingual model."},{"@type":"HowToStep","position":2,"name":"Guardrail and be transparent about quality","text":"Apply safety guardrails to every language and be transparent where quality drops for lower-resource languages, degrading gracefully."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Multilingual Chatbot","item":"https://siddhantkumar.in/projects/docs/multilingual-chatbot.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/multilingual-chatbot.html#faq","mainEntity":[{"@type":"Question","name":"Why not translate to English and use an English bot?","acceptedAnswer":{"@type":"Answer","text":"Because that bolt-on is brittle: it loses nuance, mangles code-switched and romanised text, and compounds errors across two translation steps. A single multilingual model understands and generates the language natively, giving far more fluent, natural conversation."}},{"@type":"Question","name":"What makes it context-aware?","acceptedAnswer":{"@type":"Answer","text":"It keeps a memory of the conversation (the history or a summary) supplied as context each turn, so it resolves follow-ups and references and carries a task across messages — the difference between a conversation and disconnected queries."}},{"@type":"Question","name":"Why is quality uneven across languages?","acceptedAnswer":{"@type":"Answer","text":"Because languages differ hugely in training data. English and major languages like Hindi are high-resource and strong; many Indian languages are lower-resource, with less data and correspondingly weaker fluency and more errors. Honesty about this is part of the design."}},{"@type":"Question","name":"Does it handle Hinglish and romanised text?","acceptedAnswer":{"@type":"Answer","text":"It should — code-switching and romanised regional languages are extremely common in India, so language detection and the model must handle mixed and Latin-script input, though these are messier and less represented in training data."}},{"@type":"Question","name":"Can I trust its answers?","acceptedAnswer":{"@type":"Answer","text":"As with any LLM chatbot, it can be confidently wrong, so it needs guardrails and honest handling of uncertainty in every language — and a human fallback for high-stakes interactions."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#nlp-and-llm">NLP &amp; LLM</a><span class="sep">/</span>
+        <span aria-current="page">Multilingual Chatbot</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project A12 · NLP &amp; LLM</span>
+          <h1>Multilingual Chatbot<span class="grad">.</span></h1>
+          <p class="tagline">A context-aware assistant that converses fluently across Indian languages — understanding, remembering, and replying in the user's own tongue.</p>
+          <div class="hero-chips">
+            <span class="chip lv-advanced">Advanced</span>
+            <span class="chip">14–20 hours</span>
+            <span class="chip neutral">23 min read</span>
+            <span class="chip neutral">LLM</span><span class="chip neutral">Chatbot</span><span class="chip neutral">Multilingual</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td972" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td972">Multilingual Chatbot — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Multilingual Chatbot — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Advanced</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>14–20 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>Software; compute/API-dependent</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>CPU/GPU workstation or server (+ LLM API optional)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>NLP &amp; LLM</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>28 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">A context-aware assistant that converses fluently across Indian languages — understanding, remembering, and replying in the user's own tongue.</p>
+<p>India is multilingual by default — hundreds of languages, constant code-switching between English and regional tongues, and hundreds of millions of people far more comfortable in Hindi, Tamil, Bengali or Marathi than in English. A chatbot that only works well in English shuts most of them out. This project builds a <b>multilingual chatbot</b> that converses fluently across Indian languages: it <b>understands</b> the user's language, <b>keeps track of the conversation</b>, and <b>replies in the same language</b>, so people can interact naturally in their own tongue.</p>
+<p>Two capabilities define it. The first is genuine <b>multilingual understanding and generation</b> — comprehending input and producing fluent replies across many languages, including the very common case of <b>code-switching</b> (mixing English and a regional language, or writing a regional language in Latin script). Modern <b>multilingual language models</b> make this feasible in one model, rather than bolting a translator onto an English bot. The second is <b>context awareness</b>: a real assistant remembers what was said earlier in the conversation, so it can handle follow-ups ("and what about tomorrow?") and multi-turn tasks — the difference between a conversation and a series of disconnected queries.</p>
+<p>The value is genuinely inclusive access — services, support and information available to people in the language they actually speak. It is honest about the hard realities of Indian-language NLP: many languages are <b>lower-resource</b> (less training data → weaker fluency and more errors than English), <b>script and transliteration</b> vary (Devanagari vs romanised Hindi), <b>dialects and code-switching</b> are messy, and quality is <b>uneven across languages</b>; and, as with any chatbot, it can be confidently wrong and needs guardrails. Built honestly — a strong multilingual model, real conversation memory, and clear-eyed about the resource gap between languages — it is both a genuinely inclusive assistant and a rich lesson in multilingual, context-aware conversational AI.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Artificial%20neural%20network.svg?width=900" alt="A schematic of a feed-forward artificial neural network" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td963" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td963">A multilingual chatbot lets people converse in their own Indian language — inclusive access, not English-only.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <line x1="79" y1="91" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="117" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="143" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="169" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="65" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="91" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="117" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="143" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="169" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="195" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="65" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="91" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="117" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="143" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="169" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="195" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="104" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="130" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="156" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/>
+    <text x="70" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">input</text>
+    <text x="205" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">hidden</text>
+    <text x="340" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">output</text>
+  </svg>
+  <figcaption>A multilingual chatbot lets people converse in their own Indian language — inclusive access, not English-only.</figcaption>
+</figure></template>
+  <figcaption>A multilingual chatbot lets people converse in their own Indian language — inclusive access, not English-only.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Artificial_neural_network.svg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Artificial neural network.svg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Converses fluently across multiple Indian languages</li><li>Understands input and replies in the user's language</li><li>Handles code-switching (mixed English/regional, romanised)</li><li>Keeps conversation context across turns (memory)</li><li>Handles follow-ups and multi-turn tasks</li><li>Makes services accessible in people's own tongue</li><li>Is honest about uneven quality across languages</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Inclusive customer support</b></td><td>Help users in their own language.</td></tr><tr><td><b>Government / public services</b></td><td>Access to services across languages.</td></tr><tr><td><b>Education / information</b></td><td>Answering questions in regional languages.</td></tr><tr><td><b>Commerce / assistants</b></td><td>Conversational interfaces for all users.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Multilingual understanding + generation</li><li>Code-switching / transliteration handling</li><li>Conversation context/memory</li><li>Language detection and matching</li><li>Multi-turn task handling</li><li>Guardrails for safe replies</li><li>Honest about low-resource-language limits</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Advanced</td></tr><tr><td><b>Estimated completion time</b></td><td>14–20 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>Software; compute/API-dependent</td></tr><tr><td><b>Primary discipline</b></td><td>NLP &amp; LLM</td></tr><tr><td><b>Reference platform</b></td><td>CPU/GPU workstation or server (+ LLM API optional)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Multilingual NLP (understanding + generation)</li><li>Code-switching and transliteration handling</li><li>Conversation state/memory management</li><li>Language detection and response matching</li><li>Guardrails and honest quality scoping</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>India is multilingual and code-switches constantly — English-only excludes most people.</p>
+<p>Reply in the user's language; use a multilingual model, not a translator bolt-on.</p>
+<p>Be context-aware: remember the conversation for follow-ups and tasks.</p>
+<p>Quality is uneven — many Indian languages are lower-resource than English.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>Compute + LLM</b></td><td>CPU/GPU; a multilingual LLM (local or API)</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Multilingual model</b></td><td>Model with strong Indian-language coverage</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Language tools</b></td><td>Language ID, transliteration handling</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Conversation store</b></td><td>Session memory for context</td><td class="num">1</td><td class="num">—</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹0</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2>
+<p>This is a pure-software conversational system — no electronic hardware to specify. The "platform" is a computer plus a multilingual language model: a GPU (local model) or a hosted LLM API handles generation, and a CPU handles language detection and session management.</p>
+<p>Memory and storage scale with concurrent conversations and retained context; a deployment adds the chat interface and a session store. Everything else is the software stack, models and libraries below.</p></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Python 3.11 + multilingual LLM / NLP</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>Python</b> <span style="opacity:.7">3.11+</span></td><td>Runtime for the analysis, training and service code.</td><td><code>sudo apt install python3 python3-venv python3-pip</code></td></tr><tr><td><b>Hugging Face Transformers</b> <span style="opacity:.7">4.44+</span></td><td>Pre-trained language and vision transformers with a uniform API.</td><td><code>pip install transformers</code></td></tr><tr><td><b>sentence-transformers</b> <span style="opacity:.7">3.0+</span></td><td>Sentence embeddings for semantic search and RAG retrieval.</td><td><code>pip install sentence-transformers</code></td></tr><tr><td><b>FastAPI + Uvicorn</b> <span style="opacity:.7">0.115+</span></td><td>Typed async REST API with automatic OpenAPI docs.</td><td><code>pip install fastapi uvicorn[standard]</code></td></tr><tr><td><b>SQLite</b> <span style="opacity:.7">3.45+</span></td><td>Zero-configuration embedded database for local logs.</td><td><code>Bundled with Python (`import sqlite3`)</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td964 sd964" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td964">Multilingual Chatbot — system block diagram</title><desc id="sd964">Functional block diagram of the Multilingual Chatbot system.</desc>
+    <defs>
+    <marker id="ar-d964" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d964" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d964" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d964" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Understand</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d964)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">User message</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">any language</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d964)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Language ID</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">detect</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Context</text><rect x="266" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d964)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="119" text-anchor="middle"><tspan x="355" y="119.0">Memory</tspan></text><text class="dg-s" x="355" y="138" text-anchor="middle"><tspan x="355" y="138.0">conversation</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Generate</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d964)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Multilingual LLM</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">reply</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d964)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Guardrails</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">safe</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Respond</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d964)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Reply</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">user's language</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d964)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Update memory</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">context</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d964)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d964)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d964)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Multilingual Chatbot — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>The "wiring" is the conversation data flow — user text is language-detected, combined with conversation memory, sent to a multilingual model, and the reply is returned in the user's language.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 264" role="img" aria-labelledby="td965 sd965" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td965">Multilingual Chatbot — wiring schematic</title><desc id="sd965">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d965" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d965" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d965" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d965" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="168" rx="14"
+      fill="url(#ga-d965)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="77.0">CPU/GPU workstation</tspan><tspan x="434" y="89.0">or server (+ LLM API</tspan><tspan x="434" y="101.0">optional)</tspan></text><text class="dg-s" x="434" y="214" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d965)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">User message</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">—</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">Any language</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d965)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">Language ID + memory</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">—</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="167.0">Lang + history</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d965)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Multilingual LLM</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">—</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Reply</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d965)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Response</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">—</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">User's language</tspan></text>
+  </svg>
+  <figcaption>Multilingual Chatbot — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>User message</b></td><td>text</td><td><code>—</code></td><td>Any language</td></tr><tr><td><b>Language ID + memory</b></td><td>context</td><td><code>—</code></td><td>Lang + history</td></tr><tr><td><b>Multilingual LLM</b></td><td>generate</td><td><code>—</code></td><td>Reply</td></tr><tr><td><b>Response</b></td><td>reply</td><td><code>—</code></td><td>User's language</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Detect the user's language (including code-switching/romanised input).</li><li>Combine the message with conversation memory for context.</li><li>Send to a multilingual model that understands and generates the language.</li><li>Reply in the user's language; update the conversation memory.</li><li>Expect uneven quality across languages — lower-resource languages are harder.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Datacenter%20servers.jpg?width=900" alt="Racks of servers in a data centre" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td966" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td966">A single multilingual model understands and replies in the user's language, handling code-switching natively.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <path d="M120 152 a38 38 0 0 1 6-75 a52 52 0 0 1 98-14 a44 44 0 0 1 52 44 a34 34 0 0 1-8 45 z"
+      fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="150" y="172" width="100" height="44" rx="8" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="200" y="199" font-size="12" fill="var(--dg-muted)" text-anchor="middle" font-family="monospace">broker</text>
+    <line x1="200" y1="152" x2="200" y2="170" stroke="var(--dg-accent)" stroke-width="2"/>
+  </svg>
+  <figcaption>A single multilingual model understands and replies in the user's language, handling code-switching natively.</figcaption>
+</figure></template>
+  <figcaption>A single multilingual model understands and replies in the user's language, handling code-switching natively.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Datacenter_servers.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Datacenter servers.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td967 sd967" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td967">Multilingual Chatbot — architecture stack</title><desc id="sd967">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d967" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d967" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d967" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d967" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d967)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">ESP32 DevKit V1 (ESP-WROOM-32) · sensors and actuators</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d967)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d967)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">python · transformers · sentencet · fastapi</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d967)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d967)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d967)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d967)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Multilingual Chatbot — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>The case for a multilingual chatbot in India is not a nicety, it is <b>access</b>: a huge share of people are far more comfortable — or only comfortable — in a regional language, and constantly <b>code-switch</b> (Hinglish, romanised Tamil, mixed sentences). An English-only assistant simply excludes them. So the design goal is that a user can speak <b>in their own language, naturally</b>, and be understood and answered in it. Meeting that goal well rests on two capabilities that must both be genuine, not faked.</p>
+<p>The first is real <b>multilingual understanding and generation</b>. The naïve approach — translate the user's input to English, run an English bot, translate the reply back — is brittle: it loses nuance, mangles code-switched and romanised text, and compounds errors across two translation steps. The better approach uses a <b>multilingual language model</b> that natively understands and generates many languages in <i>one</i> model, so it can handle mixed-language input, transliteration, and idiom directly. This is what makes fluent, natural conversation across languages feasible rather than clunky.</p>
+<p>The second is <b>context awareness</b>, which is what separates an <i>assistant</i> from a stateless query box. Real conversation is multi-turn: people ask follow-ups ("and tomorrow?"), refer back ("the first option"), and carry a task across several messages. A useful chatbot therefore maintains <b>memory of the conversation</b> — the history (or a summary of it) that is supplied as context on each turn — so it can resolve references, keep track of the task, and respond coherently over many turns. Without this, every message is an island and the "conversation" is an illusion.</p>
+<p>The honesty this project requires is about the <b>uneven reality of Indian-language NLP</b>. Languages differ enormously in <b>resource level</b>: English and major languages like Hindi have abundant training data and strong model quality, while many Indian languages are <b>lower-resource</b>, with less data and correspondingly <b>weaker fluency and more errors</b> — quality is genuinely <b>uneven across languages</b>, and it is dishonest to claim uniform excellence. <b>Script and transliteration</b> add friction (Hindi in Devanagari vs romanised "kya haal hai"), <b>dialects and code-switching</b> are messy and underrepresented in training data, and — as with any LLM chatbot — the model can be <b>confidently wrong</b>, so <b>guardrails</b> and honest handling of uncertainty are needed regardless of language. A well-built system therefore uses a strong multilingual model, maintains real conversation memory, and is <b>transparent about which languages it serves well</b> and where quality drops — degrading gracefully rather than pretending. Built that way, it delivers real inclusive value (natural access to information and services in people's own languages) while teaching the substance of multilingual, context-aware conversational AI, resource gaps and all.</p>
+
+<h3>The maths behind it</h3><h4>Understand + respond in-language</h4><div class="codeblock tall" data-file="Understand + respond in-language">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Understand + respond in-language</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Understand + respond in-language to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Understand + respond in-language" type="button" aria-label="Download Understand + respond in-language">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>lang = detect(user_message)         # incl. code-switching/romanised
+reply = multilingual_LLM(context + user_message, target=lang)
+
+Reply in the USER's language. One multilingual model, not a
+translate→English-bot→translate bolt-on.</code></pre>
+  
+</div>
+<h4>Context (memory) per turn</h4><div class="codeblock tall" data-file="Context (memory) per turn">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Context (memory) per turn</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Context (memory) per turn to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Context (memory) per turn" type="button" aria-label="Download Context (memory) per turn">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>context = history (or summary) of the conversation
+reply_t = LLM(context_{&lt;t} + message_t)
+update: history += (message_t, reply_t)
+
+Enables follow-ups/references — a conversation, not islands.</code></pre>
+  
+</div>
+<h4>Honest quality by resource level</h4><div class="codeblock tall" data-file="Honest quality by resource level">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Honest quality by resource level</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Honest quality by resource level to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Honest quality by resource level" type="button" aria-label="Download Honest quality by resource level">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>quality(lang) ↑ with training data for that language
+  high-resource (English/Hindi) → strong
+  low-resource                  → weaker, more errors
+
+Be transparent; degrade gracefully; add guardrails.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 756" role="img" aria-labelledby="td968 sd968" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td968">Multilingual Chatbot — firmware flowchart</title><desc id="sd968">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d968" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d968" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d968" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d968" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d968)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">User sends a message</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d968)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d968)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="137.5">Detect language (+</tspan><tspan x="210" y="150.5">code-switching)</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d968)"/><rect x="85" y="202" width="250" height="56" rx="10"
+          fill="url(#gb-d968)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="230" text-anchor="middle"><tspan x="210" y="223.5">Add conversation memory</tspan><tspan x="210" y="236.5">(context)</tspan></text><path d="M210 258 L210 282" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d968)"/><rect x="85" y="288" width="250" height="56" rx="10"
+          fill="url(#gb-d968)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="316" text-anchor="middle"><tspan x="210" y="309.5">Multilingual model generates</tspan><tspan x="210" y="322.5">reply</tspan></text><path d="M210 344 L210 368" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d968)"/><path d="M210 374 L349 416 L210 458 L71 416 z"
+          fill="url(#ga-d968)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="416" text-anchor="middle"><tspan x="210" y="409.5">Reply safe + in user's</tspan><tspan x="210" y="422.5">language?</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d968)"/><text class="dg-e" x="220" y="477">Send reply; update memory</text><path d="M349 416 H397 V372 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d968)"/><text class="dg-e" x="403" y="410">Guardrail / clarify</text><path d="M101 488 L335 488 L319 544 L85 544 z"
+          fill="url(#gb-d968)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="516" text-anchor="middle"><tspan x="210" y="516.0">Guardrail / clarify</tspan></text><path d="M210 544 L210 568" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d968)"/><path d="M101 574 L335 574 L319 630 L85 630 z"
+          fill="url(#gb-d968)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="602" text-anchor="middle"><tspan x="210" y="602.0">Send reply; update memory</tspan></text><path d="M210 630 L210 654" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d968)"/><rect x="85" y="660" width="250" height="56" rx="28"
+          fill="url(#ga-d968)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="688" text-anchor="middle"><tspan x="210" y="688.0">Await next turn</tspan></text>
+  </svg>
+  <figcaption>Multilingual Chatbot — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Set up multilingual understanding + generation</h4><p>Use a strong multilingual model to understand input (including code-switching/romanised) and reply in the user's language — one model, not a translate bolt-on.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Quality is genuinely uneven across languages: high-resource languages (English/Hindi) are strong, many Indian languages are lower-resource and weaker. Be transparent about which languages you serve well, degrade gracefully, and guardrail replies in every language.</p></div>
+  </aside></li><li><h4>Add conversation memory</h4><p>Maintain conversation history (or a rolling summary) so the bot handles follow-ups and multi-turn tasks.</p></li><li><h4>Detect language and guardrail</h4><p>Detect the user's language (handling romanised/mixed input), reply in it, and apply safety guardrails.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Detect language, use context, reply in-language</h4><p>Detect the user's language, add conversation context, and generate a reply in that language with a multilingual model.</p><div class="codeblock tall" data-file="chat.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">chat.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy chat.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="chat.py" type="button" aria-label="Download chat.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">class</span> <span class="tok-t">Chat</span><span class="tok-o">:</span>
+    <span class="tok-k">def</span> <span class="tok-f">__init__</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> llm<span class="tok-o">,</span> detect<span class="tok-o">):</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>llm<span class="tok-o">,</span> <span class="tok-k">self</span><span class="tok-o">.</span>detect <span class="tok-o">=</span> llm<span class="tok-o">,</span> detect
+        <span class="tok-k">self</span><span class="tok-o">.</span>history <span class="tok-o">=</span> <span class="tok-o">[]</span>                          <span class="tok-c"># conversation memory</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">reply</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> message<span class="tok-o">):</span>
+        lang <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">detect</span><span class="tok-o">(</span>message<span class="tok-o">)</span>                <span class="tok-c"># code-switching aware</span>
+        context <span class="tok-o">=</span> <span class="tok-f">summarise</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">)</span>          <span class="tok-c"># context across turns</span>
+        prompt <span class="tok-o">=</span> <span class="tok-o">(</span>f<span class="tok-s">"Reply in the user's language ({lang}); be honest if unsure.\n"</span>
+                  f<span class="tok-s">"{context}\nUser: {message}"</span><span class="tok-o">)</span>
+        out <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>llm<span class="tok-o">.</span><span class="tok-f">generate</span><span class="tok-o">(</span>prompt<span class="tok-o">)</span>            <span class="tok-c"># multilingual generation</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">.</span><span class="tok-f">append</span><span class="tok-o">((</span>message<span class="tok-o">,</span> out<span class="tok-o">))</span>        <span class="tok-c"># remember for follow-ups</span>
+        <span class="tok-k">return</span> out</code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">lang = self.detect(message)                # code-switching aware</span><span class="txt">Detecting the user's language (including mixed/romanised input) lets the bot reply in the tongue they actually used.</span></div><div><span class="ref">context = summarise(self.history)          # context across turns</span><span class="txt">Conversation memory is supplied as context so follow-ups and references resolve — the difference between a conversation and disconnected queries.</span></div><div><span class="ref">out = self.llm.generate(prompt)            # multilingual generation</span><span class="txt">One multilingual model understands and generates the language directly, avoiding the brittle translate-then-English-bot approach.</span></div><div><span class="ref">self.history.append((message, out))        # remember for follow-ups</span><span class="txt">Each turn is remembered so the next turn has context — real multi-turn conversation.</span></div></div></li><li><h4>Guardrail and be transparent about quality</h4><p>Apply safety guardrails to every language and be transparent where quality drops for lower-resource languages, degrading gracefully.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Prefer one strong multilingual model over translating to English and back — the bolt-on loses nuance, mangles code-switched text, and compounds errors across two translation steps.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="multilingual_chatbot.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">multilingual_chatbot.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy multilingual_chatbot.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="multilingual_chatbot.py" type="button" aria-label="Download multilingual_chatbot.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">#!/usr/bin/env python3</span>
+<span class="tok-s">"""</span>
+<span class="tok-s">Multilingual Chatbot (context-aware)</span>
+<span class="tok-s"></span>
+<span class="tok-s">Converses across Indian languages: detects the user's language (incl.</span>
+<span class="tok-s">code-switching/romanised), keeps CONVERSATION MEMORY for follow-ups,</span>
+<span class="tok-s">and replies IN THE USER'S LANGUAGE with a single multilingual model.</span>
+<span class="tok-s">Quality is uneven across languages — be transparent and guardrail replies.</span>
+<span class="tok-s">"""</span>
+<span class="tok-k">class</span> <span class="tok-t">MultilingualChatbot</span><span class="tok-o">:</span>
+    <span class="tok-k">def</span> <span class="tok-f">__init__</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> llm<span class="tok-o">,</span> detect_lang<span class="tok-o">,</span> guard<span class="tok-o">):</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>llm <span class="tok-o">=</span> llm<span class="tok-o">;</span> <span class="tok-k">self</span><span class="tok-o">.</span>detect <span class="tok-o">=</span> detect_lang<span class="tok-o">;</span> <span class="tok-k">self</span><span class="tok-o">.</span>guard <span class="tok-o">=</span> guard
+        <span class="tok-k">self</span><span class="tok-o">.</span>history <span class="tok-o">=</span> <span class="tok-o">[]</span>                              <span class="tok-c"># conversation memory</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">reply</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> message<span class="tok-o">):</span>
+        <span class="tok-k">if</span> <span class="tok-k">not</span> <span class="tok-k">self</span><span class="tok-o">.</span>guard<span class="tok-o">.</span><span class="tok-f">input_ok</span><span class="tok-o">(</span>message<span class="tok-o">):</span>
+            <span class="tok-k">return</span> <span class="tok-k">self</span><span class="tok-o">.</span>guard<span class="tok-o">.</span><span class="tok-f">refusal</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">detect</span><span class="tok-o">(</span>message<span class="tok-o">))</span>
+
+        lang <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">detect</span><span class="tok-o">(</span>message<span class="tok-o">)</span>                    <span class="tok-c"># code-switching aware</span>
+        context <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">_context</span><span class="tok-o">()</span>                       <span class="tok-c"># multi-turn memory</span>
+        prompt <span class="tok-o">=</span> <span class="tok-o">(</span>
+            <span class="tok-s">"You are a helpful, honest assistant. "</span>
+            f<span class="tok-s">"Reply in the user's language ({lang}). If unsure, say so.\n\n"</span>
+            f<span class="tok-s">"{context}\nUser: {message}\nAssistant:"</span><span class="tok-o">)</span>
+        out <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>llm<span class="tok-o">.</span><span class="tok-f">generate</span><span class="tok-o">(</span>prompt<span class="tok-o">)</span>                 <span class="tok-c"># multilingual generation</span>
+        out <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>guard<span class="tok-o">.</span><span class="tok-f">output_filter</span><span class="tok-o">(</span>out<span class="tok-o">)</span>             <span class="tok-c"># safety, every language</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">.</span><span class="tok-f">append</span><span class="tok-o">((</span>message<span class="tok-o">,</span> out<span class="tok-o">))</span>             <span class="tok-c"># remember the turn</span>
+        <span class="tok-k">return</span> out                                      <span class="tok-c"># in the user's language</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">_context</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">):</span>
+        <span class="tok-c"># supply recent history (or a summary) so references/follow-ups work</span>
+        recent <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">[-</span><span class="tok-n">6</span><span class="tok-o">:]</span>
+        <span class="tok-k">return</span> <span class="tok-s">"\n"</span><span class="tok-o">.</span><span class="tok-f">join</span><span class="tok-o">(</span>f<span class="tok-s">"User: {u}\nAssistant: {a}"</span> <span class="tok-k">for</span> u<span class="tok-o">,</span> a <span class="tok-k">in</span> recent<span class="tok-o">)</span>
+
+<span class="tok-k">if</span> __name__ <span class="tok-o">==</span> <span class="tok-s">"__main__"</span><span class="tok-o">:</span>
+    bot <span class="tok-o">=</span> <span class="tok-f">MultilingualChatbot</span><span class="tok-o">(</span><span class="tok-f">MultilingualLLM</span><span class="tok-o">(),</span> detect_language<span class="tok-o">,</span> <span class="tok-f">Guardrails</span><span class="tok-o">())</span>
+    <span class="tok-c"># bot.reply("kal ka weather kaisa hai?")  # code-switched Hindi/English</span>
+    <span class="tok-c"># Serves high-resource languages well; lower-resource langs are weaker —</span>
+    <span class="tok-c"># be transparent and degrade gracefully.</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (39 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">if not self.guard.input_ok(message):</span><span class="txt">Guardrails apply to every language, since the model can be confidently wrong or misused regardless of tongue.</span></div><div><span class="ref">lang = self.detect(message)                    # code-switching aware</span><span class="txt">Language detection handles code-switched and romanised input, so the bot replies in the language the user actually used.</span></div><div><span class="ref">context = self._context()                       # multi-turn memory</span><span class="txt">Conversation memory gives the model context, enabling follow-ups and references — a real assistant, not a stateless box.</span></div><div><span class="ref">out = self.llm.generate(prompt)                 # multilingual generation</span><span class="txt">A single multilingual model generates the reply directly, avoiding the lossy translate-to-English-and-back pattern.</span></div><div><span class="ref"># be transparent and degrade gracefully.</span><span class="txt">The honest reality — strong for high-resource languages, weaker for low-resource ones — is acknowledged rather than hidden.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Configure the multilingual model and supported languages.</li><li>Configure language detection (including romanised/mixed input).</li><li>Configure conversation memory (history/summary length).</li><li>Configure guardrails and per-language quality expectations.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Language coverage</h4><p>Test understanding/generation per language and code-switching; map quality honestly.</p></li><li><h4>Context</h4><p>Verify follow-ups and references resolve using memory.</p></li><li><h4>Safety</h4><p>Check guardrails work across languages, not just English.</p></li></ol></section>
+
+<section id="model" aria-labelledby="h-model"><h2 id="h-model">Dataset, Model &amp; Training</h2><h3>Dataset</h3><p>A multilingual LLM (pretrained on many languages) provides understanding/generation; Indian-language coverage and code-switching data determine quality.</p>
+<p>Optional domain/dialogue data and transliteration resources improve specific languages.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Dataset</th><th scope="col">Size</th><th scope="col">Licence</th><th scope="col">Use here</th></tr></thead>
+    <tbody><tr><td><b>Multilingual LLM (pretrained)</b></td><td>Large</td><td>Model terms</td><td>Understanding + generation</td></tr><tr><td><b>Indian-language coverage</b></td><td>Uneven</td><td>Model terms</td><td>Per-language quality</td></tr><tr><td><b>Code-switch / romanised data</b></td><td>Scarcer</td><td>Varies</td><td>Mixed-language robustness</td></tr><tr><td><b>Domain dialogue data</b></td><td>Optional</td><td>Yours</td><td>Task/domain tuning</td></tr></tbody>
+  </table></div>
+<h3>Data preprocessing</h3><ul class="plain"><li>Detect language (handle romanised/mixed input); normalise script where needed.</li><li>Assemble conversation context (history or summary) within the context window.</li><li>Apply guardrails/safety filtering to input and output.</li></ul>
+
+<div class="diagram-scroll"><figure class="diagram diagram-pipeline">
+  <svg viewBox="0 0 772 250" role="img" aria-labelledby="td969 sd969" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td969">Multilingual Chatbot — ML pipeline</title><desc id="sd969">From raw data through training to deployed inference.</desc>
+    <defs>
+    <marker id="ar-d969" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d969" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d969" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d969" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="20" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d969)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="38" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="58" text-anchor="middle">1</text><text class="dg-b" x="95" y="82" text-anchor="middle"><tspan x="95" y="82.0">Message</tspan></text><text class="dg-s" x="95" y="104" text-anchor="middle"><tspan x="95" y="104.0">any language</tspan></text><path d="M174 77 H206" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d969)"/><rect x="214" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d969)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="232" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="232" y="58" text-anchor="middle">2</text><text class="dg-b" x="289" y="82" text-anchor="middle"><tspan x="289" y="82.0">Language ID</tspan></text><text class="dg-s" x="289" y="104" text-anchor="middle"><tspan x="289" y="104.0">detect</tspan></text><path d="M368 77 H400" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d969)"/><rect x="408" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d969)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="426" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="426" y="58" text-anchor="middle">3</text><text class="dg-b" x="483" y="82" text-anchor="middle"><tspan x="483" y="82.0">Context</tspan></text><text class="dg-s" x="483" y="104" text-anchor="middle"><tspan x="483" y="104.0">memory</tspan></text><path d="M562 77 H594" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d969)"/><rect x="602" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d969)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="620" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="620" y="58" text-anchor="middle">4</text><text class="dg-b" x="677" y="82" text-anchor="middle"><tspan x="677" y="82.0">Multilingual LLM</tspan></text><text class="dg-s" x="677" y="104" text-anchor="middle"><tspan x="677" y="104.0">generate</tspan></text><path d="M677 122 V136 H95 V148"
+            stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d969)"/><rect x="20" y="152" width="150" height="82" rx="12"
+        fill="url(#gb-d969)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="38" cy="170" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="174" text-anchor="middle">5</text><text class="dg-b" x="95" y="198" text-anchor="middle"><tspan x="95" y="198.0">Reply</tspan></text><text class="dg-s" x="95" y="220" text-anchor="middle"><tspan x="95" y="220.0">in-language</tspan></text>
+  </svg>
+  <figcaption>Multilingual Chatbot — ML pipeline</figcaption>
+</figure></div>
+
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Layer / stage</th><th scope="col">Shape or configuration</th><th scope="col">Purpose</th></tr></thead>
+    <tbody><tr><td><b>Language ID</b></td><td><code>detect + romanised/mixed</code></td><td>Know the user's language</td></tr><tr><td><b>Memory</b></td><td><code>history / rolling summary</code></td><td>Context across turns</td></tr><tr><td><b>Multilingual model</b></td><td><code>one model, many languages</code></td><td>Understand + reply in-language</td></tr><tr><td><b>Guardrails</b></td><td><code>safety/uncertainty</code></td><td>Safe, honest replies</td></tr><tr><td><b>Quality map</b></td><td><code>per-language expectations</code></td><td>Transparent, graceful degradation</td></tr></tbody>
+  </table></div>
+
+<h3>Hyperparameters</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Hyperparameter</th><th scope="col">Value</th><th scope="col">Why</th></tr></thead>
+    <tbody><tr><td><b>Model</b></td><td><code>strong multilingual</code></td><td>Indian-language coverage</td></tr><tr><td><b>Context length</b></td><td><code>history/summary fit</code></td><td>Memory vs cost</td></tr><tr><td><b>Temperature</b></td><td><code>moderate</code></td><td>Fluency vs reliability</td></tr><tr><td><b>Guardrails</b></td><td><code>on</code></td><td>Safety regardless of language</td></tr></tbody>
+  </table></div>
+<h3>Training process</h3><ul class="plain"><li>Primarily use a capable pretrained multilingual model; fine-tune for domain/dialogue if needed.</li><li>Add code-switch/romanised and low-resource examples where possible.</li><li>Evaluate per language; be transparent about quality differences.</li></ul></section>
+
+<section id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation">Evaluation, Metrics &amp; Deployment</h2><p>Quality must be judged per language, not overall — the honest picture is strong for high-resource languages and weaker for low-resource ones, plus context-handling quality.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">What it tells you</th></tr></thead>
+    <tbody><tr><td><b>Per-language fluency</b></td><td><code>uneven (honest)</code></td><td>High vs low-resource</td></tr><tr><td><b>Context handling</b></td><td><code>multi-turn</code></td><td>Follow-ups/references</td></tr><tr><td><b>Code-switch robustness</b></td><td><code>target</code></td><td>Mixed/romanised input</td></tr><tr><td><b>Safety</b></td><td><code>guardrailed</code></td><td>Across all languages</td></tr></tbody>
+  </table></div><p class="tbl-caption">Figures from the reference training run described above — reproduce them before trusting your own changes.</p>
+<figure class="diagram diagram-chart">
+  <svg viewBox="0 0 620 192" role="img" aria-labelledby="td970 sd970" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td970">Quality by language resource level</title><desc id="sd970">Fluency is strong for high-resource languages and drops for lower-resource ones — the honest reality of Indian-language NLP (illustrative).</desc>
+    <defs>
+    <marker id="ar-d970" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d970" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d970" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d970" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <line x1="190" y1="26" x2="190" y2="178" stroke="var(--dg-stroke)" stroke-width="1"/><text class="dg-b" x="178" y="45" text-anchor="end">English</text><rect x="191" y="33" width="316.5217391304348" height="20" rx="5" fill="url(#ga-d970)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="516.5217391304348" y="47">94 %</text><text class="dg-b" x="178" y="83" text-anchor="end">Hindi</text><rect x="191" y="71" width="289.5837187789084" height="20" rx="5" fill="url(#ga-d970)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="489.5837187789084" y="85">86 %</text><text class="dg-b" x="178" y="121" text-anchor="end">Major regional</text><rect x="191" y="109" width="255.91119333950047" height="20" rx="5" fill="url(#ga-d970)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="455.91119333950047" y="123">76 %</text><text class="dg-b" x="178" y="159" text-anchor="end">Low-resource</text><rect x="191" y="147" width="195.30064754856616" height="20" rx="5" fill="url(#ga-d970)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="395.3006475485662" y="161">58 %</text>
+  </svg>
+  <figcaption>Quality by language resource level</figcaption>
+</figure>
+
+
+<h3>Inference example</h3><div class="codeblock tall" data-file="chatbot.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">chatbot.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy chatbot.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="chatbot.py" type="button" aria-label="Download chatbot.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">class</span> <span class="tok-t">MultilingualChat</span><span class="tok-o">:</span>
+    <span class="tok-k">def</span> <span class="tok-f">__init__</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> llm<span class="tok-o">,</span> detect<span class="tok-o">):</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>llm <span class="tok-o">=</span> llm<span class="tok-o">;</span> <span class="tok-k">self</span><span class="tok-o">.</span>detect <span class="tok-o">=</span> detect
+        <span class="tok-k">self</span><span class="tok-o">.</span>history <span class="tok-o">=</span> <span class="tok-o">[]</span>                          <span class="tok-c"># conversation memory</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">reply</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> message<span class="tok-o">):</span>
+        lang <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">detect</span><span class="tok-o">(</span>message<span class="tok-o">)</span>                <span class="tok-c"># incl. code-switching</span>
+        context <span class="tok-o">=</span> <span class="tok-f">summarise</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">)</span>          <span class="tok-c"># context across turns</span>
+        prompt <span class="tok-o">=</span> <span class="tok-o">(</span>f<span class="tok-s">"You are a helpful assistant. Reply in the user's "</span>
+                  f<span class="tok-s">"language ({lang}). Be honest if unsure.\n"</span>
+                  f<span class="tok-s">"Conversation so far:\n{context}\n\nUser: {message}"</span><span class="tok-o">)</span>
+        out <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>llm<span class="tok-o">.</span><span class="tok-f">generate</span><span class="tok-o">(</span>prompt<span class="tok-o">)</span>            <span class="tok-c"># multilingual model</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">.</span><span class="tok-f">append</span><span class="tok-o">((</span>message<span class="tok-o">,</span> out<span class="tok-o">))</span>        <span class="tok-c"># remember the turn</span>
+        <span class="tok-k">return</span> out                                 <span class="tok-c"># reply in the user's language</span>
+        <span class="tok-c"># Quality is uneven across languages; low-resource langs are weaker.</span></code></pre>
+  
+</div>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Known limitations</span><p>Quality is uneven — low-resource Indian languages are weaker than English/Hindi.</p>
+<p>Code-switching, dialects and transliteration are messy and underrepresented.</p>
+<p>The model can be confidently wrong — guardrails and honesty needed in every language.</p>
+<p>A single multilingual model beats a translate-bolt-on, but is not uniformly excellent.</p></div>
+  </aside></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Chat in Hindi</b></td><td>Fluent, in-language reply</td></tr><tr><td><b>Code-switch (Hinglish)</b></td><td>Understood; replies appropriately</td></tr><tr><td><b>Ask a follow-up</b></td><td>Uses context correctly</td></tr><tr><td><b>Chat in a low-resource language</b></td><td>Works but weaker — honest quality</td></tr><tr><td><b>Romanised regional input</b></td><td>Handled (transliteration)</td></tr><tr><td><b>Unsafe request</b></td><td>Guardrail refuses in-language</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>Fluent, context-aware replies in the user's language, with honest quality across the resource spectrum.</p>
+<div class="codeblock tall" data-file="chat-turn.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">chat-turn.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy chat-turn.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="chat-turn.json" type="button" aria-label="Download chat-turn.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "user": "kal ka weather kaisa rahega?",
+  "detected_language": "hi (romanised, code-switched)",
+  "reply": "कल मौसम साफ़ रहने की संभावना है...",
+  "used_context": <span class="tok-k">true</span>,
+  "note": "high-resource langs strong; low-resource weaker"
+}</code></pre>
+  
+</div>
+
+<p>A code-switched, romanised Hindi question understood and answered fluently in Hindi, using conversation context — natural access in the user's own language, with honest expectations across languages.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Smart%20city.jpg?width=900" alt="A city skyline at night" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td971" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td971">Quality is uneven — high-resource languages are strong, low-resource ones weaker — so honesty and guardrails matter.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <path d="M120 152 a38 38 0 0 1 6-75 a52 52 0 0 1 98-14 a44 44 0 0 1 52 44 a34 34 0 0 1-8 45 z"
+      fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="150" y="172" width="100" height="44" rx="8" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="200" y="199" font-size="12" fill="var(--dg-muted)" text-anchor="middle" font-family="monospace">broker</text>
+    <line x1="200" y1="152" x2="200" y2="170" stroke="var(--dg-accent)" stroke-width="2"/>
+  </svg>
+  <figcaption>Quality is uneven — high-resource languages are strong, low-resource ones weaker — so honesty and guardrails matter.</figcaption>
+</figure></template>
+  <figcaption>Quality is uneven — high-resource languages are strong, low-resource ones weaker — so honesty and guardrails matter.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Smart_city.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Smart city.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Replies in the wrong language</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Detection/instruction</p>
+        <p><strong>Fix.</strong> Improve language ID; instruct reply-in-user-language</p></div></details><details class="expand"><summary>Loses the thread</summary><div class="inner">
+        <p><strong>Likely cause.</strong> No/short memory</p>
+        <p><strong>Fix.</strong> Add conversation history/summary as context</p></div></details><details class="expand"><summary>Weak in some languages</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Low-resource</p>
+        <p><strong>Fix.</strong> Use a stronger multilingual model; be transparent; degrade gracefully</p></div></details><details class="expand"><summary>Mangles code-switching</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Translate bolt-on / poor data</p>
+        <p><strong>Fix.</strong> Use a native multilingual model; add mixed-language handling</p></div></details><details class="expand"><summary>Confidently wrong</summary><div class="inner">
+        <p><strong>Likely cause.</strong> LLM limitation</p>
+        <p><strong>Fix.</strong> Guardrails; express uncertainty; ground where possible</p></div></details><details class="expand"><summary>Unsafe in non-English</summary><div class="inner">
+        <p><strong>Likely cause.</strong> English-only guardrails</p>
+        <p><strong>Fix.</strong> Guardrail across all languages</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Use one strong multilingual model, not a translate bolt-on.</li><li>Maintain conversation memory for real multi-turn dialogue.</li><li>Handle code-switching and romanised input in detection.</li><li>Be transparent about uneven per-language quality; guardrail all languages.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>The model can be confidently wrong in any language — apply guardrails across all languages, not just English.</li><li>Be transparent about which languages are served well; do not claim uniform quality.</li><li>Conversations may contain personal data — handle securely and lawfully.</li><li>Provide human fallback for high-stakes interactions.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Improve coverage for lower-resource languages over time.</li><li>Re-evaluate per-language quality as models improve.</li><li>Update guardrails and language detection.</li><li>Monitor conversations for failures and drift.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add speech in/out for spoken multilingual interaction.</li><li>Add RAG for grounded, domain-specific answers.</li><li>Add more languages/dialects and better code-switching.</li><li>Add per-language quality indicators to users.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why not translate to English and use an English bot?</summary><div class="inner"><p>Because that bolt-on is brittle: it loses nuance, mangles code-switched and romanised text, and compounds errors across two translation steps. A single multilingual model understands and generates the language natively, giving far more fluent, natural conversation.</p></div></details><details class="expand"><summary>What makes it context-aware?</summary><div class="inner"><p>It keeps a memory of the conversation (the history or a summary) supplied as context each turn, so it resolves follow-ups and references and carries a task across messages — the difference between a conversation and disconnected queries.</p></div></details><details class="expand"><summary>Why is quality uneven across languages?</summary><div class="inner"><p>Because languages differ hugely in training data. English and major languages like Hindi are high-resource and strong; many Indian languages are lower-resource, with less data and correspondingly weaker fluency and more errors. Honesty about this is part of the design.</p></div></details><details class="expand"><summary>Does it handle Hinglish and romanised text?</summary><div class="inner"><p>It should — code-switching and romanised regional languages are extremely common in India, so language detection and the model must handle mixed and Latin-script input, though these are messier and less represented in training data.</p></div></details><details class="expand"><summary>Can I trust its answers?</summary><div class="inner"><p>As with any LLM chatbot, it can be confidently wrong, so it needs guardrails and honest handling of uncertainty in every language — and a human fallback for high-stakes interactions.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Multilingual_natural_language_processing" rel="noopener nofollow" target="_blank">Multilingual NLP</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Code-switching" rel="noopener nofollow" target="_blank">Code-switching (linguistics)</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Low-resource_language" rel="noopener nofollow" target="_blank">Low-resource languages / NLP</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Large_language_model" rel="noopener nofollow" target="_blank">Large language models</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Languages_of_India" rel="noopener nofollow" target="_blank">Languages of India</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="document-q-and-a-rag.html"><span class="dir">← Previous project</span><span class="ttl">Document Q&amp;A (RAG)</span></a>
+        <a class="next" href="abstractive-text-summarizer.html"><span class="dir">Next project →</span><span class="ttl">Abstractive Text Summarizer</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Advanced</b></div>
+        <div class="rail-stat"><span>Time</span><b>14–20 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>4</b></div>
+        <div class="rail-stat"><span>Cost</span><b>Software; compute/API-dependent</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="ai-resume-screener.html">AI Resume Screener</a></li><li><a href="sentiment-analysis-engine.html">Sentiment Analysis Engine</a></li><li><a href="document-q-and-a-rag.html">Document Q&amp;A (RAG)</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="ai-resume-screener.html">
+        <span class="rc">NLP &amp; LLM</span>
+        <h4>AI Resume Screener</h4>
+        <p>Ranks resumes against a job description using NLP relevance scoring.</p></a><a class="relcard" href="sentiment-analysis-engine.html">
+        <span class="rc">NLP &amp; LLM</span>
+        <h4>Sentiment Analysis Engine</h4>
+        <p>Mines opinion and emotion from reviews and social posts at scale.</p></a><a class="relcard" href="document-q-and-a-rag.html">
+        <span class="rc">NLP &amp; LLM</span>
+        <h4>Document Q&amp;A (RAG)</h4>
+        <p>Chat over your own PDFs and docs with retrieval-augmented generation.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Multilingual Chatbot</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
