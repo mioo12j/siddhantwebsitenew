@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Face Recognition Attendance — Circuit, Code &amp; Full Build Guide | Computer Vision</title>
+  <meta name="description" content="Complete advanced-level build guide for a Face Recognition Attendance: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="face recognition attendance, face recognition attendance project, how to build face recognition attendance, jetson/pi project, computer vision project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/face-recognition-attendance.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/face-recognition-attendance.html" />
+  <meta property="og:title" content="Face Recognition Attendance — Circuit, Code &amp; Full Build Guide | Computer Vision" />
+  <meta property="og:description" content="Complete advanced-level build guide for a Face Recognition Attendance: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Computer Vision" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Face Recognition Attendance — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete advanced-level build guide for a Face Recognition Attendance: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🧑‍💻</text></svg>" />
+  <style>:root{--acc:#818cf8;--acc-light:#a5b4fc;--acc-rgb:129,140,248}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/face-recognition-attendance.html#article","headline":"Face Recognition Attendance — Complete Build Guide","name":"Face Recognition Attendance","description":"Complete advanced-level build guide for a Face Recognition Attendance: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/face-recognition-attendance.html","inLanguage":"en","articleSection":"Computer Vision","keywords":"face recognition attendance, face recognition attendance project, how to build face recognition attendance, jetson/pi project, computer vision project, circuit diagram, source code, tutorial","proficiencyLevel":"Advanced","dependencies":"Python, OpenCV, PyTorch, NumPy, SQLite","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-28","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/face-recognition-attendance.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/face-recognition-attendance.html#howto","name":"How to build a Face Recognition Attendance","description":"Complete advanced-level build guide for a Face Recognition Attendance: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT20H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"10200"},"supply":[{"@type":"HowToSupply","name":"Raspberry Pi Camera Module 3"},{"@type":"HowToSupply","name":"Raspberry Pi 4 Model B (4 GB)"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Gate on liveness, then recognise","text":"Reject spoofs with liveness first, then match the face embedding to enrolled identities within a threshold and log the person."},{"@type":"HowToStep","position":2,"name":"Log securely and validate fairness","text":"Record timestamped attendance to an encrypted store, and validate false-accept/false-reject rates across your population before trusting the system."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Face Recognition Attendance","item":"https://siddhantkumar.in/projects/docs/face-recognition-attendance.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/face-recognition-attendance.html#faq","mainEntity":[{"@type":"Question","name":"Why is liveness essential?","acceptedAnswer":{"@type":"Answer","text":"Because a camera cannot, by itself, tell a real face from a photo of it. Without liveness, holding up a printout or a phone marks the pictured person present. Liveness gates recognition so a spoof is rejected first."}},{"@type":"Question","name":"How does recognition actually work?","acceptedAnswer":{"@type":"Answer","text":"A network turns a face into an embedding — a vector where the same person's faces are close and different people far apart. A new face is embedded and matched to the nearest enrolled identity; if it is within a threshold, it is accepted."}},{"@type":"Question","name":"What does the threshold do?","acceptedAnswer":{"@type":"Answer","text":"It sets the acceptance radius. Loose accepts more (risking false accepts of similar-looking people); tight rejects more (risking false rejects of genuine users). It is tuned to the deployment's risk and validated across the population."}},{"@type":"Question","name":"Is face data safe to use?","acceptedAnswer":{"@type":"Answer","text":"Only with real safeguards. A face embedding is biometric personal data requiring consent, encrypted and access-controlled storage, and governed retention — a leaked biometric cannot be changed like a password."}},{"@type":"Question","name":"Can it be biased?","acceptedAnswer":{"@type":"Answer","text":"Yes — recognition can perform unevenly across demographic groups if trained on unrepresentative data. Accuracy must be validated across the actual population and large gaps addressed before deployment."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#computer-vision">Computer Vision</a><span class="sep">/</span>
+        <span aria-current="page">Face Recognition Attendance</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project A03 · Computer Vision</span>
+          <h1>Face Recognition Attendance<span class="grad">.</span></h1>
+          <p class="tagline">Attendance by face — recognising who is present from a camera, with liveness checks that defeat a held-up photo, logged automatically.</p>
+          <div class="hero-chips">
+            <span class="chip lv-advanced">Advanced</span>
+            <span class="chip">14–22 hours</span>
+            <span class="chip neutral">25 min read</span>
+            <span class="chip neutral">Face</span><span class="chip neutral">CNN</span><span class="chip neutral">Anti-spoof</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td882" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td882">Face Recognition Attendance — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Face Recognition Attendance — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Advanced</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>14–22 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>Software + camera; compute-dependent</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>Jetson/Pi (edge) or GPU workstation</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Computer Vision</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>28 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">27</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 27 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">27</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Attendance by face — recognising who is present from a camera, with liveness checks that defeat a held-up photo, logged automatically.</p>
+<p>Face-recognition attendance removes even the tap of a card: you simply look at the camera and your presence is recorded. It is genuinely useful — hands-free, hard to forget, and convenient — but it carries a danger the tap never did, which is that a face can be <b>spoofed with a photo</b>: hold up a printed picture or a phone showing someone's face and a naïve system will happily mark them present. So this project builds face-recognition attendance <i>with</i> the thing that makes it trustworthy — <b>liveness detection</b> — recognising who is present while checking that it is a <b>real, live person</b>, not a photo.</p>
+<p>Recognition works by turning a face into a <b>numeric embedding</b> — a vector that captures a person's facial features — and comparing it to enrolled embeddings: if a new face's embedding is close enough to an enrolled one, it is a match. Enrolment stores one embedding per person; at attendance time the camera detects a face, computes its embedding, finds the nearest enrolled match within a threshold, and logs the person. <b>Liveness</b> sits in front of this: before trusting a recognition, the system verifies the face is live — via a challenge (blink, turn, smile), texture/depth analysis that distinguishes skin from a flat print, or motion cues — so a static photo is rejected.</p>
+<p>The value is convenient, automatic, spoof-resistant attendance for offices, schools and secure entry. It is honest that this is a <b>sensitive</b> technology: face data is <b>biometric personal data</b> demanding consent, security and careful governance; recognition has real <b>bias and error</b> risks (accuracy can vary across demographics and must be validated); and liveness is an <b>arms race</b> (basic checks stop photos but sophisticated spoofs need stronger defences). Deployed responsibly, though, it delivers the real thing — hands-free attendance that knows who is present and refuses to be fooled by a picture — while being clear-eyed about the privacy and fairness obligations that come with recognising faces.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Artificial%20neural%20network.svg?width=900" alt="A schematic of a feed-forward artificial neural network" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td873" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td873">Face-recognition attendance is hands-free — but only trustworthy when liveness rejects a held-up photo.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <line x1="79" y1="91" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="117" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="143" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="169" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="65" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="91" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="117" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="143" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="169" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="195" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="65" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="91" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="117" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="143" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="169" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="195" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="104" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="130" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="156" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/>
+    <text x="70" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">input</text>
+    <text x="205" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">hidden</text>
+    <text x="340" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">output</text>
+  </svg>
+  <figcaption>Face-recognition attendance is hands-free — but only trustworthy when liveness rejects a held-up photo.</figcaption>
+</figure></template>
+  <figcaption>Face-recognition attendance is hands-free — but only trustworthy when liveness rejects a held-up photo.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Artificial_neural_network.svg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Artificial neural network.svg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Recognises enrolled people from a camera to record attendance</li><li>Turns faces into embeddings and matches to enrolled identities</li><li>Checks liveness so a held-up photo is rejected</li><li>Logs timestamped attendance automatically</li><li>Enrols people from reference images</li><li>Works hands-free for offices, schools, secure entry</li><li>Handles face data as sensitive biometric personal data</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Workplace attendance</b></td><td>Hands-free staff check-in with spoof resistance.</td></tr><tr><td><b>School / exam attendance</b></td><td>Automatic, hard-to-fake presence recording.</td></tr><tr><td><b>Secure access</b></td><td>Face-plus-liveness gating for entry.</td></tr><tr><td><b>Event check-in</b></td><td>Fast recognition of enrolled attendees.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Face detection + embedding + matching</li><li>Anti-spoofing liveness detection</li><li>Enrolment and identity management</li><li>Timestamped attendance logging</li><li>Match-threshold tuning (accept/reject)</li><li>Privacy/security-conscious design</li><li>Honest about bias, error and the liveness arms race</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Advanced</td></tr><tr><td><b>Estimated completion time</b></td><td>14–22 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>Software + camera; compute-dependent</td></tr><tr><td><b>Primary discipline</b></td><td>Computer Vision</td></tr><tr><td><b>Reference platform</b></td><td>Jetson/Pi (edge) or GPU workstation</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Face detection and embedding (recognition) models</li><li>Embedding matching and threshold tuning</li><li>Liveness / anti-spoofing techniques</li><li>Enrolment and identity data handling</li><li>Biometric privacy, security and bias awareness</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>A face can be spoofed with a photo — liveness is what makes it trustworthy.</p>
+<p>Recognition = compare a face's embedding to enrolled embeddings within a threshold.</p>
+<p>Face data is sensitive biometric data — consent, security, governance.</p>
+<p>Recognition has bias/error risks — validate across demographics.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>Raspberry Pi Camera Module 3</b><br/><span style="font-size:.82em;opacity:.78">Pi 5 uses a narrower 22-pin CSI cable — the old 15-pin ribbon will not fit.</span></td><td>12 MP IMX708, autofocus, HDR, 1080p50, CSI-2 ribbon</td><td class="num">1</td><td class="num">₹2,600</td></tr><tr><td><b>Raspberry Pi 4 Model B (4 GB)</b><br/><span style="font-size:.82em;opacity:.78">Use an official 5 V 3 A supply — brown-outs from phone chargers corrupt SD cards.</span></td><td>Quad-core Cortex-A72 @ 1.8 GHz, 4 GB LPDDR4, Gigabit Ethernet, Wi-Fi 5, BT 5.0, 2× USB 3.0, 40-pin GPIO</td><td class="num">1</td><td class="num">₹5,800</td></tr><tr><td><b>Camera (+ IR/depth ideal)</b><br/><span style="font-size:.82em;opacity:.78">Depth/IR helps anti-spoofing</span></td><td>RGB camera; IR/depth strengthens liveness</td><td class="num">1</td><td class="num">₹1,800</td></tr><tr><td><b>Edge/GPU compute</b></td><td>Jetson/Pi for edge, or GPU for training</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Recognition model</b></td><td>Pretrained face-embedding model</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Secure store</b><br/><span style="font-size:.82em;opacity:.78">Biometric data — protect it</span></td><td>Encrypted store for embeddings + logs</td><td class="num">1</td><td class="num">—</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹10,200</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>Raspberry Pi Camera Module 3</b></td><td>12 MP IMX708, autofocus, HDR, 1080p50, CSI-2 ribbon</td><td>3.3 V via CSI</td><td>CSI-2</td><td><a href="https://datasheets.raspberrypi.com/camera/camera-module-3-product-brief.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Raspberry Pi 4 Model B (4 GB)</b></td><td>Quad-core Cortex-A72 @ 1.8 GHz, 4 GB LPDDR4, Gigabit Ethernet, Wi-Fi 5, BT 5.0, 2× USB 3.0, 40-pin GPIO</td><td>5 V / 3 A USB-C</td><td>GPIO, SPI, I²C, UART, CSI, DSI</td><td><a href="https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-datasheet.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>Raspberry Pi Camera Module 3</td><td>3.3 V via CSI</td><td class="num">250</td><td>Pi 5 uses a narrower 22-pin CSI cable — the old 15-pin ribbon will not fit.</td></tr><tr><td>Raspberry Pi 4 Model B (4 GB)</td><td>5 V / 3 A USB-C</td><td class="num">1200</td><td>Use an official 5 V 3 A supply — brown-outs from phone chargers corrupt SD cards.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>1450 mA</b>. With a 1.5× design margin the supply should deliver at least <b>2200 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Python 3.11 + face-recognition / PyTorch</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Flash <b>Raspberry Pi OS (64-bit)</b> with Raspberry Pi Imager; pre-configure Wi-Fi, hostname and SSH in the Imager settings so the board comes up headless.</li><li>Update first: <code>sudo apt update &amp;&amp; sudo apt full-upgrade -y</code>, then reboot.</li><li>Work inside a virtual environment — <code>python3 -m venv ~/venv &amp;&amp; source ~/venv/bin/activate</code>. Bookworm blocks system-wide <code>pip install</code> by design.</li><li>Enable the buses you need with <code>sudo raspi-config</code> → Interface Options (I²C, SPI, Serial, Camera).</li><li>Develop over <b>VS Code Remote-SSH</b> so you edit on your laptop but run on the Pi.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>Python</b> <span style="opacity:.7">3.11+</span></td><td>Runtime for the analysis, training and service code.</td><td><code>sudo apt install python3 python3-venv python3-pip</code></td></tr><tr><td><b>OpenCV</b> <span style="opacity:.7">4.10+</span></td><td>Frame capture, colour conversion, drawing and classical CV operators.</td><td><code>pip install opencv-python</code></td></tr><tr><td><b>PyTorch</b> <span style="opacity:.7">2.4+</span></td><td>Model definition, autograd and GPU training.</td><td><code>pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121</code></td></tr><tr><td><b>NumPy</b> <span style="opacity:.7">1.26+</span></td><td>Vectorised array maths underpinning every other library here.</td><td><code>pip install numpy</code></td></tr><tr><td><b>SQLite</b> <span style="opacity:.7">3.45+</span></td><td>Zero-configuration embedded database for local logs.</td><td><code>Bundled with Python (`import sqlite3`)</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td874 sd874" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td874">Face Recognition Attendance — system block diagram</title><desc id="sd874">Functional block diagram of the Face Recognition Attendance system.</desc>
+    <defs>
+    <marker id="ar-d874" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d874" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d874" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d874" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Capture</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d874)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Camera</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">face</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d874)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Detect face</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">locate</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Verify live</text><rect x="266" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d874)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="119" text-anchor="middle"><tspan x="355" y="119.0">Liveness</tspan></text><text class="dg-s" x="355" y="138" text-anchor="middle"><tspan x="355" y="138.0">not a photo</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Recognise</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d874)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Embedding</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">vector</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d874)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Match</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">threshold</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Record</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d874)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Attendance</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">who+when</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d874)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Secure store</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">biometric</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d874)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d874)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d874)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Face Recognition Attendance — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>The "wiring" is the recognition data flow — a camera feeds faces to detection, embedding and liveness; a match within threshold on a live face produces a logged attendance record.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 264" role="img" aria-labelledby="td875 sd875" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td875">Face Recognition Attendance — wiring schematic</title><desc id="sd875">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d875" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d875" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d875" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d875" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="168" rx="14"
+      fill="url(#ga-d875)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">Jetson/Pi (edge) or</tspan><tspan x="434" y="95.0">GPU workstation</tspan></text><text class="dg-s" x="434" y="214" text-anchor="middle">5 V / 3 A USB-C</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d875)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Camera</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">—</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">Face images</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d875)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">Liveness check</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">—</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="167.0">Real vs photo</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d875)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Embedding match</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">—</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Identity (threshold)</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d875)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Attendance log</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">—</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Who + when</tspan></text>
+  </svg>
+  <figcaption>Face Recognition Attendance — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Camera</b></td><td>frames</td><td><code>—</code></td><td>Face images</td></tr><tr><td><b>Liveness check</b></td><td>gate</td><td><code>—</code></td><td>Real vs photo</td></tr><tr><td><b>Embedding match</b></td><td>compare</td><td><code>—</code></td><td>Identity (threshold)</td></tr><tr><td><b>Attendance log</b></td><td>record</td><td><code>—</code></td><td>Who + when</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>The camera provides face images; an IR/depth camera strengthens liveness.</li><li>Liveness gates recognition — verify a live person before trusting a match.</li><li>Compute an embedding and match to enrolled identities within a threshold.</li><li>Log a timestamped attendance record on a live, matched face.</li><li>Store embeddings and logs securely — they are biometric personal data.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Fitness%20tracker.jpg?width=900" alt="A wrist-worn fitness tracker" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td876" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td876">Recognition maps a face to an embedding and matches the nearest enrolled identity within a threshold.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption>Recognition maps a face to an embedding and matches the nearest enrolled identity within a threshold.</figcaption>
+</figure></template>
+  <figcaption>Recognition maps a face to an embedding and matches the nearest enrolled identity within a threshold.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Fitness_tracker.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Fitness tracker.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td877 sd877" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td877">Face Recognition Attendance — architecture stack</title><desc id="sd877">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d877" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d877" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d877" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d877" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d877)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">Raspberry Pi 4 Model B (4 GB) · Raspberry Pi Camera Module 3</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d877)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d877)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">python · opencv · torch · numpy</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d877)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d877)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d877)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d877)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Face Recognition Attendance — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>Face recognition for attendance is attractive because it is <b>frictionless and hard to forget</b> — you cannot leave your face at home — but its convenience hides a specific vulnerability that defines the whole design: a camera cannot, on its own, tell a real face from a <b>photograph of that face</b>. Hold up a printout or a phone screen and a recognition-only system marks the pictured person present. This "presentation attack" is the central threat, so a trustworthy system is not a recogniser bolted to a log — it is a recogniser <b>gated by liveness</b>. Getting that gate right is what separates a demo from something an organisation can rely on.</p>
+<p>The recognition itself works through <b>embeddings</b>. A face-recognition network maps a face image to a compact numeric vector — an <b>embedding</b> — engineered so that images of the <i>same</i> person land close together in the vector space and <i>different</i> people land far apart. Enrolment stores one (or a few) embeddings per person. At attendance time, a detected face is embedded and compared, by distance, to the enrolled set; if the nearest enrolled embedding is within a <b>match threshold</b>, the person is identified. That threshold is a genuine trade-off: too loose and it confuses similar-looking people (false accepts); too tight and it rejects genuine users on an off day (false rejects). Recognition, then, is fundamentally a nearest-neighbour comparison in an embedding space, with a tunable acceptance radius.</p>
+<p><b>Liveness detection</b> is the defence, and it comes in escalating strengths. <b>Challenge-response</b> asks the user to do something a photo cannot — blink, turn the head, smile — and verifies it happened. <b>Passive</b> methods analyse the image itself for the tell-tales of a spoof: a printed photo lacks skin <b>texture</b> and micro-motion, has flat <b>depth</b> (an IR or depth camera sees a face as 3-D and a photo as flat), and shows print/screen artefacts. Stronger systems combine several cues. The key design principle is <b>ordering</b>: liveness must gate recognition — verify a live person <i>first</i>, and only then trust the identity — because recognising a photo perfectly is worthless if the system then acts on it.</p>
+<p>What makes this project honest — and what any responsible deployment must foreground — is that face recognition is a <b>sensitive</b> technology with obligations the card-tap version never had. A face embedding is <b>biometric personal data</b>: it must be collected with <b>consent</b>, stored <b>securely</b> (encrypted, access-controlled — a leaked biometric cannot be reissued like a password), and governed carefully, often under specific legal regimes. Recognition also carries real <b>fairness and accuracy risks</b>: models can perform unevenly across demographic groups if trained on unrepresentative data, so accuracy must be <b>validated across the actual population</b>, not assumed. And liveness is an <b>arms race</b> — basic checks defeat casual photo spoofs, but sophisticated attacks (high-quality masks, replayed video) need stronger, evolving defences, so no liveness check should be treated as final. Built with those responsibilities in front — liveness gating recognition, embeddings matched within a validated threshold, biometric data protected, and bias actively checked — it delivers exactly what face attendance promises: convenient, automatic, spoof-resistant presence recording that knows who is there and refuses to be fooled by a picture.</p>
+
+<h3>The maths behind it</h3><h4>Recognition by embedding distance</h4><div class="codeblock tall" data-file="Recognition by embedding distance">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Recognition by embedding distance</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Recognition by embedding distance to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Recognition by embedding distance" type="button" aria-label="Download Recognition by embedding distance">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>embed(face) → vector v
+
+  match = argmin_i  distance(v, enrolled_i)
+  accept if distance(v, enrolled_match) ≤ THRESHOLD
+
+Same person → close; different → far. Threshold sets the
+false-accept vs false-reject trade-off.</code></pre>
+  
+</div>
+<h4>Liveness gate (order matters)</h4><div class="codeblock tall" data-file="Liveness gate (order matters)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Liveness gate (order matters)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Liveness gate (order matters) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Liveness gate (order matters)" type="button" aria-label="Download Liveness gate (order matters)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>if NOT live(face):        reject (photo/spoof)   # FIRST
+else if recognised(face): log attendance
+else:                     unknown
+
+Recognising a photo perfectly is worthless — verify a live
+person BEFORE trusting the identity.</code></pre>
+  
+</div>
+<h4>Error trade-off</h4><div class="codeblock tall" data-file="Error trade-off">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Error trade-off</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Error trade-off to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Error trade-off" type="button" aria-label="Download Error trade-off">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>loose threshold → more false accepts (wrong person in)
+tight threshold → more false rejects (genuine user out)
+
+Choose per risk; VALIDATE FAR/FRR across the real
+population (bias can differ by group).</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 784" role="img" aria-labelledby="td878 sd878" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td878">Face Recognition Attendance — firmware flowchart</title><desc id="sd878">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d878" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d878" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d878" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d878" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d878)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Detect a face in the frame</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d878)"/><path d="M210 116 L349 158 L210 200 L71 158 z"
+          fill="url(#ga-d878)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="158" text-anchor="middle"><tspan x="210" y="158.0">Live person (not a photo)?</tspan></text><path d="M210 200 L210 224" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d878)"/><text class="dg-e" x="220" y="219">Compute embedding</text><path d="M349 158 H397 V114 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d878)"/><text class="dg-e" x="403" y="152">Reject (spoof)</text><path d="M101 230 L335 230 L319 286 L85 286 z"
+          fill="url(#gb-d878)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="258" text-anchor="middle"><tspan x="210" y="258.0">Reject (spoof)</tspan></text><path d="M210 286 L210 310" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d878)"/><rect x="85" y="316" width="250" height="56" rx="10"
+          fill="url(#gb-d878)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="344" text-anchor="middle"><tspan x="210" y="344.0">Compute embedding</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d878)"/><path d="M210 402 L349 444 L210 486 L71 444 z"
+          fill="url(#ga-d878)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="444" text-anchor="middle"><tspan x="210" y="437.5">Nearest enrolled within</tspan><tspan x="210" y="450.5">threshold?</tspan></text><path d="M210 486 L210 510" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d878)"/><text class="dg-e" x="220" y="505">Log attendance (who, when)</text><path d="M349 444 H397 V400 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d878)"/><text class="dg-e" x="403" y="438">Unknown / no match</text><path d="M101 516 L335 516 L319 572 L85 572 z"
+          fill="url(#gb-d878)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="544" text-anchor="middle"><tspan x="210" y="544.0">Log attendance (who, when)</tspan></text><path d="M210 572 L210 596" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d878)"/><path d="M101 602 L335 602 L319 658 L85 658 z"
+          fill="url(#gb-d878)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="630" text-anchor="middle"><tspan x="210" y="630.0">Unknown / no match</tspan></text><path d="M210 658 L210 682" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d878)"/><rect x="85" y="688" width="250" height="56" rx="28"
+          fill="url(#ga-d878)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="716" text-anchor="middle"><tspan x="210" y="716.0">Done</tspan></text>
+  </svg>
+  <figcaption>Face Recognition Attendance — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Set up detection, embedding and enrolment</h4><p>Detect and align faces, compute embeddings with a pretrained model, and enrol people from consented reference images into a secure store.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Face embeddings are biometric personal data. Obtain consent, store them encrypted and access-controlled (a leaked biometric cannot be reissued), and validate accuracy across your actual population for fairness.</p></div>
+  </aside></li><li><h4>Add liveness as the gate</h4><p>Verify a live person before trusting recognition — challenge (blink/turn), texture/depth, or combined cues — so a photo is rejected.</p></li><li><h4>Match, log and tune</h4><p>Match embeddings within a threshold, log attendance, and tune the threshold/liveness strictness for your risk and population.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Gate on liveness, then recognise</h4><p>Reject spoofs with liveness first, then match the face embedding to enrolled identities within a threshold and log the person.</p><div class="codeblock tall" data-file="recognise.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">recognise.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy recognise.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="recognise.py" type="button" aria-label="Download recognise.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">import</span> numpy <span class="tok-k">as</span> np
+<span class="tok-t">THRESHOLD</span> <span class="tok-o">=</span> <span class="tok-n">0.6</span>
+
+<span class="tok-k">def</span> <span class="tok-f">attend</span><span class="tok-o">(</span>frame<span class="tok-o">,</span> enrolled<span class="tok-o">,</span> embed<span class="tok-o">,</span> is_live<span class="tok-o">):</span>
+    face <span class="tok-o">=</span> <span class="tok-f">detect_and_align</span><span class="tok-o">(</span>frame<span class="tok-o">)</span>
+    <span class="tok-k">if</span> face <span class="tok-k">is</span> <span class="tok-k">None</span><span class="tok-o">:</span> <span class="tok-k">return</span> <span class="tok-k">None</span>
+    <span class="tok-k">if</span> <span class="tok-k">not</span> <span class="tok-f">is_live</span><span class="tok-o">(</span>face<span class="tok-o">,</span> frame<span class="tok-o">):</span>          <span class="tok-c"># LIVENESS gates recognition</span>
+        <span class="tok-k">return</span> <span class="tok-s">"spoof_rejected"</span>           <span class="tok-c"># a photo never gets past here</span>
+    v <span class="tok-o">=</span> <span class="tok-f">embed</span><span class="tok-o">(</span>face<span class="tok-o">)</span>                       <span class="tok-c"># embedding</span>
+    name<span class="tok-o">,</span> dist <span class="tok-o">=</span> <span class="tok-f">min</span><span class="tok-o">(((</span>n<span class="tok-o">,</span> np<span class="tok-o">.</span>linalg<span class="tok-o">.</span><span class="tok-f">norm</span><span class="tok-o">(</span>v <span class="tok-o">-</span> e<span class="tok-o">))</span>
+                      <span class="tok-k">for</span> n<span class="tok-o">,</span> e <span class="tok-k">in</span> enrolled<span class="tok-o">.</span><span class="tok-f">items</span><span class="tok-o">()),</span> key<span class="tok-o">=</span><span class="tok-k">lambda</span> x<span class="tok-o">:</span> x<span class="tok-o">[</span><span class="tok-n">1</span><span class="tok-o">])</span>
+    <span class="tok-k">return</span> name <span class="tok-k">if</span> dist <span class="tok-o">&lt;=</span> <span class="tok-t">THRESHOLD</span> <span class="tok-k">else</span> <span class="tok-s">"unknown"</span>   <span class="tok-c"># within radius = match</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">if not is_live(face, frame):          # LIVENESS gates recognition</span><span class="txt">Liveness runs first and gates everything — a held-up photo is rejected before recognition is even trusted.</span></div><div><span class="ref">v = embed(face)                       # embedding</span><span class="txt">The face becomes a numeric vector engineered so the same person's faces are close and different people far apart.</span></div><div><span class="ref">name, dist = min(((n, np.linalg.norm(v - e))</span><span class="txt">Recognition is a nearest-neighbour search over enrolled embeddings — the closest identity by distance.</span></div><div><span class="ref">return name if dist &lt;= THRESHOLD else "unknown"   # within radius = match</span><span class="txt">Only a match inside the acceptance radius is trusted; the threshold sets the false-accept vs false-reject trade-off.</span></div></div></li><li><h4>Log securely and validate fairness</h4><p>Record timestamped attendance to an encrypted store, and validate false-accept/false-reject rates across your population before trusting the system.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Validate accuracy on your actual population, not a benchmark — recognition can perform unevenly across demographics, and an unfair system is a broken system.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="face_attendance.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">face_attendance.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy face_attendance.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="face_attendance.py" type="button" aria-label="Download face_attendance.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">#!/usr/bin/env python3</span>
+<span class="tok-s">"""</span>
+<span class="tok-s">Face Recognition Attendance (with liveness)</span>
+<span class="tok-s"></span>
+<span class="tok-s">Recognises enrolled people from a camera by matching face embeddings</span>
+<span class="tok-s">within a threshold, GATED BY LIVENESS so a photo/video spoof is</span>
+<span class="tok-s">rejected. Logs timestamped attendance. Face embeddings are biometric</span>
+<span class="tok-s">personal data — consent, encryption, governance, and fairness required.</span>
+<span class="tok-s">"""</span>
+<span class="tok-k">import</span> numpy <span class="tok-k">as</span> np<span class="tok-o">,</span> time
+
+<span class="tok-t">THRESHOLD</span> <span class="tok-o">=</span> <span class="tok-n">0.6</span>                        <span class="tok-c"># match radius (model-specific)</span>
+
+<span class="tok-k">class</span> <span class="tok-t">FaceAttendance</span><span class="tok-o">:</span>
+    <span class="tok-k">def</span> <span class="tok-f">__init__</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> embed<span class="tok-o">,</span> is_live<span class="tok-o">,</span> store<span class="tok-o">):</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>embed <span class="tok-o">=</span> embed             <span class="tok-c"># face -&gt; vector</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>is_live <span class="tok-o">=</span> is_live         <span class="tok-c"># liveness check</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>store <span class="tok-o">=</span> store             <span class="tok-c"># encrypted enrolments + logs</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">enrol</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> name<span class="tok-o">,</span> images<span class="tok-o">):</span>     <span class="tok-c"># consented reference images</span>
+        vecs <span class="tok-o">=</span> <span class="tok-o">[</span><span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">embed</span><span class="tok-o">(</span><span class="tok-f">detect_and_align</span><span class="tok-o">(</span>im<span class="tok-o">))</span> <span class="tok-k">for</span> im <span class="tok-k">in</span> images<span class="tok-o">]</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>store<span class="tok-o">.</span><span class="tok-f">save_embedding</span><span class="tok-o">(</span>name<span class="tok-o">,</span> np<span class="tok-o">.</span><span class="tok-f">mean</span><span class="tok-o">(</span>vecs<span class="tok-o">,</span> axis<span class="tok-o">=</span><span class="tok-n">0</span><span class="tok-o">))</span>   <span class="tok-c"># encrypted</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">attend</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> frame<span class="tok-o">):</span>
+        face <span class="tok-o">=</span> <span class="tok-f">detect_and_align</span><span class="tok-o">(</span>frame<span class="tok-o">)</span>
+        <span class="tok-k">if</span> face <span class="tok-k">is</span> <span class="tok-k">None</span><span class="tok-o">:</span>
+            <span class="tok-k">return</span> <span class="tok-k">None</span>
+
+        <span class="tok-k">if</span> <span class="tok-k">not</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">is_live</span><span class="tok-o">(</span>face<span class="tok-o">,</span> frame<span class="tok-o">):</span>        <span class="tok-c"># LIVENESS FIRST</span>
+            <span class="tok-k">return</span> <span class="tok-s">"spoof_rejected"</span>              <span class="tok-c"># photo/video never passes</span>
+
+        v <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">embed</span><span class="tok-o">(</span>face<span class="tok-o">)</span>
+        name<span class="tok-o">,</span> dist <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>store<span class="tok-o">.</span><span class="tok-f">nearest</span><span class="tok-o">(</span>v<span class="tok-o">)</span>       <span class="tok-c"># nearest enrolled identity</span>
+        <span class="tok-k">if</span> dist <span class="tok-o">&lt;=</span> <span class="tok-t">THRESHOLD</span><span class="tok-o">:</span>                     <span class="tok-c"># within acceptance radius</span>
+            <span class="tok-k">self</span><span class="tok-o">.</span>store<span class="tok-o">.</span><span class="tok-f">log</span><span class="tok-o">(</span>name<span class="tok-o">,</span> time<span class="tok-o">.</span><span class="tok-f">time</span><span class="tok-o">())</span>     <span class="tok-c"># timestamped attendance</span>
+            <span class="tok-k">return</span> name
+        <span class="tok-k">return</span> <span class="tok-s">"unknown"</span>                          <span class="tok-c"># no confident match</span>
+
+<span class="tok-k">if</span> __name__ <span class="tok-o">==</span> <span class="tok-s">"__main__"</span><span class="tok-o">:</span>
+    fa <span class="tok-o">=</span> <span class="tok-f">FaceAttendance</span><span class="tok-o">(</span>embed_model<span class="tok-o">,</span> liveness_check<span class="tok-o">,</span> <span class="tok-f">SecureStore</span><span class="tok-o">())</span>
+    <span class="tok-k">for</span> frame <span class="tok-k">in</span> <span class="tok-f">camera</span><span class="tok-o">():</span>                        <span class="tok-c"># live</span>
+        result <span class="tok-o">=</span> fa<span class="tok-o">.</span><span class="tok-f">attend</span><span class="tok-o">(</span>frame<span class="tok-o">)</span>
+        <span class="tok-c"># result: a name (logged), "spoof_rejected", "unknown", or None</span>
+    <span class="tok-c"># Validate FAR/FRR across demographics before trusting in production.</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (44 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">def enrol(self, name, images):     # consented reference images</span><span class="txt">Enrolment stores a per-person embedding from consented images — the reference the system matches against.</span></div><div><span class="ref">if not self.is_live(face, frame):        # LIVENESS FIRST</span><span class="txt">Liveness is checked before recognition is trusted, so a photo or replayed video is rejected up front — the property that makes face attendance trustworthy.</span></div><div><span class="ref">name, dist = self.store.nearest(v)       # nearest enrolled identity</span><span class="txt">Recognition finds the closest enrolled embedding; the store holds these biometric vectors encrypted.</span></div><div><span class="ref">if dist &lt;= THRESHOLD:                     # within acceptance radius</span><span class="txt">Only a match within the threshold is accepted — the dial between false accepts and false rejects.</span></div><div><span class="ref"># Validate FAR/FRR across demographics before trusting in production.</span><span class="txt">Fairness is not optional: recognition accuracy must be validated across the real population, since it can vary by group.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Configure the embedding model, match threshold and liveness method/strictness.</li><li>Configure enrolment (consented images) and the encrypted store.</li><li>Configure attendance logging and retention.</li><li>Configure fairness validation across your population.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Match threshold</h4><p>Tune to balance false accepts (wrong person) vs false rejects (genuine user), per your risk.</p></li><li><h4>Liveness</h4><p>Verify photos/replays are rejected; balance strictness against user friction.</p></li><li><h4>Fairness</h4><p>Measure FAR/FRR across demographic groups; address large gaps before deployment.</p></li></ol></section>
+
+<section id="model" aria-labelledby="h-model"><h2 id="h-model">Dataset, Model &amp; Training</h2><h3>Dataset</h3><p>Recognition uses a face-embedding model (often pretrained on large face datasets); enrolment provides reference images per person.</p>
+<p>Liveness models/heuristics use real-vs-spoof samples (prints, screens, masks). Representative data across demographics is essential for fair accuracy.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Dataset</th><th scope="col">Size</th><th scope="col">Licence</th><th scope="col">Use here</th></tr></thead>
+    <tbody><tr><td><b>Face-embedding pretraining</b></td><td>Large (many identities)</td><td>Varies (check terms)</td><td>Base recognition embeddings</td></tr><tr><td><b>Enrolment images</b></td><td>Few per person</td><td>With consent</td><td>Enrol identities</td></tr><tr><td><b>Liveness / anti-spoof set</b></td><td>Real vs spoof</td><td>Varies</td><td>Train/validate liveness</td></tr><tr><td><b>Demographic validation set</b></td><td>Representative</td><td>With consent</td><td>Check bias/accuracy fairness</td></tr></tbody>
+  </table></div>
+<h3>Data preprocessing</h3><ul class="plain"><li>Detect and align the face (crop, normalise pose/scale) before embedding.</li><li>Quality-gate frames (blur, lighting, occlusion) — bad inputs cause errors.</li><li>For liveness, gather challenge responses or texture/depth cues.</li></ul>
+
+<div class="diagram-scroll"><figure class="diagram diagram-pipeline">
+  <svg viewBox="0 0 772 250" role="img" aria-labelledby="td879 sd879" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td879">Face Recognition Attendance — ML pipeline</title><desc id="sd879">From raw data through training to deployed inference.</desc>
+    <defs>
+    <marker id="ar-d879" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d879" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d879" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d879" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="20" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d879)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="38" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="58" text-anchor="middle">1</text><text class="dg-b" x="95" y="82" text-anchor="middle"><tspan x="95" y="82.0">Frame</tspan></text><text class="dg-s" x="95" y="104" text-anchor="middle"><tspan x="95" y="104.0">camera</tspan></text><path d="M174 77 H206" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d879)"/><rect x="214" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d879)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="232" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="232" y="58" text-anchor="middle">2</text><text class="dg-b" x="289" y="82" text-anchor="middle"><tspan x="289" y="82.0">Detect+align</tspan></text><text class="dg-s" x="289" y="104" text-anchor="middle"><tspan x="289" y="104.0">face</tspan></text><path d="M368 77 H400" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d879)"/><rect x="408" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d879)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="426" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="426" y="58" text-anchor="middle">3</text><text class="dg-b" x="483" y="82" text-anchor="middle"><tspan x="483" y="82.0">Liveness</tspan></text><text class="dg-s" x="483" y="104" text-anchor="middle"><tspan x="483" y="104.0">real vs photo</tspan></text><path d="M562 77 H594" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d879)"/><rect x="602" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d879)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="620" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="620" y="58" text-anchor="middle">4</text><text class="dg-b" x="677" y="82" text-anchor="middle"><tspan x="677" y="82.0">Embed</tspan></text><text class="dg-s" x="677" y="104" text-anchor="middle"><tspan x="677" y="104.0">vector</tspan></text><path d="M677 122 V136 H95 V148"
+            stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d879)"/><rect x="20" y="152" width="150" height="82" rx="12"
+        fill="url(#gb-d879)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="38" cy="170" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="174" text-anchor="middle">5</text><text class="dg-b" x="95" y="198" text-anchor="middle"><tspan x="95" y="198.0">Match</tspan></text><text class="dg-s" x="95" y="220" text-anchor="middle"><tspan x="95" y="220.0">threshold</tspan></text><path d="M174 193 H206" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d879)"/><rect x="214" y="152" width="150" height="82" rx="12"
+        fill="url(#gb-d879)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="232" cy="170" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="232" y="174" text-anchor="middle">6</text><text class="dg-b" x="289" y="198" text-anchor="middle"><tspan x="289" y="198.0">Log</tspan></text><text class="dg-s" x="289" y="220" text-anchor="middle"><tspan x="289" y="220.0">attendance</tspan></text>
+  </svg>
+  <figcaption>Face Recognition Attendance — ML pipeline</figcaption>
+</figure></div>
+
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Layer / stage</th><th scope="col">Shape or configuration</th><th scope="col">Purpose</th></tr></thead>
+    <tbody><tr><td><b>Detector</b></td><td><code>face detection + alignment</code></td><td>Find/normalise the face</td></tr><tr><td><b>Liveness</b></td><td><code>challenge / texture / depth</code></td><td>Reject photo/video spoofs</td></tr><tr><td><b>Embedding net</b></td><td><code>face → vector</code></td><td>Compact identity representation</td></tr><tr><td><b>Matcher</b></td><td><code>nearest neighbour + threshold</code></td><td>Identify enrolled person</td></tr><tr><td><b>Store</b></td><td><code>encrypted embeddings + logs</code></td><td>Protect biometric data</td></tr></tbody>
+  </table></div>
+
+<h3>Hyperparameters</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Hyperparameter</th><th scope="col">Value</th><th scope="col">Why</th></tr></thead>
+    <tbody><tr><td><b>Match threshold</b></td><td><code>model-specific</code></td><td>False accept vs false reject</td></tr><tr><td><b>Liveness strictness</b></td><td><code>app-specific</code></td><td>Spoof resistance vs friction</td></tr><tr><td><b>Embedding dim</b></td><td><code>≈ 128–512</code></td><td>Model-defined identity vector</td></tr><tr><td><b>Enrol images/person</b></td><td><code>≈ 1–5</code></td><td>Robustness to pose/lighting</td></tr></tbody>
+  </table></div>
+<h3>Training process</h3><ul class="plain"><li>Use a pretrained embedding model; enrol by computing per-person embeddings (no full retraining needed).</li><li>Train/tune liveness on real-vs-spoof samples; combine cues for strength.</li><li>Validate false-accept/false-reject rates across demographics — do not assume uniform accuracy.</li></ul></section>
+
+<section id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation">Evaluation, Metrics &amp; Deployment</h2><p>The key metrics are recognition error rates (false accept / false reject), liveness spoof-rejection, and — critically — fairness of accuracy across demographic groups.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">What it tells you</th></tr></thead>
+    <tbody><tr><td><b>False accept rate (FAR)</b></td><td><code>low (target)</code></td><td>Wrong person accepted</td></tr><tr><td><b>False reject rate (FRR)</b></td><td><code>low (target)</code></td><td>Genuine user rejected</td></tr><tr><td><b>Spoof rejection</b></td><td><code>high (target)</code></td><td>Photos/videos blocked</td></tr><tr><td><b>Fairness (by group)</b></td><td><code>validated</code></td><td>No large accuracy gaps</td></tr></tbody>
+  </table></div><p class="tbl-caption">Figures from the reference training run described above — reproduce them before trusting your own changes.</p>
+<figure class="diagram diagram-chart">
+  <svg viewBox="0 0 620 192" role="img" aria-labelledby="td880 sd880" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td880">Liveness strength vs spoof type</title><desc id="sd880">Basic liveness stops photos; sophisticated spoofs need stronger, combined defences — an arms race (illustrative).</desc>
+    <defs>
+    <marker id="ar-d880" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d880" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d880" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d880" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <line x1="190" y1="26" x2="190" y2="178" stroke="var(--dg-stroke)" stroke-width="1"/><text class="dg-b" x="178" y="45" text-anchor="end">Printed photo</text><rect x="191" y="33" width="316.5217391304348" height="20" rx="5" fill="url(#ga-d880)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="516.5217391304348" y="47">95</text><text class="dg-b" x="178" y="83" text-anchor="end">Screen replay</text><rect x="191" y="71" width="273.20823798627003" height="20" rx="5" fill="url(#ga-d880)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="473.20823798627003" y="85">82</text><text class="dg-b" x="178" y="121" text-anchor="end">Cut-out/mask</text><rect x="191" y="109" width="199.90846681922199" height="20" rx="5" fill="url(#ga-d880)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="399.908466819222" y="123">60</text><text class="dg-b" x="178" y="159" text-anchor="end">High-end spoof</text><rect x="191" y="147" width="133.27231121281466" height="20" rx="5" fill="url(#ga-d880)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="333.27231121281466" y="161">40</text>
+  </svg>
+  <figcaption>Liveness strength vs spoof type</figcaption>
+</figure>
+
+
+<h3>Inference example</h3><div class="codeblock tall" data-file="attendance.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">attendance.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy attendance.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="attendance.py" type="button" aria-label="Download attendance.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">import</span> numpy <span class="tok-k">as</span> np
+
+<span class="tok-t">THRESHOLD</span> <span class="tok-o">=</span> <span class="tok-n">0.6</span>                       <span class="tok-c"># match radius (model-specific)</span>
+
+<span class="tok-k">def</span> <span class="tok-f">recognise_and_log</span><span class="tok-o">(</span>frame<span class="tok-o">,</span> enrolled<span class="tok-o">,</span> embed<span class="tok-o">,</span> is_live<span class="tok-o">,</span> log<span class="tok-o">):</span>
+    face <span class="tok-o">=</span> <span class="tok-f">detect_and_align</span><span class="tok-o">(</span>frame<span class="tok-o">)</span>
+    <span class="tok-k">if</span> face <span class="tok-k">is</span> <span class="tok-k">None</span><span class="tok-o">:</span>
+        <span class="tok-k">return</span> <span class="tok-k">None</span>
+
+    <span class="tok-k">if</span> <span class="tok-k">not</span> <span class="tok-f">is_live</span><span class="tok-o">(</span>face<span class="tok-o">,</span> frame<span class="tok-o">):</span>      <span class="tok-c"># LIVENESS FIRST — reject photo/video</span>
+        <span class="tok-k">return</span> <span class="tok-s">"spoof_rejected"</span>
+
+    v <span class="tok-o">=</span> <span class="tok-f">embed</span><span class="tok-o">(</span>face<span class="tok-o">)</span>                   <span class="tok-c"># face -&gt; embedding vector</span>
+    <span class="tok-c"># nearest enrolled identity by distance</span>
+    name<span class="tok-o">,</span> dist <span class="tok-o">=</span> <span class="tok-f">min</span><span class="tok-o">(((</span>n<span class="tok-o">,</span> np<span class="tok-o">.</span>linalg<span class="tok-o">.</span><span class="tok-f">norm</span><span class="tok-o">(</span>v <span class="tok-o">-</span> e<span class="tok-o">))</span> <span class="tok-k">for</span> n<span class="tok-o">,</span> e <span class="tok-k">in</span> enrolled<span class="tok-o">.</span><span class="tok-f">items</span><span class="tok-o">()),</span>
+                     key<span class="tok-o">=</span><span class="tok-k">lambda</span> x<span class="tok-o">:</span> x<span class="tok-o">[</span><span class="tok-n">1</span><span class="tok-o">])</span>
+    <span class="tok-k">if</span> dist <span class="tok-o">&lt;=</span> <span class="tok-t">THRESHOLD</span><span class="tok-o">:</span>             <span class="tok-c"># within acceptance radius</span>
+        log<span class="tok-o">.</span><span class="tok-f">record</span><span class="tok-o">(</span>name<span class="tok-o">,</span> <span class="tok-f">now</span><span class="tok-o">())</span>       <span class="tok-c"># timestamped attendance</span>
+        <span class="tok-k">return</span> name
+    <span class="tok-k">return</span> <span class="tok-s">"unknown"</span>                  <span class="tok-c"># no confident match</span>
+    <span class="tok-c"># NOTE: embeddings + logs are biometric personal data — store encrypted.</span></code></pre>
+  
+</div>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Known limitations</span><p>Liveness is an arms race — basic checks stop photos, sophisticated spoofs need more.</p>
+<p>Recognition accuracy can vary by demographic — validate FAR/FRR across the real population.</p>
+<p>Face data is biometric personal data — consent, encryption and governance are mandatory.</p>
+<p>Lighting, pose, occlusion and ageing degrade accuracy; enrol well and re-validate.</p></div>
+  </aside></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Enrolled person looks at camera</b></td><td>Recognised and logged</td></tr><tr><td><b>Hold up a printed photo</b></td><td>Rejected by liveness</td></tr><tr><td><b>Replay a video of a face</b></td><td>Rejected (stronger liveness) — note arms race</td></tr><tr><td><b>Unenrolled person</b></td><td>"unknown" — not logged</td></tr><tr><td><b>Vary lighting/pose</b></td><td>Still recognised if enrolled well</td></tr><tr><td><b>Check group accuracy</b></td><td>No large FAR/FRR gaps across groups</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>Automatic attendance for recognised live people, with spoof rejection and secure logging.</p>
+<div class="codeblock tall" data-file="attendance-log.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">attendance-log.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy attendance-log.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="attendance-log.json" type="button" aria-label="Download attendance-log.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "name": "A. Verma",
+  "time": "2026-07-28T09:<span class="tok-n">03</span>:<span class="tok-n">41</span>",
+  "liveness": "passed",
+  "match_distance": <span class="tok-n">0.42</span>,
+  "result": "present"
+}</code></pre>
+  
+</div>
+
+<p>A. Verma was recognised as a live person (liveness passed, comfortable match distance) and logged present — a held-up photo would have been rejected before recognition was trusted.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/CCTV%20camera.jpg?width=900" alt="A wall-mounted CCTV surveillance camera" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td881" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td881">Face data is biometric personal data — consent, encryption, governance and fairness are non-negotiable.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="88" y="78" width="224" height="120" rx="12" fill="#22262c" stroke="#3a4150" stroke-width="2"/>
+    <circle cx="200" cy="138" r="42" fill="#0f1418" stroke="#4a525e" stroke-width="4"/>
+    <circle cx="200" cy="138" r="26" fill="#132030"/>
+    <circle cx="188" cy="126" r="7" fill="#5fd0e0" opacity=".7"/>
+    <rect x="104" y="90" width="26" height="12" rx="3" fill="#3a4150"/>
+    <circle cx="292" cy="96" r="5" fill="#e05050"/>
+  </svg>
+  <figcaption>Face data is biometric personal data — consent, encryption, governance and fairness are non-negotiable.</figcaption>
+</figure></template>
+  <figcaption>Face data is biometric personal data — consent, encryption, governance and fairness are non-negotiable.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:CCTV_camera.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — CCTV camera.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Accepts a photo</summary><div class="inner">
+        <p><strong>Likely cause.</strong> No/weak liveness</p>
+        <p><strong>Fix.</strong> Gate recognition on liveness; strengthen/combine cues</p></div></details><details class="expand"><summary>Confuses similar people</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Threshold too loose</p>
+        <p><strong>Fix.</strong> Tighten the match threshold; enrol better images</p></div></details><details class="expand"><summary>Rejects genuine users</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Threshold too tight / poor enrolment</p>
+        <p><strong>Fix.</strong> Loosen threshold; enrol multiple poses/lighting</p></div></details><details class="expand"><summary>Uneven accuracy by group</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Unrepresentative data</p>
+        <p><strong>Fix.</strong> Validate/retrain across demographics; address gaps</p></div></details><details class="expand"><summary>Fails in poor lighting</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Input quality</p>
+        <p><strong>Fix.</strong> Improve lighting; quality-gate frames; consider IR</p></div></details><details class="expand"><summary>Privacy concern</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Unsecured biometric data</p>
+        <p><strong>Fix.</strong> Consent, encrypt, access-control, govern retention</p></div></details><details class="expand"><summary>The Python script crashes with "externally-managed-environment" on pip install</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Raspberry Pi OS Bookworm marks the system Python as managed by apt, and refuses global pip installs.</p>
+        <p><strong>Fix.</strong> Create and activate a virtual environment — <code>python3 -m venv ~/venv &amp;&amp; source ~/venv/bin/activate</code> — and install there. Use <code>--system-site-packages</code> if you also need apt-installed modules such as <code>picamera2</code>.</p></div></details><details class="expand"><summary>The Pi reboots or shows a lightning-bolt icon under load</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Under-voltage. The supply sags below 4.63 V when the CPU and peripherals ramp up.</p>
+        <p><strong>Fix.</strong> Use the official supply for your model (5 V 3 A for Pi 4, 5 V 5 A for Pi 5) and a short, thick USB-C cable. Check with <code>vcgencmd get_throttled</code> — anything other than <code>0x0</code> means power problems.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Gate recognition on liveness — verify a live person first.</li><li>Tune the match threshold for your false-accept/false-reject risk.</li><li>Combine liveness cues against stronger spoofs.</li><li>Validate accuracy fairness across the real population.</li><li>Pin the hot loop to one core with <code>taskset</code> and leave the others free for the OS.</li><li>Prefer MJPEG over raw YUY2 when capturing from USB cameras — the decode cost is far lower than the USB bandwidth cost.</li><li>Log to a tmpfs RAM disk and flush to the SD card once a minute; per-sample SD writes are what kills cards.</li><li>Run the service under <code>systemd</code> with <code>Restart=always</code> so a crash never means a dead deployment.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>Face embeddings are biometric personal data — consent, encryption, access control and governed retention are mandatory (a leaked biometric cannot be reissued).</li><li>Validate accuracy across demographics; an unfair recogniser is unacceptable.</li><li>Liveness is an arms race — do not treat any check as final; layer defences.</li><li>Provide a fallback and human recourse for false rejects.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-validate FAR/FRR and fairness periodically and after model changes.</li><li>Update enrolments as appearances change; manage joiners/leavers.</li><li>Strengthen liveness as new spoofs emerge.</li><li>Audit access to biometric data and logs.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add depth/IR cameras for stronger passive liveness.</li><li>Add multi-frame/temporal liveness against video replay.</li><li>Add on-device recognition so faces never leave the unit.</li><li>Add a second factor for high-security contexts.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why is liveness essential?</summary><div class="inner"><p>Because a camera cannot, by itself, tell a real face from a photo of it. Without liveness, holding up a printout or a phone marks the pictured person present. Liveness gates recognition so a spoof is rejected first.</p></div></details><details class="expand"><summary>How does recognition actually work?</summary><div class="inner"><p>A network turns a face into an embedding — a vector where the same person's faces are close and different people far apart. A new face is embedded and matched to the nearest enrolled identity; if it is within a threshold, it is accepted.</p></div></details><details class="expand"><summary>What does the threshold do?</summary><div class="inner"><p>It sets the acceptance radius. Loose accepts more (risking false accepts of similar-looking people); tight rejects more (risking false rejects of genuine users). It is tuned to the deployment's risk and validated across the population.</p></div></details><details class="expand"><summary>Is face data safe to use?</summary><div class="inner"><p>Only with real safeguards. A face embedding is biometric personal data requiring consent, encrypted and access-controlled storage, and governed retention — a leaked biometric cannot be changed like a password.</p></div></details><details class="expand"><summary>Can it be biased?</summary><div class="inner"><p>Yes — recognition can perform unevenly across demographic groups if trained on unrepresentative data. Accuracy must be validated across the actual population and large gaps addressed before deployment.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Facial_recognition_system" rel="noopener nofollow" target="_blank">Facial recognition system</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Triplet_loss" rel="noopener nofollow" target="_blank">Face embeddings (metric learning)</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Liveness_detection" rel="noopener nofollow" target="_blank">Liveness / presentation-attack detection</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Biometrics#Privacy_and_discrimination" rel="noopener nofollow" target="_blank">Biometric data protection</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Facial_recognition_system#Bias" rel="noopener nofollow" target="_blank">Bias in face recognition</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="real-time-object-detection.html"><span class="dir">← Previous project</span><span class="ttl">Real-Time Object Detection</span></a>
+        <a class="next" href="sign-language-translator.html"><span class="dir">Next project →</span><span class="ttl">Sign Language Translator</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Advanced</b></div>
+        <div class="rail-stat"><span>Time</span><b>14–22 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>6</b></div>
+        <div class="rail-stat"><span>Cost</span><b>Software + camera; compute-dependent</b></div>
+        <div class="rail-stat"><span>Sections</span><b>27</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="real-time-object-detection.html">Real-Time Object Detection</a></li><li><a href="sign-language-translator.html">Sign Language Translator</a></li><li><a href="sleep-apnea-tracker.html">Sleep Apnea Tracker</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="real-time-object-detection.html">
+        <span class="rc">Computer Vision</span>
+        <h4>Real-Time Object Detection</h4>
+        <p>A YOLO-based detector that finds and labels multiple objects in a live video stream.</p></a><a class="relcard" href="sign-language-translator.html">
+        <span class="rc">Computer Vision</span>
+        <h4>Sign Language Translator</h4>
+        <p>Translates hand-sign gestures into text in real time using pose and vision models.</p></a><a class="relcard" href="sleep-apnea-tracker.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Sleep Apnea Tracker</h4>
+        <p>Monitors breathing and snoring patterns to flag possible apnea events.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Face Recognition Attendance</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
