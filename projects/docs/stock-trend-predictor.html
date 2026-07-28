@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Stock Trend Predictor — Circuit, Code &amp; Full Build Guide | Predictive ML</title>
+  <meta name="description" content="Complete advanced-level build guide for a Stock Trend Predictor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="stock trend predictor, stock trend predictor project, how to build stock trend predictor, cpu/gpu workstation or server project, predictive ml project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/stock-trend-predictor.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/stock-trend-predictor.html" />
+  <meta property="og:title" content="Stock Trend Predictor — Circuit, Code &amp; Full Build Guide | Predictive ML" />
+  <meta property="og:description" content="Complete advanced-level build guide for a Stock Trend Predictor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Predictive ML" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Stock Trend Predictor — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete advanced-level build guide for a Stock Trend Predictor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>📈</text></svg>" />
+  <style>:root{--acc:#818cf8;--acc-light:#a5b4fc;--acc-rgb:129,140,248}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/stock-trend-predictor.html#article","headline":"Stock Trend Predictor — Complete Build Guide","name":"Stock Trend Predictor","description":"Complete advanced-level build guide for a Stock Trend Predictor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/stock-trend-predictor.html","inLanguage":"en","articleSection":"Predictive ML","keywords":"stock trend predictor, stock trend predictor project, how to build stock trend predictor, cpu/gpu workstation or server project, predictive ml project, circuit diagram, source code, tutorial","proficiencyLevel":"Advanced","dependencies":"Python, pandas, scikit-learn, PyTorch, NumPy","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-28","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/stock-trend-predictor.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/stock-trend-predictor.html#howto","name":"How to build a Stock Trend Predictor","description":"Complete advanced-level build guide for a Stock Trend Predictor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT16H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"0"},"supply":[],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Backtest honestly against baselines","text":"Evaluate the strategy time-ordered with costs and no look-ahead, comparing to buy-and-hold and reporting an honest verdict."},{"@type":"HowToStep","position":2,"name":"Report honestly — not advice","text":"Present out-of-sample, cost-inclusive results versus baselines, and treat a tiny/no edge as the truthful outcome — never as investment advice."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Stock Trend Predictor","item":"https://siddhantkumar.in/projects/docs/stock-trend-predictor.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/stock-trend-predictor.html#faq","mainEntity":[{"@type":"Question","name":"Can this actually predict the stock market?","acceptedAnswer":{"@type":"Answer","text":"Not reliably — and that honesty is the point. Markets are highly efficient and near-random in the short term, so most price movement is noise. Reliably beating the market is extraordinarily hard, and impressive results almost always come from methodological errors, not genuine predictive power."}},{"@type":"Question","name":"Then what is the value of the project?","acceptedAnswer":{"@type":"Answer","text":"Learning rigorous time-series forecasting and financial-ML discipline — feature engineering, sequence models, and above all proper backtesting without look-ahead bias, with costs, against honest baselines. These skills transfer to any forecasting problem."}},{"@type":"Question","name":"What is look-ahead bias?","acceptedAnswer":{"@type":"Answer","text":"Accidentally using information that would not have been available at prediction time — a future price, a feature computed with future data, survivorship-biased data. It is subtle and everywhere, and it makes a useless model look prophetic. It is the number-one cause of fake \"market-beating\" results."}},{"@type":"Question","name":"Why do great backtests fail live?","acceptedAnswer":{"@type":"Answer","text":"Overfitting (fitting historical noise that means nothing out of sample), ignored transaction costs, subtle look-ahead bias, and regime change (the market's behaviour shifts). A backtest is easy to fool yourself with; live trading is not."}},{"@type":"Question","name":"Is this financial advice?","acceptedAnswer":{"@type":"Answer","text":"No. It is emphatically not financial advice and must never be used to risk real money on the belief it beats the market. The realistic outcome of a rigorous project is a tiny, fragile edge or none — which is itself the valuable, true lesson."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#predictive-ml">Predictive ML</a><span class="sep">/</span>
+        <span aria-current="page">Stock Trend Predictor</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project A19 · Predictive ML</span>
+          <h1>Stock Trend Predictor<span class="grad">.</span></h1>
+          <p class="tagline">Time-series models on market data — a rigorous lesson in forecasting, and an honest one about why beating the market is nearly impossible.</p>
+          <div class="hero-chips">
+            <span class="chip lv-advanced">Advanced</span>
+            <span class="chip">12–18 hours</span>
+            <span class="chip neutral">25 min read</span>
+            <span class="chip neutral">Time-series</span><span class="chip neutral">Finance</span><span class="chip neutral">ML</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1042" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1042">Stock Trend Predictor — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Stock Trend Predictor — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Advanced</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>12–18 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>Software; compute-light to moderate</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>CPU/GPU workstation or server</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Predictive ML</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>28 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Time-series models on market data — a rigorous lesson in forecasting, and an honest one about why beating the market is nearly impossible.</p>
+<p>Predicting stock movements with machine learning is one of the most popular — and most misunderstood — AI projects, and this one is built to teach it <b>honestly</b>. It applies <b>time-series models</b> to market data to forecast direction or volatility, and in doing so teaches the real, valuable craft of <b>time-series forecasting</b> — while being uncompromisingly clear about the central truth beginners are rarely told: <b>reliably beating the market is extraordinarily hard, bordering on impossible</b>, and any project that claims easy profits is misleading you.</p>
+<p>The genuine learning is in the <b>time-series machine learning</b>: framing prices/returns as sequences, engineering features (moving averages, momentum, volatility, technical indicators), and training models (from classical ARIMA to LSTMs and other sequence models) to forecast a future value or the <i>direction</i> of the next move. Crucially, it teaches the discipline that separates rigorous forecasting from self-deception: <b>proper backtesting</b>, avoiding <b>look-ahead bias</b> (never using future information to predict the past), realistic <b>train/test splits that respect time</b>, and honest evaluation including <b>transaction costs</b>.</p>
+<p>The value is a serious grounding in time-series forecasting and financial-ML rigor. And the honesty is the whole point and non-negotiable: markets are <b>extremely efficient and near-random in the short term</b>, so most price movement is noise; models that look brilliant in backtests routinely fail live because of <b>overfitting</b>, subtle look-ahead bias, ignored costs, and <b>regime change</b> (the market's behaviour shifts); and this is emphatically <b>not financial advice</b> and must never be used to risk real money on the belief it will beat the market. A responsible version measures itself against honest baselines (a naïve "tomorrow ≈ today" predictor, or buy-and-hold) and treats a small, hard-won edge — or none — as the realistic outcome. Framed this way, it is an excellent, rigorous lesson in time-series ML and financial reality — the opposite of a get-rich scheme.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Artificial%20neural%20network.svg?width=900" alt="A schematic of a feed-forward artificial neural network" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1033" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1033">A stock trend predictor teaches rigorous time-series forecasting — and the honest truth that beating the market is nearly impossible.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <line x1="79" y1="91" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="117" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="143" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="169" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="65" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="91" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="117" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="143" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="169" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="195" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="65" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="91" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="117" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="143" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="169" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="195" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="104" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="130" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="156" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/>
+    <text x="70" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">input</text>
+    <text x="205" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">hidden</text>
+    <text x="340" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">output</text>
+  </svg>
+  <figcaption>A stock trend predictor teaches rigorous time-series forecasting — and the honest truth that beating the market is nearly impossible.</figcaption>
+</figure></template>
+  <figcaption>A stock trend predictor teaches rigorous time-series forecasting — and the honest truth that beating the market is nearly impossible.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Artificial_neural_network.svg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Artificial neural network.svg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Forecasts market direction/volatility with time-series models</li><li>Frames prices/returns as sequences with features</li><li>Trains classical (ARIMA) or sequence (LSTM) models</li><li>Backtests properly (time-respecting, costs included)</li><li>Avoids look-ahead bias and overfitting traps</li><li>Compares against honest baselines</li><li>Teaches time-series ML and financial reality honestly</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Time-series ML learning</b></td><td>Forecasting methods and rigorous evaluation.</td></tr><tr><td><b>Financial-ML rigor</b></td><td>Backtesting, look-ahead bias, costs, baselines.</td></tr><tr><td><b>General forecasting</b></td><td>Techniques transfer to demand/energy/etc.</td></tr><tr><td><b>Research / education</b></td><td>An honest look at market predictability.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Time-series forecasting (classical + deep)</li><li>Feature engineering (MA, momentum, volatility)</li><li>Rigorous backtesting (no look-ahead, with costs)</li><li>Time-aware train/test splits</li><li>Baseline comparisons (naïve/buy-and-hold)</li><li>Overfitting/regime-change awareness</li><li>Honest: not financial advice; beating the market is very hard</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Advanced</td></tr><tr><td><b>Estimated completion time</b></td><td>12–18 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>Software; compute-light to moderate</td></tr><tr><td><b>Primary discipline</b></td><td>Predictive ML</td></tr><tr><td><b>Reference platform</b></td><td>CPU/GPU workstation or server</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Time-series framing and feature engineering</li><li>Classical and deep sequence models</li><li>Rigorous backtesting (no look-ahead, costs)</li><li>Time-aware evaluation and baselines</li><li>Financial-ML honesty (efficiency, overfitting, regimes)</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>The real value is time-series forecasting craft — done rigorously.</p>
+<p>Backtest properly: no look-ahead bias, time-aware splits, include costs.</p>
+<p>Markets are near-random short-term — most movement is noise.</p>
+<p>NOT financial advice; beating the market reliably is extraordinarily hard.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>Compute</b></td><td>CPU for classical/features; GPU for deep sequence models</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Time-series libraries</b></td><td>ARIMA / LSTM / feature tools + backtesting</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Market data</b><br/><span style="font-size:.82em;opacity:.78">Avoid look-ahead</span></td><td>Historical prices/returns (clean, point-in-time)</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Baselines</b><br/><span style="font-size:.82em;opacity:.78">Beat these honestly, or not</span></td><td>Naïve and buy-and-hold benchmarks</td><td class="num">1</td><td class="num">—</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹0</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2>
+<p>This is a pure-software forecasting system — no electronic hardware to specify. The "platform" is a computer: a CPU handles classical models, features and backtesting; a GPU accelerates deep sequence models (LSTMs).</p>
+<p>Memory scales with the length/breadth of market data; storage holds historical series and backtest results. This is a learning/research tool, not a trading system, and carries no financial-advice function. Everything else is the software stack, models and libraries below.</p></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Python 3.11 + time-series ML</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>Python</b> <span style="opacity:.7">3.11+</span></td><td>Runtime for the analysis, training and service code.</td><td><code>sudo apt install python3 python3-venv python3-pip</code></td></tr><tr><td><b>pandas</b> <span style="opacity:.7">2.2+</span></td><td>Tabular data loading, cleaning and time-series resampling.</td><td><code>pip install pandas</code></td></tr><tr><td><b>scikit-learn</b> <span style="opacity:.7">1.5+</span></td><td>Classical models, preprocessing pipelines and evaluation metrics.</td><td><code>pip install scikit-learn</code></td></tr><tr><td><b>PyTorch</b> <span style="opacity:.7">2.4+</span></td><td>Model definition, autograd and GPU training.</td><td><code>pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121</code></td></tr><tr><td><b>NumPy</b> <span style="opacity:.7">1.26+</span></td><td>Vectorised array maths underpinning every other library here.</td><td><code>pip install numpy</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td1034 sd1034" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1034">Stock Trend Predictor — system block diagram</title><desc id="sd1034">Functional block diagram of the Stock Trend Predictor system.</desc>
+    <defs>
+    <marker id="ar-d1034" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1034" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1034" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1034" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Data</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d1034)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Market series</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">prices</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d1034)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Features</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">MA/vol</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Model</text><rect x="266" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d1034)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="119" text-anchor="middle"><tspan x="355" y="119.0">ARIMA/LSTM</tspan></text><text class="dg-s" x="355" y="138" text-anchor="middle"><tspan x="355" y="138.0">forecast</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Validate</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d1034)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Backtest</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">time-aware</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d1034)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">No look-ahead</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">+costs</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Judge</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d1034)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">vs baselines</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">naïve/BH</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d1034)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Honest edge</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">small/none</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1034)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1034)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1034)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Stock Trend Predictor — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>The "wiring" is the forecasting data flow — historical market data becomes time-series features, a model forecasts direction/volatility, and a rigorous backtest (time-aware, cost-inclusive) evaluates it against honest baselines.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 264" role="img" aria-labelledby="td1035 sd1035" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1035">Stock Trend Predictor — wiring schematic</title><desc id="sd1035">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d1035" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1035" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1035" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1035" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="168" rx="14"
+      fill="url(#ga-d1035)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">CPU/GPU workstation</tspan><tspan x="434" y="95.0">or server</tspan></text><text class="dg-s" x="434" y="214" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d1035)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Market data</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">—</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">Historical series</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d1035)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">Features</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">—</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="167.0">MA/momentum/vol</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d1035)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Model</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">—</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Direction/volatility</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d1035)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Backtest</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">—</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">vs baselines (costs)</tspan></text>
+  </svg>
+  <figcaption>Stock Trend Predictor — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Market data</b></td><td>prices/returns</td><td><code>—</code></td><td>Historical series</td></tr><tr><td><b>Features</b></td><td>engineer</td><td><code>—</code></td><td>MA/momentum/vol</td></tr><tr><td><b>Model</b></td><td>forecast</td><td><code>—</code></td><td>Direction/volatility</td></tr><tr><td><b>Backtest</b></td><td>evaluate</td><td><code>—</code></td><td>vs baselines (costs)</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Use clean, point-in-time historical data (avoid future leakage).</li><li>Engineer time-series features (moving averages, momentum, volatility).</li><li>Train a classical or deep sequence model to forecast direction/volatility.</li><li>Backtest with time-aware splits and transaction costs; no look-ahead bias.</li><li>Compare against naïve and buy-and-hold baselines — honestly.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Datacenter%20servers.jpg?width=900" alt="Racks of servers in a data centre" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1036" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1036">The real skill is discipline: no look-ahead bias, time-aware splits, transaction costs, and honest baselines.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <path d="M120 152 a38 38 0 0 1 6-75 a52 52 0 0 1 98-14 a44 44 0 0 1 52 44 a34 34 0 0 1-8 45 z"
+      fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="150" y="172" width="100" height="44" rx="8" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="200" y="199" font-size="12" fill="var(--dg-muted)" text-anchor="middle" font-family="monospace">broker</text>
+    <line x1="200" y1="152" x2="200" y2="170" stroke="var(--dg-accent)" stroke-width="2"/>
+  </svg>
+  <figcaption>The real skill is discipline: no look-ahead bias, time-aware splits, transaction costs, and honest baselines.</figcaption>
+</figure></template>
+  <figcaption>The real skill is discipline: no look-ahead bias, time-aware splits, transaction costs, and honest baselines.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Datacenter_servers.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Datacenter servers.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td1037 sd1037" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1037">Stock Trend Predictor — architecture stack</title><desc id="sd1037">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d1037" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1037" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1037" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1037" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d1037)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">ESP32 DevKit V1 (ESP-WROOM-32) · sensors and actuators</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d1037)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d1037)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">python · pandas · sklearn · torch</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d1037)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d1037)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d1037)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d1037)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Stock Trend Predictor — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>This project is unusual in that its most important lesson is a <b>warning</b>, and teaching it honestly matters more than any accuracy number. Predicting stock prices with ML is enormously popular and enormously over-promised: countless tutorials show a model that appears to forecast prices beautifully, and countless beginners conclude they can beat the market. The reality — which a responsible project must foreground — is that <b>reliably beating the market is extraordinarily hard, bordering on impossible</b>, and the impressive-looking results are almost always artefacts of methodological errors. The value of the project is <b>real</b>, but it lies in learning rigorous <b>time-series forecasting</b> and financial-ML discipline, not in getting rich.</p>
+<p>The genuine, transferable skill is <b>time-series machine learning</b>. You frame the market as a sequence (prices, or better, <b>returns</b>), engineer features that summarise recent behaviour (moving averages, momentum, <b>volatility</b>, technical indicators), and train models to forecast a future value or, more sensibly, the <b>direction</b> of the next move or its volatility. The model space spans classical statistics (<b>ARIMA</b> and friends) to deep sequence models (<b>LSTMs</b>, temporal networks). These are powerful, broadly useful techniques — the exact same craft applies to forecasting energy demand or sales — which is why the project is worth doing even though the market itself resists prediction.</p>
+<p>What separates rigorous forecasting from self-deception is <b>methodological discipline</b>, and financial time series punish sloppiness brutally. <b>Backtesting must respect time</b>: you train on the past and test on the future, never shuffling, because the sequence is the whole point. <b>Look-ahead bias</b> — accidentally using information that would not have been available at prediction time (a future price, a feature computed with future data, survivorship-biased data) — is the classic error that makes a useless model look prophetic, and it is subtle and everywhere. Realistic evaluation must include <b>transaction costs</b> (a strategy that "works" before costs often loses after them), and must be measured against <b>honest baselines</b>: does the fancy model actually beat a naïve "tomorrow ≈ today" predictor, or beat simply <b>buying and holding</b>? Most do not.</p>
+<p>The deep reason the market resists prediction is worth internalising: markets are <b>highly efficient</b>, meaning available information is already priced in, so short-term price movement is <b>dominated by noise</b> and is close to a random walk — there is very little learnable signal, and any edge is quickly arbitraged away. On top of that, models suffer <b>overfitting</b> (with enough features and tuning you can fit historical noise perfectly, and it means nothing out of sample) and <b>regime change</b> (the market's statistical behaviour shifts — a model trained on one regime fails in the next). So a backtest that looks brilliant routinely dies live. The honest conclusion, and the correct framing, is that this is <b>not financial advice</b> and must <b>never be used to risk real money</b> on the belief that it beats the market; the realistic outcome of a rigorous project is a <b>tiny, fragile edge or, far more often, none</b> — which is itself the valuable, true lesson. Built this way — real time-series ML, ruthless backtesting discipline, honest baselines, and clear-eyed humility about efficiency, overfitting and regimes — it is an excellent education in forecasting and financial reality, and the exact opposite of the get-rich scheme it is so often mistaken for.</p>
+
+<h3>The maths behind it</h3><h4>Time-series forecasting</h4><div class="codeblock tall" data-file="Time-series forecasting">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Time-series forecasting</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Time-series forecasting to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Time-series forecasting" type="button" aria-label="Download Time-series forecasting">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>frame as a sequence (use RETURNS, not raw prices):
+  features: moving avgs, momentum, volatility, indicators
+  forecast: next return / direction / volatility
+  models: ARIMA ... LSTM / temporal nets
+
+The genuine, transferable skill.</code></pre>
+  
+</div>
+<h4>Rigorous backtesting (or you fool yourself)</h4><div class="codeblock tall" data-file="Rigorous backtesting (or you fool yourself)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Rigorous backtesting (or you fool yourself)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Rigorous backtesting (or you fool yourself) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Rigorous backtesting (or you fool yourself)" type="button" aria-label="Download Rigorous backtesting (or you fool yourself)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>train on PAST, test on FUTURE (never shuffle time)
+NO look-ahead: only use info available at prediction time
+include TRANSACTION COSTS
+compare vs BASELINES: naïve (t+1 ≈ t), buy-and-hold
+
+Most "great" backtests fail these.</code></pre>
+  
+</div>
+<h4>Why it (usually) does not work</h4><div class="codeblock tall" data-file="Why it (usually) does not work">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Why it (usually) does not work</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Why it (usually) does not work to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Why it (usually) does not work" type="button" aria-label="Download Why it (usually) does not work">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>efficient markets → short-term ≈ random walk (mostly noise)
+overfitting → fit historical noise, meaningless out-of-sample
+regime change → behaviour shifts; model breaks live
+
+NOT financial advice. Realistic edge: tiny/fragile, or none.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 756" role="img" aria-labelledby="td1038 sd1038" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1038">Stock Trend Predictor — firmware flowchart</title><desc id="sd1038">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d1038" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1038" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1038" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1038" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d1038)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="51.5">Load clean market data</tspan><tspan x="210" y="64.5">(point-in-time)</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1038)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d1038)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="144.0">Engineer time-series features</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1038)"/><rect x="85" y="202" width="250" height="56" rx="10"
+          fill="url(#gb-d1038)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="230" text-anchor="middle"><tspan x="210" y="230.0">Train model (time-aware split)</tspan></text><path d="M210 258 L210 282" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1038)"/><rect x="85" y="288" width="250" height="56" rx="10"
+          fill="url(#gb-d1038)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="316" text-anchor="middle"><tspan x="210" y="309.5">Backtest with costs, no</tspan><tspan x="210" y="322.5">look-ahead</tspan></text><path d="M210 344 L210 368" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1038)"/><path d="M210 374 L349 416 L210 458 L71 416 z"
+          fill="url(#ga-d1038)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="416" text-anchor="middle"><tspan x="210" y="416.0">Beats honest baselines?</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1038)"/><text class="dg-e" x="220" y="477">Small edge (be sceptical)</text><path d="M349 416 H397 V372 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d1038)"/><text class="dg-e" x="403" y="410">No edge (the usual, honest result)</text><path d="M101 488 L335 488 L319 544 L85 544 z"
+          fill="url(#gb-d1038)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="516" text-anchor="middle"><tspan x="210" y="516.0">Small edge (be sceptical)</tspan></text><path d="M210 544 L210 568" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1038)"/><path d="M101 574 L335 574 L319 630 L85 630 z"
+          fill="url(#gb-d1038)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="602" text-anchor="middle"><tspan x="210" y="595.5">No edge (the usual, honest</tspan><tspan x="210" y="608.5">result)</tspan></text><path d="M210 630 L210 654" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1038)"/><rect x="85" y="660" width="250" height="56" rx="28"
+          fill="url(#ga-d1038)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="688" text-anchor="middle"><tspan x="210" y="688.0">Report honestly (not advice)</tspan></text>
+  </svg>
+  <figcaption>Stock Trend Predictor — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Frame the time series and features</h4><p>Use returns, engineer features (moving averages, momentum, volatility) without future information, and split by time.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>This is NOT financial advice and must never be used to risk real money on the belief it beats the market. Markets are near-random short-term; reliably beating them is extraordinarily hard. The value here is rigorous time-series forecasting, not profit.</p></div>
+  </aside></li><li><h4>Train and backtest rigorously</h4><p>Train a classical or deep sequence model time-aware, and backtest with no look-ahead bias and transaction costs.</p></li><li><h4>Compare to honest baselines</h4><p>Measure against a naïve predictor and buy-and-hold; treat "no edge" as the realistic, valuable result.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Backtest honestly against baselines</h4><p>Evaluate the strategy time-ordered with costs and no look-ahead, comparing to buy-and-hold and reporting an honest verdict.</p><div class="codeblock tall" data-file="backtest.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">backtest.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy backtest.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="backtest.py" type="button" aria-label="Download backtest.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">import</span> numpy <span class="tok-k">as</span> np
+
+<span class="tok-k">def</span> <span class="tok-f">backtest</span><span class="tok-o">(</span>returns<span class="tok-o">,</span> signals<span class="tok-o">,</span> cost<span class="tok-o">=</span><span class="tok-n">0.001</span><span class="tok-o">):</span>
+    <span class="tok-c"># signals[t] must use ONLY information available up to time t (no look-ahead)</span>
+    strat <span class="tok-o">=</span> signals<span class="tok-o">[:-</span><span class="tok-n">1</span><span class="tok-o">]</span> <span class="tok-o">*</span> returns<span class="tok-o">[</span><span class="tok-n">1</span><span class="tok-o">:]</span>                        <span class="tok-c"># realise NEXT return</span>
+    strat <span class="tok-o">-=</span> cost <span class="tok-o">*</span> np<span class="tok-o">.</span><span class="tok-f">abs</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">diff</span><span class="tok-o">(</span>np<span class="tok-o">.</span>r_<span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">,</span> signals<span class="tok-o">]))[:-</span><span class="tok-n">1</span><span class="tok-o">]</span>   <span class="tok-c"># transaction costs</span>
+    <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"strategy"</span><span class="tok-o">:</span> <span class="tok-f">float</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">nansum</span><span class="tok-o">(</span>strat<span class="tok-o">)),</span>
+            <span class="tok-s">"buy_and_hold"</span><span class="tok-o">:</span> <span class="tok-f">float</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">nansum</span><span class="tok-o">(</span>returns<span class="tok-o">[</span><span class="tok-n">1</span><span class="tok-o">:]))}</span>     <span class="tok-c"># honest baseline</span>
+
+<span class="tok-k">def</span> <span class="tok-f">verdict</span><span class="tok-o">(</span>r<span class="tok-o">):</span>
+    <span class="tok-k">return</span> <span class="tok-o">(</span><span class="tok-s">"small edge — be sceptical (overfit/regime luck?)"</span>
+            <span class="tok-k">if</span> r<span class="tok-o">[</span><span class="tok-s">"strategy"</span><span class="tok-o">]</span> <span class="tok-o">&gt;</span> r<span class="tok-o">[</span><span class="tok-s">"buy_and_hold"</span><span class="tok-o">]</span>
+            <span class="tok-k">else</span> <span class="tok-s">"no edge vs buy-and-hold — the usual honest result"</span><span class="tok-o">)</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref"># signals[t] must use ONLY information available up to time t (no look-ahead)</span><span class="txt">The cardinal rule: signals may only use past information, or the backtest is fiction — look-ahead bias is what makes useless models look prophetic.</span></div><div><span class="ref">strat = signals[:-1] * returns[1:]                        # realise NEXT return</span><span class="txt">A signal at time t is realised on the next period's return — acting after the decision, respecting time.</span></div><div><span class="ref">strat -= cost * np.abs(np.diff(np.r_[0, signals]))[:-1]   # transaction costs</span><span class="txt">Transaction costs are subtracted, since strategies that "work" before costs routinely lose after them.</span></div><div><span class="ref">if r["strategy"] &gt; r["buy_and_hold"]</span><span class="txt">The strategy is judged against simply buying and holding — the honest baseline most strategies fail to beat.</span></div></div></li><li><h4>Report honestly — not advice</h4><p>Present out-of-sample, cost-inclusive results versus baselines, and treat a tiny/no edge as the truthful outcome — never as investment advice.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>If your backtest looks amazing, suspect a bug before genius: look-ahead bias, data leakage, ignored costs, or overfitting explain almost all "market-beating" results.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="stock_trend_predictor.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">stock_trend_predictor.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy stock_trend_predictor.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="stock_trend_predictor.py" type="button" aria-label="Download stock_trend_predictor.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">#!/usr/bin/env python3</span>
+<span class="tok-s">"""</span>
+<span class="tok-s">Stock Trend Predictor (time-series ML — taught HONESTLY)</span>
+<span class="tok-s"></span>
+<span class="tok-s">Applies time-series models (ARIMA ... LSTM) to market data to forecast</span>
+<span class="tok-s">direction/volatility. The REAL value is rigorous forecasting: time-aware</span>
+<span class="tok-s">splits, NO look-ahead bias, transaction costs, and honest BASELINES.</span>
+<span class="tok-s">Markets are near-random short-term; reliably beating them is nearly</span>
+<span class="tok-s">impossible. NOT financial advice. Do NOT risk real money on this.</span>
+<span class="tok-s">"""</span>
+<span class="tok-k">import</span> numpy <span class="tok-k">as</span> np
+
+<span class="tok-k">def</span> <span class="tok-f">make_features</span><span class="tok-o">(</span>returns<span class="tok-o">,</span> lookback<span class="tok-o">=</span><span class="tok-n">10</span><span class="tok-o">):</span>
+    <span class="tok-c"># features from PAST returns only (no future information)</span>
+    <span class="tok-t">X</span><span class="tok-o">,</span> y <span class="tok-o">=</span> <span class="tok-o">[],</span> <span class="tok-o">[]</span>
+    <span class="tok-k">for</span> t <span class="tok-k">in</span> <span class="tok-f">range</span><span class="tok-o">(</span>lookback<span class="tok-o">,</span> <span class="tok-f">len</span><span class="tok-o">(</span>returns<span class="tok-o">)</span> <span class="tok-o">-</span> <span class="tok-n">1</span><span class="tok-o">):</span>
+        window <span class="tok-o">=</span> returns<span class="tok-o">[</span>t<span class="tok-o">-</span>lookback<span class="tok-o">:</span>t<span class="tok-o">]</span>
+        <span class="tok-t">X</span><span class="tok-o">.</span><span class="tok-f">append</span><span class="tok-o">([</span>window<span class="tok-o">.</span><span class="tok-f">mean</span><span class="tok-o">(),</span> window<span class="tok-o">.</span><span class="tok-f">std</span><span class="tok-o">(),</span>           <span class="tok-c"># momentum, volatility</span>
+                  returns<span class="tok-o">[</span>t<span class="tok-o">-</span><span class="tok-n">1</span><span class="tok-o">],</span> np<span class="tok-o">.</span><span class="tok-f">sign</span><span class="tok-o">(</span>window<span class="tok-o">.</span><span class="tok-f">sum</span><span class="tok-o">())])</span>   <span class="tok-c"># last, trend sign</span>
+        y<span class="tok-o">.</span><span class="tok-f">append</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">sign</span><span class="tok-o">(</span>returns<span class="tok-o">[</span>t<span class="tok-o">+</span><span class="tok-n">1</span><span class="tok-o">]))</span>                   <span class="tok-c"># next direction</span>
+    <span class="tok-k">return</span> np<span class="tok-o">.</span><span class="tok-f">array</span><span class="tok-o">(</span><span class="tok-t">X</span><span class="tok-o">),</span> np<span class="tok-o">.</span><span class="tok-f">array</span><span class="tok-o">(</span>y<span class="tok-o">)</span>
+
+<span class="tok-k">def</span> <span class="tok-f">time_split</span><span class="tok-o">(</span><span class="tok-t">X</span><span class="tok-o">,</span> y<span class="tok-o">,</span> frac<span class="tok-o">=</span><span class="tok-n">0.7</span><span class="tok-o">):</span>
+    n <span class="tok-o">=</span> <span class="tok-f">int</span><span class="tok-o">(</span><span class="tok-f">len</span><span class="tok-o">(</span><span class="tok-t">X</span><span class="tok-o">)</span> <span class="tok-o">*</span> frac<span class="tok-o">)</span>
+    <span class="tok-k">return</span> <span class="tok-t">X</span><span class="tok-o">[:</span>n<span class="tok-o">],</span> y<span class="tok-o">[:</span>n<span class="tok-o">],</span> <span class="tok-t">X</span><span class="tok-o">[</span>n<span class="tok-o">:],</span> y<span class="tok-o">[</span>n<span class="tok-o">:]</span>                     <span class="tok-c"># train PAST, test FUTURE</span>
+
+<span class="tok-k">def</span> <span class="tok-f">backtest</span><span class="tok-o">(</span>returns<span class="tok-o">,</span> signals<span class="tok-o">,</span> cost<span class="tok-o">=</span><span class="tok-n">0.001</span><span class="tok-o">):</span>
+    strat <span class="tok-o">=</span> signals<span class="tok-o">[:-</span><span class="tok-n">1</span><span class="tok-o">]</span> <span class="tok-o">*</span> returns<span class="tok-o">[</span><span class="tok-n">1</span><span class="tok-o">:]</span>                    <span class="tok-c"># act on signal</span>
+    strat <span class="tok-o">-=</span> cost <span class="tok-o">*</span> np<span class="tok-o">.</span><span class="tok-f">abs</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">diff</span><span class="tok-o">(</span>np<span class="tok-o">.</span>r_<span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">,</span> signals<span class="tok-o">]))[:-</span><span class="tok-n">1</span><span class="tok-o">]</span>   <span class="tok-c"># costs</span>
+    <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"strategy"</span><span class="tok-o">:</span> <span class="tok-f">float</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">nansum</span><span class="tok-o">(</span>strat<span class="tok-o">)),</span>
+            <span class="tok-s">"buy_and_hold"</span><span class="tok-o">:</span> <span class="tok-f">float</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">nansum</span><span class="tok-o">(</span>returns<span class="tok-o">[</span><span class="tok-n">1</span><span class="tok-o">:]))}</span>    <span class="tok-c"># baseline</span>
+
+<span class="tok-k">if</span> __name__ <span class="tok-o">==</span> <span class="tok-s">"__main__"</span><span class="tok-o">:</span>
+    <span class="tok-t">X</span><span class="tok-o">,</span> y <span class="tok-o">=</span> <span class="tok-f">make_features</span><span class="tok-o">(</span><span class="tok-t">RETURNS</span><span class="tok-o">)</span>
+    <span class="tok-t">Xtr</span><span class="tok-o">,</span> ytr<span class="tok-o">,</span> <span class="tok-t">Xte</span><span class="tok-o">,</span> yte <span class="tok-o">=</span> <span class="tok-f">time_split</span><span class="tok-o">(</span><span class="tok-t">X</span><span class="tok-o">,</span> y<span class="tok-o">)</span>                 <span class="tok-c"># never shuffle time</span>
+    model<span class="tok-o">.</span><span class="tok-f">fit</span><span class="tok-o">(</span><span class="tok-t">Xtr</span><span class="tok-o">,</span> ytr<span class="tok-o">)</span>                                   <span class="tok-c"># keep it simple</span>
+    signals <span class="tok-o">=</span> model<span class="tok-o">.</span><span class="tok-f">predict</span><span class="tok-o">(</span><span class="tok-t">Xte</span><span class="tok-o">)</span>
+    result <span class="tok-o">=</span> <span class="tok-f">backtest</span><span class="tok-o">(</span><span class="tok-t">RETURNS</span><span class="tok-o">[-</span><span class="tok-f">len</span><span class="tok-o">(</span>signals<span class="tok-o">):],</span> signals<span class="tok-o">)</span>   <span class="tok-c"># net of costs</span>
+    edge <span class="tok-o">=</span> result<span class="tok-o">[</span><span class="tok-s">"strategy"</span><span class="tok-o">]</span> <span class="tok-o">&gt;</span> result<span class="tok-o">[</span><span class="tok-s">"buy_and_hold"</span><span class="tok-o">]</span>
+    <span class="tok-f">print</span><span class="tok-o">(</span><span class="tok-s">"small edge (be sceptical)"</span> <span class="tok-k">if</span> edge <span class="tok-k">else</span>
+          <span class="tok-s">"no edge vs buy-and-hold — the honest, usual result"</span><span class="tok-o">)</span>
+    <span class="tok-c"># NOT financial advice; beating the market reliably is extraordinarily hard.</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (42 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref"># features from PAST returns only (no future information)</span><span class="txt">Features use only past data, the discipline that prevents look-ahead bias from faking a prophetic model.</span></div><div><span class="ref">return X[:n], y[:n], X[n:], y[n:]                     # train PAST, test FUTURE</span><span class="txt">The split respects time — train on the past, test on the future — because shuffling a time series destroys the whole test.</span></div><div><span class="ref">strat -= cost * np.abs(np.diff(np.r_[0, signals]))[:-1]   # costs</span><span class="txt">Costs are included, since ignoring them is how paper strategies look profitable and real ones lose.</span></div><div><span class="ref">print("small edge (be sceptical)" if edge else</span><span class="txt">The verdict is framed with scepticism — a small edge invites suspicion of overfitting, and no edge is the honest, common result.</span></div><div><span class="ref"># NOT financial advice; beating the market reliably is extraordinarily hard.</span><span class="txt">The core warning is stated in the code itself — this is education, not an investment tool.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Configure data (point-in-time returns), features (no look-ahead) and lookback.</li><li>Configure the model (classical/deep) — keep it simple to resist overfitting.</li><li>Configure time-aware splits, transaction costs and backtesting.</li><li>Configure baselines (naïve, buy-and-hold) for honest comparison.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>No leakage</h4><p>Audit features/splits for any use of future information; fix look-ahead bias.</p></li><li><h4>Realistic backtest</h4><p>Include transaction costs; test out-of-sample; compare to baselines.</p></li><li><h4>Overfitting</h4><p>Watch the in-sample vs out-of-sample gap; prefer simple models.</p></li></ol></section>
+
+<section id="model" aria-labelledby="h-model"><h2 id="h-model">Dataset, Model &amp; Training</h2><h3>Dataset</h3><p>Clean, point-in-time historical market data (prices/returns). Survivorship bias and look-ahead in data are common, dangerous errors.</p>
+<p>Features are engineered from the series; the honesty is in the evaluation, not the data volume.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Dataset</th><th scope="col">Size</th><th scope="col">Licence</th><th scope="col">Use here</th></tr></thead>
+    <tbody><tr><td><b>Historical prices/returns</b></td><td>Long series</td><td>Data-provider terms</td><td>Model input (point-in-time)</td></tr><tr><td><b>Technical indicators</b></td><td>Derived</td><td>—</td><td>Features (MA/momentum/vol)</td></tr><tr><td><b>Baselines</b></td><td>—</td><td>—</td><td>Naïve / buy-and-hold comparison</td></tr><tr><td><b>Out-of-sample period</b></td><td>Held-out future</td><td>—</td><td>Honest backtest</td></tr></tbody>
+  </table></div>
+<h3>Data preprocessing</h3><ul class="plain"><li>Use returns (stationary) rather than raw prices; align point-in-time.</li><li>Engineer features WITHOUT future information (no look-ahead).</li><li>Split by TIME (train past, test future); never shuffle.</li></ul>
+
+<div class="diagram-scroll"><figure class="diagram diagram-pipeline">
+  <svg viewBox="0 0 772 250" role="img" aria-labelledby="td1039 sd1039" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1039">Stock Trend Predictor — ML pipeline</title><desc id="sd1039">From raw data through training to deployed inference.</desc>
+    <defs>
+    <marker id="ar-d1039" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1039" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1039" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1039" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="20" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d1039)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="38" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="58" text-anchor="middle">1</text><text class="dg-b" x="95" y="82" text-anchor="middle"><tspan x="95" y="82.0">Market data</tspan></text><text class="dg-s" x="95" y="104" text-anchor="middle"><tspan x="95" y="104.0">point-in-time</tspan></text><path d="M174 77 H206" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1039)"/><rect x="214" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d1039)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="232" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="232" y="58" text-anchor="middle">2</text><text class="dg-b" x="289" y="82" text-anchor="middle"><tspan x="289" y="82.0">Features</tspan></text><text class="dg-s" x="289" y="104" text-anchor="middle"><tspan x="289" y="104.0">no look-ahead</tspan></text><path d="M368 77 H400" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1039)"/><rect x="408" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d1039)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="426" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="426" y="58" text-anchor="middle">3</text><text class="dg-b" x="483" y="82" text-anchor="middle"><tspan x="483" y="82.0">Model</tspan></text><text class="dg-s" x="483" y="104" text-anchor="middle"><tspan x="483" y="104.0">ARIMA/LSTM</tspan></text><path d="M562 77 H594" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d1039)"/><rect x="602" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d1039)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="620" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="620" y="58" text-anchor="middle">4</text><text class="dg-b" x="677" y="82" text-anchor="middle"><tspan x="677" y="82.0">Backtest</tspan></text><text class="dg-s" x="677" y="104" text-anchor="middle"><tspan x="677" y="104.0">time+costs</tspan></text><path d="M677 122 V136 H95 V148"
+            stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d1039)"/><rect x="20" y="152" width="150" height="82" rx="12"
+        fill="url(#gb-d1039)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="38" cy="170" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="174" text-anchor="middle">5</text><text class="dg-b" x="95" y="198" text-anchor="middle"><tspan x="95" y="198.0">Baselines</tspan></text><text class="dg-s" x="95" y="220" text-anchor="middle"><tspan x="95" y="220.0">honest</tspan></text>
+  </svg>
+  <figcaption>Stock Trend Predictor — ML pipeline</figcaption>
+</figure></div>
+
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Layer / stage</th><th scope="col">Shape or configuration</th><th scope="col">Purpose</th></tr></thead>
+    <tbody><tr><td><b>Feature engineering</b></td><td><code>MA/momentum/volatility</code></td><td>Summarise recent behaviour</td></tr><tr><td><b>Model</b></td><td><code>ARIMA … LSTM/temporal</code></td><td>Forecast direction/volatility</td></tr><tr><td><b>Time-aware split</b></td><td><code>train past / test future</code></td><td>No leakage</td></tr><tr><td><b>Backtester</b></td><td><code>costs + no look-ahead</code></td><td>Honest performance</td></tr><tr><td><b>Baselines</b></td><td><code>naïve / buy-and-hold</code></td><td>Reality check</td></tr></tbody>
+  </table></div>
+
+<h3>Hyperparameters</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Hyperparameter</th><th scope="col">Value</th><th scope="col">Why</th></tr></thead>
+    <tbody><tr><td><b>Target</b></td><td><code>direction/volatility</code></td><td>Sensible vs raw price</td></tr><tr><td><b>Lookback window</b></td><td><code>tuned</code></td><td>Context vs noise</td></tr><tr><td><b>Model complexity</b></td><td><code>low (careful)</code></td><td>Overfitting risk</td></tr><tr><td><b>Costs</b></td><td><code>included</code></td><td>Realistic net result</td></tr></tbody>
+  </table></div>
+<h3>Training process</h3><ul class="plain"><li>Train time-aware; keep models simple to resist overfitting.</li><li>Never let future data leak into features/splits.</li><li>Evaluate net of costs against naïve and buy-and-hold baselines.</li></ul></section>
+
+<section id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation">Evaluation, Metrics &amp; Deployment</h2><p>The honest metrics are out-of-sample, cost-inclusive performance versus baselines — not in-sample accuracy, which is trivially inflated.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">What it tells you</th></tr></thead>
+    <tbody><tr><td><b>Out-of-sample (net of costs)</b></td><td><code>usually ≈ baseline</code></td><td>The honest number</td></tr><tr><td><b>vs naïve baseline</b></td><td><code>rarely beats</code></td><td>Reality check</td></tr><tr><td><b>vs buy-and-hold</b></td><td><code>rarely beats</code></td><td>Reality check</td></tr><tr><td><b>Overfitting gap</b></td><td><code>watch</code></td><td>In-sample vs out-of-sample</td></tr></tbody>
+  </table></div><p class="tbl-caption">Figures from the reference training run described above — reproduce them before trusting your own changes.</p>
+<figure class="diagram diagram-chart">
+  <svg viewBox="0 0 620 192" role="img" aria-labelledby="td1040 sd1040" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1040">In-sample vs reality</title><desc id="sd1040">Models look great in-sample and on flawed backtests, then collapse toward baseline out-of-sample and net of costs — the honest arc (illustrative).</desc>
+    <defs>
+    <marker id="ar-d1040" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d1040" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d1040" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d1040" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <line x1="190" y1="26" x2="190" y2="178" stroke="var(--dg-stroke)" stroke-width="1"/><text class="dg-b" x="178" y="45" text-anchor="end">In-sample</text><rect x="191" y="33" width="316.5217391304348" height="20" rx="5" fill="url(#ga-d1040)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="516.5217391304348" y="47">90 %</text><text class="dg-b" x="178" y="83" text-anchor="end">Naive backtest</text><rect x="191" y="71" width="263.768115942029" height="20" rx="5" fill="url(#ga-d1040)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="463.768115942029" y="85">75 %</text><text class="dg-b" x="178" y="121" text-anchor="end">Proper backtest</text><rect x="191" y="109" width="193.42995169082127" height="20" rx="5" fill="url(#ga-d1040)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="393.42995169082127" y="123">55 %</text><text class="dg-b" x="178" y="159" text-anchor="end">Net of costs, live</text><rect x="191" y="147" width="175.84541062801935" height="20" rx="5" fill="url(#ga-d1040)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="375.84541062801935" y="161">50 %</text>
+  </svg>
+  <figcaption>In-sample vs reality</figcaption>
+</figure>
+
+
+<h3>Inference example</h3><div class="codeblock tall" data-file="backtest.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">backtest.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy backtest.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="backtest.py" type="button" aria-label="Download backtest.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">import</span> numpy <span class="tok-k">as</span> np
+
+<span class="tok-k">def</span> <span class="tok-f">backtest</span><span class="tok-o">(</span>returns<span class="tok-o">,</span> signals<span class="tok-o">,</span> cost<span class="tok-o">=</span><span class="tok-n">0.001</span><span class="tok-o">):</span>
+    <span class="tok-c"># Time-ordered; signals[t] uses ONLY info up to t (no look-ahead).</span>
+    strat <span class="tok-o">=</span> signals<span class="tok-o">[:-</span><span class="tok-n">1</span><span class="tok-o">]</span> <span class="tok-o">*</span> returns<span class="tok-o">[</span><span class="tok-n">1</span><span class="tok-o">:]</span>          <span class="tok-c"># act on signal, realise next return</span>
+    strat <span class="tok-o">=</span> strat <span class="tok-o">-</span> cost <span class="tok-o">*</span> np<span class="tok-o">.</span><span class="tok-f">abs</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">diff</span><span class="tok-o">(</span>np<span class="tok-o">.</span>r_<span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">,</span> signals<span class="tok-o">]))[:-</span><span class="tok-n">1</span><span class="tok-o">]</span>  <span class="tok-c"># transaction costs</span>
+    <span class="tok-k">return</span> <span class="tok-o">{</span>
+        <span class="tok-s">"strategy_return"</span><span class="tok-o">:</span> <span class="tok-f">float</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">nansum</span><span class="tok-o">(</span>strat<span class="tok-o">)),</span>
+        <span class="tok-s">"buy_and_hold"</span><span class="tok-o">:</span>    <span class="tok-f">float</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">nansum</span><span class="tok-o">(</span>returns<span class="tok-o">[</span><span class="tok-n">1</span><span class="tok-o">:])),</span>   <span class="tok-c"># honest baseline</span>
+    <span class="tok-o">}</span>
+
+<span class="tok-k">def</span> <span class="tok-f">honest_verdict</span><span class="tok-o">(</span>result<span class="tok-o">):</span>
+    beat <span class="tok-o">=</span> result<span class="tok-o">[</span><span class="tok-s">"strategy_return"</span><span class="tok-o">]</span> <span class="tok-o">&gt;</span> result<span class="tok-o">[</span><span class="tok-s">"buy_and_hold"</span><span class="tok-o">]</span>
+    <span class="tok-k">return</span> <span class="tok-o">(</span><span class="tok-s">"A small edge (be sceptical: overfit? regime luck?)"</span> <span class="tok-k">if</span> beat
+            <span class="tok-k">else</span> <span class="tok-s">"No edge vs buy-and-hold — the usual, honest result."</span><span class="tok-o">)</span>
+    <span class="tok-c"># NOT financial advice. Beating the market reliably is extraordinarily hard.</span></code></pre>
+  
+</div>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Known limitations</span><p>Markets are near-random short-term — mostly noise, little signal.</p>
+<p>Overfitting and subtle look-ahead bias make bad models look great.</p>
+<p>Regime change breaks live what worked in backtests.</p>
+<p>NOT financial advice; do not risk real money on it.</p></div>
+  </aside></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Train time-aware</b></td><td>No shuffling; past→future split</td></tr><tr><td><b>Audit for look-ahead</b></td><td>No future info in features/splits</td></tr><tr><td><b>Backtest with costs</b></td><td>Net performance, often ≈ baseline</td></tr><tr><td><b>Compare to buy-and-hold</b></td><td>Rarely beats it (honest)</td></tr><tr><td><b>Check in vs out-of-sample</b></td><td>Large gap = overfitting</td></tr><tr><td><b>Interpret a "great" result</b></td><td>Suspect a bug/leakage first</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>Honest, cost-inclusive, out-of-sample results versus baselines — usually showing little or no edge.</p>
+<div class="codeblock tall" data-file="backtest-result.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">backtest-result.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy backtest-result.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="backtest-result.json" type="button" aria-label="Download backtest-result.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "strategy_return_net": <span class="tok-n">0.031</span>,
+  "buy_and_hold_return": <span class="tok-n">0.058</span>,
+  "look_ahead_bias": "audited: none",
+  "costs_included": <span class="tok-k">true</span>,
+  "verdict": "no edge vs buy-and-hold — the honest, usual result",
+  "note": "NOT financial advice"
+}</code></pre>
+  
+</div>
+
+<p>A rigorously backtested strategy underperforming buy-and-hold net of costs — the honest, common outcome, and exactly the valuable lesson: reliably beating the market is extraordinarily hard.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Grafana%20dashboard.png?width=900" alt="A Grafana time-series dashboard" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td1041" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td1041">Great-looking backtests almost always hide leakage or overfitting — a tiny edge or none is the realistic result.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="30" y="34" width="340" height="192" rx="10" fill="var(--dg-box-b)" stroke="var(--dg-stroke)"/>
+    <rect x="30" y="34" width="340" height="28" rx="10" fill="var(--dg-chip)"/>
+    <circle cx="48" cy="48" r="4" fill="#e05f5f"/><circle cx="62" cy="48" r="4" fill="#e0b45f"/><circle cx="76" cy="48" r="4" fill="#5fe08a"/>
+    <rect x="44" y="76" width="140" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="58" y="98" font-size="10" fill="var(--dg-muted)">TEMPERATURE</text>
+    <text x="58" y="126" font-size="24" fill="var(--dg-accent)" font-family="monospace">27.4°</text>
+    <rect x="198" y="76" width="158" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="210,126 236,110 262,118 288,94 314,104 340,86" fill="none" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="44" y="152" width="312" height="60" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="56,196 86,180 116,188 146,160 176,172 206,146 236,158 266,138 296,150 340,128"
+      fill="none" stroke="var(--dg-accent)" stroke-width="2" opacity=".8"/>
+  </svg>
+  <figcaption>Great-looking backtests almost always hide leakage or overfitting — a tiny edge or none is the realistic result.</figcaption>
+</figure></template>
+  <figcaption>Great-looking backtests almost always hide leakage or overfitting — a tiny edge or none is the realistic result.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Grafana_dashboard.png" rel="noopener nofollow" target="_blank">Wikimedia Commons — Grafana dashboard.png</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Backtest looks amazing</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Look-ahead/leakage/no costs</p>
+        <p><strong>Fix.</strong> Audit for future info; add costs; suspect a bug</p></div></details><details class="expand"><summary>Great in-sample, awful live</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Overfitting</p>
+        <p><strong>Fix.</strong> Simpler model; regularise; honest out-of-sample test</p></div></details><details class="expand"><summary>Worked, then stopped</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Regime change</p>
+        <p><strong>Fix.</strong> Expect it; do not over-trust any backtest</p></div></details><details class="expand"><summary>Beats nothing</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Market efficiency (normal)</p>
+        <p><strong>Fix.</strong> This is the honest result; value the rigor</p></div></details><details class="expand"><summary>Shuffled the data</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Broke time order</p>
+        <p><strong>Fix.</strong> Never shuffle; split past→future</p></div></details><details class="expand"><summary>Treated as advice</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Misuse</p>
+        <p><strong>Fix.</strong> It is NOT financial advice; do not risk money</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Do the time-series ML rigorously — that is the real value.</li><li>Eliminate look-ahead bias; split by time; include costs.</li><li>Compare to naïve and buy-and-hold baselines honestly.</li><li>Prefer simple models; watch for overfitting and regime change.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>This is NOT financial advice — never risk real money on the belief it beats the market.</li><li>Beating the market reliably is extraordinarily hard; treat "no edge" as the honest, expected result.</li><li>A great-looking backtest almost always hides look-ahead bias, leakage, ignored costs or overfitting.</li><li>Do not present forecasts as reliable predictions of the future.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-audit for leakage whenever features/data change.</li><li>Re-test out-of-sample; expect regime-driven decay.</li><li>Keep baselines and cost assumptions realistic.</li><li>Resist the temptation to over-tune to history.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Apply the same rigor to non-market forecasting (energy/demand).</li><li>Add proper walk-forward validation and uncertainty estimates.</li><li>Study market microstructure and why edges vanish.</li><li>Explore risk/volatility forecasting (more tractable than direction).</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Can this actually predict the stock market?</summary><div class="inner"><p>Not reliably — and that honesty is the point. Markets are highly efficient and near-random in the short term, so most price movement is noise. Reliably beating the market is extraordinarily hard, and impressive results almost always come from methodological errors, not genuine predictive power.</p></div></details><details class="expand"><summary>Then what is the value of the project?</summary><div class="inner"><p>Learning rigorous time-series forecasting and financial-ML discipline — feature engineering, sequence models, and above all proper backtesting without look-ahead bias, with costs, against honest baselines. These skills transfer to any forecasting problem.</p></div></details><details class="expand"><summary>What is look-ahead bias?</summary><div class="inner"><p>Accidentally using information that would not have been available at prediction time — a future price, a feature computed with future data, survivorship-biased data. It is subtle and everywhere, and it makes a useless model look prophetic. It is the number-one cause of fake "market-beating" results.</p></div></details><details class="expand"><summary>Why do great backtests fail live?</summary><div class="inner"><p>Overfitting (fitting historical noise that means nothing out of sample), ignored transaction costs, subtle look-ahead bias, and regime change (the market's behaviour shifts). A backtest is easy to fool yourself with; live trading is not.</p></div></details><details class="expand"><summary>Is this financial advice?</summary><div class="inner"><p>No. It is emphatically not financial advice and must never be used to risk real money on the belief it beats the market. The realistic outcome of a rigorous project is a tiny, fragile edge or none — which is itself the valuable, true lesson.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Time_series" rel="noopener nofollow" target="_blank">Time series forecasting</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Efficient-market_hypothesis" rel="noopener nofollow" target="_blank">Efficient-market hypothesis</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Backtesting" rel="noopener nofollow" target="_blank">Look-ahead bias / backtesting</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Overfitting" rel="noopener nofollow" target="_blank">Overfitting</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average" rel="noopener nofollow" target="_blank">ARIMA / LSTM</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="music-genre-classifier.html"><span class="dir">← Previous project</span><span class="ttl">Music Genre Classifier</span></a>
+        <span class="next disabled"></span>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Advanced</b></div>
+        <div class="rail-stat"><span>Time</span><b>12–18 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>4</b></div>
+        <div class="rail-stat"><span>Cost</span><b>Software; compute-light to moderate</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="sleep-apnea-tracker.html">Sleep Apnea Tracker</a></li><li><a href="pocket-ecg-monitor.html">Pocket ECG Monitor</a></li><li><a href="stress-and-hrv-wearable.html">Stress &amp; HRV Wearable</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="sleep-apnea-tracker.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Sleep Apnea Tracker</h4>
+        <p>Monitors breathing and snoring patterns to flag possible apnea events.</p></a><a class="relcard" href="pocket-ecg-monitor.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Pocket ECG Monitor</h4>
+        <p>Captures single-lead heart rhythm and syncs traces to the cloud.</p></a><a class="relcard" href="stress-and-hrv-wearable.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Stress &amp; HRV Wearable</h4>
+        <p>Reads heart-rate variability and guides breathing to lower stress.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Stock Trend Predictor</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
