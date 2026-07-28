@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Compressed Air Leak Monitor — Circuit, Code &amp; Full Build Guide | Industrial</title>
+  <meta name="description" content="Complete intermediate-level build guide for a Compressed Air Leak Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="compressed air leak monitor, compressed air leak monitor project, how to build compressed air leak monitor, esp32 devkit v1 project, industrial project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/compressed-air-leak-monitor.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/compressed-air-leak-monitor.html" />
+  <meta property="og:title" content="Compressed Air Leak Monitor — Circuit, Code &amp; Full Build Guide | Industrial" />
+  <meta property="og:description" content="Complete intermediate-level build guide for a Compressed Air Leak Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Industrial" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Compressed Air Leak Monitor — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete intermediate-level build guide for a Compressed Air Leak Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🌬️</text></svg>" />
+  <style>:root{--acc:#22d3ee;--acc-light:#67e8f9;--acc-rgb:34,211,238}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/compressed-air-leak-monitor.html#article","headline":"Compressed Air Leak Monitor — Complete Build Guide","name":"Compressed Air Leak Monitor","description":"Complete intermediate-level build guide for a Compressed Air Leak Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/compressed-air-leak-monitor.html","inLanguage":"en","articleSection":"Industrial","keywords":"compressed air leak monitor, compressed air leak monitor project, how to build compressed air leak monitor, esp32 devkit v1 project, industrial project, circuit diagram, source code, tutorial","proficiencyLevel":"Intermediate","dependencies":"WiFi (ESP32 core), PubSubClient, Adafruit SSD1306 + GFX, InfluxDB 2.x + Telegraf, ArduinoJson, Preferences (NVS)","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-28","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/compressed-air-leak-monitor.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/compressed-air-leak-monitor.html#howto","name":"How to build a Compressed Air Leak Monitor","description":"Complete intermediate-level build guide for a Compressed Air Leak Monitor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT16H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"5330"},"supply":[{"@type":"HowToSupply","name":"ESP32 DevKit V1 (ESP-WROOM-32)"},{"@type":"HowToSupply","name":"INMP441 I²S MEMS microphone"},{"@type":"HowToSupply","name":"DS18B20 waterproof temperature probe"},{"@type":"HowToSupply","name":"0.96″ SSD1306 OLED display"},{"@type":"HowToSupply","name":"microSD card 32 GB A1 class"},{"@type":"HowToSupply","name":"5 V 3 A regulated SMPS adapter"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Quantify leakage in no-demand periods","text":"During genuine no-demand periods, measure the pressure decay rate (and/or no-demand compressor cycling), convert to leak flow, and estimate the energy and money cost."},{"@type":"HowToStep","position":2,"name":"Detect/locate acoustically and trend","text":"Use ultrasonic level to flag leaks and assist location, trend the quantified leak load over time, and verify repairs by the drop in decay/cycling."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Compressed Air Leak Monitor","item":"https://siddhantkumar.in/projects/docs/compressed-air-leak-monitor.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/compressed-air-leak-monitor.html#faq","mainEntity":[{"@type":"Question","name":"Why care about compressed-air leaks?","acceptedAnswer":{"@type":"Answer","text":"Compressed air is expensive energy, and leaks commonly waste 20-30% of it continuously and invisibly. Finding and fixing them is one of the highest-ROI energy savings a factory can make."}},{"@type":"Question","name":"How does it quantify the leak without a flow meter?","acceptedAnswer":{"@type":"Answer","text":"During no-demand periods a leak-free system should hold pressure with the compressor off. The rate of pressure decay in the known system volume, and the no-demand compressor cycling, both give the leak flow — and thus the wasted power and cost."}},{"@type":"Question","name":"How does it help find the leaks?","acceptedAnswer":{"@type":"Answer","text":"Escaping air hisses ultrasonically, above human hearing. An ultrasonic detector, especially a directional one, points a technician to a leak that is completely silent to the ear."}},{"@type":"Question","name":"How do I prove a repair worked?","acceptedAnswer":{"@type":"Answer","text":"Re-measure the no-demand leak metric after fixing leaks. The decay slows and cycling drops, and the monitor quantifies the recovered air and money — verifying and justifying the maintenance."}},{"@type":"Question","name":"What do I need for accurate cost figures?","acceptedAnswer":{"@type":"Answer","text":"The system volume and the compressor's capacity and power (plus tariff and run hours). These convert the measured leakage into real energy and money; get them right for trustworthy numbers."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#industrial">Industrial</a><span class="sep">/</span>
+        <span aria-current="page">Compressed Air Leak Monitor</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 066 · Industrial</span>
+          <h1>Compressed Air Leak Monitor<span class="grad">.</span></h1>
+          <p class="tagline">Finds the compressed-air leaks that silently waste a huge share of a factory's energy — by watching pressure decay when nothing should be running, and listening for the ultrasonic hiss of escaping air.</p>
+          <div class="hero-chips">
+            <span class="chip lv-intermediate">Intermediate</span>
+            <span class="chip">12–18 hours</span>
+            <span class="chip neutral">29 min read</span>
+            <span class="chip neutral">Energy</span><span class="chip neutral">Sensors</span><span class="chip neutral">Industry</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td559" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td559">Compressed Air Leak Monitor — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Compressed Air Leak Monitor — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Intermediate</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>12–18 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹3,500 – ₹6,000</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32 DevKit V1 (ESP-WROOM-32)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Industrial</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>28 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Finds the compressed-air leaks that silently waste a huge share of a factory's energy — by watching pressure decay when nothing should be running, and listening for the ultrasonic hiss of escaping air.</p>
+<p>Compressed air is often called the "fourth utility", and it is one of the most expensive forms of energy in a factory — most of the electricity a compressor consumes ends up as heat, so every cubic metre of compressed air is dear. The dirty secret is that a large fraction of it — commonly 20-30% — leaks away through worn fittings, cracked hoses and stuck drains, wasting money continuously, day and night, for years, because a leak makes no obvious sign on the production floor. This project builds a monitor that finds that waste: it detects when the system is leaking, quantifies how much, and helps locate leaks so they can be fixed — turning an invisible, permanent energy drain into a fixable, measurable problem.</p>
+<p>It attacks the problem two complementary ways. The <b>system-level</b> method watches the receiver <b>pressure during no-demand periods</b> — nights, weekends, breaks — when, with all tools off, a sealed system should hold pressure. If it does not, the <b>rate of pressure decay</b> reveals the total leakage, and the frequency with which the compressor kicks in to top up an idle system (the "load/unload" cycling with no demand) directly quantifies the leak load and its energy cost. This needs only a pressure sensor on the receiver and knowledge of the demand schedule, and it gives the headline number: how much air, and money, is leaking.</p>
+<p>The <b>local</b> method helps find <i>where</i>: escaping compressed air generates a characteristic <b>ultrasonic hiss</b> (turbulent flow radiates strongly above human hearing), so an ultrasonic microphone can detect a leak by ear that is silent to a person, pointing a technician to the exact fitting. Combined, the system-level monitor says "you are leaking X and it is costing Y", and the ultrasonic aid helps hunt the leaks down. The monitor logs and trends the leakage so a growing leak load is caught and the savings from repairs are verified. It is honest that quantification depends on the compressor/system specifics and that ultrasonic hunting is an aid, not magic — but as a leak monitor that makes an invisible, expensive waste visible and actionable, it typically pays for itself many times over in the energy it recovers.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Factory%20automation.jpg?width=900" alt="Automated machinery on a factory production line" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td551" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td551">Compressed-air leaks waste a large, invisible share of a factory's energy — the monitor makes it visible.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="120" y="96" width="130" height="84" rx="10" fill="#4a525e" stroke="#333a45" stroke-width="2"/>
+    <rect x="250" y="126" width="52" height="24" rx="4" fill="#8a919b"/>
+    <circle cx="302" cy="138" r="18" fill="#2b2f36" stroke="#6a727e" stroke-width="3"/>
+    <rect x="96" y="112" width="26" height="52" rx="4" fill="#2b2f36"/>
+    <line x1="96" y1="126" x2="60" y2="126" stroke="#e05050" stroke-width="3"/>
+    <line x1="96" y1="150" x2="60" y2="150" stroke="#2b2f36" stroke-width="3"/>
+    <line x1="132" y1="96" x2="132" y2="180" stroke="#333a45" stroke-width="2"/><line x1="152" y1="96" x2="152" y2="180" stroke="#333a45" stroke-width="2"/><line x1="172" y1="96" x2="172" y2="180" stroke="#333a45" stroke-width="2"/><line x1="192" y1="96" x2="192" y2="180" stroke="#333a45" stroke-width="2"/><line x1="212" y1="96" x2="212" y2="180" stroke="#333a45" stroke-width="2"/><line x1="232" y1="96" x2="232" y2="180" stroke="#333a45" stroke-width="2"/>
+  </svg>
+  <figcaption>Compressed-air leaks waste a large, invisible share of a factory's energy — the monitor makes it visible.</figcaption>
+</figure></template>
+  <figcaption>Compressed-air leaks waste a large, invisible share of a factory's energy — the monitor makes it visible.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Factory_automation.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Factory automation.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Detects compressed-air leaks at the system level via pressure decay in no-demand periods</li><li>Quantifies leakage from pressure-decay rate and no-demand compressor cycling</li><li>Estimates the energy and money cost of the leak load</li><li>Detects/locates leaks acoustically via ultrasonic hiss</li><li>Logs and trends leakage so a growing leak load is caught</li><li>Verifies the savings from leak repairs</li><li>Turns invisible, permanent air waste into a measurable, fixable problem</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Factory compressed-air systems</b></td><td>Quantifying and finding leaks that waste a large share of compressor energy.</td></tr><tr><td><b>Energy / sustainability programmes</b></td><td>Measuring and recovering compressed-air waste as a high-ROI efficiency win.</td></tr><tr><td><b>Maintenance leak surveys</b></td><td>Ultrasonic-assisted leak hunting and repair verification.</td></tr><tr><td><b>Multi-site compressed air</b></td><td>Comparing leak load across plants and prioritising fixes.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>No-demand pressure-decay leak detection (system level)</li><li>Leakage and cost quantification from decay/cycling</li><li>Ultrasonic leak location (hear the silent hiss)</li><li>Trending to catch a worsening leak load</li><li>Repair savings verification</li><li>Compressor-cycling energy insight</li><li>Honest quantification tied to system specifics</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Intermediate</td></tr><tr><td><b>Estimated completion time</b></td><td>12–18 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹3,500 – ₹6,000</td></tr><tr><td><b>Primary discipline</b></td><td>Industrial</td></tr><tr><td><b>Reference platform</b></td><td>ESP32 DevKit V1 (ESP-WROOM-32)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Pressure sensing on a compressed-air receiver</li><li>No-demand pressure-decay analysis and leakage quantification</li><li>Ultrasonic acoustic leak detection</li><li>Compressor-cycling and energy-cost estimation</li><li>Trending and repair verification</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>Compressed air is expensive energy; even small leaks waste money continuously — quantify to justify fixes.</p>
+<p>The cleanest system-level signal is pressure decay (or compressor cycling) during no-demand periods; you need the demand schedule.</p>
+<p>Leaks hiss ultrasonically; an ultrasonic mic locates leaks silent to the ear — but treat it as a hunting aid.</p>
+<p>Work safely around pressurised systems; never aim ultrasonic/leak searches in a way that risks air-jet injury.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b><br/><span style="font-size:.82em;opacity:.78">Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</span></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>INMP441 I²S MEMS microphone</b><br/><span style="font-size:.82em;opacity:.78">Digital output means no analogue noise pickup — far better than an MAX9814 for keyword spotting.</span></td><td>61 dB SNR, −26 dBFS sensitivity, 60 Hz–15 kHz, 24-bit I²S output</td><td class="num">1</td><td class="num">₹220</td></tr><tr><td><b>DS18B20 waterproof temperature probe</b><br/><span style="font-size:.82em;opacity:.78">Dozens can share one GPIO — you address them by ROM code.</span></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td class="num">1</td><td class="num">₹160</td></tr><tr><td><b>0.96″ SSD1306 OLED display</b><br/><span style="font-size:.82em;opacity:.78">Static images burn in — invert or scroll the screen periodically.</span></td><td>128 × 64 monochrome, 1.3–3.3 V logic, 100 kHz–400 kHz I²C</td><td class="num">1</td><td class="num">₹250</td></tr><tr><td><b>microSD card 32 GB A1 class</b><br/><span style="font-size:.82em;opacity:.78">For 24/7 loggers buy a high-endurance card — normal cards die in months.</span></td><td>A1 rated, 10 MB/s random write, UHS-I, endurance-grade recommended</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>5 V 3 A regulated SMPS adapter</b><br/><span style="font-size:.82em;opacity:.78">Measure the real output — many "3 A" adapters sag below 4.7 V at 2 A.</span></td><td>100–240 VAC in, 5 V ±5 % out, 3 A, short-circuit and over-voltage protection</td><td class="num">1</td><td class="num">₹350</td></tr><tr><td><b>Pressure sensor on the receiver</b><br/><span style="font-size:.82em;opacity:.78">The core system-level sensor</span></td><td>Pressure transducer (e.g. 0-16 bar, 4-20 mA/analogue) on the air receiver/main</td><td class="num">1</td><td class="num">₹1,200</td></tr><tr><td><b>Ultrasonic leak detector mic</b><br/><span style="font-size:.82em;opacity:.78">INMP441 has limited ultrasonic range; a dedicated ultrasonic sensor is better</span></td><td>Ultrasonic microphone/parabola (~40 kHz) for acoustic leak location</td><td class="num">1</td><td class="num">₹1,500</td></tr><tr><td><b>Compressor state input</b></td><td>Signal/CT to detect compressor load/unload cycles</td><td class="num">1</td><td class="num">₹400</td></tr><tr><td><b>Enclosure</b></td><td>Industrial housing near the receiver</td><td class="num">1</td><td class="num">₹350</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹5,330</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td>3.3 V logic / 5 V USB</td><td>UART, SPI, I²C, I²S, CAN, PWM</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>INMP441 I²S MEMS microphone</b></td><td>61 dB SNR, −26 dBFS sensitivity, 60 Hz–15 kHz, 24-bit I²S output</td><td>1.8–3.3 V</td><td>I²S</td><td><a href="https://invensense.tdk.com/wp-content/uploads/2015/02/INMP441.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>DS18B20 waterproof temperature probe</b></td><td>−55 to +125 °C, ±0.5 °C from −10 to +85 °C, 9–12-bit resolution, unique 64-bit ROM ID</td><td>3.0–5.5 V</td><td>1-Wire (multi-drop)</td><td><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/DS18B20.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>0.96″ SSD1306 OLED display</b></td><td>128 × 64 monochrome, 1.3–3.3 V logic, 100 kHz–400 kHz I²C</td><td>3.3–5 V</td><td>I²C (0x3C)</td><td><a href="https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>microSD card 32 GB A1 class</b></td><td>A1 rated, 10 MB/s random write, UHS-I, endurance-grade recommended</td><td>3.3 V</td><td>SDIO / SPI</td><td><a href="https://www.sdcard.org/developers/sd-standard-overview/application-performance-class/" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>5 V 3 A regulated SMPS adapter</b></td><td>100–240 VAC in, 5 V ±5 % out, 3 A, short-circuit and over-voltage protection</td><td>5 V</td><td>DC barrel / USB</td><td><a href="https://en.wikipedia.org/wiki/Switched-mode_power_supply" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32 DevKit V1 (ESP-WROOM-32)</td><td>3.3 V logic / 5 V USB</td><td class="num">160</td><td>Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</td></tr><tr><td>INMP441 I²S MEMS microphone</td><td>1.8–3.3 V</td><td class="num">1.4</td><td>Digital output means no analogue noise pickup — far better than an MAX9814 for keyword spotting.</td></tr><tr><td>DS18B20 waterproof temperature probe</td><td>3.0–5.5 V</td><td class="num">1.5</td><td>Dozens can share one GPIO — you address them by ROM code.</td></tr><tr><td>0.96″ SSD1306 OLED display</td><td>3.3–5 V</td><td class="num">20</td><td>Static images burn in — invert or scroll the screen periodically.</td></tr><tr><td>microSD card 32 GB A1 class</td><td>3.3 V</td><td class="num">100</td><td>For 24/7 loggers buy a high-endurance card — normal cards die in months.</td></tr><tr><td>5 V 3 A regulated SMPS adapter</td><td>5 V</td><td class="num">3000</td><td>Measure the real output — many "3 A" adapters sag below 4.7 V at 2 A.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>3282.9 mA</b>. With a 1.5× design margin the supply should deliver at least <b>5000 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x with the ESP32 board package 3.x (or PlatformIO on VS Code)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>WiFi (ESP32 core)</b> <span style="opacity:.7">bundled</span></td><td>Station/AP connection management for the ESP32.</td><td><code>Bundled with the ESP32 Arduino core</code></td></tr><tr><td><b>PubSubClient</b> <span style="opacity:.7">2.8</span></td><td>Lightweight MQTT 3.1.1 client for constrained devices.</td><td><code>Library Manager → "PubSubClient" by Nick O'Leary</code></td></tr><tr><td><b>Adafruit SSD1306 + GFX</b> <span style="opacity:.7">2.5.x</span></td><td>Framebuffer and text/graphics primitives for the OLED.</td><td><code>Library Manager → "Adafruit SSD1306"</code></td></tr><tr><td><b>InfluxDB 2.x + Telegraf</b> <span style="opacity:.7">2.7</span></td><td>Time-series storage with retention policies and downsampling.</td><td><code>docker run -p 8086:8086 influxdb:2.7</code></td></tr><tr><td><b>ArduinoJson</b> <span style="opacity:.7">7.x</span></td><td>Zero-allocation JSON serialisation and parsing.</td><td><code>Library Manager → "ArduinoJson" by Benoit Blanchon</code></td></tr><tr><td><b>Preferences (NVS)</b> <span style="opacity:.7">bundled</span></td><td>Wear-levelled key/value storage in ESP32 flash for settings.</td><td><code>Bundled with the ESP32 core</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 310" role="img" aria-labelledby="td552 sd552" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td552">Compressed Air Leak Monitor — system block diagram</title><desc id="sd552">Functional block diagram of the Compressed Air Leak Monitor system.</desc>
+    <defs>
+    <marker id="ar-d552" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d552" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d552" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d552" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Sense</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d552)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Pressure</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">receiver decay</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d552)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Compressor state</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">load/unload</tspan></text><rect x="26" y="214" width="178" height="62" rx="12"
+          fill="url(#gb-d552)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="239" text-anchor="middle"><tspan x="115" y="239.0">Ultrasonic</tspan></text><text class="dg-s" x="115" y="258" text-anchor="middle"><tspan x="115" y="258.0">leak hiss</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Analyse</text><rect x="266" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d552)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="119" text-anchor="middle"><tspan x="355" y="119.0">ESP32</tspan></text><text class="dg-s" x="355" y="138" text-anchor="middle"><tspan x="355" y="138.0">decay + cycling</tspan></text><rect x="266" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d552)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="199" text-anchor="middle"><tspan x="355" y="199.0">Quantify</tspan></text><text class="dg-s" x="355" y="218" text-anchor="middle"><tspan x="355" y="218.0">air + cost</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Locate</text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d552)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Ultrasonic aid</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">find the leak</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Act</text><rect x="746" y="94" width="178" height="62" rx="12"
+          fill="url(#gb-d552)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="119" text-anchor="middle"><tspan x="835" y="119.0">Dashboard</tspan></text><text class="dg-s" x="835" y="138" text-anchor="middle"><tspan x="835" y="138.0">leak trend</tspan></text><rect x="746" y="174" width="178" height="62" rx="12"
+          fill="url(#gb-d552)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="199" text-anchor="middle"><tspan x="835" y="199.0">Savings</tspan></text><text class="dg-s" x="835" y="218" text-anchor="middle"><tspan x="835" y="218.0">verify repairs</tspan></text><path d="M208 165 C 235 165, 235 165, 258 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d552)"/><text class="dg-e" x="235" y="157" text-anchor="middle">right</text><path d="M448 165 C 475 165, 475 165, 498 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d552)"/><text class="dg-e" x="475" y="157" text-anchor="middle">right</text><path d="M688 165 C 715 165, 715 165, 738 165"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d552)"/><text class="dg-e" x="715" y="157" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Compressed Air Leak Monitor — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 316" role="img" aria-labelledby="td553 sd553" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td553">Compressed Air Leak Monitor — wiring schematic</title><desc id="sd553">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d553" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d553" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d553" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d553" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="220" rx="14"
+      fill="url(#ga-d553)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32 DevKit V1</tspan><tspan x="434" y="95.0">(ESP-WROOM-32)</tspan></text><text class="dg-s" x="434" y="266" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d553)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Pressure transducer</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO 34 (ADC)</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">Receiver pressure</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d553)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">Ultrasonic mic</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 35 / I²S</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="161.5">Leak hiss</tspan><tspan x="278" y="172.5">(ultrasonic)</tspan></text><rect x="20" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d553)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="205" text-anchor="middle"><tspan x="115" y="205.0">Compressor state</tspan></text><path d="M210 204 C 278 204, 278 204, 346 204" stroke="#4fb0e0" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="204" r="3.2" fill="#4fb0e0"/><text class="dg-p" x="278" y="198" text-anchor="middle">GPIO 27</text><text class="dg-s" x="278" y="219" text-anchor="middle"><tspan x="278" y="219.0">Load/unload cycles</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d553)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">OLED</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">GPIO 21/22</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="109.5">Pressure/leak</tspan><tspan x="590" y="120.5">readout</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d553)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Wi-Fi</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">—</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Dashboard</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d553)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">microSD</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">shared + CS</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="219.0">Log/trend</tspan></text><rect x="658" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d553)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="257" text-anchor="middle"><tspan x="753" y="257.0">5V supply</tspan></text><path d="M658 256 C 590 256, 590 256, 522 256" stroke="#3cc7c0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="256" r="3.2" fill="#3cc7c0"/><text class="dg-p" x="590" y="250" text-anchor="middle">3V3 reg</text><text class="dg-s" x="590" y="271" text-anchor="middle"><tspan x="590" y="271.0">Power</tspan></text>
+  </svg>
+  <figcaption>Compressed Air Leak Monitor — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Pressure transducer</b></td><td>4-20mA/AOUT</td><td><code>GPIO 34 (ADC)</code></td><td>Receiver pressure</td></tr><tr><td><b>Ultrasonic mic</b></td><td>AOUT/I²S</td><td><code>GPIO 35 / I²S</code></td><td>Leak hiss (ultrasonic)</td></tr><tr><td><b>Compressor state</b></td><td>in/CT</td><td><code>GPIO 27</code></td><td>Load/unload cycles</td></tr><tr><td><b>OLED</b></td><td>SDA/SCL</td><td><code>GPIO 21/22</code></td><td>Pressure/leak readout</td></tr><tr><td><b>Wi-Fi</b></td><td>on-chip</td><td><code>—</code></td><td>Dashboard</td></tr><tr><td><b>microSD</b></td><td>SPI</td><td><code>shared + CS</code></td><td>Log/trend</td></tr><tr><td><b>5V supply</b></td><td>+/–</td><td><code>3V3 reg</code></td><td>Power</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Fit the pressure transducer on the receiver/main to read system pressure; this is the core system-level sensor.</li><li>Add a compressor-state input (or CT) to count load/unload cycles, which quantify no-demand leakage.</li><li>For acoustic location, use a dedicated ultrasonic sensor (~40 kHz) — an audio MEMS mic has limited ultrasonic range.</li><li>Know the plant's demand schedule so the monitor can analyse pressure decay during genuine no-demand periods.</li><li>Work safely around pressurised lines; do not create injury hazards during leak hunting.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ESP32%20Espressif%20ESP-WROOM-32%20Dev%20Board.jpg?width=900" alt="An ESP32 development board with the ESP-WROOM-32 module and USB connector" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td554" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td554">ESP32 module quantifying leakage from no-demand pressure decay and compressor cycling.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="60" y="46" width="280" height="168" rx="10" fill="#1d4a3e" stroke="#123028" stroke-width="2"/>
+    <rect x="112" y="60" width="176" height="76" rx="5" fill="#c9ccd1" stroke="#9aa0a8"/>
+    <rect x="128" y="76" width="86" height="44" rx="3" fill="#2b2f36"/>
+    <text x="171" y="103" font-size="12" fill="#c9ccd1" text-anchor="middle" font-family="monospace">ESP32</text>
+    <path d="M228 78 h44 v10 h-44z M228 92 h44 v10 h-44z M228 106 h44 v10 h-44z" fill="#9aa0a8"/>
+    <rect x="164" y="150" width="72" height="34" rx="4" fill="#2b2f36"/>
+    <text x="200" y="171" font-size="9" fill="#7f8894" text-anchor="middle" font-family="monospace">USB</text>
+    <rect x="86" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <rect x="266" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <circle cx="70" cy="40" r="2.4" fill="#d8b04a"/><circle cx="88" cy="40" r="2.4" fill="#d8b04a"/><circle cx="106" cy="40" r="2.4" fill="#d8b04a"/><circle cx="124" cy="40" r="2.4" fill="#d8b04a"/><circle cx="142" cy="40" r="2.4" fill="#d8b04a"/><circle cx="160" cy="40" r="2.4" fill="#d8b04a"/><circle cx="178" cy="40" r="2.4" fill="#d8b04a"/><circle cx="196" cy="40" r="2.4" fill="#d8b04a"/><circle cx="214" cy="40" r="2.4" fill="#d8b04a"/><circle cx="232" cy="40" r="2.4" fill="#d8b04a"/><circle cx="250" cy="40" r="2.4" fill="#d8b04a"/><circle cx="268" cy="40" r="2.4" fill="#d8b04a"/><circle cx="286" cy="40" r="2.4" fill="#d8b04a"/><circle cx="304" cy="40" r="2.4" fill="#d8b04a"/><circle cx="322" cy="40" r="2.4" fill="#d8b04a"/><circle cx="70" cy="220" r="2.4" fill="#d8b04a"/><circle cx="88" cy="220" r="2.4" fill="#d8b04a"/><circle cx="106" cy="220" r="2.4" fill="#d8b04a"/><circle cx="124" cy="220" r="2.4" fill="#d8b04a"/><circle cx="142" cy="220" r="2.4" fill="#d8b04a"/><circle cx="160" cy="220" r="2.4" fill="#d8b04a"/><circle cx="178" cy="220" r="2.4" fill="#d8b04a"/><circle cx="196" cy="220" r="2.4" fill="#d8b04a"/><circle cx="214" cy="220" r="2.4" fill="#d8b04a"/><circle cx="232" cy="220" r="2.4" fill="#d8b04a"/><circle cx="250" cy="220" r="2.4" fill="#d8b04a"/><circle cx="268" cy="220" r="2.4" fill="#d8b04a"/><circle cx="286" cy="220" r="2.4" fill="#d8b04a"/><circle cx="304" cy="220" r="2.4" fill="#d8b04a"/><circle cx="322" cy="220" r="2.4" fill="#d8b04a"/>
+    <circle cx="330" cy="60" r="4" fill="#e03b3b"/><circle cx="330" cy="76" r="4" fill="#3be07a"/>
+  </svg>
+  <figcaption>ESP32 module quantifying leakage from no-demand pressure decay and compressor cycling.</figcaption>
+</figure></template>
+  <figcaption>ESP32 module quantifying leakage from no-demand pressure decay and compressor cycling.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — ESP32 Espressif ESP-WROOM-32 Dev Board.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 486" role="img" aria-labelledby="td555 sd555" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td555">Compressed Air Leak Monitor — architecture stack</title><desc id="sd555">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d555" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d555" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d555" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d555" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d555)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">ESP32 DevKit V1 (ESP-WROOM-32) · DS18B20 waterproof temperature probe</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d555)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d555)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">wifi · pubsub · ssd1306 · influx</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d555)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d555)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d555)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d555)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Transport layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">Wi-Fi → energy/maintenance dashboard · TLS · retry and backoff</tspan></text><path d="M330 368 L330 381" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d555)"/><rect x="30" y="382" width="600" height="74" rx="12"
+        fill="url(#gb-d555)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="408">Presentation layer</text><text class="dg-s" x="48" y="430"><tspan x="48" y="430.0">dashboard · mobile notifications · historical charts</tspan></text>
+  </svg>
+  <figcaption>Compressed Air Leak Monitor — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>Compressed air deserves special attention because it is <b>expensive energy that leaks invisibly</b>. A compressor is an inefficient converter — most of the electrical energy it draws becomes waste heat, so the usable compressed air is costly per unit — and leaks bleed that costly air away continuously, unseen and unheard, through fittings and hoses across a plant. Because a leak produces no visible effect on production and often no audible sound to human ears, it can waste energy for years unnoticed. The monitor's job is to make this waste <b>visible and quantified</b>, because a leak you can measure and cost is a leak that gets fixed, while an invisible one is tolerated forever.</p>
+<p>The most reliable <b>system-level</b> signal is what happens during <b>no demand</b>. When every tool and machine is off — overnight, at weekends, during a break — a leak-free system, once charged, should hold its pressure indefinitely; the compressor should not need to run at all. A real system does not: its pressure <b>decays</b>, and the compressor periodically <b>cycles</b> (loads and unloads) just to keep the idle system topped up. Both are pure leakage. The <b>rate of pressure decay</b> in a known system volume gives the leak flow directly, and the fraction of no-demand time the compressor spends loaded (or the number of load cycles per hour with no demand) quantifies the leak load as a share of compressor capacity — which converts straight into wasted energy and money using the compressor's power. This is the headline the monitor delivers: not "there are leaks" but "you are leaking X m³/h, costing ₹Y per year".</p>
+<p>Finding <i>where</i> the leaks are is the complementary <b>local</b> problem, and physics helps: air escaping through a small orifice becomes turbulent and radiates strongly in the <b>ultrasonic</b> range, well above human hearing. An ultrasonic detector "hears" this hiss and, especially with a directional/parabolic pickup, points a technician straight to a leak that is completely silent to the ear. This turns leak hunting from a hopeless walk-around into a directed search. The monitor can use ultrasonic sensing to flag and help localise leaks, though it is honest that ultrasonic hunting is a skilled aid — reflections and background ultrasonic noise exist — rather than an automatic map.</p>
+<p>What ties it together is <b>trending and verification</b>. Logging the quantified leak load over time catches a <b>worsening</b> system (leaks grow, new ones appear) before the bill balloons, and — crucially — lets you <b>verify repairs</b>: fix a batch of leaks and the no-demand decay slows, the no-demand cycling drops, and the monitor shows the recovered air and money, proving the maintenance paid off and justifying the next round. The design is candid about its dependencies: quantification needs the compressor and system specifics (capacity, power, volume) to convert decay/cycling into real energy, and precise leak location is a technician-assisted process. But within that, it does something with unusually high ROI — it exposes and measures one of the largest, most ignored energy wastes in a factory, and turns it into a prioritised, verifiable repair list. Compressed-air leak repair is famously one of the cheapest energy savings available; this monitor is what makes a plant actually go and get it.</p>
+
+<h3>The maths behind it</h3><h4>Leakage from no-demand pressure decay</h4><div class="codeblock tall" data-file="Leakage from no-demand pressure decay">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Leakage from no-demand pressure decay</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Leakage from no-demand pressure decay to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Leakage from no-demand pressure decay" type="button" aria-label="Download Leakage from no-demand pressure decay">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Sealed system volume V, pressure falls p1→p2 in time t
+with no demand (isothermal approx):
+
+  leaked_free_air ≈ V·(p1 − p2)/p_atm
+  leak_flow ≈ leaked_free_air / t   (free air / time)
+
+A faster decay = a larger leak. Needs the system volume.</code></pre>
+  
+</div>
+<h4>Leakage from no-demand compressor cycling</h4><div class="codeblock tall" data-file="Leakage from no-demand compressor cycling">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Leakage from no-demand compressor cycling</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Leakage from no-demand compressor cycling to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Leakage from no-demand compressor cycling" type="button" aria-label="Download Leakage from no-demand compressor cycling">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>With no demand, all compressor output serves leaks:
+
+  leak_fraction = loaded_time / total_time (no-demand)
+  leak_flow ≈ leak_fraction · compressor_capacity
+
+  wasted_power ≈ leak_fraction · compressor_power
+  annual_cost ≈ wasted_power · hours · tariff</code></pre>
+  
+</div>
+<h4>Ultrasonic leak signature</h4><div class="codeblock tall" data-file="Ultrasonic leak signature">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Ultrasonic leak signature</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Ultrasonic leak signature to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Ultrasonic leak signature" type="button" aria-label="Download Ultrasonic leak signature">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Turbulent flow through a leak radiates ultrasound (~20–50 kHz):
+
+  ultrasonic level rises sharply near a leak
+  directional pickup → localise the leak
+
+Silent to the ear, loud in ultrasound → detectable/locatable.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 784" role="img" aria-labelledby="td556 sd556" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td556">Compressed Air Leak Monitor — firmware flowchart</title><desc id="sd556">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d556" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d556" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d556" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d556" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d556)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Monitor pressure + compressor</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d556)"/><path d="M210 116 L349 158 L210 200 L71 158 z"
+          fill="url(#ga-d556)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="158" text-anchor="middle"><tspan x="210" y="158.0">No-demand period?</tspan></text><path d="M210 200 L210 224" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d556)"/><text class="dg-e" x="220" y="219">Measure decay / no-demand cycling</text><path d="M349 158 H397 V114 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d556)"/><text class="dg-e" x="403" y="152">Log; continue</text><rect x="85" y="230" width="250" height="56" rx="10"
+          fill="url(#gb-d556)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="258" text-anchor="middle"><tspan x="210" y="251.5">Measure decay / no-demand</tspan><tspan x="210" y="264.5">cycling</tspan></text><path d="M210 286 L210 310" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d556)"/><path d="M210 316 L349 358 L210 400 L71 358 z"
+          fill="url(#ga-d556)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="358" text-anchor="middle"><tspan x="210" y="358.0">Leakage above target?</tspan></text><path d="M210 400 L210 424" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d556)"/><text class="dg-e" x="220" y="419">Quantify cost; alert; assist location</text><path d="M349 358 H397 V314 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d556)"/><text class="dg-e" x="403" y="352">Trend</text><path d="M101 430 L335 430 L319 486 L85 486 z"
+          fill="url(#gb-d556)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="458" text-anchor="middle"><tspan x="210" y="451.5">Quantify cost; alert; assist</tspan><tspan x="210" y="464.5">location</tspan></text><path d="M210 486 L210 510" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d556)"/><path d="M101 516 L335 516 L319 572 L85 572 z"
+          fill="url(#gb-d556)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="544" text-anchor="middle"><tspan x="210" y="544.0">Log; continue</tspan></text><path d="M210 572 L210 596" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d556)"/><rect x="85" y="602" width="250" height="56" rx="10"
+          fill="url(#gb-d556)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="630" text-anchor="middle"><tspan x="210" y="630.0">Trend</tspan></text><path d="M210 658 L210 682" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d556)"/><rect x="85" y="688" width="250" height="56" rx="28"
+          fill="url(#ga-d556)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="716" text-anchor="middle"><tspan x="210" y="716.0">Report; verify repairs</tspan></text>
+  </svg>
+  <figcaption>Compressed Air Leak Monitor — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Fit the pressure and compressor sensing</h4><p>Install the pressure transducer on the receiver/main and a compressor-state input (or CT). Establish the system volume and the compressor's capacity/power for quantification.</p></li><li><h4>Add ultrasonic leak detection</h4><p>Add a dedicated ultrasonic sensor (directional if possible) for acoustic leak location, and learn the background ultrasonic level so a real leak stands out.</p></li><li><h4>Set up analysis and reporting</h4><p>Configure the no-demand schedule, decay/cycling analysis, cost model, and dashboard/logging for trending and repair verification.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Work safely around pressurised lines; a compressed-air jet can cause serious injury. Keep leak searches safe.</p></div>
+  </aside></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Quantify leakage in no-demand periods</h4><p>During genuine no-demand periods, measure the pressure decay rate (and/or no-demand compressor cycling), convert to leak flow, and estimate the energy and money cost.</p><div class="codeblock tall" data-file="leak-quantify.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">leak-quantify.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy leak-quantify.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="leak-quantify.ino" type="button" aria-label="Download leak-quantify.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">// System-level leak quantification during a no-demand period.</span>
+<span class="tok-k">struct</span> <span class="tok-t">System</span> <span class="tok-o">{</span> <span class="tok-k">float</span> volume_m3<span class="tok-o">;</span> <span class="tok-k">float</span> compCapacity_m3min<span class="tok-o">;</span> <span class="tok-k">float</span> compPower_kW<span class="tok-o">;</span> <span class="tok-o">};</span>
+
+<span class="tok-c">// From pressure decay p1-&gt;p2 over t seconds (no demand).</span>
+<span class="tok-k">float</span> <span class="tok-f">leakFlowFromDecay</span><span class="tok-o">(</span><span class="tok-k">float</span> p1_bar<span class="tok-o">,</span> <span class="tok-k">float</span> p2_bar<span class="tok-o">,</span> <span class="tok-k">float</span> t_s<span class="tok-o">,</span>
+                        <span class="tok-k">const</span> <span class="tok-t">System</span> <span class="tok-o">&amp;</span>s<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">float</span> freeAirLost <span class="tok-o">=</span> s<span class="tok-o">.</span>volume_m3 <span class="tok-o">*</span> <span class="tok-o">(</span>p1_bar <span class="tok-o">-</span> p2_bar<span class="tok-o">);</span>   <span class="tok-c">// ~ m3 free air</span>
+  <span class="tok-k">return</span> <span class="tok-o">(</span>freeAirLost <span class="tok-o">/</span> <span class="tok-o">(</span>t_s<span class="tok-o">/</span><span class="tok-n">60.0</span>f<span class="tok-o">));</span>                    <span class="tok-c">// m3/min</span>
+<span class="tok-o">}</span>
+
+<span class="tok-c">// From no-demand compressor loaded fraction.</span>
+<span class="tok-k">float</span> <span class="tok-f">leakFlowFromCycling</span><span class="tok-o">(</span><span class="tok-k">float</span> loadedFraction<span class="tok-o">,</span> <span class="tok-k">const</span> <span class="tok-t">System</span> <span class="tok-o">&amp;</span>s<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">return</span> loadedFraction <span class="tok-o">*</span> s<span class="tok-o">.</span>compCapacity_m3min<span class="tok-o">;</span>          <span class="tok-c">// m3/min</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">float</span> <span class="tok-f">annualLeakCost</span><span class="tok-o">(</span><span class="tok-k">float</span> loadedFraction<span class="tok-o">,</span> <span class="tok-k">const</span> <span class="tok-t">System</span> <span class="tok-o">&amp;</span>s<span class="tok-o">,</span>
+                     <span class="tok-k">float</span> hoursPerYear<span class="tok-o">,</span> <span class="tok-k">float</span> tariff<span class="tok-o">)</span> <span class="tok-o">{</span>
+  <span class="tok-k">float</span> wastedKW <span class="tok-o">=</span> loadedFraction <span class="tok-o">*</span> s<span class="tok-o">.</span>compPower_kW<span class="tok-o">;</span>
+  <span class="tok-k">return</span> wastedKW <span class="tok-o">*</span> hoursPerYear <span class="tok-o">*</span> tariff<span class="tok-o">;</span>               <span class="tok-c">// currency/year</span>
+<span class="tok-o">}</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">float freeAirLost = s.volume_m3 * (p1_bar - p2_bar)</span><span class="txt">The pressure drop in the known system volume during no demand gives the free air lost, and dividing by time gives the leak flow.</span></div><div><span class="ref">return loadedFraction * s.compCapacity_m3min</span><span class="txt">During no demand, the fraction of time the compressor runs loaded times its capacity is the leak flow — a second, independent quantification.</span></div><div><span class="ref">float wastedKW = loadedFraction * s.compPower_kW</span><span class="txt">That same loaded fraction times the compressor power is the wasted electrical power feeding the leaks.</span></div><div><span class="ref">return wastedKW * hoursPerYear * tariff</span><span class="txt">Multiplying by run hours and tariff turns the leak into an annual cost — the number that justifies the repair.</span></div></div></li><li><h4>Detect/locate acoustically and trend</h4><p>Use ultrasonic level to flag leaks and assist location, trend the quantified leak load over time, and verify repairs by the drop in decay/cycling.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Log the no-demand leak metric each night; a rising trend means new/growing leaks, and a step down after maintenance proves (and quantifies) the fix.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="compressed-air-leak-monitor.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">compressed-air-leak-monitor.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy compressed-air-leak-monitor.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="compressed-air-leak-monitor.ino" type="button" aria-label="Download compressed-air-leak-monitor.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   Compressed Air Leak Monitor — ESP32</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Quantifies compressed-air leakage from no-demand pressure decay and</span>
+<span class="tok-c">   compressor cycling, estimates energy cost, flags/locates leaks</span>
+<span class="tok-c">   ultrasonically, and trends leakage to verify repairs.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">WiFi</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">PubSubClient</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Wire</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Adafruit_SSD1306</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+<span class="tok-p">#include</span> <span class="tok-o">&lt;</span><span class="tok-t">Preferences</span><span class="tok-o">.</span>h<span class="tok-o">&gt;</span>
+
+<span class="tok-p">#define</span> <span class="tok-t">PIN_PRESSURE</span> <span class="tok-n">34</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_ULTRA</span>    <span class="tok-n">35</span>
+<span class="tok-p">#define</span> <span class="tok-t">PIN_COMP</span>     <span class="tok-n">27</span>       <span class="tok-c">// compressor loaded (HIGH)</span>
+<span class="tok-p">#define</span> <span class="tok-t">PMAX_BAR</span>     <span class="tok-n">16.0</span>f
+<span class="tok-p">#define</span> <span class="tok-t">VOLUME_M3</span>    <span class="tok-n">2.0</span>f
+<span class="tok-p">#define</span> <span class="tok-t">COMP_CAP_M3MIN</span> <span class="tok-n">5.0</span>f
+<span class="tok-p">#define</span> <span class="tok-t">COMP_KW</span>      <span class="tok-n">37.0</span>f
+<span class="tok-p">#define</span> <span class="tok-t">TARIFF</span>       <span class="tok-n">8.0</span>f     <span class="tok-c">// currency per kWh</span>
+<span class="tok-p">#define</span> <span class="tok-t">HOURS_YEAR</span>   <span class="tok-n">8000.0</span>f
+
+<span class="tok-t">Adafruit_SSD1306</span> <span class="tok-f">oled</span><span class="tok-o">(</span><span class="tok-n">128</span><span class="tok-o">,</span><span class="tok-n">64</span><span class="tok-o">,&amp;</span><span class="tok-t">Wire</span><span class="tok-o">);</span>
+<span class="tok-t">Preferences</span> prefs<span class="tok-o">;</span> <span class="tok-t">WiFiClient</span> net<span class="tok-o">;</span> <span class="tok-t">PubSubClient</span> <span class="tok-f">mqtt</span><span class="tok-o">(</span>net<span class="tok-o">);</span>
+
+<span class="tok-k">float</span> <span class="tok-f">readPressure</span><span class="tok-o">(){</span> <span class="tok-k">return</span> <span class="tok-f">analogRead</span><span class="tok-o">(</span><span class="tok-t">PIN_PRESSURE</span><span class="tok-o">)/</span><span class="tok-n">4095.0</span>f <span class="tok-o">*</span> <span class="tok-t">PMAX_BAR</span><span class="tok-o">;</span> <span class="tok-o">}</span>
+<span class="tok-k">float</span> <span class="tok-f">ultrasonicLevel</span><span class="tok-o">(){</span> <span class="tok-k">return</span> <span class="tok-f">analogRead</span><span class="tok-o">(</span><span class="tok-t">PIN_ULTRA</span><span class="tok-o">)/</span><span class="tok-n">4095.0</span>f<span class="tok-o">;</span> <span class="tok-o">}</span>
+
+<span class="tok-c">// Track compressor loaded fraction during a no-demand window.</span>
+<span class="tok-k">uint32_t</span> noDemandStart<span class="tok-o">=</span><span class="tok-n">0</span><span class="tok-o">,</span> loadedMs<span class="tok-o">=</span><span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">float</span> p1<span class="tok-o">=</span><span class="tok-n">0</span><span class="tok-o">;</span> <span class="tok-k">bool</span> inNoDemand<span class="tok-o">=</span><span class="tok-k">false</span><span class="tok-o">;</span>
+
+<span class="tok-k">void</span> <span class="tok-f">startNoDemand</span><span class="tok-o">(){</span> inNoDemand<span class="tok-o">=</span><span class="tok-k">true</span><span class="tok-o">;</span> noDemandStart<span class="tok-o">=</span><span class="tok-f">millis</span><span class="tok-o">();</span> loadedMs<span class="tok-o">=</span><span class="tok-n">0</span><span class="tok-o">;</span> p1<span class="tok-o">=</span><span class="tok-f">readPressure</span><span class="tok-o">();</span> <span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">endNoDemand</span><span class="tok-o">(){</span>
+  inNoDemand<span class="tok-o">=</span><span class="tok-k">false</span><span class="tok-o">;</span>
+  <span class="tok-k">uint32_t</span> total <span class="tok-o">=</span> <span class="tok-f">millis</span><span class="tok-o">()-</span>noDemandStart<span class="tok-o">;</span>
+  <span class="tok-k">float</span> loadedFrac <span class="tok-o">=</span> total<span class="tok-o">?</span> <span class="tok-o">(</span><span class="tok-k">float</span><span class="tok-o">)</span>loadedMs<span class="tok-o">/</span>total <span class="tok-o">:</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> p2 <span class="tok-o">=</span> <span class="tok-f">readPressure</span><span class="tok-o">();</span>
+  <span class="tok-k">float</span> decayFlow <span class="tok-o">=</span> <span class="tok-t">VOLUME_M3</span><span class="tok-o">*(</span>p1<span class="tok-o">-</span>p2<span class="tok-o">)</span> <span class="tok-o">/</span> <span class="tok-o">((</span>total<span class="tok-o">/</span><span class="tok-n">1000.0</span>f<span class="tok-o">)/</span><span class="tok-n">60.0</span>f<span class="tok-o">);</span>  <span class="tok-c">// m3/min</span>
+  <span class="tok-k">float</span> cycleFlow <span class="tok-o">=</span> loadedFrac <span class="tok-o">*</span> <span class="tok-t">COMP_CAP_M3MIN</span><span class="tok-o">;</span>                   <span class="tok-c">// m3/min</span>
+  <span class="tok-k">float</span> wastedKW  <span class="tok-o">=</span> loadedFrac <span class="tok-o">*</span> <span class="tok-t">COMP_KW</span><span class="tok-o">;</span>
+  <span class="tok-k">float</span> annualCost<span class="tok-o">=</span> wastedKW <span class="tok-o">*</span> <span class="tok-t">HOURS_YEAR</span> <span class="tok-o">*</span> <span class="tok-t">TARIFF</span><span class="tok-o">;</span>
+
+  <span class="tok-k">char</span> m<span class="tok-o">[</span><span class="tok-n">240</span><span class="tok-o">];</span>
+  <span class="tok-f">snprintf</span><span class="tok-o">(</span>m<span class="tok-o">,</span><span class="tok-k">sizeof</span> m<span class="tok-o">,</span>
+    <span class="tok-s">"{\"leak_decay_m3min\":%.2f,\"leak_cycle_m3min\":%.2f,"</span>
+    <span class="tok-s">"\"wasted_kW\":%.1f,\"annual_cost\":%.0f}"</span><span class="tok-o">,</span>
+    decayFlow<span class="tok-o">,</span> cycleFlow<span class="tok-o">,</span> wastedKW<span class="tok-o">,</span> annualCost<span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">publish</span><span class="tok-o">(</span><span class="tok-s">"air/leak/summary"</span><span class="tok-o">,</span> m<span class="tok-o">);</span>       <span class="tok-c">// trend + verify repairs</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">(){</span>
+  <span class="tok-t">Serial</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">115200</span><span class="tok-o">);</span>
+  <span class="tok-f">pinMode</span><span class="tok-o">(</span><span class="tok-t">PIN_COMP</span><span class="tok-o">,</span> <span class="tok-t">INPUT</span><span class="tok-o">);</span>
+  <span class="tok-t">Wire</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">21</span><span class="tok-o">,</span><span class="tok-n">22</span><span class="tok-o">);</span> oled<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-t">SSD1306_SWITCHCAPVCC</span><span class="tok-o">,</span><span class="tok-n">0x3C</span><span class="tok-o">);</span>
+  <span class="tok-t">WiFi</span><span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-t">WIFI_SSID</span><span class="tok-o">,</span><span class="tok-t">WIFI_PASS</span><span class="tok-o">);</span> mqtt<span class="tok-o">.</span><span class="tok-f">setServer</span><span class="tok-o">(</span><span class="tok-t">MQTT_HOST</span><span class="tok-o">,</span><span class="tok-n">1883</span><span class="tok-o">);</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">(){</span>
+  <span class="tok-k">if</span><span class="tok-o">(!</span>mqtt<span class="tok-o">.</span><span class="tok-f">connected</span><span class="tok-o">()&amp;&amp;</span><span class="tok-t">WiFi</span><span class="tok-o">.</span><span class="tok-f">status</span><span class="tok-o">()==</span><span class="tok-t">WL_CONNECTED</span><span class="tok-o">)</span> mqtt<span class="tok-o">.</span><span class="tok-f">connect</span><span class="tok-o">(</span><span class="tok-s">"air-1"</span><span class="tok-o">);</span>
+  mqtt<span class="tok-o">.</span><span class="tok-f">loop</span><span class="tok-o">();</span>
+
+  <span class="tok-k">bool</span> noDemand <span class="tok-o">=</span> <span class="tok-f">isNoDemandPeriod</span><span class="tok-o">();</span>          <span class="tok-c">// from schedule</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>noDemand <span class="tok-o">&amp;&amp;</span> <span class="tok-o">!</span>inNoDemand<span class="tok-o">)</span> <span class="tok-f">startNoDemand</span><span class="tok-o">();</span>
+  <span class="tok-k">if</span> <span class="tok-o">(!</span>noDemand <span class="tok-o">&amp;&amp;</span> inNoDemand<span class="tok-o">)</span> <span class="tok-f">endNoDemand</span><span class="tok-o">();</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>inNoDemand <span class="tok-o">&amp;&amp;</span> <span class="tok-f">digitalRead</span><span class="tok-o">(</span><span class="tok-t">PIN_COMP</span><span class="tok-o">)==</span><span class="tok-t">HIGH</span><span class="tok-o">)</span> loadedMs <span class="tok-o">+=</span> <span class="tok-n">200</span><span class="tok-o">;</span>  <span class="tok-c">// loaded time</span>
+
+  <span class="tok-k">float</span> ultra <span class="tok-o">=</span> <span class="tok-f">ultrasonicLevel</span><span class="tok-o">();</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span>ultra <span class="tok-o">&gt;</span> <span class="tok-t">ULTRA_LEAK_THRESH</span><span class="tok-o">)</span>                <span class="tok-c">// near a leak</span>
+    mqtt<span class="tok-o">.</span><span class="tok-f">publish</span><span class="tok-o">(</span><span class="tok-s">"air/leak/acoustic"</span><span class="tok-o">,</span> <span class="tok-s">"ultrasonic leak nearby"</span><span class="tok-o">);</span>
+
+  <span class="tok-k">float</span> p <span class="tok-o">=</span> <span class="tok-f">readPressure</span><span class="tok-o">();</span>
+  oled<span class="tok-o">.</span><span class="tok-f">clearDisplay</span><span class="tok-o">();</span> oled<span class="tok-o">.</span><span class="tok-f">setCursor</span><span class="tok-o">(</span><span class="tok-n">0</span><span class="tok-o">,</span><span class="tok-n">0</span><span class="tok-o">);</span>
+  oled<span class="tok-o">.</span><span class="tok-f">printf</span><span class="tok-o">(</span><span class="tok-s">"P: %.1f bar\nUltra: %.2f\n%s"</span><span class="tok-o">,</span> p<span class="tok-o">,</span> ultra<span class="tok-o">,</span>
+              inNoDemand<span class="tok-o">?</span><span class="tok-s">"NO-DEMAND"</span><span class="tok-o">:</span><span class="tok-s">"running"</span><span class="tok-o">);</span>
+  oled<span class="tok-o">.</span><span class="tok-f">display</span><span class="tok-o">();</span>
+
+  <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">200</span><span class="tok-o">);</span>
+<span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (82 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">void startNoDemand()</span><span class="txt">When a no-demand period begins, the monitor records the starting pressure and begins timing how long the compressor runs loaded — the two independent leakage measures.</span></div><div><span class="ref">float decayFlow = VOLUME_M3*(p1-p2) / ((total/1000.0f)/60.0f)</span><span class="txt">The pressure decay over the no-demand window gives the leak flow directly from the system volume.</span></div><div><span class="ref">float cycleFlow = loadedFrac * COMP_CAP_M3MIN</span><span class="txt">Independently, the fraction of no-demand time the compressor ran loaded times its capacity gives the leak flow — cross-checking the decay figure.</span></div><div><span class="ref">float annualCost= wastedKW * HOURS_YEAR * TARIFF</span><span class="txt">The wasted power is turned into an annual cost, the number that turns "there are leaks" into a justified repair budget.</span></div><div><span class="ref">if (ultra &gt; ULTRA_LEAK_THRESH)</span><span class="txt">A high ultrasonic level flags a nearby leak — the acoustic aid that helps a technician find the exact fitting silent to the ear.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Set the system volume, compressor capacity/power, tariff and run hours for quantification.</li><li>Configure the no-demand schedule and the pressure/compressor/ultrasonic inputs.</li><li>Set leak targets and the ultrasonic threshold.</li><li>Configure trending/logging and repair-verification reporting.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Pressure</h4><p>Verify the pressure reading against a reference gauge; confirm the transducer range/scaling.</p></li><li><h4>Quantification</h4><p>Confirm the system volume and compressor figures so decay/cycling convert to realistic leak flow and cost; cross-check the two methods.</p></li><li><h4>Ultrasonic</h4><p>Learn the background ultrasonic level and set the threshold so a real leak stands out; test on a known small leak.</p></li></ol></section>
+
+<section id="connectivity" aria-labelledby="h-connectivity"><h2 id="h-connectivity">Network Architecture &amp; Connectivity</h2>
+<div class="diagram-scroll"><figure class="diagram diagram-network">
+  <svg viewBox="0 0 760 232" role="img" aria-labelledby="td557 sd557" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td557">Compressed Air Leak Monitor — network topology</title><desc id="sd557">Path taken by telemetry from field node to end user.</desc>
+    <defs>
+    <marker id="ar-d557" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d557" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d557" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d557" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="100" y="26" text-anchor="middle">Edge nodes</text><text class="dg-col" x="321" y="26" text-anchor="middle">Gateway</text><text class="dg-col" x="543" y="26" text-anchor="middle">Cloud</text><text class="dg-col" x="769" y="26" text-anchor="middle">Clients</text><rect x="16" y="52" width="168" height="52" rx="11"
+        fill="url(#gb-d557)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="74" text-anchor="middle"><tspan x="100" y="74.0">Air monitor</tspan></text><text class="dg-s" x="100" y="92" text-anchor="middle">ESP32</text><path d="M184 78 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d557)"/><rect x="16" y="118" width="168" height="52" rx="11"
+        fill="url(#gb-d557)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="140" text-anchor="middle"><tspan x="100" y="140.0">Other systems</tspan></text><text class="dg-s" x="100" y="158" text-anchor="middle">per-compressor</text><path d="M184 144 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d557)"/><text class="dg-e" x="215" y="46" text-anchor="middle">Wi-Fi 2.4 GHz</text><rect x="246" y="92" width="150" height="60" rx="11"
+        fill="url(#ga-d557)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="321" y="114" text-anchor="middle"><tspan x="321" y="114.0">Router</tspan></text><text class="dg-s" x="321" y="132" text-anchor="middle">to server</text><path d="M396 122 H460" stroke="var(--dg-accent)" stroke-width="1.6" fill="none" marker-end="url(#arh-d557)"/><text class="dg-e" x="432" y="112" text-anchor="middle">MQTT/HTTP</text><rect x="468" y="88" width="150" height="68" rx="11"
+        fill="url(#ga-d557)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="543" y="110" text-anchor="middle"><tspan x="543" y="110.0">Dashboard/CMMS</tspan></text><text class="dg-s" x="543" y="128" text-anchor="middle">leak load + cost</text><rect x="690" y="52" width="158" height="52" rx="11"
+        fill="url(#gb-d557)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="74" text-anchor="middle"><tspan x="769" y="74.0">Energy</tspan></text><text class="dg-s" x="769" y="92" text-anchor="middle">leak trend/cost</text><path d="M618 122 C 652 122, 656 78, 682 78"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d557)"/><rect x="690" y="118" width="158" height="52" rx="11"
+        fill="url(#gb-d557)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="140" text-anchor="middle"><tspan x="769" y="140.0">Maintenance</tspan></text><text class="dg-s" x="769" y="158" text-anchor="middle">find/fix</text><path d="M618 122 C 652 122, 656 144, 682 144"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d557)"/>
+  </svg>
+  <figcaption>Compressed Air Leak Monitor — network topology</figcaption>
+</figure></div>
+<h3>Communication protocol</h3><p>No-demand leak summaries (flow, wasted power, cost) publish per period; acoustic leak flags publish on detection. Trends drive repair prioritisation and verification.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Topic / endpoint</th><th scope="col">Direction</th><th scope="col">Payload</th></tr></thead>
+    <tbody><tr><td><code>air/leak/summary</code></td><td>node → dashboard</td><td>leak flow (decay+cycle), wasted kW, cost</td></tr><tr><td><code>air/leak/acoustic</code></td><td>node → maintenance</td><td>ultrasonic leak nearby</td></tr><tr><td><code>air/system/status</code></td><td>node → ops</td><td>pressure, compressor cycling</td></tr></tbody>
+  </table></div><p class="tbl-caption">Message contract between the device and the broker.</p>
+<h3>Cloud platform configuration</h3><p>A dashboard/CMMS trends the leak load and cost, prioritises repairs, and verifies savings after maintenance; acoustic flags aid leak hunting.</p>
+
+<h3>Dashboard setup</h3><p>Pressure and no-demand leak-load trend with cost, an ultrasonic leak indicator, and repair-verification comparisons.</p>
+<h3>Mobile app integration</h3><p>Alerts on a rising leak load and acoustic leak detections; savings summaries after repairs.</p>
+<h3>Security considerations</h3><ul class="check"><li>Authenticate nodes; secure the energy data.</li><li>Keep quantification inputs (system/compressor specs) accurate for trustworthy cost figures.</li><li>Alert on monitor silence.</li></ul></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Run a no-demand period on a sealed system</b></td><td>Slow decay / minimal cycling — low leakage</td></tr><tr><td><b>Introduce a known leak</b></td><td>Faster decay / more cycling; leak flow and cost quantified</td></tr><tr><td><b>Bring an ultrasonic source near the sensor</b></td><td>Ultrasonic level rises; leak-nearby flag</td></tr><tr><td><b>Trend over nights</b></td><td>A worsening leak load shows as a rising trend</td></tr><tr><td><b>Repair leaks and re-measure</b></td><td>Decay/cycling drop; recovered air/cost quantified</td></tr><tr><td><b>Cross-check decay vs cycling</b></td><td>The two leak-flow estimates broadly agree</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>The dashboard shows current pressure, the quantified no-demand leak flow and its annual cost, an ultrasonic leak indicator, and a leak-load trend with repair markers.</p>
+<div class="codeblock tall" data-file="air-leak.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">air-leak.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy air-leak.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="air-leak.json" type="button" aria-label="Download air-leak.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "leak_decay_m3min": <span class="tok-n">0.9</span>,
+  "leak_cycle_m3min": <span class="tok-n">0.95</span>,
+  "wasted_kW": <span class="tok-n">7.0</span>,
+  "annual_cost": <span class="tok-n">448000</span>
+}</code></pre>
+  
+</div>
+
+<p>The two methods agree on ~0.9 m³/min of leakage, ~7 kW of wasted power costing ~₹4.5 lakh/year — an invisible waste made visible and costed; after repairs these numbers drop, proving the saving.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Grafana%20dashboard.png?width=900" alt="A Grafana time-series dashboard" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td558" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td558">A dashboard costs the leak load and verifies the savings once leaks are repaired.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="30" y="34" width="340" height="192" rx="10" fill="var(--dg-box-b)" stroke="var(--dg-stroke)"/>
+    <rect x="30" y="34" width="340" height="28" rx="10" fill="var(--dg-chip)"/>
+    <circle cx="48" cy="48" r="4" fill="#e05f5f"/><circle cx="62" cy="48" r="4" fill="#e0b45f"/><circle cx="76" cy="48" r="4" fill="#5fe08a"/>
+    <rect x="44" y="76" width="140" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="58" y="98" font-size="10" fill="var(--dg-muted)">TEMPERATURE</text>
+    <text x="58" y="126" font-size="24" fill="var(--dg-accent)" font-family="monospace">27.4°</text>
+    <rect x="198" y="76" width="158" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="210,126 236,110 262,118 288,94 314,104 340,86" fill="none" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="44" y="152" width="312" height="60" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="56,196 86,180 116,188 146,160 176,172 206,146 236,158 266,138 296,150 340,128"
+      fill="none" stroke="var(--dg-accent)" stroke-width="2" opacity=".8"/>
+  </svg>
+  <figcaption>A dashboard costs the leak load and verifies the savings once leaks are repaired.</figcaption>
+</figure></template>
+  <figcaption>A dashboard costs the leak load and verifies the savings once leaks are repaired.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Grafana_dashboard.png" rel="noopener nofollow" target="_blank">Wikimedia Commons — Grafana dashboard.png</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Leak flow numbers unrealistic</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong system volume/compressor figures</p>
+        <p><strong>Fix.</strong> Verify V, capacity and power; cross-check decay vs cycling</p></div></details><details class="expand"><summary>No clear no-demand signal</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Demand schedule wrong / genuine demand overnight</p>
+        <p><strong>Fix.</strong> Confirm real no-demand periods; use compressor cycling if pressure is held by demand</p></div></details><details class="expand"><summary>Ultrasonic false/no detection</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong sensor range or background noise</p>
+        <p><strong>Fix.</strong> Use a dedicated ultrasonic sensor; learn background; use directional pickup</p></div></details><details class="expand"><summary>Can't verify repairs</summary><div class="inner">
+        <p><strong>Likely cause.</strong> No trend/baseline</p>
+        <p><strong>Fix.</strong> Log the no-demand leak metric before and after; compare</p></div></details><details class="expand"><summary>Safety concern</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Unsafe leak hunting near pressurised lines</p>
+        <p><strong>Fix.</strong> Follow pressurised-system safety; avoid air-jet injury</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details><details class="expand"><summary>An I²C device is not detected</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong address, missing pull-ups, swapped SDA/SCL, or a bus too long for the pull-up value.</p>
+        <p><strong>Fix.</strong> Run an I²C scanner sketch first — it should print the device address. Most breakout boards include 4.7 kΩ pull-ups, but if you have chained four of them the parallel resistance is too low; remove the pull-ups from all but one board. Keep the bus under 30 cm at 100 kHz.</p></div></details><details class="expand"><summary>Wi-Fi connects but MQTT never does (state -2)</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong broker address or port, a firewall in the way, or the broker requiring credentials the sketch is not sending.</p>
+        <p><strong>Fix.</strong> Test from a laptop on the same network first: <code>mosquitto_sub -h &lt;broker&gt; -t "#" -v</code>. If that works, the problem is on the device — check the IP literal, port 1883 (or 8883 for TLS), and that <code>client.setServer()</code> runs before <code>connect()</code>. PubSubClient state codes are documented in its header.</p></div></details><details class="expand"><summary>Readings arrive for a while and then stop</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The Wi-Fi or MQTT session dropped and the sketch never reconnects, or the broker dropped the client on keep-alive timeout.</p>
+        <p><strong>Fix.</strong> Never assume the link stays up. Check <code>WiFi.status()</code> and <code>client.connected()</code> at the top of every loop and reconnect with exponential backoff. Add a watchdog so a wedged network stack reboots the device instead of going silent.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Sample pressure/compressor at a modest rate; analyse over no-demand windows.</li><li>Cross-check decay and cycling estimates for confidence.</li><li>Trend the nightly leak metric to catch worsening leaks and verify repairs.</li><li>Handle ultrasonic detection separately as a location aid.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Batch several samples into one MQTT publish. Radio time, not CPU time, dominates the energy budget.</li><li>Set the MQTT keep-alive to a value that matches your reporting interval so the broker does not churn reconnections.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>Work safely around pressurised systems — a compressed-air jet can cause serious injury; keep leak hunting safe.</li><li>Quantification depends on correct compressor/system specifics; label figures as estimates where inputs are uncertain.</li><li>Ultrasonic leak location is a skilled aid, not an automatic map.</li><li>Coordinate with maintenance/energy teams; do not interfere with compressor control.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Verify pressure calibration and quantification inputs periodically.</li><li>Re-learn the ultrasonic background as the environment changes.</li><li>Repair flagged leaks and log the verified savings.</li><li>Trend the leak load and act before it grows.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Rotate the microSD card annually and keep an image of the working system. Cards used as loggers wear out silently.</li><li>Keep the broker and dashboard containers patched, and rotate device credentials at least once a year.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add flow metering for direct leak measurement.</li><li>Add multiple ultrasonic sensors / a scanning aid for faster location.</li><li>Model demand to separate leaks from process use during production.</li><li>Integrate with the CMMS to raise and track leak-repair work orders.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add over-the-air firmware updates so you never have to physically reach a deployed node again.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>Why care about compressed-air leaks?</summary><div class="inner"><p>Compressed air is expensive energy, and leaks commonly waste 20-30% of it continuously and invisibly. Finding and fixing them is one of the highest-ROI energy savings a factory can make.</p></div></details><details class="expand"><summary>How does it quantify the leak without a flow meter?</summary><div class="inner"><p>During no-demand periods a leak-free system should hold pressure with the compressor off. The rate of pressure decay in the known system volume, and the no-demand compressor cycling, both give the leak flow — and thus the wasted power and cost.</p></div></details><details class="expand"><summary>How does it help find the leaks?</summary><div class="inner"><p>Escaping air hisses ultrasonically, above human hearing. An ultrasonic detector, especially a directional one, points a technician to a leak that is completely silent to the ear.</p></div></details><details class="expand"><summary>How do I prove a repair worked?</summary><div class="inner"><p>Re-measure the no-demand leak metric after fixing leaks. The decay slows and cycling drops, and the monitor quantifies the recovered air and money — verifying and justifying the maintenance.</p></div></details><details class="expand"><summary>What do I need for accurate cost figures?</summary><div class="inner"><p>The system volume and the compressor's capacity and power (plus tariff and run hours). These convert the measured leakage into real energy and money; get them right for trustworthy numbers.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://www.energy.gov/eere/amo/compressed-air-systems" rel="noopener nofollow" target="_blank">Compressed air energy efficiency and leaks</a><span class="src">US DOE</span></li><li><a href="https://en.wikipedia.org/wiki/Ultrasonic_testing" rel="noopener nofollow" target="_blank">Ultrasonic leak detection</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Compressed_air" rel="noopener nofollow" target="_blank">Compressed air systems — overview</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Air_compressor" rel="noopener nofollow" target="_blank">Compressor load/unload control</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Leak_testing" rel="noopener nofollow" target="_blank">Pressure decay leak testing</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="oee-productivity-tracker.html"><span class="dir">← Previous project</span><span class="ttl">OEE Productivity Tracker</span></a>
+        <a class="next" href="worker-safety-wearable.html"><span class="dir">Next project →</span><span class="ttl">Worker Safety Wearable</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Intermediate</b></div>
+        <div class="rail-stat"><span>Time</span><b>12–18 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>10</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹3,500 – ₹6,000</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="machine-vibration-monitor.html">Machine Vibration Monitor</a></li><li><a href="factory-energy-dashboard.html">Factory Energy Dashboard</a></li><li><a href="conveyor-item-counter.html">Conveyor Item Counter</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="machine-vibration-monitor.html">
+        <span class="rc">Industrial</span>
+        <h4>Machine Vibration Monitor</h4>
+        <p>Senses abnormal vibration to predict bearing and motor failures.</p></a><a class="relcard" href="factory-energy-dashboard.html">
+        <span class="rc">Industrial</span>
+        <h4>Factory Energy Dashboard</h4>
+        <p>Tracks per-machine power use to cut waste and spot anomalies.</p></a><a class="relcard" href="conveyor-item-counter.html">
+        <span class="rc">Industrial</span>
+        <h4>Conveyor Item Counter</h4>
+        <p>Counts products on the line for accurate, automatic production tallies.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Compressed Air Leak Monitor</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
