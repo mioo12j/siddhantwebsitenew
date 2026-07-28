@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Smart Shelf Stock Sensor — Circuit, Code &amp; Full Build Guide | Retail</title>
+  <meta name="description" content="Complete intermediate-level build guide for a Smart Shelf Stock Sensor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="smart shelf stock sensor, smart shelf stock sensor project, how to build smart shelf stock sensor, esp32 devkit v1 project, retail project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/smart-shelf-stock-sensor.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/smart-shelf-stock-sensor.html" />
+  <meta property="og:title" content="Smart Shelf Stock Sensor — Circuit, Code &amp; Full Build Guide | Retail" />
+  <meta property="og:description" content="Complete intermediate-level build guide for a Smart Shelf Stock Sensor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Retail" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Smart Shelf Stock Sensor — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete intermediate-level build guide for a Smart Shelf Stock Sensor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🛒</text></svg>" />
+  <style>:root{--acc:#22d3ee;--acc-light:#67e8f9;--acc-rgb:34,211,238}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/smart-shelf-stock-sensor.html#article","headline":"Smart Shelf Stock Sensor — Complete Build Guide","name":"Smart Shelf Stock Sensor","description":"Complete intermediate-level build guide for a Smart Shelf Stock Sensor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/smart-shelf-stock-sensor.html","inLanguage":"en","articleSection":"Retail","keywords":"smart shelf stock sensor, smart shelf stock sensor project, how to build smart shelf stock sensor, esp32 devkit v1 project, retail project, circuit diagram, source code, tutorial","proficiencyLevel":"Intermediate","dependencies":"WiFi (ESP32 core), HX711, PubSubClient, Adafruit SSD1306 + GFX, ArduinoJson","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-28","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/smart-shelf-stock-sensor.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/smart-shelf-stock-sensor.html#howto","name":"How to build a Smart Shelf Stock Sensor","description":"Complete intermediate-level build guide for a Smart Shelf Stock Sensor: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT14H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"2470"},"supply":[{"@type":"HowToSupply","name":"ESP32 DevKit V1 (ESP-WROOM-32)"},{"@type":"HowToSupply","name":"5 kg load cell + HX711 24-bit ADC"},{"@type":"HowToSupply","name":"0.96″ SSD1306 OLED display"},{"@type":"HowToSupply","name":"18650 Li-ion cell 3400 mAh + holder"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Estimate count and detect sale/refill","text":"Convert the net weight to a unit count, and infer sale/refill events from the size and direction of weight steps."},{"@type":"HowToStep","position":2,"name":"Alert low stock and report per shelf","text":"Flag the shelf when the count crosses the low threshold, clear it on a refill, and report live stock to the back-office dashboard so staff go to the right shelves."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Smart Shelf Stock Sensor","item":"https://siddhantkumar.in/projects/docs/smart-shelf-stock-sensor.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/smart-shelf-stock-sensor.html#faq","mainEntity":[{"@type":"Question","name":"How does a shelf know its stock?","acceptedAnswer":{"@type":"Answer","text":"It sits on a load cell and weighs what is on it. Dividing the net product weight by the known weight of one unit estimates how many units remain, continuously."}},{"@type":"Question","name":"Why weight instead of barcodes or RFID?","acceptedAnswer":{"@type":"Answer","text":"Weight is continuous, needs no per-item tagging, and directly tracks how much is left — ideal for the specific job of spotting low stock early. Barcodes and RFID give per-SKU precision and complement it where that is needed."}},{"@type":"Question","name":"How does it avoid empty shelves?","acceptedAnswer":{"@type":"Answer","text":"It alerts while a few units still remain — a low-stock threshold set to give restock lead time — so staff are directed to refill before the shelf actually empties and a sale is lost."}},{"@type":"Question","name":"What are the limits of weight counting?","acceptedAnswer":{"@type":"Answer","text":"It is an estimate that assumes fairly uniform unit weights, so it is confused by mixed products on one sensor, items placed on the wrong shelf, or highly variable weights, and it needs periodic taring/calibration to counter drift."}},{"@type":"Question","name":"Can it tell sales from restocks?","acceptedAnswer":{"@type":"Answer","text":"Yes — from the direction and size of weight steps. A unit-sized drop is a sale; a jump up is a refill, which also clears the low-stock alert."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#retail">Retail</a><span class="sep">/</span>
+        <span aria-current="page">Smart Shelf Stock Sensor</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 097 · Retail</span>
+          <h1>Smart Shelf Stock Sensor<span class="grad">.</span></h1>
+          <p class="tagline">Weight-sensing shelves that always know how much stock is left and flag a shelf the moment it runs low — turning empty shelves into pre-empted restocks.</p>
+          <div class="hero-chips">
+            <span class="chip lv-intermediate">Intermediate</span>
+            <span class="chip">10–16 hours</span>
+            <span class="chip neutral">27 min read</span>
+            <span class="chip neutral">Weight</span><span class="chip neutral">Retail</span><span class="chip neutral">Alerts</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td834" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td834">Smart Shelf Stock Sensor — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Smart Shelf Stock Sensor — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Intermediate</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>10–16 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹1,200 – ₹2,500 per shelf</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>ESP32 DevKit V1 (ESP-WROOM-32)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Retail</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>28 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#connectivity"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Network Architecture &amp; Connectivity</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Weight-sensing shelves that always know how much stock is left and flag a shelf the moment it runs low — turning empty shelves into pre-empted restocks.</p>
+<p>An empty shelf is a lost sale and an unhappy customer, and in most shops it is discovered only when a member of staff happens to walk past or a customer complains — by which point the product has already been out of stock for hours. The root problem is that shelves have <b>no idea what is on them</b>. This project fixes that by making the shelf itself a sensor: a <b>weight-sensing shelf</b> continuously measures the load on it, infers how many units remain, and flags the shelf the moment stock falls low — so restocking is triggered <i>before</i> the shelf empties, not after a customer finds it bare.</p>
+<p>The method is elegantly simple: put the shelf (or a section of it) on a <b>load cell</b> — the same strain-gauge sensor used in electronic scales — read the weight through an <b>HX711</b> amplifier, and divide by the known weight of one unit to estimate the <b>count</b> remaining. As shoppers take items the measured weight steps down, and when the estimated count (or weight) crosses a <b>low-stock threshold</b>, the shelf raises an alert for restocking. Networked, every shelf reports its stock live to a back-office dashboard, so staff see exactly which shelves need attention across the whole store.</p>
+<p>The value is turning restocking from reactive to <b>proactive</b>: low stock is caught early and continuously, staff are directed to the specific shelves that need them, and out-of-stocks (and the lost sales they cause) drop. It is honest that weight-based counting is an <b>estimate</b> — it assumes reasonably uniform unit weights, needs taring and calibration, and is confused by mixed products or misplaced items — and that real retail also uses barcodes, RFID and vision. But as a self-sensing, low-stock-alerting weight shelf, it gives retail the one thing bare shelves never have: continuous awareness of their own stock, early enough to act on.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Supermarket%20shelves.jpg?width=900" alt="Stocked shelves in a supermarket aisle" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td826" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td826">A weight-sensing shelf always knows how much stock remains and flags low stock before it empties.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="30" y="34" width="340" height="192" rx="10" fill="var(--dg-box-b)" stroke="var(--dg-stroke)"/>
+    <rect x="30" y="34" width="340" height="28" rx="10" fill="var(--dg-chip)"/>
+    <circle cx="48" cy="48" r="4" fill="#e05f5f"/><circle cx="62" cy="48" r="4" fill="#e0b45f"/><circle cx="76" cy="48" r="4" fill="#5fe08a"/>
+    <rect x="44" y="76" width="140" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="58" y="98" font-size="10" fill="var(--dg-muted)">TEMPERATURE</text>
+    <text x="58" y="126" font-size="24" fill="var(--dg-accent)" font-family="monospace">27.4°</text>
+    <rect x="198" y="76" width="158" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="210,126 236,110 262,118 288,94 314,104 340,86" fill="none" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="44" y="152" width="312" height="60" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="56,196 86,180 116,188 146,160 176,172 206,146 236,158 266,138 296,150 340,128"
+      fill="none" stroke="var(--dg-accent)" stroke-width="2" opacity=".8"/>
+  </svg>
+  <figcaption>A weight-sensing shelf always knows how much stock remains and flags low stock before it empties.</figcaption>
+</figure></template>
+  <figcaption>A weight-sensing shelf always knows how much stock remains and flags low stock before it empties.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Supermarket_shelves.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Supermarket shelves.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Continuously weighs a shelf to sense how much stock remains</li><li>Estimates unit count from weight ÷ per-unit weight</li><li>Flags a shelf the moment stock falls below a threshold</li><li>Reports live stock per shelf to a back-office dashboard</li><li>Directs staff to the specific shelves needing restock</li><li>Triggers restocking before the shelf empties</li><li>Cuts out-of-stocks and the lost sales they cause</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Retail shelf replenishment</b></td><td>Proactive restocking of shelves before they empty.</td></tr><tr><td><b>Warehouse bin monitoring</b></td><td>Weight-based counts of parts/bins for reorder.</td></tr><tr><td><b>Vending / micro-market stock</b></td><td>Knowing remaining stock without opening the unit.</td></tr><tr><td><b>Inventory awareness</b></td><td>Continuous per-location stock for any uniform-weight product.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Load-cell + HX711 weight sensing</li><li>Weight-to-count estimation with taring/calibration</li><li>Low-stock threshold alerting</li><li>Live per-shelf stock reporting</li><li>Store-wide restock dashboard</li><li>Sale/refill event detection from weight steps</li><li>Honest about weight-estimate limits (uniform units)</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Intermediate</td></tr><tr><td><b>Estimated completion time</b></td><td>10–16 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹1,200 – ₹2,500 per shelf</td></tr><tr><td><b>Primary discipline</b></td><td>Retail</td></tr><tr><td><b>Reference platform</b></td><td>ESP32 DevKit V1 (ESP-WROOM-32)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Load-cell + HX711 weight measurement</li><li>Taring, calibration and weight-to-count conversion</li><li>Threshold alerting and event (sale/refill) detection</li><li>Networked per-shelf reporting</li><li>Handling weight-estimate error and drift</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>The problem is shelves not knowing their own stock — sense weight to know it.</p>
+<p>Count ≈ weight ÷ per-unit weight — needs taring and calibration.</p>
+<p>Alert on a low threshold so restock happens before the shelf empties.</p>
+<p>Weight counting is an estimate — assumes fairly uniform units.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b><br/><span style="font-size:.82em;opacity:.78">Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</span></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>5 kg load cell + HX711 24-bit ADC</b><br/><span style="font-size:.82em;opacity:.78">Mechanical mounting dominates accuracy — bolt it to a rigid plate, not plastic.</span></td><td>Strain-gauge bridge, 1.0 mV/V output, HX711 128× gain, 10/80 SPS</td><td class="num">1</td><td class="num">₹320</td></tr><tr><td><b>0.96″ SSD1306 OLED display</b><br/><span style="font-size:.82em;opacity:.78">Static images burn in — invert or scroll the screen periodically.</span></td><td>128 × 64 monochrome, 1.3–3.3 V logic, 100 kHz–400 kHz I²C</td><td class="num">1</td><td class="num">₹250</td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b><br/><span style="font-size:.82em;opacity:.78">Never charge below 0 °C; always use a protected cell or a BMS.</span></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td class="num">1</td><td class="num">₹450</td></tr><tr><td><b>Load cell + HX711</b><br/><span style="font-size:.82em;opacity:.78">The weight sensor</span></td><td>Strain-gauge load cell(s) + HX711 24-bit amplifier per shelf</td><td class="num">1</td><td class="num">₹350</td></tr><tr><td><b>Shelf mounting</b></td><td>Mount the shelf/section on the load cell(s)</td><td class="num">1</td><td class="num">₹300</td></tr><tr><td><b>Network + power</b></td><td>Wi-Fi to the dashboard, powered per shelf/gondola</td><td class="num">1</td><td class="num">₹200</td></tr><tr><td><b>Status indicator</b></td><td>LED/e-ink low-stock indicator on the shelf edge</td><td class="num">1</td><td class="num">₹150</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹2,470</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>ESP32 DevKit V1 (ESP-WROOM-32)</b></td><td>Dual-core Xtensa LX6 @ 240 MHz, 520 KB SRAM, 4 MB flash, Wi-Fi 802.11 b/g/n + BLE 4.2, 34 GPIO, 18× 12-bit ADC, 2× 8-bit DAC</td><td>3.3 V logic / 5 V USB</td><td>UART, SPI, I²C, I²S, CAN, PWM</td><td><a href="https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>5 kg load cell + HX711 24-bit ADC</b></td><td>Strain-gauge bridge, 1.0 mV/V output, HX711 128× gain, 10/80 SPS</td><td>2.6–5.5 V</td><td>2-wire serial (bit-banged)</td><td><a href="https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>0.96″ SSD1306 OLED display</b></td><td>128 × 64 monochrome, 1.3–3.3 V logic, 100 kHz–400 kHz I²C</td><td>3.3–5 V</td><td>I²C (0x3C)</td><td><a href="https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>18650 Li-ion cell 3400 mAh + holder</b></td><td>3.7 V nominal, 4.2 V full, 3400 mAh, ~12.6 Wh, 2 C discharge</td><td>3.0–4.2 V</td><td>Holder / spot-welded tabs</td><td><a href="https://www.orbtronic.com/content/Samsung-INR18650-35E-Datasheet-Gest.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>ESP32 DevKit V1 (ESP-WROOM-32)</td><td>3.3 V logic / 5 V USB</td><td class="num">160</td><td>Wi-Fi transmit bursts peak near 500 mA — size the regulator accordingly.</td></tr><tr><td>5 kg load cell + HX711 24-bit ADC</td><td>2.6–5.5 V</td><td class="num">1.5</td><td>Mechanical mounting dominates accuracy — bolt it to a rigid plate, not plastic.</td></tr><tr><td>0.96″ SSD1306 OLED display</td><td>3.3–5 V</td><td class="num">20</td><td>Static images burn in — invert or scroll the screen periodically.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>181.5 mA</b>. With a 1.5× design margin the supply should deliver at least <b>300 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Arduino IDE 2.3.x with the ESP32 board package 3.x (or PlatformIO on VS Code)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>WiFi (ESP32 core)</b> <span style="opacity:.7">bundled</span></td><td>Station/AP connection management for the ESP32.</td><td><code>Bundled with the ESP32 Arduino core</code></td></tr><tr><td><b>HX711</b> <span style="opacity:.7">0.7.x</span></td><td>Bit-banged 24-bit ADC read with tare and calibration factor.</td><td><code>Library Manager → "HX711" by Bogdan Necula</code></td></tr><tr><td><b>PubSubClient</b> <span style="opacity:.7">2.8</span></td><td>Lightweight MQTT 3.1.1 client for constrained devices.</td><td><code>Library Manager → "PubSubClient" by Nick O'Leary</code></td></tr><tr><td><b>Adafruit SSD1306 + GFX</b> <span style="opacity:.7">2.5.x</span></td><td>Framebuffer and text/graphics primitives for the OLED.</td><td><code>Library Manager → "Adafruit SSD1306"</code></td></tr><tr><td><b>ArduinoJson</b> <span style="opacity:.7">7.x</span></td><td>Zero-allocation JSON serialisation and parsing.</td><td><code>Library Manager → "ArduinoJson" by Benoit Blanchon</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td827 sd827" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td827">Smart Shelf Stock Sensor — system block diagram</title><desc id="sd827">Functional block diagram of the Smart Shelf Stock Sensor system.</desc>
+    <defs>
+    <marker id="ar-d827" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d827" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d827" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d827" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Sense</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d827)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Load cell</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">weight</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d827)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">HX711</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">amplify</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Estimate</text><rect x="266" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d827)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="79" text-anchor="middle"><tspan x="355" y="79.0">Tare + calib</tspan></text><text class="dg-s" x="355" y="98" text-anchor="middle"><tspan x="355" y="98.0">zero/scale</tspan></text><rect x="266" y="134" width="178" height="62" rx="12"
+          fill="url(#ga-d827)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="159" text-anchor="middle"><tspan x="355" y="159.0">Count</tspan></text><text class="dg-s" x="355" y="178" text-anchor="middle"><tspan x="355" y="178.0">÷ unit wt</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Judge</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d827)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Low?</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">threshold</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d827)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Sale/refill</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">weight step</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Act</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d827)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Alert</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">restock</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d827)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Dashboard</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">per shelf</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d827)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d827)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d827)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Smart Shelf Stock Sensor — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 316" role="img" aria-labelledby="td828 sd828" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td828">Smart Shelf Stock Sensor — wiring schematic</title><desc id="sd828">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d828" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d828" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d828" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d828" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="220" rx="14"
+      fill="url(#ga-d828)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">ESP32 DevKit V1</tspan><tspan x="434" y="95.0">(ESP-WROOM-32)</tspan></text><text class="dg-s" x="434" y="266" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d828)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">HX711</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">GPIO 16/17</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">Weight (load cell)</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d828)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">OLED</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">GPIO 21/22</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="167.0">Count/status</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d828)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Low-stock LED</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">GPIO 25</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Shelf indicator</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d828)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Wi-Fi</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">—</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Dashboard link</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d828)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">Supply</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">5V</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="219.0">Power</tspan></text><rect x="658" y="239" width="190" height="34" rx="9"
+          fill="url(#gb-d828)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="257" text-anchor="middle"><tspan x="753" y="257.0">Tare button</tspan></text><path d="M658 256 C 590 256, 590 256, 522 256" stroke="#3cc7c0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="256" r="3.2" fill="#3cc7c0"/><text class="dg-p" x="590" y="250" text-anchor="middle">GPIO 26</text><text class="dg-s" x="590" y="271" text-anchor="middle"><tspan x="590" y="271.0">Zero/refill</tspan></text>
+  </svg>
+  <figcaption>Smart Shelf Stock Sensor — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>HX711</b></td><td>DT/SCK</td><td><code>GPIO 16/17</code></td><td>Weight (load cell)</td></tr><tr><td><b>OLED</b></td><td>SDA/SCL</td><td><code>GPIO 21/22</code></td><td>Count/status</td></tr><tr><td><b>Low-stock LED</b></td><td>IN</td><td><code>GPIO 25</code></td><td>Shelf indicator</td></tr><tr><td><b>Wi-Fi</b></td><td>onboard</td><td><code>—</code></td><td>Dashboard link</td></tr><tr><td><b>Supply</b></td><td>5V</td><td><code>5V</code></td><td>Power</td></tr><tr><td><b>Tare button</b></td><td>IN</td><td><code>GPIO 26</code></td><td>Zero/refill</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Mount the shelf (or a section) on the load cell(s) so the product weight bears cleanly on them.</li><li>Read the load cell via the HX711 24-bit amplifier; keep wiring short and stable to reduce noise.</li><li>Provide a tare/refill action to zero the shelf and register a restock.</li><li>Network to the back-office dashboard; add an on-shelf low-stock indicator.</li><li>Isolate the load cell from vibration/knocks that would add weight noise.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/ESP32%20Espressif%20ESP-WROOM-32%20Dev%20Board.jpg?width=900" alt="An ESP32 development board with the ESP-WROOM-32 module and USB connector" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td829" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td829">A load cell and HX711 amplifier turn the shelf into a scale; weight ÷ per-unit weight estimates the count.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="60" y="46" width="280" height="168" rx="10" fill="#1d4a3e" stroke="#123028" stroke-width="2"/>
+    <rect x="112" y="60" width="176" height="76" rx="5" fill="#c9ccd1" stroke="#9aa0a8"/>
+    <rect x="128" y="76" width="86" height="44" rx="3" fill="#2b2f36"/>
+    <text x="171" y="103" font-size="12" fill="#c9ccd1" text-anchor="middle" font-family="monospace">ESP32</text>
+    <path d="M228 78 h44 v10 h-44z M228 92 h44 v10 h-44z M228 106 h44 v10 h-44z" fill="#9aa0a8"/>
+    <rect x="164" y="150" width="72" height="34" rx="4" fill="#2b2f36"/>
+    <text x="200" y="171" font-size="9" fill="#7f8894" text-anchor="middle" font-family="monospace">USB</text>
+    <rect x="86" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <rect x="266" y="150" width="48" height="20" rx="3" fill="#1a1d22"/>
+    <circle cx="70" cy="40" r="2.4" fill="#d8b04a"/><circle cx="88" cy="40" r="2.4" fill="#d8b04a"/><circle cx="106" cy="40" r="2.4" fill="#d8b04a"/><circle cx="124" cy="40" r="2.4" fill="#d8b04a"/><circle cx="142" cy="40" r="2.4" fill="#d8b04a"/><circle cx="160" cy="40" r="2.4" fill="#d8b04a"/><circle cx="178" cy="40" r="2.4" fill="#d8b04a"/><circle cx="196" cy="40" r="2.4" fill="#d8b04a"/><circle cx="214" cy="40" r="2.4" fill="#d8b04a"/><circle cx="232" cy="40" r="2.4" fill="#d8b04a"/><circle cx="250" cy="40" r="2.4" fill="#d8b04a"/><circle cx="268" cy="40" r="2.4" fill="#d8b04a"/><circle cx="286" cy="40" r="2.4" fill="#d8b04a"/><circle cx="304" cy="40" r="2.4" fill="#d8b04a"/><circle cx="322" cy="40" r="2.4" fill="#d8b04a"/><circle cx="70" cy="220" r="2.4" fill="#d8b04a"/><circle cx="88" cy="220" r="2.4" fill="#d8b04a"/><circle cx="106" cy="220" r="2.4" fill="#d8b04a"/><circle cx="124" cy="220" r="2.4" fill="#d8b04a"/><circle cx="142" cy="220" r="2.4" fill="#d8b04a"/><circle cx="160" cy="220" r="2.4" fill="#d8b04a"/><circle cx="178" cy="220" r="2.4" fill="#d8b04a"/><circle cx="196" cy="220" r="2.4" fill="#d8b04a"/><circle cx="214" cy="220" r="2.4" fill="#d8b04a"/><circle cx="232" cy="220" r="2.4" fill="#d8b04a"/><circle cx="250" cy="220" r="2.4" fill="#d8b04a"/><circle cx="268" cy="220" r="2.4" fill="#d8b04a"/><circle cx="286" cy="220" r="2.4" fill="#d8b04a"/><circle cx="304" cy="220" r="2.4" fill="#d8b04a"/><circle cx="322" cy="220" r="2.4" fill="#d8b04a"/>
+    <circle cx="330" cy="60" r="4" fill="#e03b3b"/><circle cx="330" cy="76" r="4" fill="#3be07a"/>
+  </svg>
+  <figcaption>A load cell and HX711 amplifier turn the shelf into a scale; weight ÷ per-unit weight estimates the count.</figcaption>
+</figure></template>
+  <figcaption>A load cell and HX711 amplifier turn the shelf into a scale; weight ÷ per-unit weight estimates the count.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:ESP32_Espressif_ESP-WROOM-32_Dev_Board.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — ESP32 Espressif ESP-WROOM-32 Dev Board.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 486" role="img" aria-labelledby="td830 sd830" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td830">Smart Shelf Stock Sensor — architecture stack</title><desc id="sd830">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d830" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d830" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d830" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d830" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d830)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">ESP32 DevKit V1 (ESP-WROOM-32) · sensors and actuators</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d830)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d830)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">wifi · hx711 · pubsub · ssd1306</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d830)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d830)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d830)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d830)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Transport layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">Wi-Fi/MQTT → back-office stock dashboard · TLS · retry and backoff</tspan></text><path d="M330 368 L330 381" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d830)"/><rect x="30" y="382" width="600" height="74" rx="12"
+        fill="url(#gb-d830)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="408">Presentation layer</text><text class="dg-s" x="48" y="430"><tspan x="48" y="430.0">dashboard · mobile notifications · historical charts</tspan></text>
+  </svg>
+  <figcaption>Smart Shelf Stock Sensor — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>Out-of-stocks are expensive and, in most stores, invisible until too late — because a shelf is a dumb surface that reports nothing about what sits on it. The insight of the smart shelf is to give the shelf a <b>sense of its own contents</b>, continuously, so the store learns a product is running low <i>while there is still time to restock</i> rather than after a customer finds it gone. Weight is the ideal sense for this: it is continuous, needs no per-item tagging, and directly tracks how much product remains.</p>
+<p>The measurement chain is the same as any electronic scale. A <b>load cell</b> is a metal element with <b>strain gauges</b> bonded to it; under load it flexes microscopically, the gauges change resistance in proportion, and this tiny change is read as a weight. Because the signal is minute, it is amplified and digitised by a dedicated 24-bit converter, the <b>HX711</b>, giving a stable, high-resolution weight reading. Put the shelf on the load cell and you have a continuous measurement of the total product weight on it — the raw signal everything else is derived from.</p>
+<p>Turning weight into <b>stock count</b> requires two calibrations and a division. <b>Taring</b> subtracts the fixed weight of the empty shelf and fixtures so only the product weight remains. <b>Calibration</b> establishes the scale factor (raw units per gram) using a known weight. Then, dividing the net product weight by the <b>known weight of one unit</b> gives the estimated number of units remaining. As shoppers remove items, the weight steps down in unit-sized decrements, and the count follows; a sudden jump up is a <b>refill</b>. This is also how the shelf can infer <b>sale and refill events</b> — from the direction and size of weight steps — not just a static count.</p>
+<p>The action is <b>threshold alerting</b> and <b>store-wide visibility</b>. When the estimated count (or net weight) falls below a low-stock threshold, the shelf raises a restock flag — on an edge indicator and, networked, on a back-office dashboard that shows every shelf's live stock, so staff are directed to exactly the shelves that need them. Restocking becomes proactive and targeted instead of reactive and store-walking. The design is honest about the method's limits: weight-based counting is an <b>estimate</b> that assumes reasonably <b>uniform unit weights</b>, so it is confused by mixed products on one sensor, items placed on the wrong shelf, or highly variable unit weights; it needs periodic re-taring and calibration to counter drift; and precise, per-SKU retail inventory also uses barcodes, RFID and vision. But for the specific, high-value job of knowing when a shelf of a uniform product is running low, early and continuously, a weight-sensing shelf gives retail exactly the awareness that bare shelves have always lacked.</p>
+
+<h3>The maths behind it</h3><h4>Weight to count</h4><div class="codeblock tall" data-file="Weight to count">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Weight to count</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Weight to count to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Weight to count" type="button" aria-label="Download Weight to count">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>net_weight = raw_reading × scale − tare
+
+  count ≈ round( net_weight / unit_weight )
+
+Tare removes the empty-shelf weight; scale (from calibration)
+converts raw units to grams; unit_weight turns grams into
+number of items.</code></pre>
+  
+</div>
+<h4>Low-stock alert</h4><div class="codeblock tall" data-file="Low-stock alert">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Low-stock alert</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Low-stock alert to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Low-stock alert" type="button" aria-label="Download Low-stock alert">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>low if  count ≤ COUNT_MIN   (or net_weight ≤ WEIGHT_MIN)
+
+Set COUNT_MIN so restocking is triggered with enough lead
+time to refill BEFORE the shelf empties.</code></pre>
+  
+</div>
+<h4>Sale / refill from weight steps</h4><div class="codeblock tall" data-file="Sale / refill from weight steps">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Sale / refill from weight steps</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Sale / refill from weight steps to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Sale / refill from weight steps" type="button" aria-label="Download Sale / refill from weight steps">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Δ = net_weight(now) − net_weight(prev)
+
+  Δ ≈ −k·unit_weight (k&gt;0)  → k units SOLD
+  Δ ≈ +m·unit_weight (m&gt;0)  → m units REFILLED → clear alert
+
+Ignore |Δ| below a noise floor (hands, knocks).</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 870" role="img" aria-labelledby="td831 sd831" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td831">Smart Shelf Stock Sensor — firmware flowchart</title><desc id="sd831">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d831" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d831" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d831" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d831" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d831)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Read shelf weight (HX711)</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d831)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d831)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="144.0">Tare + calibrate → net weight</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d831)"/><rect x="85" y="202" width="250" height="56" rx="10"
+          fill="url(#gb-d831)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="230" text-anchor="middle"><tspan x="210" y="230.0">Count = weight ÷ unit weight</tspan></text><path d="M210 258 L210 282" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d831)"/><path d="M210 288 L349 330 L210 372 L71 330 z"
+          fill="url(#ga-d831)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="330" text-anchor="middle"><tspan x="210" y="330.0">Below low threshold?</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d831)"/><text class="dg-e" x="220" y="391">Flag shelf: restock</text><path d="M349 330 H397 V286 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d831)"/><text class="dg-e" x="403" y="324">Report stock</text><path d="M101 402 L335 402 L319 458 L85 458 z"
+          fill="url(#gb-d831)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="430.0">Flag shelf: restock</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d831)"/><path d="M101 488 L335 488 L319 544 L85 544 z"
+          fill="url(#gb-d831)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="516" text-anchor="middle"><tspan x="210" y="516.0">Report stock</tspan></text><path d="M210 544 L210 568" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d831)"/><path d="M210 574 L349 616 L210 658 L71 616 z"
+          fill="url(#ga-d831)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="616" text-anchor="middle"><tspan x="210" y="609.5">Refill detected (weight</tspan><tspan x="210" y="622.5">jump)?</tspan></text><path d="M210 658 L210 682" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d831)"/><text class="dg-e" x="220" y="677">Clear alert / re-tare</text><path d="M349 616 H397 V572 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d831)"/><text class="dg-e" x="403" y="610">Continue</text><path d="M101 688 L335 688 L319 744 L85 744 z"
+          fill="url(#gb-d831)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="716" text-anchor="middle"><tspan x="210" y="716.0">Clear alert / re-tare</tspan></text><path d="M210 744 L210 768" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d831)"/><rect x="85" y="774" width="250" height="56" rx="28"
+          fill="url(#ga-d831)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="802" text-anchor="middle"><tspan x="210" y="802.0">Continue</tspan></text>
+  </svg>
+  <figcaption>Smart Shelf Stock Sensor — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Mount the shelf on load cells and read weight</h4><p>Mount the shelf/section on the load cell(s) so product weight bears cleanly, and read it through the HX711 with stable, short wiring.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Isolate the shelf from knocks and vibration and mount the load cell correctly — off-axis loads and mechanical noise corrupt the weight, and every downstream count depends on it.</p></div>
+  </aside></li><li><h4>Tare, calibrate and convert to count</h4><p>Tare the empty shelf, calibrate the scale factor with a known weight, and divide net weight by the per-unit weight to estimate count.</p></li><li><h4>Add alerting and reporting</h4><p>Set the low-stock threshold, raise restock flags, detect refills to clear them, and report live stock to the dashboard.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Estimate count and detect sale/refill</h4><p>Convert the net weight to a unit count, and infer sale/refill events from the size and direction of weight steps.</p><div class="codeblock tall" data-file="shelf.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">shelf.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy shelf.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="shelf.ino" type="button" aria-label="Download shelf.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">float</span> scale <span class="tok-o">=</span> <span class="tok-n">420.0</span><span class="tok-o">;</span>        <span class="tok-c">// raw units per gram (from calibration)</span>
+<span class="tok-k">long</span>  tare  <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>            <span class="tok-c">// empty-shelf zero</span>
+<span class="tok-k">float</span> unitWeight <span class="tok-o">=</span> <span class="tok-n">250.0</span><span class="tok-o">;</span>   <span class="tok-c">// grams per unit (known)</span>
+<span class="tok-k">float</span> prevNet <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">const</span> <span class="tok-k">int</span> <span class="tok-t">COUNT_MIN</span> <span class="tok-o">=</span> <span class="tok-n">3</span><span class="tok-o">;</span>
+
+<span class="tok-k">float</span> <span class="tok-f">netWeight</span><span class="tok-o">(</span><span class="tok-k">long</span> raw<span class="tok-o">){</span> <span class="tok-k">return</span> <span class="tok-o">(</span>raw <span class="tok-o">-</span> tare<span class="tok-o">)</span> <span class="tok-o">/</span> scale<span class="tok-o">;</span> <span class="tok-o">}</span>   <span class="tok-c">// grams</span>
+
+<span class="tok-k">int</span> <span class="tok-f">countFrom</span><span class="tok-o">(</span><span class="tok-k">float</span> net<span class="tok-o">){</span> <span class="tok-k">return</span> <span class="tok-o">(</span><span class="tok-k">int</span><span class="tok-o">)</span><span class="tok-f">roundf</span><span class="tok-o">(</span>net <span class="tok-o">/</span> unitWeight<span class="tok-o">);</span> <span class="tok-o">}</span>
+
+<span class="tok-c">// Infer a stock event from the weight step since last reading.</span>
+<span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> <span class="tok-f">stockEvent</span><span class="tok-o">(</span><span class="tok-k">float</span> net<span class="tok-o">){</span>
+  <span class="tok-k">float</span> d <span class="tok-o">=</span> net <span class="tok-o">-</span> prevNet<span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">fabs</span><span class="tok-o">(</span>d<span class="tok-o">)</span> <span class="tok-o">&lt;</span> unitWeight <span class="tok-o">*</span> <span class="tok-n">0.4</span><span class="tok-o">)</span> <span class="tok-k">return</span> <span class="tok-k">nullptr</span><span class="tok-o">;</span>   <span class="tok-c">// noise floor</span>
+  <span class="tok-k">int</span> units <span class="tok-o">=</span> <span class="tok-o">(</span><span class="tok-k">int</span><span class="tok-o">)</span><span class="tok-f">roundf</span><span class="tok-o">(</span><span class="tok-f">fabs</span><span class="tok-o">(</span>d<span class="tok-o">)</span> <span class="tok-o">/</span> unitWeight<span class="tok-o">);</span>
+  prevNet <span class="tok-o">=</span> net<span class="tok-o">;</span>
+  <span class="tok-k">return</span> d <span class="tok-o">&lt;</span> <span class="tok-n">0</span> <span class="tok-o">?</span> <span class="tok-s">"sold"</span> <span class="tok-o">:</span> <span class="tok-s">"refilled"</span><span class="tok-o">;</span>               <span class="tok-c">// + = refill</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">bool</span> <span class="tok-f">lowStock</span><span class="tok-o">(</span><span class="tok-k">float</span> net<span class="tok-o">){</span> <span class="tok-k">return</span> <span class="tok-f">countFrom</span><span class="tok-o">(</span>net<span class="tok-o">)</span> <span class="tok-o">&lt;=</span> <span class="tok-t">COUNT_MIN</span><span class="tok-o">;</span> <span class="tok-o">}</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">float netWeight(long raw){ return (raw - tare) / scale; }   // grams</span><span class="txt">Taring and the calibrated scale turn the raw HX711 reading into the actual product weight on the shelf.</span></div><div><span class="ref">int countFrom(float net){ return (int)roundf(net / unitWeight); }</span><span class="txt">Dividing net weight by the known per-unit weight estimates how many units remain — the core weight-to-count step.</span></div><div><span class="ref">if (fabs(d) &lt; unitWeight * 0.4) return nullptr;   // noise floor</span><span class="txt">A noise floor ignores small wobbles (a hand resting, a knock) so only real unit-sized changes register as events.</span></div><div><span class="ref">return d &lt; 0 ? "sold" : "refilled";               // + = refill</span><span class="txt">The direction of a weight step tells sale from refill — a jump up clears the low-stock alert.</span></div></div></li><li><h4>Alert low stock and report per shelf</h4><p>Flag the shelf when the count crosses the low threshold, clear it on a refill, and report live stock to the back-office dashboard so staff go to the right shelves.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Set the low threshold to give real restock lead time — alert while a few units remain, not when the shelf is already empty, so staff can refill before a sale is lost.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="smart_shelf.ino">
+  <div class="code-head">
+    <span class="fname"><span class="lang">cpp</span><span class="nm">smart_shelf.ino</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy smart_shelf.ino to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="smart_shelf.ino" type="button" aria-label="Download smart_shelf.ino">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">/* ═══════════════════════════════════════════════════════════════</span>
+<span class="tok-c">   Smart Shelf Stock Sensor — ESP32 + load cell (HX711)</span>
+<span class="tok-c"></span>
+<span class="tok-c">   Weighs a shelf continuously, estimates units remaining from weight,</span>
+<span class="tok-c">   flags low stock BEFORE the shelf empties, detects sale/refill from</span>
+<span class="tok-c">   weight steps, and reports live per-shelf stock to a dashboard.</span>
+<span class="tok-c">   Weight counting is an estimate — assumes fairly uniform units.</span>
+<span class="tok-c">   ══════════════════════════════════════════════════════════════════ */</span>
+
+<span class="tok-p">#include</span> <span class="tok-s">"HX711.h"</span>
+<span class="tok-t">HX711</span> scaleADC<span class="tok-o">;</span>
+
+<span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> <span class="tok-t">SHELF</span> <span class="tok-o">=</span> <span class="tok-s">"A12"</span><span class="tok-o">;</span>
+<span class="tok-k">float</span> scale <span class="tok-o">=</span> <span class="tok-n">420.0</span><span class="tok-o">,</span> unitWeight <span class="tok-o">=</span> <span class="tok-n">250.0</span><span class="tok-o">,</span> prevNet <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">long</span>  tare <span class="tok-o">=</span> <span class="tok-n">0</span><span class="tok-o">;</span>
+<span class="tok-k">const</span> <span class="tok-k">int</span> <span class="tok-t">COUNT_MIN</span> <span class="tok-o">=</span> <span class="tok-n">3</span><span class="tok-o">;</span>
+<span class="tok-k">bool</span> alerted <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span>
+
+<span class="tok-k">float</span> <span class="tok-f">netWeight</span><span class="tok-o">(){</span> <span class="tok-k">return</span> <span class="tok-o">(</span>scaleADC<span class="tok-o">.</span><span class="tok-f">read_average</span><span class="tok-o">(</span><span class="tok-n">5</span><span class="tok-o">)</span> <span class="tok-o">-</span> tare<span class="tok-o">)</span> <span class="tok-o">/</span> scale<span class="tok-o">;</span> <span class="tok-o">}</span>
+<span class="tok-k">int</span>  <span class="tok-f">count</span><span class="tok-o">(</span><span class="tok-k">float</span> net<span class="tok-o">){</span> <span class="tok-k">return</span> <span class="tok-o">(</span><span class="tok-k">int</span><span class="tok-o">)</span><span class="tok-f">roundf</span><span class="tok-o">(</span>net <span class="tok-o">/</span> unitWeight<span class="tok-o">);</span> <span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">report</span><span class="tok-o">(</span><span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> event<span class="tok-o">,</span> <span class="tok-k">float</span> net<span class="tok-o">,</span> <span class="tok-k">int</span> c<span class="tok-o">){</span>
+  <span class="tok-k">char</span> m<span class="tok-o">[</span><span class="tok-n">160</span><span class="tok-o">];</span>
+  <span class="tok-f">snprintf</span><span class="tok-o">(</span>m<span class="tok-o">,</span><span class="tok-k">sizeof</span> m<span class="tok-o">,</span>
+    <span class="tok-s">"{\"shelf\":\"%s\",\"grams\":%.0f,\"count\":%d,\"event\":\"%s\"}"</span><span class="tok-o">,</span>
+    <span class="tok-t">SHELF</span><span class="tok-o">,</span> net<span class="tok-o">,</span> c<span class="tok-o">,</span> event <span class="tok-o">?</span> event <span class="tok-o">:</span> <span class="tok-s">"none"</span><span class="tok-o">);</span>
+  <span class="tok-f">mqttPublish</span><span class="tok-o">(</span><span class="tok-s">"shelf/stock"</span><span class="tok-o">,</span> m<span class="tok-o">);</span>                 <span class="tok-c">// live to dashboard</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">setup</span><span class="tok-o">(){</span>
+  scaleADC<span class="tok-o">.</span><span class="tok-f">begin</span><span class="tok-o">(</span><span class="tok-n">16</span><span class="tok-o">,</span><span class="tok-n">17</span><span class="tok-o">);</span>
+  tare <span class="tok-o">=</span> scaleADC<span class="tok-o">.</span><span class="tok-f">read_average</span><span class="tok-o">(</span><span class="tok-n">20</span><span class="tok-o">);</span>              <span class="tok-c">// zero the empty shelf</span>
+  <span class="tok-f">wifiConnect</span><span class="tok-o">();</span> <span class="tok-f">mqttConnect</span><span class="tok-o">();</span>
+<span class="tok-o">}</span>
+
+<span class="tok-k">void</span> <span class="tok-f">loop</span><span class="tok-o">(){</span>
+  <span class="tok-k">float</span> net <span class="tok-o">=</span> <span class="tok-f">netWeight</span><span class="tok-o">();</span>
+  <span class="tok-k">int</span> c <span class="tok-o">=</span> <span class="tok-f">count</span><span class="tok-o">(</span>net<span class="tok-o">);</span>
+
+  <span class="tok-c">// sale/refill from the weight step</span>
+  <span class="tok-k">float</span> d <span class="tok-o">=</span> net <span class="tok-o">-</span> prevNet<span class="tok-o">;</span> <span class="tok-k">const</span> <span class="tok-k">char</span><span class="tok-o">*</span> ev <span class="tok-o">=</span> <span class="tok-k">nullptr</span><span class="tok-o">;</span>
+  <span class="tok-k">if</span> <span class="tok-o">(</span><span class="tok-f">fabs</span><span class="tok-o">(</span>d<span class="tok-o">)</span> <span class="tok-o">&gt;=</span> unitWeight<span class="tok-o">*</span><span class="tok-n">0.4</span><span class="tok-o">){</span>
+    ev <span class="tok-o">=</span> d <span class="tok-o">&lt;</span> <span class="tok-n">0</span> <span class="tok-o">?</span> <span class="tok-s">"sold"</span> <span class="tok-o">:</span> <span class="tok-s">"refilled"</span><span class="tok-o">;</span> prevNet <span class="tok-o">=</span> net<span class="tok-o">;</span>
+    <span class="tok-k">if</span> <span class="tok-o">(</span>d <span class="tok-o">&gt;</span> <span class="tok-n">0</span><span class="tok-o">)</span> alerted <span class="tok-o">=</span> <span class="tok-k">false</span><span class="tok-o">;</span>                  <span class="tok-c">// refill clears the alert</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-k">if</span> <span class="tok-o">(</span>c <span class="tok-o">&lt;=</span> <span class="tok-t">COUNT_MIN</span> <span class="tok-o">&amp;&amp;</span> <span class="tok-o">!</span>alerted<span class="tok-o">){</span>               <span class="tok-c">// low: flag BEFORE empty</span>
+    <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-n">25</span><span class="tok-o">,</span> <span class="tok-t">HIGH</span><span class="tok-o">);</span>                      <span class="tok-c">// on-shelf indicator</span>
+    <span class="tok-f">report</span><span class="tok-o">(</span><span class="tok-s">"low_stock"</span><span class="tok-o">,</span> net<span class="tok-o">,</span> c<span class="tok-o">);</span>
+    alerted <span class="tok-o">=</span> <span class="tok-k">true</span><span class="tok-o">;</span>
+  <span class="tok-o">}</span> <span class="tok-k">else</span> <span class="tok-k">if</span> <span class="tok-o">(</span>c <span class="tok-o">&gt;</span> <span class="tok-t">COUNT_MIN</span><span class="tok-o">){</span>
+    <span class="tok-f">digitalWrite</span><span class="tok-o">(</span><span class="tok-n">25</span><span class="tok-o">,</span> <span class="tok-t">LOW</span><span class="tok-o">);</span>
+  <span class="tok-o">}</span>
+
+  <span class="tok-f">report</span><span class="tok-o">(</span>ev<span class="tok-o">,</span> net<span class="tok-o">,</span> c<span class="tok-o">);</span>                            <span class="tok-c">// continuous stock report</span>
+  <span class="tok-f">delay</span><span class="tok-o">(</span><span class="tok-n">2000</span><span class="tok-o">);</span>
+<span class="tok-o">}</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (57 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">tare = scaleADC.read_average(20);              // zero the empty shelf</span><span class="txt">Taring at startup removes the empty shelf/fixture weight so only product weight is counted.</span></div><div><span class="ref">int  count(float net){ return (int)roundf(net / unitWeight); }</span><span class="txt">The remaining unit count is the net product weight divided by the known per-unit weight.</span></div><div><span class="ref">if (d &gt; 0) alerted = false;                  // refill clears the alert</span><span class="txt">A weight jump up is a refill, which clears the low-stock alert automatically.</span></div><div><span class="ref">if (c &lt;= COUNT_MIN &amp;&amp; !alerted){               // low: flag BEFORE empty</span><span class="txt">The shelf flags for restock while a few units remain, giving staff time to refill before it empties.</span></div><div><span class="ref">report(ev, net, c);                            // continuous stock report</span><span class="txt">Every shelf reports live stock to the dashboard, so staff see exactly which shelves need attention store-wide.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Configure the HX711 pins, scale factor and per-unit weight per shelf/product.</li><li>Configure the tare/refill action and the low-stock threshold.</li><li>Configure the dashboard link and per-shelf reporting.</li><li>Configure the weight-step noise floor for sale/refill detection.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Scale calibration</h4><p>Calibrate the scale factor with a known weight so grams are accurate.</p></li><li><h4>Taring</h4><p>Tare the empty shelf and re-tare after fixture changes; guard against drift.</p></li><li><h4>Unit weight</h4><p>Set the per-unit weight accurately; verify the count matches a manual count at a couple of levels.</p></li></ol></section>
+
+<section id="connectivity" aria-labelledby="h-connectivity"><h2 id="h-connectivity">Network Architecture &amp; Connectivity</h2>
+<div class="diagram-scroll"><figure class="diagram diagram-network">
+  <svg viewBox="0 0 760 232" role="img" aria-labelledby="td832 sd832" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td832">Smart Shelf Stock Sensor — network topology</title><desc id="sd832">Path taken by telemetry from field node to end user.</desc>
+    <defs>
+    <marker id="ar-d832" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d832" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d832" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d832" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="100" y="26" text-anchor="middle">Edge nodes</text><text class="dg-col" x="321" y="26" text-anchor="middle">Gateway</text><text class="dg-col" x="543" y="26" text-anchor="middle">Cloud</text><text class="dg-col" x="769" y="26" text-anchor="middle">Clients</text><rect x="16" y="52" width="168" height="52" rx="11"
+        fill="url(#gb-d832)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="74" text-anchor="middle"><tspan x="100" y="74.0">Smart shelf</tspan></text><text class="dg-s" x="100" y="92" text-anchor="middle">ESP32+HX711</text><path d="M184 78 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d832)"/><rect x="16" y="118" width="168" height="52" rx="11"
+        fill="url(#gb-d832)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="100" y="140" text-anchor="middle"><tspan x="100" y="140.0">Other shelves</tspan></text><text class="dg-s" x="100" y="158" text-anchor="middle">store</text><path d="M184 144 H238" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d832)"/><text class="dg-e" x="215" y="46" text-anchor="middle">Wi-Fi</text><rect x="246" y="92" width="150" height="60" rx="11"
+        fill="url(#ga-d832)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="321" y="114" text-anchor="middle"><tspan x="321" y="114.0">Store AP</tspan></text><text class="dg-s" x="321" y="132" text-anchor="middle">to back office</text><path d="M396 122 H460" stroke="var(--dg-accent)" stroke-width="1.6" fill="none" marker-end="url(#arh-d832)"/><text class="dg-e" x="432" y="112" text-anchor="middle">MQTT</text><rect x="468" y="88" width="150" height="68" rx="11"
+        fill="url(#ga-d832)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="543" y="110" text-anchor="middle"><tspan x="543" y="110.0">Stock dashboard</tspan></text><text class="dg-s" x="543" y="128" text-anchor="middle">per-shelf stock</text><rect x="690" y="52" width="158" height="52" rx="11"
+        fill="url(#gb-d832)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="74" text-anchor="middle"><tspan x="769" y="74.0">Staff</tspan></text><text class="dg-s" x="769" y="92" text-anchor="middle">restock list</text><path d="M618 122 C 652 122, 656 78, 682 78"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d832)"/><rect x="690" y="118" width="158" height="52" rx="11"
+        fill="url(#gb-d832)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="769" y="140" text-anchor="middle"><tspan x="769" y="140.0">Manager</tspan></text><text class="dg-s" x="769" y="158" text-anchor="middle">out-of-stock KPIs</text><path d="M618 122 C 652 122, 656 144, 682 144"
+        stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d832)"/>
+  </svg>
+  <figcaption>Smart Shelf Stock Sensor — network topology</figcaption>
+</figure></div>
+<h3>Communication protocol</h3><p>Shelves publish live stock and sale/refill events; the dashboard aggregates them into a store-wide restock view.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Topic / endpoint</th><th scope="col">Direction</th><th scope="col">Payload</th></tr></thead>
+    <tbody><tr><td><code>shelf/stock</code></td><td>shelf → dashboard</td><td>shelf, grams, count, event</td></tr><tr><td><code>shelf/alert</code></td><td>shelf → staff</td><td>low-stock flag</td></tr><tr><td><code>shelf/refill</code></td><td>shelf → dashboard</td><td>restock confirmation</td></tr></tbody>
+  </table></div><p class="tbl-caption">Message contract between the device and the broker.</p>
+<h3>Cloud platform configuration</h3><p>A back-office dashboard shows live stock per shelf, low-stock alerts, and out-of-stock/replenishment KPIs across the store.</p>
+
+<h3>Dashboard setup</h3><p>A store map/list of shelves with live counts, low-stock flags and a prioritised restock list.</p>
+<h3>Mobile app integration</h3><p>Restock alerts to staff with the specific shelves needing attention.</p>
+<h3>Security considerations</h3><ul class="check"><li>Authenticate shelves; secure stock telemetry.</li><li>Stock data is operational — protect against tampering.</li><li>Weight counting is an estimate; combine with barcodes/RFID for precision.</li></ul></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Place a known number of units</b></td><td>Count matches (calibration good)</td></tr><tr><td><b>Remove one unit</b></td><td>Count drops by one; "sold" event</td></tr><tr><td><b>Draw down to threshold</b></td><td>Low-stock flag + dashboard alert</td></tr><tr><td><b>Refill the shelf</b></td><td>Count rises; "refilled"; alert clears</td></tr><tr><td><b>Rest a hand on the shelf</b></td><td>Below noise floor — no false event</td></tr><tr><td><b>Mix in a different product</b></td><td>Count off — note uniform-weight limit</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>Live per-shelf stock, low-stock flags before shelves empty, and sale/refill events — on the shelf and on a store dashboard.</p>
+<div class="codeblock tall" data-file="shelf-stock.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">shelf-stock.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy shelf-stock.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="shelf-stock.json" type="button" aria-label="Download shelf-stock.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "shelf": "A12",
+  "grams": <span class="tok-n">720</span>,
+  "count": <span class="tok-n">3</span>,
+  "event": "sold",
+  "state": "low_stock"
+}</code></pre>
+  
+</div>
+
+<p>Shelf A12 is down to 3 units after a sale and has flagged low stock — the restock is triggered with units still on the shelf, before any customer finds it empty.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Warehouse%20racking.jpg?width=900" alt="Pallet racking in a distribution warehouse" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td833" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td833">A back-office dashboard aggregates every shelf into a prioritised, store-wide restock list.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <path d="M120 152 a38 38 0 0 1 6-75 a52 52 0 0 1 98-14 a44 44 0 0 1 52 44 a34 34 0 0 1-8 45 z"
+      fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="150" y="172" width="100" height="44" rx="8" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="200" y="199" font-size="12" fill="var(--dg-muted)" text-anchor="middle" font-family="monospace">broker</text>
+    <line x1="200" y1="152" x2="200" y2="170" stroke="var(--dg-accent)" stroke-width="2"/>
+  </svg>
+  <figcaption>A back-office dashboard aggregates every shelf into a prioritised, store-wide restock list.</figcaption>
+</figure></template>
+  <figcaption>A back-office dashboard aggregates every shelf into a prioritised, store-wide restock list.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Warehouse_racking.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Warehouse racking.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Count is wrong</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Bad calibration / unit weight</p>
+        <p><strong>Fix.</strong> Re-calibrate scale; set accurate per-unit weight</p></div></details><details class="expand"><summary>Count drifts over time</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Tare/temperature drift</p>
+        <p><strong>Fix.</strong> Re-tare periodically; stabilise mounting/temperature</p></div></details><details class="expand"><summary>False sale/refill events</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Noise / knocks below unit size</p>
+        <p><strong>Fix.</strong> Raise the noise floor; isolate from vibration</p></div></details><details class="expand"><summary>Miscounts with mixed items</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Non-uniform weights</p>
+        <p><strong>Fix.</strong> One product per sensor; accept weight-estimate limits</p></div></details><details class="expand"><summary>Late/no low alert</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Threshold too low</p>
+        <p><strong>Fix.</strong> Raise COUNT_MIN for restock lead time</p></div></details><details class="expand"><summary>Noisy weight</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Poor load-cell mount/wiring</p>
+        <p><strong>Fix.</strong> Mount cleanly; short, stable wiring; average readings</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details><details class="expand"><summary>An I²C device is not detected</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong address, missing pull-ups, swapped SDA/SCL, or a bus too long for the pull-up value.</p>
+        <p><strong>Fix.</strong> Run an I²C scanner sketch first — it should print the device address. Most breakout boards include 4.7 kΩ pull-ups, but if you have chained four of them the parallel resistance is too low; remove the pull-ups from all but one board. Keep the bus under 30 cm at 100 kHz.</p></div></details><details class="expand"><summary>Wi-Fi connects but MQTT never does (state -2)</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong broker address or port, a firewall in the way, or the broker requiring credentials the sketch is not sending.</p>
+        <p><strong>Fix.</strong> Test from a laptop on the same network first: <code>mosquitto_sub -h &lt;broker&gt; -t "#" -v</code>. If that works, the problem is on the device — check the IP literal, port 1883 (or 8883 for TLS), and that <code>client.setServer()</code> runs before <code>connect()</code>. PubSubClient state codes are documented in its header.</p></div></details><details class="expand"><summary>Readings arrive for a while and then stop</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The Wi-Fi or MQTT session dropped and the sketch never reconnects, or the broker dropped the client on keep-alive timeout.</p>
+        <p><strong>Fix.</strong> Never assume the link stays up. Check <code>WiFi.status()</code> and <code>client.connected()</code> at the top of every loop and reconnect with exponential backoff. Add a watchdog so a wedged network stack reboots the device instead of going silent.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Tare and calibrate so counts are accurate; re-tare against drift.</li><li>Use a noise floor so only real unit changes register.</li><li>Alert with restock lead time, before the shelf empties.</li><li>Report live per-shelf so staff are directed precisely.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Batch several samples into one MQTT publish. Radio time, not CPU time, dominates the energy budget.</li><li>Set the MQTT keep-alive to a value that matches your reporting interval so the broker does not churn reconnections.</li><li>For battery builds use deep sleep between samples: an ESP32 drops from ~160 mA awake to about 10 µA asleep, which is the difference between days and months of runtime.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>Weight counting is an estimate — do not treat it as exact per-SKU inventory; combine with barcodes/RFID where precision matters.</li><li>Mount shelves and sensors so a failure cannot drop stock or injure.</li><li>Secure the network and dashboard against stock-data tampering.</li><li>Re-calibrate/tare regularly to keep alerts trustworthy.</li><li>Lithium cells vent and burn when abused. Only use protected cells or a proper BMS, never charge below 0 °C, and never leave a charging pack unattended on a wooden desk.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-tare and re-calibrate periodically to counter drift.</li><li>Update per-unit weights when products/packaging change.</li><li>Check load-cell mounting and wiring for noise.</li><li>Review alert timing so restocks stay proactive.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Log pack voltage. When resting voltage after a full charge drops below about 4.0 V, the cell is near end of life — replace it.</li><li>Keep the broker and dashboard containers patched, and rotate device credentials at least once a year.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Combine weight with barcode/RFID for per-SKU accuracy.</li><li>Add demand/auto-reorder from sale-rate trends.</li><li>Add planogram compliance (right product on the shelf).</li><li>Add e-ink shelf labels showing live stock/price.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add over-the-air firmware updates so you never have to physically reach a deployed node again.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>How does a shelf know its stock?</summary><div class="inner"><p>It sits on a load cell and weighs what is on it. Dividing the net product weight by the known weight of one unit estimates how many units remain, continuously.</p></div></details><details class="expand"><summary>Why weight instead of barcodes or RFID?</summary><div class="inner"><p>Weight is continuous, needs no per-item tagging, and directly tracks how much is left — ideal for the specific job of spotting low stock early. Barcodes and RFID give per-SKU precision and complement it where that is needed.</p></div></details><details class="expand"><summary>How does it avoid empty shelves?</summary><div class="inner"><p>It alerts while a few units still remain — a low-stock threshold set to give restock lead time — so staff are directed to refill before the shelf actually empties and a sale is lost.</p></div></details><details class="expand"><summary>What are the limits of weight counting?</summary><div class="inner"><p>It is an estimate that assumes fairly uniform unit weights, so it is confused by mixed products on one sensor, items placed on the wrong shelf, or highly variable weights, and it needs periodic taring/calibration to counter drift.</p></div></details><details class="expand"><summary>Can it tell sales from restocks?</summary><div class="inner"><p>Yes — from the direction and size of weight steps. A unit-sized drop is a sale; a jump up is a refill, which also clears the low-stock alert.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Load_cell" rel="noopener nofollow" target="_blank">Load cell / strain gauge</a><span class="src">Reference</span></li><li><a href="https://cdn.sparkfun.com/datasheets/Sensors/ForceFlex/hx711_english.pdf" rel="noopener nofollow" target="_blank">HX711 24-bit ADC</a><span class="src">Datasheet</span></li><li><a href="https://en.wikipedia.org/wiki/Stockout" rel="noopener nofollow" target="_blank">Retail out-of-stock</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Inventory_management" rel="noopener nofollow" target="_blank">Inventory management</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Smart_shelf" rel="noopener nofollow" target="_blank">Smart shelf</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="telepresence-robot.html"><span class="dir">← Previous project</span><span class="ttl">Telepresence Robot</span></a>
+        <a class="next" href="queue-length-counter.html"><span class="dir">Next project →</span><span class="ttl">Queue Length Counter</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Intermediate</b></div>
+        <div class="rail-stat"><span>Time</span><b>10–16 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>8</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹1,200 – ₹2,500 per shelf</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="queue-length-counter.html">Queue Length Counter</a></li><li><a href="smart-vending-telemetry.html">Smart Vending Telemetry</a></li><li><a href="nfc-smart-attendance.html">NFC Smart Attendance</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="queue-length-counter.html">
+        <span class="rc">Retail</span>
+        <h4>Queue Length Counter</h4>
+        <p>Counts shoppers in line to optimize checkout staffing.</p></a><a class="relcard" href="smart-vending-telemetry.html">
+        <span class="rc">Retail</span>
+        <h4>Smart Vending Telemetry</h4>
+        <p>Reports stock and sales from vending machines in real time.</p></a><a class="relcard" href="nfc-smart-attendance.html">
+        <span class="rc">Retail</span>
+        <h4>NFC Smart Attendance</h4>
+        <p>Tap-in attendance tracking for offices, schools and events.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Smart Shelf Stock Sensor</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>

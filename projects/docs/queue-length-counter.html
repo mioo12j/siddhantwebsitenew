@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Queue Length Counter — Circuit, Code &amp; Full Build Guide | Retail</title>
+  <meta name="description" content="Complete advanced-level build guide for a Queue Length Counter: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="queue length counter, queue length counter project, how to build queue length counter, raspberry pi 4 model b project, retail project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/queue-length-counter.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/queue-length-counter.html" />
+  <meta property="og:title" content="Queue Length Counter — Circuit, Code &amp; Full Build Guide | Retail" />
+  <meta property="og:description" content="Complete advanced-level build guide for a Queue Length Counter: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="Retail" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Queue Length Counter — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete advanced-level build guide for a Queue Length Counter: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>🧍</text></svg>" />
+  <style>:root{--acc:#818cf8;--acc-light:#a5b4fc;--acc-rgb:129,140,248}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/queue-length-counter.html#article","headline":"Queue Length Counter — Complete Build Guide","name":"Queue Length Counter","description":"Complete advanced-level build guide for a Queue Length Counter: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/queue-length-counter.html","inLanguage":"en","articleSection":"Retail","keywords":"queue length counter, queue length counter project, how to build queue length counter, raspberry pi 4 model b project, retail project, circuit diagram, source code, tutorial","proficiencyLevel":"Advanced","dependencies":"Python, OpenCV, TensorFlow / Keras, Ultralytics YOLO, Picamera2, Flask","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-28","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/queue-length-counter.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/queue-length-counter.html#howto","name":"How to build a Queue Length Counter","description":"Complete advanced-level build guide for a Queue Length Counter: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT20H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"14750"},"supply":[{"@type":"HowToSupply","name":"Raspberry Pi 4 Model B (4 GB)"},{"@type":"HowToSupply","name":"Raspberry Pi Camera Module 3"},{"@type":"HowToSupply","name":"0.96″ SSD1306 OLED display"}],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Count people in the queue region","text":"Detect people on-device and count only those inside the queue ROI, smoothing for a stable live count."},{"@type":"HowToStep","position":2,"name":"Signal staffing and log analytics","text":"Turn count and trend into open/close-till signals early, and log counts for peak-time analytics and staffing schedules."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Queue Length Counter","item":"https://siddhantkumar.in/projects/docs/queue-length-counter.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/queue-length-counter.html#faq","mainEntity":[{"@type":"Question","name":"What problem does it solve?","acceptedAnswer":{"@type":"Answer","text":"Stores manage queues by human noticing, which is inconsistent and always late. A live, objective count of people waiting lets the store open a till before the wait gets long — shortening waits and reducing walked-away sales."}},{"@type":"Question","name":"How does it count only the queue?","acceptedAnswer":{"@type":"Answer","text":"It counts people whose position falls inside a defined queue region of interest, so passers-by and shoppers elsewhere are ignored. Counting over frames with smoothing gives a stable number and its trend."}},{"@type":"Question","name":"Is it watching individual customers?","acceptedAnswer":{"@type":"Answer","text":"No. The goal is counting, not identification. It runs on-device so raw video never leaves the unit, it counts people rather than recognising faces, and only counts and signals are published — privacy-respecting by design."}},{"@type":"Question","name":"Why act on the trend, not just the count?","acceptedAnswer":{"@type":"Answer","text":"Because opening a till takes time. If you wait until the count crosses the threshold, customers already wait too long. Acting when a queue is building toward the threshold staffs the till before the wait becomes painful."}},{"@type":"Question","name":"How accurate is it?","acceptedAnswer":{"@type":"Answer","text":"Accurate for short and medium queues; approximate for dense, occluded crowds where people hide behind one another. For staffing decisions an approximate but continuous count is far better than the too-late human judgement it replaces."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#retail">Retail</a><span class="sep">/</span>
+        <span aria-current="page">Queue Length Counter</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project 098 · Retail</span>
+          <h1>Queue Length Counter<span class="grad">.</span></h1>
+          <p class="tagline">A camera that counts how many people are waiting in line and turns it into live staffing signals — open another till before the queue gets ugly.</p>
+          <div class="hero-chips">
+            <span class="chip lv-advanced">Advanced</span>
+            <span class="chip">14–22 hours</span>
+            <span class="chip neutral">26 min read</span>
+            <span class="chip neutral">Vision</span><span class="chip neutral">Analytics</span><span class="chip neutral">Retail</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td844" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td844">Queue Length Counter — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Queue Length Counter — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Advanced</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>14–22 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>₹6,000 – ₹10,000</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>Raspberry Pi 4 Model B (4 GB)</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>Retail</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>28 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">27</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 27 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#power"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Power Budget &amp; Supply Sizing</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">27</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">A camera that counts how many people are waiting in line and turns it into live staffing signals — open another till before the queue gets ugly.</p>
+<p>Long checkout queues are one of the biggest drivers of customer frustration and walked-away sales, and stores usually react to them too late — a supervisor notices a queue building, then scrambles to open another till by which point customers are already annoyed or gone. The missing ingredient is a <b>live, objective measure of how many people are waiting</b>. This project builds one: a camera that watches the queue area, <b>counts the people in line</b> with computer vision, and turns that count into a real-time staffing signal — open another checkout <i>before</i> the queue gets long, not after.</p>
+<p>The core is <b>people detection and counting</b> in a defined region. A camera views the queue zone; a computer-vision model detects people in the frame, and the system counts how many are within the marked queue area, tracking the number over time. From the live count (and its trend) it derives the signals a manager actually needs: current queue length, whether it is growing, and when it crosses thresholds that should trigger opening or closing a till. Aggregated, it also yields analytics — queue lengths by time of day, peak periods, average wait — that inform staffing schedules.</p>
+<p>The value is replacing gut-feel, too-late queue management with continuous, objective data: tills open in time, waits shorten, and staffing is planned from real patterns. It is honest about doing this <b>responsibly</b> — the goal is <i>counting</i>, not identifying anyone, so it should run on-device, count rather than recognise faces, and respect privacy and notice requirements — and about the vision limits (crowding, occlusion, defining where the queue is). But as an on-device people-counting queue monitor that produces live staffing signals and queue analytics, it gives retail an objective handle on one of its most visible customer-experience problems.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Supermarket%20shelves.jpg?width=900" alt="Stocked shelves in a supermarket aisle" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td835" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td835">A camera counts people waiting in line and turns the live count into a signal to open a till before the queue gets long.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="30" y="34" width="340" height="192" rx="10" fill="var(--dg-box-b)" stroke="var(--dg-stroke)"/>
+    <rect x="30" y="34" width="340" height="28" rx="10" fill="var(--dg-chip)"/>
+    <circle cx="48" cy="48" r="4" fill="#e05f5f"/><circle cx="62" cy="48" r="4" fill="#e0b45f"/><circle cx="76" cy="48" r="4" fill="#5fe08a"/>
+    <rect x="44" y="76" width="140" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="58" y="98" font-size="10" fill="var(--dg-muted)">TEMPERATURE</text>
+    <text x="58" y="126" font-size="24" fill="var(--dg-accent)" font-family="monospace">27.4°</text>
+    <rect x="198" y="76" width="158" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="210,126 236,110 262,118 288,94 314,104 340,86" fill="none" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="44" y="152" width="312" height="60" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="56,196 86,180 116,188 146,160 176,172 206,146 236,158 266,138 296,150 340,128"
+      fill="none" stroke="var(--dg-accent)" stroke-width="2" opacity=".8"/>
+  </svg>
+  <figcaption>A camera counts people waiting in line and turns the live count into a signal to open a till before the queue gets long.</figcaption>
+</figure></template>
+  <figcaption>A camera counts people waiting in line and turns the live count into a signal to open a till before the queue gets long.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Supermarket_shelves.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Supermarket shelves.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Counts people waiting in a defined queue area with vision</li><li>Tracks live queue length and its trend over time</li><li>Signals when to open or close a checkout</li><li>Produces queue analytics (peaks, by time of day, waits)</li><li>Runs on-device — counting, not identifying people</li><li>Replaces too-late, gut-feel queue management with data</li><li>Shortens waits and reduces walked-away sales</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Checkout staffing</b></td><td>Live signals to open/close tills before queues build.</td></tr><tr><td><b>Queue analytics</b></td><td>Peak times and average waits to plan staffing.</td></tr><tr><td><b>Service counters</b></td><td>Any queue — banks, pharmacies, help desks.</td></tr><tr><td><b>Customer-experience KPIs</b></td><td>Objective wait/queue metrics for operations.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Computer-vision people detection + counting</li><li>Region-of-interest queue counting</li><li>Live count, trend and threshold signals</li><li>Open/close-till staffing recommendations</li><li>Queue analytics for scheduling</li><li>On-device, privacy-respecting design</li><li>Honest about crowding/occlusion and privacy</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Advanced</td></tr><tr><td><b>Estimated completion time</b></td><td>14–22 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>₹6,000 – ₹10,000</td></tr><tr><td><b>Primary discipline</b></td><td>Retail</td></tr><tr><td><b>Reference platform</b></td><td>Raspberry Pi 4 Model B (4 GB)</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>People detection with a CV model (e.g. lightweight detector)</li><li>Region-of-interest counting and temporal tracking</li><li>Threshold/trend logic for staffing signals</li><li>On-device, privacy-respecting deployment</li><li>Queue analytics aggregation</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>The missing ingredient is a live, objective count of people waiting.</p>
+<p>Count within a defined queue region, and track the trend, not just an instant.</p>
+<p>Do it responsibly: count, do not identify; on-device; respect privacy.</p>
+<p>Crowding/occlusion and defining the queue area are the real challenges.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>Raspberry Pi 4 Model B (4 GB)</b><br/><span style="font-size:.82em;opacity:.78">Use an official 5 V 3 A supply — brown-outs from phone chargers corrupt SD cards.</span></td><td>Quad-core Cortex-A72 @ 1.8 GHz, 4 GB LPDDR4, Gigabit Ethernet, Wi-Fi 5, BT 5.0, 2× USB 3.0, 40-pin GPIO</td><td class="num">1</td><td class="num">₹5,800</td></tr><tr><td><b>Raspberry Pi Camera Module 3</b><br/><span style="font-size:.82em;opacity:.78">Pi 5 uses a narrower 22-pin CSI cable — the old 15-pin ribbon will not fit.</span></td><td>12 MP IMX708, autofocus, HDR, 1080p50, CSI-2 ribbon</td><td class="num">1</td><td class="num">₹2,600</td></tr><tr><td><b>0.96″ SSD1306 OLED display</b><br/><span style="font-size:.82em;opacity:.78">Static images burn in — invert or scroll the screen periodically.</span></td><td>128 × 64 monochrome, 1.3–3.3 V logic, 100 kHz–400 kHz I²C</td><td class="num">1</td><td class="num">₹250</td></tr><tr><td><b>Camera + edge compute</b><br/><span style="font-size:.82em;opacity:.78">On-device inference for privacy</span></td><td>Raspberry Pi (or Jetson) + camera viewing the queue area</td><td class="num">1</td><td class="num">₹5,000</td></tr><tr><td><b>Mount</b></td><td>Overhead/angled mount covering the queue zone</td><td class="num">1</td><td class="num">₹400</td></tr><tr><td><b>Staff signal</b></td><td>Light/screen or dashboard for open-till signals</td><td class="num">1</td><td class="num">₹500</td></tr><tr><td><b>Network</b></td><td>Wi-Fi/Ethernet for signals/analytics (not video)</td><td class="num">1</td><td class="num">₹200</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹14,750</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Part</th><th scope="col">Specification</th><th scope="col">Supply</th><th scope="col">Interface</th><th scope="col">Reference</th></tr></thead>
+    <tbody><tr><td><b>Raspberry Pi 4 Model B (4 GB)</b></td><td>Quad-core Cortex-A72 @ 1.8 GHz, 4 GB LPDDR4, Gigabit Ethernet, Wi-Fi 5, BT 5.0, 2× USB 3.0, 40-pin GPIO</td><td>5 V / 3 A USB-C</td><td>GPIO, SPI, I²C, UART, CSI, DSI</td><td><a href="https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-datasheet.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>Raspberry Pi Camera Module 3</b></td><td>12 MP IMX708, autofocus, HDR, 1080p50, CSI-2 ribbon</td><td>3.3 V via CSI</td><td>CSI-2</td><td><a href="https://datasheets.raspberrypi.com/camera/camera-module-3-product-brief.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr><tr><td><b>0.96″ SSD1306 OLED display</b></td><td>128 × 64 monochrome, 1.3–3.3 V logic, 100 kHz–400 kHz I²C</td><td>3.3–5 V</td><td>I²C (0x3C)</td><td><a href="https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf" rel="noopener nofollow" target="_blank">Datasheet</a></td></tr></tbody>
+  </table></div><p class="tbl-caption">Consolidated electrical and interface specifications for every active part in the build.</p>
+</section>
+
+<section id="power" aria-labelledby="h-power"><h2 id="h-power">Power Budget &amp; Supply Sizing</h2><p>Add up the typical active current of every part, then size the supply with at least 50 % headroom so transmit bursts and motor inrush never brown out the controller.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Load</th><th scope="col">Supply rail</th><th class="num" scope="col">Typical current (mA)</th><th scope="col">Notes</th></tr></thead>
+    <tbody><tr><td>Raspberry Pi 4 Model B (4 GB)</td><td>5 V / 3 A USB-C</td><td class="num">1200</td><td>Use an official 5 V 3 A supply — brown-outs from phone chargers corrupt SD cards.</td></tr><tr><td>Raspberry Pi Camera Module 3</td><td>3.3 V via CSI</td><td class="num">250</td><td>Pi 5 uses a narrower 22-pin CSI cable — the old 15-pin ribbon will not fit.</td></tr><tr><td>0.96″ SSD1306 OLED display</td><td>3.3–5 V</td><td class="num">20</td><td>Static images burn in — invert or scroll the screen periodically.</td></tr></tbody>
+  </table></div>
+<p>Summed typical draw is <b>1470 mA</b>. With a 1.5× design margin the supply should deliver at least <b>2300 mA</b> continuously at the stated rail voltage.</p>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Peak is not average</span><p>Wi-Fi transmit bursts, servo stalls and relay coil inrush all draw several times the figures above for a few milliseconds. A bulk electrolytic capacitor (470–1000 µF) across the supply rail near the noisy load absorbs those transients far better than a bigger adapter does.</p></div>
+  </aside></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Raspberry Pi OS Bookworm (64-bit) + Python 3.11 + VS Code Remote-SSH</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Flash <b>Raspberry Pi OS (64-bit)</b> with Raspberry Pi Imager; pre-configure Wi-Fi, hostname and SSH in the Imager settings so the board comes up headless.</li><li>Update first: <code>sudo apt update &amp;&amp; sudo apt full-upgrade -y</code>, then reboot.</li><li>Work inside a virtual environment — <code>python3 -m venv ~/venv &amp;&amp; source ~/venv/bin/activate</code>. Bookworm blocks system-wide <code>pip install</code> by design.</li><li>Enable the buses you need with <code>sudo raspi-config</code> → Interface Options (I²C, SPI, Serial, Camera).</li><li>Develop over <b>VS Code Remote-SSH</b> so you edit on your laptop but run on the Pi.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>Python</b> <span style="opacity:.7">3.11+</span></td><td>Runtime for the analysis, training and service code.</td><td><code>sudo apt install python3 python3-venv python3-pip</code></td></tr><tr><td><b>OpenCV</b> <span style="opacity:.7">4.10+</span></td><td>Frame capture, colour conversion, drawing and classical CV operators.</td><td><code>pip install opencv-python</code></td></tr><tr><td><b>TensorFlow / Keras</b> <span style="opacity:.7">2.17+</span></td><td>High-level model building and the TFLite converter.</td><td><code>pip install tensorflow</code></td></tr><tr><td><b>Ultralytics YOLO</b> <span style="opacity:.7">8.3+</span></td><td>Training and inference API for YOLOv8/v11 detectors.</td><td><code>pip install ultralytics</code></td></tr><tr><td><b>Picamera2</b> <span style="opacity:.7">0.3.20+</span></td><td>libcamera-based capture API for Pi Camera modules.</td><td><code>sudo apt install python3-picamera2</code></td></tr><tr><td><b>Flask</b> <span style="opacity:.7">3.0+</span></td><td>Minimal HTTP API and dashboard server.</td><td><code>pip install flask</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td836 sd836" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td836">Queue Length Counter — system block diagram</title><desc id="sd836">Functional block diagram of the Queue Length Counter system.</desc>
+    <defs>
+    <marker id="ar-d836" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d836" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d836" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d836" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">See</text><rect x="26" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d836)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="79" text-anchor="middle"><tspan x="115" y="79.0">Camera</tspan></text><text class="dg-s" x="115" y="98" text-anchor="middle"><tspan x="115" y="98.0">queue area</tspan></text><rect x="26" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d836)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="115" y="159" text-anchor="middle"><tspan x="115" y="159.0">Detect people</tspan></text><text class="dg-s" x="115" y="178" text-anchor="middle"><tspan x="115" y="178.0">CV model</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Count</text><rect x="266" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d836)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="79" text-anchor="middle"><tspan x="355" y="79.0">In queue ROI</tspan></text><text class="dg-s" x="355" y="98" text-anchor="middle"><tspan x="355" y="98.0">count</tspan></text><rect x="266" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d836)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="159" text-anchor="middle"><tspan x="355" y="159.0">Track trend</tspan></text><text class="dg-s" x="355" y="178" text-anchor="middle"><tspan x="355" y="178.0">over time</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Signal</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d836)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Threshold</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">open/close</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d836)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">Staff</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">act early</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Analyse</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d836)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Peaks/waits</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">by time</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d836)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Schedule</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">staffing</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d836)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d836)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d836)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Queue Length Counter — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>Every signal line in the build is shown below, followed by a pin-by-pin connection table you can work through with a multimeter in hand.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 264" role="img" aria-labelledby="td837 sd837" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td837">Queue Length Counter — wiring schematic</title><desc id="sd837">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d837" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d837" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d837" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d837" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="168" rx="14"
+      fill="url(#ga-d837)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">Raspberry Pi 4 Model</tspan><tspan x="434" y="95.0">B (4 GB)</tspan></text><text class="dg-s" x="434" y="214" text-anchor="middle">5 V / 3 A USB-C</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d837)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Camera</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">—</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="109.5">Queue-area video</tspan><tspan x="278" y="120.5">(on-device)</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d837)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Staff signal</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">—</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Open/close till</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d837)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Network</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">—</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="161.5">Counts/analytics</tspan><tspan x="590" y="172.5">(not video)</tspan></text><rect x="658" y="187" width="190" height="34" rx="9"
+          fill="url(#gb-d837)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="205" text-anchor="middle"><tspan x="753" y="205.0">Local display</tspan></text><path d="M658 204 C 590 204, 590 204, 522 204" stroke="#e07ab0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="204" r="3.2" fill="#e07ab0"/><text class="dg-p" x="590" y="198" text-anchor="middle">GPIO</text><text class="dg-s" x="590" y="219" text-anchor="middle"><tspan x="590" y="219.0">Live count</tspan></text>
+  </svg>
+  <figcaption>Queue Length Counter — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Camera</b></td><td>CSI/USB</td><td><code>—</code></td><td>Queue-area video (on-device)</td></tr><tr><td><b>Staff signal</b></td><td>GPIO/HDMI</td><td><code>—</code></td><td>Open/close till</td></tr><tr><td><b>Network</b></td><td>Wi-Fi/Eth</td><td><code>—</code></td><td>Counts/analytics (not video)</td></tr><tr><td><b>Local display</b></td><td>I2C</td><td><code>GPIO</code></td><td>Live count</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Mount the camera overhead or angled to see the queue area clearly, minimising occlusion.</li><li>Run inference on-device so raw video never leaves the unit — only counts/signals do.</li><li>Drive a staff light/screen or dashboard with the open/close-till signal.</li><li>Network carries counts and analytics, not video, for privacy and bandwidth.</li><li>Define the queue region-of-interest in the camera view during setup.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/CCTV%20camera.jpg?width=900" alt="A wall-mounted CCTV surveillance camera" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td838" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td838">People are detected on-device and counted only within the queue region — counting, never identifying.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="88" y="78" width="224" height="120" rx="12" fill="#22262c" stroke="#3a4150" stroke-width="2"/>
+    <circle cx="200" cy="138" r="42" fill="#0f1418" stroke="#4a525e" stroke-width="4"/>
+    <circle cx="200" cy="138" r="26" fill="#132030"/>
+    <circle cx="188" cy="126" r="7" fill="#5fd0e0" opacity=".7"/>
+    <rect x="104" y="90" width="26" height="12" rx="3" fill="#3a4150"/>
+    <circle cx="292" cy="96" r="5" fill="#e05050"/>
+  </svg>
+  <figcaption>People are detected on-device and counted only within the queue region — counting, never identifying.</figcaption>
+</figure></template>
+  <figcaption>People are detected on-device and counted only within the queue region — counting, never identifying.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:CCTV_camera.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — CCTV camera.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td839 sd839" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td839">Queue Length Counter — architecture stack</title><desc id="sd839">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d839" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d839" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d839" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d839" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d839)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">Raspberry Pi 4 Model B (4 GB) · Raspberry Pi Camera Module 3</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d839)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d839)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">python · opencv · tf · ultralytics</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d839)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d839)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d839)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d839)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Queue Length Counter — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>Queue management fails for a simple reason: stores manage queues by <b>human noticing</b>, which is inconsistent and always a step behind. By the time a supervisor sees a queue has grown and reacts, customers have already been waiting too long, and some have abandoned their baskets. The fix is not more vigilance but a <b>continuous, objective measurement</b> of queue length that the store can act on the moment it starts to build — converting queue management from a reactive judgement call into a data-driven signal.</p>
+<p>Producing that measurement is a <b>computer-vision counting</b> problem. A camera views the queue area, and a people-detection model finds the people in each frame. The key refinement is <b>counting within a defined region of interest</b> — the marked queue zone — so passers-by and shoppers elsewhere are not counted, only those actually waiting. Counting over successive frames (with light temporal smoothing/tracking) gives a stable live count and, importantly, its <b>trend</b>: a queue of five that is growing needs a different response from a queue of five that is clearing.</p>
+<p>From the count and trend come the <b>staffing signals</b> that are the point of the system. Simple thresholds turn the number into action: above an <i>open-till</i> threshold (or when the trend shows a queue building toward it), signal staff to open another checkout <b>before</b> the wait becomes painful; below a <i>close-till</i> threshold, signal that a till can close, saving labour. Because the signal is early and objective, tills open in time and waits stay short. Aggregated over time, the same counts become <b>analytics</b> — queue length by hour and day, peak periods, estimated average waits — which let managers <i>schedule</i> staffing to demand rather than merely react to it.</p>
+<p>What makes this system acceptable to deploy is doing it <b>responsibly</b>, and the design is explicit about it. The goal is strictly <b>counting, not identification</b>: the system needs to know <i>how many</i> people are waiting, never <i>who</i> they are. So it runs <b>on-device</b> (raw video never leaves the unit — only counts and signals do), it counts people rather than recognising faces, and it respects privacy expectations and any notice/consent requirements for cameras in the space. It is also honest about the vision <b>limits</b>: crowding and <b>occlusion</b> (people hidden behind others) make dense queues hard to count exactly, defining where "the queue" is can be ambiguous, and lighting and camera angle matter. Within those honest bounds — an approximate but continuous and objective count, kept private by design — it gives retail exactly what queue management has always lacked: a live, trustworthy handle on how many people are waiting, early enough to do something about it.</p>
+
+<h3>The maths behind it</h3><h4>Queue count in a region</h4><div class="codeblock tall" data-file="Queue count in a region">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Queue count in a region</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Queue count in a region to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Queue count in a region" type="button" aria-label="Download Queue count in a region">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>For each frame: detect people {boxes}.
+
+  queue_count = | { p in people : center(p) ∈ ROI_queue } |
+
+Count only inside the marked queue zone — ignore passers-by.
+Smooth over frames to steady the number.</code></pre>
+  
+</div>
+<h4>Trend (is it building?)</h4><div class="codeblock tall" data-file="Trend (is it building?)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Trend (is it building?)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Trend (is it building?) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Trend (is it building?)" type="button" aria-label="Download Trend (is it building?)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>Track count over a short window:
+
+  trend = d(count)/dt   (rising / falling)
+
+A rising queue near the threshold warrants opening a till
+BEFORE it crosses — act early, not late.</code></pre>
+  
+</div>
+<h4>Staffing signal</h4><div class="codeblock tall" data-file="Staffing signal">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Staffing signal</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Staffing signal to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Staffing signal" type="button" aria-label="Download Staffing signal">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>if count ≥ OPEN_TH  (or rising toward it):  OPEN a till
+if count ≤ CLOSE_TH for a while:            CLOSE a till
+
+Estimated wait ≈ count / service_rate
+Set thresholds from acceptable wait times.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 870" role="img" aria-labelledby="td840 sd840" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td840">Queue Length Counter — firmware flowchart</title><desc id="sd840">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d840" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d840" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d840" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d840" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d840)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="51.5">Capture queue-area frame</tspan><tspan x="210" y="64.5">(on-device)</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d840)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d840)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="137.5">Detect people; count within</tspan><tspan x="210" y="150.5">queue ROI</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d840)"/><rect x="85" y="202" width="250" height="56" rx="10"
+          fill="url(#gb-d840)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="230" text-anchor="middle"><tspan x="210" y="230.0">Update live count + trend</tspan></text><path d="M210 258 L210 282" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d840)"/><path d="M210 288 L349 330 L210 372 L71 330 z"
+          fill="url(#ga-d840)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="330" text-anchor="middle"><tspan x="210" y="323.5">Count over open-till</tspan><tspan x="210" y="336.5">threshold?</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d840)"/><text class="dg-e" x="220" y="391">Signal: open a till</text><path d="M349 330 H397 V286 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d840)"/><text class="dg-e" x="403" y="324">Under close threshold?</text><path d="M101 402 L335 402 L319 458 L85 458 z"
+          fill="url(#gb-d840)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="430.0">Signal: open a till</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d840)"/><path d="M210 488 L349 530 L210 572 L71 530 z"
+          fill="url(#ga-d840)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="530" text-anchor="middle"><tspan x="210" y="530.0">Under close threshold?</tspan></text><path d="M210 572 L210 596" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d840)"/><text class="dg-e" x="220" y="591">Signal: can close a till</text><path d="M349 530 H397 V486 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d840)"/><text class="dg-e" x="403" y="524">Hold</text><path d="M101 602 L335 602 L319 658 L85 658 z"
+          fill="url(#gb-d840)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="630" text-anchor="middle"><tspan x="210" y="630.0">Signal: can close a till</tspan></text><path d="M210 658 L210 682" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d840)"/><rect x="85" y="688" width="250" height="56" rx="10"
+          fill="url(#gb-d840)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="716" text-anchor="middle"><tspan x="210" y="716.0">Hold</tspan></text><path d="M210 744 L210 768" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d840)"/><rect x="85" y="774" width="250" height="56" rx="28"
+          fill="url(#ga-d840)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="802" text-anchor="middle"><tspan x="210" y="802.0">Log for analytics</tspan></text>
+  </svg>
+  <figcaption>Queue Length Counter — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Set up on-device vision over the queue area</h4><p>Mount the camera to see the queue clearly, run the people detector on-device, and define the queue region of interest.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Design for privacy from the start: run inference on-device so raw video never leaves the unit, count rather than identify, and follow notice/consent rules for cameras in the space.</p></div>
+  </aside></li><li><h4>Count in the region and track the trend</h4><p>Count only people inside the queue ROI, smooth over frames, and track the trend so you can act before thresholds are crossed.</p></li><li><h4>Produce signals and analytics</h4><p>Turn count/trend into open/close-till signals with sensible thresholds, and log counts for queue analytics and staffing schedules.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Count people in the queue region</h4><p>Detect people on-device and count only those inside the queue ROI, smoothing for a stable live count.</p><div class="codeblock tall" data-file="count.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">count.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy count.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="count.py" type="button" aria-label="Download count.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">import</span> numpy <span class="tok-k">as</span> np
+
+<span class="tok-k">def</span> <span class="tok-f">queue_count</span><span class="tok-o">(</span>detector<span class="tok-o">,</span> frame<span class="tok-o">,</span> roi<span class="tok-o">,</span> history<span class="tok-o">):</span>
+    people <span class="tok-o">=</span> detector<span class="tok-o">.</span><span class="tok-f">detect</span><span class="tok-o">(</span>frame<span class="tok-o">,</span> classes<span class="tok-o">=[</span><span class="tok-s">"person"</span><span class="tok-o">])</span>   <span class="tok-c"># on-device only</span>
+    n <span class="tok-o">=</span> <span class="tok-f">sum</span><span class="tok-o">(</span><span class="tok-n">1</span> <span class="tok-k">for</span> p <span class="tok-k">in</span> people <span class="tok-k">if</span> <span class="tok-f">point_in_poly</span><span class="tok-o">(</span><span class="tok-f">center</span><span class="tok-o">(</span>p<span class="tok-o">),</span> roi<span class="tok-o">))</span>  <span class="tok-c"># in the queue</span>
+    history<span class="tok-o">.</span><span class="tok-f">append</span><span class="tok-o">(</span>n<span class="tok-o">);</span> <span class="tok-k">del</span> history<span class="tok-o">[:-</span><span class="tok-n">10</span><span class="tok-o">]</span>                  <span class="tok-c"># keep last 10</span>
+    <span class="tok-k">return</span> <span class="tok-f">int</span><span class="tok-o">(</span><span class="tok-f">round</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">median</span><span class="tok-o">(</span>history<span class="tok-o">)))</span>                 <span class="tok-c"># smoothed live count</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">people = detector.detect(frame, classes=["person"])   # on-device only</span><span class="txt">People are detected on the device itself, so raw video never leaves the unit — counting, not identification.</span></div><div><span class="ref">n = sum(1 for p in people if point_in_poly(center(p), roi))  # in the queue</span><span class="txt">Only people inside the defined queue region are counted, so passers-by and other shoppers are excluded.</span></div><div><span class="ref">return int(round(np.median(history)))                 # smoothed live count</span><span class="txt">Median smoothing over recent frames gives a steady count instead of a number that flickers frame to frame.</span></div></div></li><li><h4>Signal staffing and log analytics</h4><p>Turn count and trend into open/close-till signals early, and log counts for peak-time analytics and staffing schedules.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Act on the trend, not just the instant: open a till when a queue is building toward the threshold, so the till is staffed before the wait actually gets long.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="queue_counter.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">queue_counter.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy queue_counter.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="queue_counter.py" type="button" aria-label="Download queue_counter.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">#!/usr/bin/env python3</span>
+<span class="tok-s">"""</span>
+<span class="tok-s">Queue Length Counter — on-device people counting for staffing</span>
+<span class="tok-s"></span>
+<span class="tok-s">Counts people within a defined queue region from a camera, tracks the</span>
+<span class="tok-s">live count and trend, and signals when to open/close a checkout BEFORE</span>
+<span class="tok-s">waits get long. Logs counts for queue analytics. Counts, never</span>
+<span class="tok-s">identifies: inference on-device; only counts/signals leave the unit.</span>
+<span class="tok-s">"""</span>
+<span class="tok-k">import</span> time<span class="tok-o">,</span> numpy <span class="tok-k">as</span> np
+
+<span class="tok-k">class</span> <span class="tok-t">QueueCounter</span><span class="tok-o">:</span>
+    <span class="tok-k">def</span> <span class="tok-f">__init__</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> detector<span class="tok-o">,</span> roi<span class="tok-o">,</span> open_th<span class="tok-o">=</span><span class="tok-n">4</span><span class="tok-o">,</span> close_th<span class="tok-o">=</span><span class="tok-n">1</span><span class="tok-o">,</span> sink<span class="tok-o">=</span><span class="tok-k">None</span><span class="tok-o">):</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>det <span class="tok-o">=</span> detector<span class="tok-o">;</span> <span class="tok-k">self</span><span class="tok-o">.</span>roi <span class="tok-o">=</span> roi
+        <span class="tok-k">self</span><span class="tok-o">.</span>open_th<span class="tok-o">,</span> <span class="tok-k">self</span><span class="tok-o">.</span>close_th <span class="tok-o">=</span> open_th<span class="tok-o">,</span> close_th
+        <span class="tok-k">self</span><span class="tok-o">.</span>hist <span class="tok-o">=</span> <span class="tok-o">[];</span> <span class="tok-k">self</span><span class="tok-o">.</span>sink <span class="tok-o">=</span> sink
+
+    <span class="tok-k">def</span> <span class="tok-f">count</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> frame<span class="tok-o">):</span>
+        people <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>det<span class="tok-o">.</span><span class="tok-f">detect</span><span class="tok-o">(</span>frame<span class="tok-o">,</span> classes<span class="tok-o">=[</span><span class="tok-s">"person"</span><span class="tok-o">])</span>   <span class="tok-c"># on-device</span>
+        n <span class="tok-o">=</span> <span class="tok-f">sum</span><span class="tok-o">(</span><span class="tok-n">1</span> <span class="tok-k">for</span> p <span class="tok-k">in</span> people <span class="tok-k">if</span> <span class="tok-f">point_in_poly</span><span class="tok-o">(</span><span class="tok-f">center</span><span class="tok-o">(</span>p<span class="tok-o">),</span> <span class="tok-k">self</span><span class="tok-o">.</span>roi<span class="tok-o">))</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>hist<span class="tok-o">.</span><span class="tok-f">append</span><span class="tok-o">(</span>n<span class="tok-o">);</span> <span class="tok-k">self</span><span class="tok-o">.</span>hist <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>hist<span class="tok-o">[-</span><span class="tok-n">10</span><span class="tok-o">:]</span>
+        <span class="tok-k">return</span> <span class="tok-f">int</span><span class="tok-o">(</span><span class="tok-f">round</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">median</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">.</span>hist<span class="tok-o">)))</span>               <span class="tok-c"># smoothed</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">trend</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">):</span>
+        <span class="tok-k">return</span> <span class="tok-k">self</span><span class="tok-o">.</span>hist<span class="tok-o">[-</span><span class="tok-n">1</span><span class="tok-o">]</span> <span class="tok-o">-</span> <span class="tok-k">self</span><span class="tok-o">.</span>hist<span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">]</span> <span class="tok-k">if</span> <span class="tok-f">len</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">.</span>hist<span class="tok-o">)</span> <span class="tok-o">&gt;</span> <span class="tok-n">1</span> <span class="tok-k">else</span> <span class="tok-n">0</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">step</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> frame<span class="tok-o">):</span>
+        c <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">count</span><span class="tok-o">(</span>frame<span class="tok-o">);</span> t <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">trend</span><span class="tok-o">()</span>
+        <span class="tok-k">if</span> c <span class="tok-o">&gt;=</span> <span class="tok-k">self</span><span class="tok-o">.</span>open_th <span class="tok-k">or</span> <span class="tok-o">(</span>c <span class="tok-o">&gt;=</span> <span class="tok-k">self</span><span class="tok-o">.</span>open_th<span class="tok-o">-</span><span class="tok-n">1</span> <span class="tok-k">and</span> t <span class="tok-o">&gt;</span> <span class="tok-n">0</span><span class="tok-o">):</span>
+            sig <span class="tok-o">=</span> <span class="tok-s">"OPEN_TILL"</span>                    <span class="tok-c"># early: before waits build</span>
+        <span class="tok-k">elif</span> c <span class="tok-o">&lt;=</span> <span class="tok-k">self</span><span class="tok-o">.</span>close_th<span class="tok-o">:</span>
+            sig <span class="tok-o">=</span> <span class="tok-s">"CAN_CLOSE_TILL"</span>
+        <span class="tok-k">else</span><span class="tok-o">:</span>
+            sig <span class="tok-o">=</span> <span class="tok-s">"HOLD"</span>
+        <span class="tok-c"># ONLY the count + signal leave the device — never video or identities</span>
+        <span class="tok-k">if</span> <span class="tok-k">self</span><span class="tok-o">.</span>sink<span class="tok-o">:</span>
+            <span class="tok-k">self</span><span class="tok-o">.</span>sink<span class="tok-o">.</span><span class="tok-f">publish</span><span class="tok-o">(</span><span class="tok-s">"queue/status"</span><span class="tok-o">,</span>
+                <span class="tok-o">{</span><span class="tok-s">"count"</span><span class="tok-o">:</span> c<span class="tok-o">,</span> <span class="tok-s">"trend"</span><span class="tok-o">:</span> t<span class="tok-o">,</span> <span class="tok-s">"signal"</span><span class="tok-o">:</span> sig<span class="tok-o">,</span> <span class="tok-s">"ts"</span><span class="tok-o">:</span> time<span class="tok-o">.</span><span class="tok-f">time</span><span class="tok-o">()})</span>
+        <span class="tok-k">return</span> c<span class="tok-o">,</span> sig
+
+    <span class="tok-k">def</span> <span class="tok-f">run</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> camera<span class="tok-o">):</span>
+        <span class="tok-k">for</span> frame <span class="tok-k">in</span> camera<span class="tok-o">.</span><span class="tok-f">frames</span><span class="tok-o">():</span>           <span class="tok-c"># raw frames stay on-device</span>
+            <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">step</span><span class="tok-o">(</span>frame<span class="tok-o">)</span>
+            time<span class="tok-o">.</span><span class="tok-f">sleep</span><span class="tok-o">(</span><span class="tok-n">0.5</span><span class="tok-o">)</span>                      <span class="tok-c"># counting needs only a few FPS</span>
+
+<span class="tok-k">if</span> __name__ <span class="tok-o">==</span> <span class="tok-s">"__main__"</span><span class="tok-o">:</span>
+    <span class="tok-f">QueueCounter</span><span class="tok-o">(</span><span class="tok-f">PersonDetector</span><span class="tok-o">(),</span> <span class="tok-t">QUEUE_ROI</span><span class="tok-o">,</span> sink<span class="tok-o">=</span><span class="tok-f">Dashboard</span><span class="tok-o">()).</span><span class="tok-f">run</span><span class="tok-o">(</span><span class="tok-f">Camera</span><span class="tok-o">())</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (47 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">people = self.det.detect(frame, classes=["person"])   # on-device</span><span class="txt">Detection runs on-device on raw frames that never leave the unit — the foundation of the privacy-respecting design.</span></div><div><span class="ref">n = sum(1 for p in people if point_in_poly(center(p), self.roi))</span><span class="txt">Counting is restricted to the queue region so only people actually waiting are counted.</span></div><div><span class="ref">if c &gt;= self.open_th or (c &gt;= self.open_th-1 and t &gt; 0):</span><span class="txt">The open-till signal fires early — on a building trend near the threshold — so a till opens before the wait gets long.</span></div><div><span class="ref"># ONLY the count + signal leave the device — never video or identities</span><span class="txt">Only the aggregate count and signal are published; video and any identity information stay on the device — counting, not identifying.</span></div><div><span class="ref">time.sleep(0.5)                      # counting needs only a few FPS</span><span class="txt">Queue counting needs only a few frames per second, which keeps it comfortably real-time on modest edge hardware.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Configure the camera, on-device detector and the queue region of interest.</li><li>Configure smoothing, open/close-till thresholds and trend sensitivity.</li><li>Configure the staff signal and analytics logging (counts only).</li><li>Configure privacy: on-device inference, no video egress, notice/consent.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>ROI + counting</h4><p>Define the queue region and verify the count matches a manual count at several lengths.</p></li><li><h4>Thresholds</h4><p>Set open/close thresholds from acceptable wait times and the service rate.</p></li><li><h4>Robustness</h4><p>Check counting under crowding/occlusion and different lighting; accept approximate counts when dense.</p></li></ol></section>
+
+<section id="model" aria-labelledby="h-model"><h2 id="h-model">Dataset, Model &amp; Training</h2>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Dataset</th><th scope="col">Size</th><th scope="col">Licence</th><th scope="col">Use here</th></tr></thead>
+    <tbody><tr><td><b>Person-detection data (e.g. COCO person class)</b></td><td>Large</td><td>Varies (check terms)</td><td>Base people detector</td></tr><tr><td><b>Site queue-area frames (ROI-annotated)</b></td><td>Small–Medium</td><td>On-site</td><td>Tune ROI / thresholds</td></tr><tr><td><b>Crowd/occlusion samples</b></td><td>Medium</td><td>Varies</td><td>Robustness in dense queues</td></tr><tr><td><b>Time-stamped count logs</b></td><td>Growing</td><td>On-site</td><td>Queue analytics / scheduling</td></tr></tbody>
+  </table></div>
+
+
+<div class="diagram-scroll"><figure class="diagram diagram-pipeline">
+  <svg viewBox="0 0 772 250" role="img" aria-labelledby="td841 sd841" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td841">Queue Length Counter — ML pipeline</title><desc id="sd841">From raw data through training to deployed inference.</desc>
+    <defs>
+    <marker id="ar-d841" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d841" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d841" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d841" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="20" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d841)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="38" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="58" text-anchor="middle">1</text><text class="dg-b" x="95" y="82" text-anchor="middle"><tspan x="95" y="82.0">Frame</tspan></text><text class="dg-s" x="95" y="104" text-anchor="middle"><tspan x="95" y="104.0">camera (on-device)</tspan></text><path d="M174 77 H206" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d841)"/><rect x="214" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d841)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="232" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="232" y="58" text-anchor="middle">2</text><text class="dg-b" x="289" y="82" text-anchor="middle"><tspan x="289" y="82.0">Detect people</tspan></text><text class="dg-s" x="289" y="104" text-anchor="middle"><tspan x="289" y="104.0">CV model</tspan></text><path d="M368 77 H400" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d841)"/><rect x="408" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d841)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="426" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="426" y="58" text-anchor="middle">3</text><text class="dg-b" x="483" y="82" text-anchor="middle"><tspan x="483" y="82.0">Filter to ROI</tspan></text><text class="dg-s" x="483" y="104" text-anchor="middle"><tspan x="483" y="104.0">queue zone</tspan></text><path d="M562 77 H594" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d841)"/><rect x="602" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d841)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="620" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="620" y="58" text-anchor="middle">4</text><text class="dg-b" x="677" y="82" text-anchor="middle"><tspan x="677" y="82.0">Count + smooth</tspan></text><text class="dg-s" x="677" y="104" text-anchor="middle"><tspan x="677" y="104.0">live length</tspan></text><path d="M677 122 V136 H95 V148"
+            stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d841)"/><rect x="20" y="152" width="150" height="82" rx="12"
+        fill="url(#gb-d841)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="38" cy="170" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="174" text-anchor="middle">5</text><text class="dg-b" x="95" y="198" text-anchor="middle"><tspan x="95" y="198.0">Signal</tspan></text><text class="dg-s" x="95" y="220" text-anchor="middle"><tspan x="95" y="220.0">open/close till</tspan></text><path d="M174 193 H206" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d841)"/><rect x="214" y="152" width="150" height="82" rx="12"
+        fill="url(#gb-d841)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="232" cy="170" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="232" y="174" text-anchor="middle">6</text><text class="dg-b" x="289" y="198" text-anchor="middle"><tspan x="289" y="198.0">Log</tspan></text><text class="dg-s" x="289" y="220" text-anchor="middle"><tspan x="289" y="220.0">analytics</tspan></text>
+  </svg>
+  <figcaption>Queue Length Counter — ML pipeline</figcaption>
+</figure></div>
+
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Layer / stage</th><th scope="col">Shape or configuration</th><th scope="col">Purpose</th></tr></thead>
+    <tbody><tr><td><b>Detector</b></td><td><code>lightweight person detector (YOLO-class / MobileNet-SSD)</code></td><td>Runs on-device (Pi/Jetson)</td></tr><tr><td><b>ROI filter</b></td><td><code>count detections inside the queue region</code></td><td>Ignores passers-by</td></tr><tr><td><b>Tracker/smoother</b></td><td><code>temporal smoothing / light tracking</code></td><td>Stable count + trend</td></tr><tr><td><b>Signal logic</b></td><td><code>thresholds + trend on the count</code></td><td>Open/close-till signals</td></tr><tr><td><b>Privacy</b></td><td><code>on-device; counts out, video stays</code></td><td>Count, don't identify</td></tr></tbody>
+  </table></div>
+
+<h3>Hyperparameters</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Hyperparameter</th><th scope="col">Value</th><th scope="col">Why</th></tr></thead>
+    <tbody><tr><td><b>Detector input size</b></td><td><code>≈ 416–640 px</code></td><td>Speed vs small-person recall</td></tr><tr><td><b>Confidence threshold</b></td><td><code>≈ 0.4–0.5</code></td><td>Miss vs false people</td></tr><tr><td><b>Smoothing window</b></td><td><code>≈ 3–10 s</code></td><td>Steady count vs responsiveness</td></tr><tr><td><b>Open/close thresholds</b></td><td><code>from wait targets</code></td><td>Site-specific</td></tr></tbody>
+  </table></div>
+</section>
+
+<section id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation">Evaluation, Metrics &amp; Deployment</h2>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">What it tells you</th></tr></thead>
+    <tbody><tr><td><b>Counting error (MAE)</b></td><td><code>Low at typical lengths</code></td><td>Rises with crowding/occlusion</td></tr><tr><td><b>Signal timeliness</b></td><td><code>Fires before waits get long</code></td><td>The operational goal</td></tr><tr><td><b>Privacy</b></td><td><code>No identification; video on-device</code></td><td>By design</td></tr><tr><td><b>FPS on-device</b></td><td><code>Real-time enough (few FPS)</code></td><td>Counting needs modest rate</td></tr></tbody>
+  </table></div><p class="tbl-caption">Figures from the reference training run described above — reproduce them before trusting your own changes.</p>
+<figure class="diagram diagram-chart">
+  <svg viewBox="0 0 620 192" role="img" aria-labelledby="td842 sd842" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td842">Where the accuracy goes</title><desc id="sd842">Counting error grows with queue density and occlusion — accurate for short/medium queues, approximate for dense crowds.</desc>
+    <defs>
+    <marker id="ar-d842" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d842" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d842" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d842" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <line x1="190" y1="26" x2="190" y2="178" stroke="var(--dg-stroke)" stroke-width="1"/><text class="dg-b" x="178" y="45" text-anchor="end">Short queue (≤5)</text><rect x="191" y="33" width="316.5217391304348" height="20" rx="5" fill="url(#ga-d842)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="516.5217391304348" y="47">95</text><text class="dg-b" x="178" y="83" text-anchor="end">Medium (6–12)</text><rect x="191" y="71" width="293.19908466819226" height="20" rx="5" fill="url(#ga-d842)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="493.19908466819226" y="85">88</text><text class="dg-b" x="178" y="121" text-anchor="end">Long/dense (13+)</text><rect x="191" y="109" width="239.8901601830664" height="20" rx="5" fill="url(#ga-d842)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="439.8901601830664" y="123">72</text><text class="dg-b" x="178" y="159" text-anchor="end">Heavy occlusion</text><rect x="191" y="147" width="199.90846681922199" height="20" rx="5" fill="url(#ga-d842)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="399.908466819222" y="161">60</text>
+  </svg>
+  <figcaption>Where the accuracy goes</figcaption>
+</figure>
+
+
+<h3>Inference example</h3><div class="codeblock tall" data-file="queue_count.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">queue_count.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy queue_count.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="queue_count.py" type="button" aria-label="Download queue_count.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">import</span> numpy <span class="tok-k">as</span> np
+
+<span class="tok-k">class</span> <span class="tok-t">QueueCounter</span><span class="tok-o">:</span>
+    <span class="tok-k">def</span> <span class="tok-f">__init__</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> detector<span class="tok-o">,</span> roi_polygon<span class="tok-o">,</span> open_th<span class="tok-o">=</span><span class="tok-n">4</span><span class="tok-o">,</span> close_th<span class="tok-o">=</span><span class="tok-n">1</span><span class="tok-o">):</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>det <span class="tok-o">=</span> detector<span class="tok-o">;</span> <span class="tok-k">self</span><span class="tok-o">.</span>roi <span class="tok-o">=</span> roi_polygon
+        <span class="tok-k">self</span><span class="tok-o">.</span>open_th<span class="tok-o">,</span> <span class="tok-k">self</span><span class="tok-o">.</span>close_th <span class="tok-o">=</span> open_th<span class="tok-o">,</span> close_th
+        <span class="tok-k">self</span><span class="tok-o">.</span>history <span class="tok-o">=</span> <span class="tok-o">[]</span>                       <span class="tok-c"># recent counts (smoothing/trend)</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">count_frame</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> frame<span class="tok-o">):</span>
+        people <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>det<span class="tok-o">.</span><span class="tok-f">detect</span><span class="tok-o">(</span>frame<span class="tok-o">,</span> classes<span class="tok-o">=[</span><span class="tok-s">"person"</span><span class="tok-o">])</span>   <span class="tok-c"># on-device</span>
+        <span class="tok-c"># count only people whose center is inside the queue region</span>
+        n <span class="tok-o">=</span> <span class="tok-f">sum</span><span class="tok-o">(</span><span class="tok-n">1</span> <span class="tok-k">for</span> p <span class="tok-k">in</span> people <span class="tok-k">if</span> <span class="tok-f">point_in_poly</span><span class="tok-o">(</span><span class="tok-f">center</span><span class="tok-o">(</span>p<span class="tok-o">),</span> <span class="tok-k">self</span><span class="tok-o">.</span>roi<span class="tok-o">))</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">.</span><span class="tok-f">append</span><span class="tok-o">(</span>n<span class="tok-o">);</span> <span class="tok-k">self</span><span class="tok-o">.</span>history <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">[-</span><span class="tok-n">10</span><span class="tok-o">:]</span>
+        <span class="tok-k">return</span> <span class="tok-f">int</span><span class="tok-o">(</span><span class="tok-f">round</span><span class="tok-o">(</span>np<span class="tok-o">.</span><span class="tok-f">median</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">)))</span>            <span class="tok-c"># smoothed</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">signal</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> frame<span class="tok-o">):</span>
+        count <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">count_frame</span><span class="tok-o">(</span>frame<span class="tok-o">)</span>
+        trend <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">[-</span><span class="tok-n">1</span><span class="tok-o">]</span> <span class="tok-o">-</span> <span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">[</span><span class="tok-n">0</span><span class="tok-o">]</span> <span class="tok-k">if</span> <span class="tok-f">len</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">.</span>history<span class="tok-o">)</span> <span class="tok-o">&gt;</span> <span class="tok-n">1</span> <span class="tok-k">else</span> <span class="tok-n">0</span>
+        <span class="tok-k">if</span> count <span class="tok-o">&gt;=</span> <span class="tok-k">self</span><span class="tok-o">.</span>open_th <span class="tok-k">or</span> <span class="tok-o">(</span>count <span class="tok-o">&gt;=</span> <span class="tok-k">self</span><span class="tok-o">.</span>open_th<span class="tok-o">-</span><span class="tok-n">1</span> <span class="tok-k">and</span> trend <span class="tok-o">&gt;</span> <span class="tok-n">0</span><span class="tok-o">):</span>
+            <span class="tok-k">return</span> count<span class="tok-o">,</span> <span class="tok-s">"OPEN_TILL"</span>           <span class="tok-c"># act BEFORE it gets long</span>
+        <span class="tok-k">if</span> count <span class="tok-o">&lt;=</span> <span class="tok-k">self</span><span class="tok-o">.</span>close_th<span class="tok-o">:</span>
+            <span class="tok-k">return</span> count<span class="tok-o">,</span> <span class="tok-s">"CAN_CLOSE_TILL"</span>
+        <span class="tok-k">return</span> count<span class="tok-o">,</span> <span class="tok-s">"HOLD"</span>
+        <span class="tok-c"># NOTE: only 'count' + signal leave the device — never the video/faces.</span></code></pre>
+  
+</div>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Known limitations</span><p>Counting is approximate in dense, occluded queues — accurate for short/medium lengths.</p>
+<p>Defining the queue region can be ambiguous; lighting and camera angle matter.</p>
+<p>It counts, it does not identify — on-device, privacy-respecting by design.</p>
+<p>Signals assume a service rate; thresholds must be set from real wait targets.</p></div>
+  </aside></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Short queue forms</b></td><td>Accurate live count</td></tr><tr><td><b>Queue builds toward threshold</b></td><td>OPEN_TILL signal fires early (trend)</td></tr><tr><td><b>Queue clears</b></td><td>CAN_CLOSE_TILL signal</td></tr><tr><td><b>People pass by outside the ROI</b></td><td>Not counted</td></tr><tr><td><b>Dense, occluded queue</b></td><td>Approximate count — note the limit</td></tr><tr><td><b>Check data egress</b></td><td>Only counts/signals leave; no video/identities</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>Live queue length, early open/close-till signals, and queue analytics — with only counts leaving the device.</p>
+<div class="codeblock tall" data-file="queue-status.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">queue-status.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy queue-status.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="queue-status.json" type="button" aria-label="Download queue-status.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "count": <span class="tok-n">5</span>,
+  "trend": <span class="tok-n">2</span>,
+  "signal": "OPEN_TILL",
+  "est_wait_min": <span class="tok-n">6</span>,
+  "ts": "2026-07-28T17:<span class="tok-n">12</span>:<span class="tok-n">00</span>"
+}</code></pre>
+  
+</div>
+
+<p>Five people and growing (+2), so the system signalled OPEN_TILL with an estimated 6-minute wait — the till is staffed before the queue becomes a problem; no video or identities ever left the device.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Artificial%20neural%20network.svg?width=900" alt="A schematic of a feed-forward artificial neural network" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td843" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td843">Aggregated counts become queue analytics — peak times and waits — for scheduling staff to real demand.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <line x1="79" y1="91" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="117" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="143" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="169" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="65" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="91" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="117" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="143" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="169" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="195" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="65" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="91" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="117" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="143" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="169" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="195" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="104" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="130" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="156" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/>
+    <text x="70" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">input</text>
+    <text x="205" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">hidden</text>
+    <text x="340" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">output</text>
+  </svg>
+  <figcaption>Aggregated counts become queue analytics — peak times and waits — for scheduling staff to real demand.</figcaption>
+</figure></template>
+  <figcaption>Aggregated counts become queue analytics — peak times and waits — for scheduling staff to real demand.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Artificial_neural_network.svg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Artificial neural network.svg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Counts passers-by</summary><div class="inner">
+        <p><strong>Likely cause.</strong> ROI too broad</p>
+        <p><strong>Fix.</strong> Tighten the queue region; count centres inside it</p></div></details><details class="expand"><summary>Count flickers</summary><div class="inner">
+        <p><strong>Likely cause.</strong> No smoothing</p>
+        <p><strong>Fix.</strong> Median/temporal smoothing over frames</p></div></details><details class="expand"><summary>Under-counts dense queues</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Occlusion</p>
+        <p><strong>Fix.</strong> Better angle/overhead; accept approximate at high density</p></div></details><details class="expand"><summary>Signals too late</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Instant-only thresholds</p>
+        <p><strong>Fix.</strong> Act on the trend; open before crossing</p></div></details><details class="expand"><summary>Misses people in low light</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Lighting/model</p>
+        <p><strong>Fix.</strong> Improve lighting; lower confidence; retrain if needed</p></div></details><details class="expand"><summary>Privacy concern</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Video/identity egress</p>
+        <p><strong>Fix.</strong> On-device only; publish counts; count, don't identify</p></div></details><details class="expand"><summary>The Python script crashes with "externally-managed-environment" on pip install</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Raspberry Pi OS Bookworm marks the system Python as managed by apt, and refuses global pip installs.</p>
+        <p><strong>Fix.</strong> Create and activate a virtual environment — <code>python3 -m venv ~/venv &amp;&amp; source ~/venv/bin/activate</code> — and install there. Use <code>--system-site-packages</code> if you also need apt-installed modules such as <code>picamera2</code>.</p></div></details><details class="expand"><summary>The Pi reboots or shows a lightning-bolt icon under load</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Under-voltage. The supply sags below 4.63 V when the CPU and peripherals ramp up.</p>
+        <p><strong>Fix.</strong> Use the official supply for your model (5 V 3 A for Pi 4, 5 V 5 A for Pi 5) and a short, thick USB-C cable. Check with <code>vcgencmd get_throttled</code> — anything other than <code>0x0</code> means power problems.</p></div></details><details class="expand"><summary>An I²C device is not detected</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Wrong address, missing pull-ups, swapped SDA/SCL, or a bus too long for the pull-up value.</p>
+        <p><strong>Fix.</strong> Run an I²C scanner sketch first — it should print the device address. Most breakout boards include 4.7 kΩ pull-ups, but if you have chained four of them the parallel resistance is too low; remove the pull-ups from all but one board. Keep the bus under 30 cm at 100 kHz.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Count within the queue ROI and smooth for a steady live number.</li><li>Act on the trend so tills open before waits build.</li><li>Run on-device at a few FPS — counting does not need high frame rates.</li><li>Publish counts/signals only; keep video on the device.</li><li>Pin the hot loop to one core with <code>taskset</code> and leave the others free for the OS.</li><li>Prefer MJPEG over raw YUY2 when capturing from USB cameras — the decode cost is far lower than the USB bandwidth cost.</li><li>Log to a tmpfs RAM disk and flush to the SD card once a minute; per-sample SD writes are what kills cards.</li><li>Run the service under <code>systemd</code> with <code>Restart=always</code> so a crash never means a dead deployment.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>Count, do not identify — run on-device, publish only counts/signals, keep video local.</li><li>Respect privacy and notice/consent rules for cameras in the space.</li><li>Do not repurpose the feed for surveillance/recognition — that breaks the design's premise.</li><li>Treat counts as operational metrics, not judgements about individuals.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Re-verify the ROI and counting accuracy after camera/layout changes.</li><li>Re-tune thresholds as service rates/targets change.</li><li>Keep the model and lighting adequate for reliable detection.</li><li>Audit that only counts/signals leave the device.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Estimate waits from count + measured service rate.</li><li>Add multi-queue / whole-store coverage and load balancing.</li><li>Add heat-map analytics for layout optimisation.</li><li>Integrate with workforce scheduling from historical peaks.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>What problem does it solve?</summary><div class="inner"><p>Stores manage queues by human noticing, which is inconsistent and always late. A live, objective count of people waiting lets the store open a till before the wait gets long — shortening waits and reducing walked-away sales.</p></div></details><details class="expand"><summary>How does it count only the queue?</summary><div class="inner"><p>It counts people whose position falls inside a defined queue region of interest, so passers-by and shoppers elsewhere are ignored. Counting over frames with smoothing gives a stable number and its trend.</p></div></details><details class="expand"><summary>Is it watching individual customers?</summary><div class="inner"><p>No. The goal is counting, not identification. It runs on-device so raw video never leaves the unit, it counts people rather than recognising faces, and only counts and signals are published — privacy-respecting by design.</p></div></details><details class="expand"><summary>Why act on the trend, not just the count?</summary><div class="inner"><p>Because opening a till takes time. If you wait until the count crosses the threshold, customers already wait too long. Acting when a queue is building toward the threshold staffs the till before the wait becomes painful.</p></div></details><details class="expand"><summary>How accurate is it?</summary><div class="inner"><p>Accurate for short and medium queues; approximate for dense, occluded crowds where people hide behind one another. For staffing decisions an approximate but continuous count is far better than the too-late human judgement it replaces.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Object_detection" rel="noopener nofollow" target="_blank">Object detection (people)</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Crowd_counting" rel="noopener nofollow" target="_blank">Crowd counting</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Queueing_theory" rel="noopener nofollow" target="_blank">Queueing theory / waiting lines</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Edge_computing" rel="noopener nofollow" target="_blank">Edge AI / on-device inference</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Privacy_by_design" rel="noopener nofollow" target="_blank">Privacy by design</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="smart-shelf-stock-sensor.html"><span class="dir">← Previous project</span><span class="ttl">Smart Shelf Stock Sensor</span></a>
+        <a class="next" href="smart-vending-telemetry.html"><span class="dir">Next project →</span><span class="ttl">Smart Vending Telemetry</span></a>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Advanced</b></div>
+        <div class="rail-stat"><span>Time</span><b>14–22 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>7</b></div>
+        <div class="rail-stat"><span>Cost</span><b>₹6,000 – ₹10,000</b></div>
+        <div class="rail-stat"><span>Sections</span><b>27</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="smart-shelf-stock-sensor.html">Smart Shelf Stock Sensor</a></li><li><a href="smart-vending-telemetry.html">Smart Vending Telemetry</a></li><li><a href="nfc-smart-attendance.html">NFC Smart Attendance</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="smart-shelf-stock-sensor.html">
+        <span class="rc">Retail</span>
+        <h4>Smart Shelf Stock Sensor</h4>
+        <p>Weight-based shelves that flag low stock for instant restocking.</p></a><a class="relcard" href="smart-vending-telemetry.html">
+        <span class="rc">Retail</span>
+        <h4>Smart Vending Telemetry</h4>
+        <p>Reports stock and sales from vending machines in real time.</p></a><a class="relcard" href="nfc-smart-attendance.html">
+        <span class="rc">Retail</span>
+        <h4>NFC Smart Attendance</h4>
+        <p>Tap-in attendance tracking for offices, schools and events.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Queue Length Counter</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
