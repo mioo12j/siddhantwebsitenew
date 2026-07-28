@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Sentiment Analysis Engine — Circuit, Code &amp; Full Build Guide | NLP &amp; LLM</title>
+  <meta name="description" content="Complete intermediate-level build guide for a Sentiment Analysis Engine: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta name="keywords" content="sentiment analysis engine, sentiment analysis engine project, how to build sentiment analysis engine, cpu/gpu workstation or server project, nlp &amp; llm project, circuit diagram, source code, tutorial" />
+  <meta name="author" content="Siddhant Kumar" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#060c1a" />
+  <link rel="canonical" href="https://siddhantkumar.in/projects/docs/sentiment-analysis-engine.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Siddhant Kumar" />
+  <meta property="og:url" content="https://siddhantkumar.in/projects/docs/sentiment-analysis-engine.html" />
+  <meta property="og:title" content="Sentiment Analysis Engine — Circuit, Code &amp; Full Build Guide | NLP &amp; LLM" />
+  <meta property="og:description" content="Complete intermediate-level build guide for a Sentiment Analysis Engine: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="article:author" content="Siddhant Kumar" />
+  <meta property="article:section" content="NLP &amp; LLM" />
+  <meta property="article:published_time" content="2026-02-14" />
+  <meta property="article:modified_time" content="2026-07-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Sentiment Analysis Engine — Complete Build Guide" />
+  <meta name="twitter:description" content="Complete intermediate-level build guide for a Sentiment Analysis Engine: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" /></noscript>
+
+  <link rel="stylesheet" href="../doc.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23060c1a'/><text x='50' y='68' text-anchor='middle' font-size='50'>💬</text></svg>" />
+  <style>:root{--acc:#818cf8;--acc-light:#a5b4fc;--acc-rgb:129,140,248}</style>
+  <script>(function(){try{var t=localStorage.getItem('sk-doc-theme');
+    if(!t)t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
+    if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://siddhantkumar.in/projects/docs/sentiment-analysis-engine.html#article","headline":"Sentiment Analysis Engine — Complete Build Guide","name":"Sentiment Analysis Engine","description":"Complete intermediate-level build guide for a Sentiment Analysis Engine: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","url":"https://siddhantkumar.in/projects/docs/sentiment-analysis-engine.html","inLanguage":"en","articleSection":"NLP & LLM","keywords":"sentiment analysis engine, sentiment analysis engine project, how to build sentiment analysis engine, cpu/gpu workstation or server project, nlp & llm project, circuit diagram, source code, tutorial","proficiencyLevel":"Intermediate","dependencies":"Python, Hugging Face Transformers, scikit-learn, pandas, NumPy","author":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"publisher":{"@type":"Person","name":"Siddhant Kumar","url":"https://siddhantkumar.in/"},"datePublished":"2026-02-14","dateModified":"2026-07-28","mainEntityOfPage":{"@type":"WebPage","@id":"https://siddhantkumar.in/projects/docs/sentiment-analysis-engine.html"},"isPartOf":{"@type":"Collection","name":"Project Documentation","url":"https://siddhantkumar.in/projects/docs/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","@id":"https://siddhantkumar.in/projects/docs/sentiment-analysis-engine.html#howto","name":"How to build a Sentiment Analysis Engine","description":"Complete intermediate-level build guide for a Sentiment Analysis Engine: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.","totalTime":"PT14H","estimatedCost":{"@type":"MonetaryAmount","currency":"INR","value":"0"},"supply":[],"tool":[{"@type":"HowToTool","name":"Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free s"},{"@type":"HowToTool","name":"Digital multimeter — continuity, DC volts and current ranges"},{"@type":"HowToTool","name":"Wire strippers, flush cutters and a small set of precision screwdrivers"},{"@type":"HowToTool","name":"Heat-shrink tubing and a heat gun (or a lighter, carefully)"},{"@type":"HowToTool","name":"A laptop with a USB port and the toolchain listed above"}],"step":[{"@type":"HowToStep","position":1,"name":"Classify sentiment and per aspect","text":"Classify overall sentiment, and where useful attribute sentiment to specific aspects of the text."},{"@type":"HowToStep","position":2,"name":"Aggregate into trends","text":"Aggregate individual labels over time, product and source into a readable pulse, where individual errors wash out at scale."}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"https://siddhantkumar.in/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://siddhantkumar.in/projects/"},{"@type":"ListItem","position":3,"name":"Documentation","item":"https://siddhantkumar.in/projects/docs/"},{"@type":"ListItem","position":4,"name":"Sentiment Analysis Engine","item":"https://siddhantkumar.in/projects/docs/sentiment-analysis-engine.html"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","@id":"https://siddhantkumar.in/projects/docs/sentiment-analysis-engine.html#faq","mainEntity":[{"@type":"Question","name":"What is sentiment analysis, technically?","acceptedAnswer":{"@type":"Answer","text":"A text-classification task: map a piece of text to a sentiment label (positive/negative/neutral, or finer emotions). The value comes from doing it at scale and aggregating the results."}},{"@type":"Question","name":"What is aspect-based sentiment?","acceptedAnswer":{"@type":"Answer","text":"Attributing sentiment to specific aspects rather than the whole text. \"Great camera, terrible battery, overpriced\" is positive about the camera and negative about battery and price — far more actionable than one overall label."}},{"@type":"Question","name":"Why does it struggle with sarcasm and negation?","acceptedAnswer":{"@type":"Answer","text":"Sarcasm inverts surface sentiment (\"oh great, another crash\" is negative despite \"great\"), and negation flips polarity (\"not bad\" is positive). Lexicon and bag-of-words methods especially miss these; context-aware models handle them better but not perfectly."}},{"@type":"Question","name":"Can I trust the results if individual labels err?","acceptedAnswer":{"@type":"Answer","text":"Trust the aggregate. Individual misclassifications from sarcasm or negation wash out over thousands of texts, so the trend — which is what most decisions need — is reliable even when single labels occasionally miss."}},{"@type":"Question","name":"Which model should I use?","acceptedAnswer":{"@type":"Answer","text":"It depends on the trade-off: lexicon methods are fast and transparent but shallow; TF-IDF classifiers learn from data but ignore context; fine-tuned transformers are most accurate on hard cases but need more compute and data. Match the choice to your accuracy needs and resources."}}]}</script>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to documentation</a>
+<div id="readprog" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100"></div>
+
+<header class="docnav">
+  <div class="docnav-in">
+    <a href="../../index.html" class="brand" aria-label="Siddhant Kumar — home">
+      <span class="mono" aria-hidden="true">SK</span><span>Siddhant Kumar</span>
+    </a>
+    <ul class="docnav-links">
+      <li><a href="../index.html">All Projects</a></li>
+      <li><a href="../iot.html">IoT</a></li>
+      <li><a href="../ai.html">AI &amp; Advanced</a></li>
+      <li><a href="index.html">Docs Index</a></li>
+      <li><a href="../../journal/index.html">Journal</a></li>
+    </ul>
+    <div class="docnav-tools">
+      <button class="icon-btn" id="findToggle" type="button" aria-label="Search within this page" title="Search this page (Ctrl+F)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" id="printBtn" type="button" aria-label="Print this guide" title="Print / save as PDF">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 15h10v5H7z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch colour theme" title="Toggle light / dark">
+        <svg class="t-light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.1 5.1l1.4 1.4M17.5 17.5l1.4 1.4M18.9 5.1l-1.4 1.4M6.5 17.5l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="t-dark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="doc-hero">
+    <div class="doc-hero-in">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html">Home</a><span class="sep">/</span>
+        <a href="../index.html">Projects</a><span class="sep">/</span>
+        <a href="index.html">Documentation</a><span class="sep">/</span>
+        <a href="index.html#nlp-and-llm">NLP &amp; LLM</a><span class="sep">/</span>
+        <span aria-current="page">Sentiment Analysis Engine</span>
+      </nav>
+
+      <div class="hero-grid">
+        <div>
+          <span class="kicker">Project A10 · NLP &amp; LLM</span>
+          <h1>Sentiment Analysis Engine<span class="grad">.</span></h1>
+          <p class="tagline">Mines opinion and emotion from reviews and social posts at scale — turning mountains of free text into a readable pulse of what people feel.</p>
+          <div class="hero-chips">
+            <span class="chip lv-intermediate">Intermediate</span>
+            <span class="chip">10–16 hours</span>
+            <span class="chip neutral">23 min read</span>
+            <span class="chip neutral">NLP</span><span class="chip neutral">Sentiment</span><span class="chip neutral">Analytics</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn solid" id="downloadAll" type="button">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download all code
+            </button>
+            <a class="btn" href="#source">Jump to source</a>
+            <a class="btn ghost" href="#bom">Bill of materials</a>
+          </div>
+        </div>
+        <div><div class="thumb"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td952" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td952">Sentiment Analysis Engine — reference build illustration</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="96" y="70" width="208" height="120" rx="8" fill="#1c4a86" stroke="#12315a" stroke-width="2"/>
+    <rect x="118" y="92" width="76" height="76" rx="6" fill="#d8dce1" stroke="#a8aeb6"/>
+    <circle cx="156" cy="130" r="24" fill="#2b2f36"/><circle cx="156" cy="130" r="12" fill="#5a6270"/>
+    <rect x="212" y="98" width="70" height="30" rx="4" fill="#22262c"/>
+    <text x="247" y="118" font-size="10" fill="#9aa3ad" text-anchor="middle" font-family="monospace">MCU</text>
+    <circle cx="220" cy="176" r="3" fill="#d8b04a"/><circle cx="238" cy="176" r="3" fill="#d8b04a"/><circle cx="256" cy="176" r="3" fill="#d8b04a"/><circle cx="274" cy="176" r="3" fill="#d8b04a"/>
+    <text x="200" y="204" font-size="10" fill="var(--dg-muted)" text-anchor="middle">VCC · GND · SIG · NC</text>
+  </svg>
+  <figcaption hidden>Sentiment Analysis Engine — reference build illustration</figcaption>
+</figure></div></div>
+      </div>
+
+      <div class="infopanel">
+        <dl>
+          <div class="infocell"><dt>Difficulty</dt><dd>Intermediate</dd></div>
+          <div class="infocell"><dt>Build time</dt><dd>10–16 hours</dd></div>
+          <div class="infocell"><dt>Indicative cost</dt><dd>Software; compute-light to moderate</dd></div>
+          <div class="infocell"><dt>Platform</dt><dd>CPU/GPU workstation or server</dd></div>
+          <div class="infocell"><dt>Category</dt><dd>NLP &amp; LLM</dd></div>
+          <div class="infocell"><dt>Last updated</dt><dd>28 July 2026</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-layout">
+
+    <div class="doc-toc-wrap">
+      <p class="toc-head">On this page</p>
+      <div class="toc-search">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+      </div>
+      <nav class="toc-nav" aria-label="Table of contents">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      <div class="toc-progress">
+        <div class="bar"><i id="tocProgBar"></i></div>
+        <span id="tocProgPct">0% read</span>
+      </div>
+    </div>
+
+    <article class="doc-body">
+      <details class="toc-mobile">
+        <summary>Contents — 26 sections</summary>
+        <div class="toc-search" style="margin-top:.7rem">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.6-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="Filter sections…" aria-label="Filter table of contents" />
+        </div>
+        <nav class="toc-nav" aria-label="Table of contents (mobile)">
+    <ol><li><a href="#overview"><span style="opacity:.55;font-variant-numeric:tabular-nums">01</span>&nbsp; Project Overview</a></li><li><a href="#applications"><span style="opacity:.55;font-variant-numeric:tabular-nums">02</span>&nbsp; Real-World Applications</a></li><li><a href="#features"><span style="opacity:.55;font-variant-numeric:tabular-nums">03</span>&nbsp; Features &amp; Capabilities</a></li><li><a href="#requirements"><span style="opacity:.55;font-variant-numeric:tabular-nums">04</span>&nbsp; Difficulty, Time &amp; Required Skills</a></li><li><a href="#bom"><span style="opacity:.55;font-variant-numeric:tabular-nums">05</span>&nbsp; Bill of Materials</a></li><li><a href="#hardware"><span style="opacity:.55;font-variant-numeric:tabular-nums">06</span>&nbsp; Hardware Specifications</a></li><li><a href="#software"><span style="opacity:.55;font-variant-numeric:tabular-nums">07</span>&nbsp; Software Requirements &amp; Development Environment</a></li><li><a href="#block-diagram"><span style="opacity:.55;font-variant-numeric:tabular-nums">08</span>&nbsp; Block Diagram</a></li><li><a href="#circuit"><span style="opacity:.55;font-variant-numeric:tabular-nums">09</span>&nbsp; Circuit Diagram &amp; Wiring</a></li><li><a href="#architecture"><span style="opacity:.55;font-variant-numeric:tabular-nums">10</span>&nbsp; System Architecture</a></li><li><a href="#principle"><span style="opacity:.55;font-variant-numeric:tabular-nums">11</span>&nbsp; Working Principle</a></li><li><a href="#flowchart"><span style="opacity:.55;font-variant-numeric:tabular-nums">12</span>&nbsp; Program Flowchart</a></li><li><a href="#assembly"><span style="opacity:.55;font-variant-numeric:tabular-nums">13</span>&nbsp; Assembly Instructions</a></li><li><a href="#implementation"><span style="opacity:.55;font-variant-numeric:tabular-nums">14</span>&nbsp; Step-by-Step Implementation Guide</a></li><li><a href="#source"><span style="opacity:.55;font-variant-numeric:tabular-nums">15</span>&nbsp; Complete Source Code</a></li><li><a href="#configuration"><span style="opacity:.55;font-variant-numeric:tabular-nums">16</span>&nbsp; Configuration &amp; Calibration</a></li><li><a href="#model"><span style="opacity:.55;font-variant-numeric:tabular-nums">17</span>&nbsp; Dataset, Model &amp; Training</a></li><li><a href="#evaluation"><span style="opacity:.55;font-variant-numeric:tabular-nums">18</span>&nbsp; Evaluation, Metrics &amp; Deployment</a></li><li><a href="#testing"><span style="opacity:.55;font-variant-numeric:tabular-nums">19</span>&nbsp; Testing Procedure &amp; Expected Output</a></li><li><a href="#troubleshooting"><span style="opacity:.55;font-variant-numeric:tabular-nums">20</span>&nbsp; Troubleshooting: Common Errors &amp; Fixes</a></li><li><a href="#optimisation"><span style="opacity:.55;font-variant-numeric:tabular-nums">21</span>&nbsp; Performance Optimisation</a></li><li><a href="#safety"><span style="opacity:.55;font-variant-numeric:tabular-nums">22</span>&nbsp; Safety Precautions</a></li><li><a href="#maintenance"><span style="opacity:.55;font-variant-numeric:tabular-nums">23</span>&nbsp; Maintenance</a></li><li><a href="#future"><span style="opacity:.55;font-variant-numeric:tabular-nums">24</span>&nbsp; Future Improvements &amp; Upgrades</a></li><li><a href="#faq"><span style="opacity:.55;font-variant-numeric:tabular-nums">25</span>&nbsp; Frequently Asked Questions</a></li><li><a href="#references"><span style="opacity:.55;font-variant-numeric:tabular-nums">26</span>&nbsp; References &amp; Learning Resources</a></li></ol>
+  </nav>
+      </details>
+
+      <section id="overview" aria-labelledby="h-overview"><h2 id="h-overview">Project Overview</h2><p class="lede">Mines opinion and emotion from reviews and social posts at scale — turning mountains of free text into a readable pulse of what people feel.</p>
+<p>Every day people write vast amounts about products, brands, services and events — reviews, tweets, comments, support tickets — and buried in that text is something organisations badly want: <b>how people feel</b>. Reading it all is impossible, so this project builds a <b>sentiment analysis engine</b> that reads free text and classifies its <b>opinion and emotion</b> — positive/negative/neutral, and often finer emotions — automatically, at scale, turning a firehose of unstructured text into a measurable pulse of sentiment.</p>
+<p>At its core it is a <b>text classification</b> problem: map a piece of text to a sentiment label. Approaches range from classic (lexicon methods that score sentiment-bearing words; bag-of-words models like TF-IDF plus a classifier) to modern <b>transformer</b> models fine-tuned for sentiment, which understand context far better. On top of the basic label, useful engines add <b>aspect-based</b> sentiment (a review can be positive about battery life but negative about price — sentiment <i>per aspect</i>, not just overall) and <b>aggregation</b> (trends over time, by product, by source), which is where the business value lives.</p>
+<p>The value is scale and structure: continuous, quantified sentiment across thousands of texts, revealing what customers love and hate and how it shifts. It is honest about the genuine hard parts of language that trip up naïve models: <b>sarcasm and irony</b> ("great, another update that breaks everything"), <b>negation</b> ("not bad" is positive), context and domain-specific meaning, mixed sentiment, and <b>bias</b> in training data; accuracy is good but never perfect, so it informs rather than replaces judgement. Built honestly — a well-chosen model, aspect awareness where it matters, sensible aggregation, and clear-eyed about sarcasm/negation limits — it is both a genuinely useful text-mining tool and a definitive lesson in NLP text classification.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Artificial%20neural%20network.svg?width=900" alt="A schematic of a feed-forward artificial neural network" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td943" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td943">A sentiment engine mines opinion and emotion from mountains of reviews and posts — a measurable pulse of feeling.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <line x1="79" y1="91" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="91" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="117" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="117" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="143" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="143" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="79" y1="169" x2="151" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="79" y1="169" x2="151" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="70" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="65" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="65" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="91" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="91" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="117" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="117" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="143" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="143" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="169" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="169" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="169" y1="195" x2="241" y2="65" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="91" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="117" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="143" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="169" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="169" y1="195" x2="241" y2="195" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="160" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="65" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="65" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="65" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="91" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="91" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="91" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="117" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="117" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="117" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="143" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="143" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="143" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="169" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="169" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="169" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><line x1="259" y1="195" x2="331" y2="104" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="130" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><line x1="259" y1="195" x2="331" y2="156" stroke="var(--dg-line)" stroke-width=".5" opacity=".4"/><circle cx="250" cy="195" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="104" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="130" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="340" cy="156" r="9" fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="1.2"/>
+    <text x="70" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">input</text>
+    <text x="205" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">hidden</text>
+    <text x="340" y="230" font-size="10" fill="var(--dg-muted)" text-anchor="middle">output</text>
+  </svg>
+  <figcaption>A sentiment engine mines opinion and emotion from mountains of reviews and posts — a measurable pulse of feeling.</figcaption>
+</figure></template>
+  <figcaption>A sentiment engine mines opinion and emotion from mountains of reviews and posts — a measurable pulse of feeling.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Artificial_neural_network.svg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Artificial neural network.svg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure>
+<h3>What this project does</h3><ul class="check"><li>Classifies text sentiment (positive/negative/neutral, emotions)</li><li>Reads reviews, social posts, comments, tickets at scale</li><li>Supports aspect-based sentiment (per feature/topic)</li><li>Aggregates sentiment over time, product and source</li><li>Turns unstructured text into measurable signal</li><li>Reveals what people love, hate and how it shifts</li><li>Informs decisions with a quantified pulse of opinion</li></ul></section>
+
+<section id="applications" aria-labelledby="h-applications"><h2 id="h-applications">Real-World Applications</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Setting</th><th scope="col">How it is used</th></tr></thead>
+    <tbody><tr><td><b>Brand / product monitoring</b></td><td>Tracking sentiment across reviews and social.</td></tr><tr><td><b>Customer experience</b></td><td>Mining tickets/feedback for pain points.</td></tr><tr><td><b>Market / competitor analysis</b></td><td>Opinion trends across sources.</td></tr><tr><td><b>Content / campaign feedback</b></td><td>Reactions to launches and events.</td></tr></tbody>
+  </table></div><p class="tbl-caption">Deployment contexts where a build of this kind earns its keep.</p></section>
+
+<section id="features" aria-labelledby="h-features"><h2 id="h-features">Features &amp; Capabilities</h2><ul class="check"><li>Text-classification sentiment (classic → transformer)</li><li>Emotion/opinion labelling</li><li>Aspect-based sentiment</li><li>Aggregation and trends</li><li>Scale over large text volumes</li><li>Confidence-scored outputs</li><li>Honest about sarcasm, negation and bias</li></ul></section>
+
+<section id="requirements" aria-labelledby="h-requirements"><h2 id="h-requirements">Difficulty, Time &amp; Required Skills</h2><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Attribute</th><th scope="col">Value</th></tr></thead>
+    <tbody><tr><td><b>Difficulty level</b></td><td>Intermediate</td></tr><tr><td><b>Estimated completion time</b></td><td>10–16 hours</td></tr><tr><td><b>Indicative build cost</b></td><td>Software; compute-light to moderate</td></tr><tr><td><b>Primary discipline</b></td><td>NLP &amp; LLM</td></tr><tr><td><b>Reference platform</b></td><td>CPU/GPU workstation or server</td></tr></tbody>
+  </table></div>
+<h3>Skills you should have (or will pick up)</h3>
+<ul class="check"><li>Text classification (classic and transformer)</li><li>Aspect-based sentiment</li><li>Aggregation and trend analysis</li><li>Handling sarcasm/negation/context limits</li><li>Evaluation and bias awareness</li></ul>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Before you start</span><p>Sentiment analysis is text classification — text in, opinion label out.</p>
+<p>Aspect-based sentiment (per feature) is where the business value often is.</p>
+<p>Sarcasm, negation and context trip up naïve models — mind them.</p>
+<p>Accuracy is good but never perfect — inform, do not replace judgement.</p></div>
+  </aside></section>
+
+<section id="bom" aria-labelledby="h-bom"><h2 id="h-bom">Bill of Materials</h2><p>Every part below is commonly available from Indian and international hobby-electronics suppliers. Prices are indicative 2026 retail figures in Indian rupees and will drift — treat them as a budgeting guide, not a quotation.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Component</th><th scope="col">Key specification</th><th class="num" scope="col">Qty</th><th class="num" scope="col">Approx. cost</th></tr></thead>
+    <tbody><tr><td><b>Compute</b></td><td>CPU for classic/inference; GPU for transformer training</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Sentiment model</b></td><td>Lexicon/TF-IDF classifier or fine-tuned transformer</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Labelled dataset</b><br/><span style="font-size:.82em;opacity:.78">Domain matters</span></td><td>Sentiment-labelled text in your domain</td><td class="num">1</td><td class="num">—</td></tr><tr><td><b>Text sources</b></td><td>Reviews/social/tickets to analyse</td><td class="num">1</td><td class="num">—</td></tr></tbody>
+  </table></div><p class="tbl-caption">Estimated total: <b>₹0</b>, excluding tools, shipping and consumables.</p>
+
+<h3>Tools and consumables</h3><ul class="plain"><li>Soldering iron (temperature controlled, 350 °C) with 0.8 mm 60/40 or lead-free solder</li><li>Digital multimeter — continuity, DC volts and current ranges</li><li>Wire strippers, flush cutters and a small set of precision screwdrivers</li><li>Heat-shrink tubing and a heat gun (or a lighter, carefully)</li><li>A laptop with a USB port and the toolchain listed above</li></ul></section>
+
+<section id="hardware" aria-labelledby="h-hardware"><h2 id="h-hardware">Hardware Specifications</h2>
+<p>This is a pure-software NLP system with no electronic hardware to specify. The "platform" is a computer: a CPU handles lexicon and TF-IDF models and moderate transformer inference, while a GPU accelerates transformer fine-tuning and high-volume classification.</p>
+<p>Memory and storage scale with the volume of text ingested and the aggregation history retained; a production deployment adds ingestion connectors (reviews/social/tickets) and a dashboard store for the aggregated pulse. The rest of the system is the software stack, libraries and models below.</p></section>
+
+<section id="software" aria-labelledby="h-software"><h2 id="h-software">Software Requirements &amp; Development Environment</h2><p>Reference toolchain: <b>Python 3.11 + NLP (transformers/classical)</b>. Anything newer normally works; anything older may lack the board definitions used here.</p>
+<ul class="plain"><li>Install the <b>Arduino IDE 2.3.x</b> (or PlatformIO if you prefer a real editor and dependency locking).</li><li>Add <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> under <b>File → Preferences → Additional Board Manager URLs</b>, then install <b>esp32</b> from the Boards Manager.</li><li>Set the correct port under <b>Tools → Port</b>. On Linux add yourself to the <code>dialout</code> group: <code>sudo usermod -aG dialout $USER</code> and log out and back in.</li><li>Open the Serial Monitor at <b>115200 baud</b> — every sketch here logs its state there.</li><li>Keep <b>File → Preferences → Show verbose output during: compilation</b> switched on while you are debugging build errors.</li></ul>
+<h3>Required libraries</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Library</th><th scope="col">Why it is needed</th><th scope="col">Install</th></tr></thead>
+    <tbody><tr><td><b>Python</b> <span style="opacity:.7">3.11+</span></td><td>Runtime for the analysis, training and service code.</td><td><code>sudo apt install python3 python3-venv python3-pip</code></td></tr><tr><td><b>Hugging Face Transformers</b> <span style="opacity:.7">4.44+</span></td><td>Pre-trained language and vision transformers with a uniform API.</td><td><code>pip install transformers</code></td></tr><tr><td><b>scikit-learn</b> <span style="opacity:.7">1.5+</span></td><td>Classical models, preprocessing pipelines and evaluation metrics.</td><td><code>pip install scikit-learn</code></td></tr><tr><td><b>pandas</b> <span style="opacity:.7">2.2+</span></td><td>Tabular data loading, cleaning and time-series resampling.</td><td><code>pip install pandas</code></td></tr><tr><td><b>NumPy</b> <span style="opacity:.7">1.26+</span></td><td>Vectorised array maths underpinning every other library here.</td><td><code>pip install numpy</code></td></tr></tbody>
+  </table></div>
+
+</section>
+
+<section id="block-diagram" aria-labelledby="h-block-diagram"><h2 id="h-block-diagram">Block Diagram</h2><p>The block diagram shows the functional decomposition of the system — what senses, what decides, what acts, and where the data ends up.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-block">
+  <svg viewBox="0 0 950 230" role="img" aria-labelledby="td944 sd944" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td944">Sentiment Analysis Engine — system block diagram</title><desc id="sd944">Functional block diagram of the Sentiment Analysis Engine system.</desc>
+    <defs>
+    <marker id="ar-d944" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d944" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d944" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d944" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="26" text-anchor="middle">Ingest</text><rect x="26" y="94" width="178" height="62" rx="12"
+          fill="url(#ga-d944)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="115" y="119" text-anchor="middle"><tspan x="115" y="119.0">Text</tspan></text><text class="dg-s" x="115" y="138" text-anchor="middle"><tspan x="115" y="138.0">reviews/social</tspan></text><text class="dg-col" x="355" y="26" text-anchor="middle">Classify</text><rect x="266" y="54" width="178" height="62" rx="12"
+          fill="url(#ga-d944)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="355" y="79" text-anchor="middle"><tspan x="355" y="79.0">Model</tspan></text><text class="dg-s" x="355" y="98" text-anchor="middle"><tspan x="355" y="98.0">sentiment</tspan></text><rect x="266" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d944)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="355" y="159" text-anchor="middle"><tspan x="355" y="159.0">Aspects</tspan></text><text class="dg-s" x="355" y="178" text-anchor="middle"><tspan x="355" y="178.0">per feature</tspan></text><text class="dg-col" x="595" y="26" text-anchor="middle">Aggregate</text><rect x="506" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d944)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="79" text-anchor="middle"><tspan x="595" y="79.0">Trends</tspan></text><text class="dg-s" x="595" y="98" text-anchor="middle"><tspan x="595" y="98.0">over time</tspan></text><rect x="506" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d944)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="595" y="159" text-anchor="middle"><tspan x="595" y="159.0">By product/source</tspan></text><text class="dg-s" x="595" y="178" text-anchor="middle"><tspan x="595" y="178.0">segment</tspan></text><text class="dg-col" x="835" y="26" text-anchor="middle">Use</text><rect x="746" y="54" width="178" height="62" rx="12"
+          fill="url(#gb-d944)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="79" text-anchor="middle"><tspan x="835" y="79.0">Pulse</tspan></text><text class="dg-s" x="835" y="98" text-anchor="middle"><tspan x="835" y="98.0">dashboard</tspan></text><rect x="746" y="134" width="178" height="62" rx="12"
+          fill="url(#gb-d944)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="835" y="159" text-anchor="middle"><tspan x="835" y="159.0">Insight</tspan></text><text class="dg-s" x="835" y="178" text-anchor="middle"><tspan x="835" y="178.0">love/hate</tspan></text><path d="M208 125 C 235 125, 235 125, 258 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d944)"/><text class="dg-e" x="235" y="117" text-anchor="middle">right</text><path d="M448 125 C 475 125, 475 125, 498 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d944)"/><text class="dg-e" x="475" y="117" text-anchor="middle">right</text><path d="M688 125 C 715 125, 715 125, 738 125"
+        fill="none" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d944)"/><text class="dg-e" x="715" y="117" text-anchor="middle">none</text>
+  </svg>
+  <figcaption>Sentiment Analysis Engine — system block diagram</figcaption>
+</figure></div></section>
+
+<section id="circuit" aria-labelledby="h-circuit"><h2 id="h-circuit">Circuit Diagram &amp; Wiring</h2><p>The "wiring" is the analysis data flow — text is preprocessed and classified into sentiment (overall and per aspect), then aggregated into trends and reports.</p>
+<div class="diagram-scroll"><figure class="diagram diagram-wiring">
+  <svg viewBox="0 0 868 264" role="img" aria-labelledby="td945 sd945" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td945">Sentiment Analysis Engine — wiring schematic</title><desc id="sd945">Connection schematic showing which controller pin drives each peripheral.</desc>
+    <defs>
+    <marker id="ar-d945" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d945" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d945" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d945" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <text class="dg-col" x="115" y="30" text-anchor="middle">Sensors / Inputs</text><text class="dg-col" x="434" y="30" text-anchor="middle">Controller</text><text class="dg-col" x="753" y="30" text-anchor="middle">Actuators / Outputs</text><rect x="346" y="58" width="176" height="168" rx="14"
+      fill="url(#ga-d945)" stroke="var(--dg-accent)" stroke-width="1.4"/><rect x="360" y="72" width="148" height="26" rx="6" fill="var(--dg-chip)" opacity=".55"/><text class="dg-b" x="434" y="89" text-anchor="middle"><tspan x="434" y="83.0">CPU/GPU workstation</tspan><tspan x="434" y="95.0">or server</tspan></text><text class="dg-s" x="434" y="214" text-anchor="middle">3.3 V logic / 5 V USB</text><rect x="20" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d945)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="101" text-anchor="middle"><tspan x="115" y="101.0">Text sources</tspan></text><path d="M210 100 C 278 100, 278 100, 346 100" stroke="#e0534f" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="100" r="3.2" fill="#e0534f"/><text class="dg-p" x="278" y="94" text-anchor="middle">—</text><text class="dg-s" x="278" y="115" text-anchor="middle"><tspan x="278" y="115.0">Free text</tspan></text><rect x="20" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d945)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="115" y="153" text-anchor="middle"><tspan x="115" y="153.0">Preprocess</tspan></text><path d="M210 152 C 278 152, 278 152, 346 152" stroke="#f0a63c" stroke-width="2" fill="none" opacity=".85"/><circle cx="346" cy="152" r="3.2" fill="#f0a63c"/><text class="dg-p" x="278" y="146" text-anchor="middle">—</text><text class="dg-s" x="278" y="167" text-anchor="middle"><tspan x="278" y="167.0">Model input</tspan></text><rect x="658" y="83" width="190" height="34" rx="9"
+          fill="url(#gb-d945)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="101" text-anchor="middle"><tspan x="753" y="101.0">Sentiment model</tspan></text><path d="M658 100 C 590 100, 590 100, 522 100" stroke="#5ec27a" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="100" r="3.2" fill="#5ec27a"/><text class="dg-p" x="590" y="94" text-anchor="middle">—</text><text class="dg-s" x="590" y="115" text-anchor="middle"><tspan x="590" y="115.0">Labels (+aspects)</tspan></text><rect x="658" y="135" width="190" height="34" rx="9"
+          fill="url(#gb-d945)" stroke="var(--dg-stroke)" stroke-width="1.1"/><text class="dg-b" x="753" y="153" text-anchor="middle"><tspan x="753" y="153.0">Aggregate</tspan></text><path d="M658 152 C 590 152, 590 152, 522 152" stroke="#b07ae0" stroke-width="2" fill="none" opacity=".85"/><circle cx="522" cy="152" r="3.2" fill="#b07ae0"/><text class="dg-p" x="590" y="146" text-anchor="middle">—</text><text class="dg-s" x="590" y="167" text-anchor="middle"><tspan x="590" y="167.0">Pulse/reports</tspan></text>
+  </svg>
+  <figcaption>Sentiment Analysis Engine — wiring schematic</figcaption>
+</figure></div>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Peripheral</th><th scope="col">Peripheral pin</th><th scope="col">Controller pin</th><th scope="col">Signal</th></tr></thead>
+    <tbody><tr><td><b>Text sources</b></td><td>reviews/social</td><td><code>—</code></td><td>Free text</td></tr><tr><td><b>Preprocess</b></td><td>clean/tokenise</td><td><code>—</code></td><td>Model input</td></tr><tr><td><b>Sentiment model</b></td><td>classify</td><td><code>—</code></td><td>Labels (+aspects)</td></tr><tr><td><b>Aggregate</b></td><td>trends</td><td><code>—</code></td><td>Pulse/reports</td></tr></tbody>
+  </table></div><p class="tbl-caption">Wire one row at a time and tick it off — most "it does not work" reports trace back to a single swapped pair.</p>
+<h3>Wiring explanation</h3><ul class="plain"><li>Ingest text from reviews, social posts, comments or tickets.</li><li>Preprocess (clean, tokenise) for the model.</li><li>Classify sentiment overall and, where useful, per aspect.</li><li>Aggregate over time, product and source into a readable pulse.</li><li>Mind sarcasm/negation/context — accuracy is good, not perfect.</li></ul>
+
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Datacenter%20servers.jpg?width=900" alt="Racks of servers in a data centre" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td946" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td946">Aspect-based sentiment attributes opinion to specific features, turning a coarse label into actionable insight.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <path d="M120 152 a38 38 0 0 1 6-75 a52 52 0 0 1 98-14 a44 44 0 0 1 52 44 a34 34 0 0 1-8 45 z"
+      fill="var(--dg-acc-a)" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="150" y="172" width="100" height="44" rx="8" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="200" y="199" font-size="12" fill="var(--dg-muted)" text-anchor="middle" font-family="monospace">broker</text>
+    <line x1="200" y1="152" x2="200" y2="170" stroke="var(--dg-accent)" stroke-width="2"/>
+  </svg>
+  <figcaption>Aspect-based sentiment attributes opinion to specific features, turning a coarse label into actionable insight.</figcaption>
+</figure></template>
+  <figcaption>Aspect-based sentiment attributes opinion to specific features, turning a coarse label into actionable insight.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Datacenter_servers.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Datacenter servers.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="architecture" aria-labelledby="h-architecture"><h2 id="h-architecture">System Architecture</h2><p>Read the stack from the bottom up: physical hardware, the firmware that drives it, the transport that moves data off the device, and the software a human actually looks at.</p>
+<figure class="diagram diagram-layers">
+  <svg viewBox="0 0 660 398" role="img" aria-labelledby="td947 sd947" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td947">Sentiment Analysis Engine — architecture stack</title><desc id="sd947">Layered architecture from hardware to user interface.</desc>
+    <defs>
+    <marker id="ar-d947" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d947" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d947" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d947" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="30" y="30" width="600" height="74" rx="12"
+        fill="url(#ga-d947)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="48" y="56">Hardware layer</text><text class="dg-s" x="48" y="78"><tspan x="48" y="78.0">ESP32 DevKit V1 (ESP-WROOM-32) · sensors and actuators</tspan></text><path d="M330 104 L330 117" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d947)"/><rect x="30" y="118" width="600" height="74" rx="12"
+        fill="url(#gb-d947)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="144">Driver layer</text><text class="dg-s" x="48" y="166"><tspan x="48" y="166.0">python · transformers · sklearn · pandas</tspan></text><path d="M330 192 L330 205" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d947)"/><rect x="30" y="206" width="600" height="74" rx="12"
+        fill="url(#gb-d947)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="232">Application logic</text><text class="dg-s" x="48" y="254"><tspan x="48" y="254.0">sampling loop · filtering · thresholds · state machine</tspan></text><path d="M330 280 L330 293" stroke="var(--dg-line)" stroke-width="1.4" marker-end="url(#ar-d947)"/><rect x="30" y="294" width="600" height="74" rx="12"
+        fill="url(#gb-d947)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="48" y="320">Presentation layer</text><text class="dg-s" x="48" y="342"><tspan x="48" y="342.0">local display · serial console · logged output</tspan></text>
+  </svg>
+  <figcaption>Sentiment Analysis Engine — architecture stack</figcaption>
+</figure>
+</section>
+
+<section id="principle" aria-labelledby="h-principle"><h2 id="h-principle">Working Principle</h2><p>Sentiment analysis exists to solve a scale problem: the opinions organisations want are scattered across more free text than any human could ever read, so the goal is to <b>read it automatically and turn feeling into a measurable signal</b>. Framed technically, it is a <b>text classification</b> task — map a piece of text to a sentiment label (positive/negative/neutral, or finer emotions) — and everything else is refinement of that core. The payoff is converting an unstructured firehose into structured, quantified data you can chart, segment and act on.</p>
+<p>The approaches sit on a clear <b>sophistication spectrum</b>, and understanding it is half the lesson. <b>Lexicon methods</b> score text by looking up sentiment-bearing words in a dictionary (fast, transparent, but blind to context). <b>Bag-of-words models</b> (TF-IDF features into a classifier) learn from labelled data which word patterns signal which sentiment — better, but still ignore word order and context. <b>Transformer models</b> fine-tuned for sentiment read text <i>in context</i>, understanding how surrounding words change meaning, and are markedly more accurate on hard cases. The right choice depends on the accuracy needed, the compute available, and how much labelled domain data you have.</p>
+<p>The refinement that unlocks real value is <b>aspect-based sentiment</b>. Overall sentiment is coarse: a product review saying "amazing camera, but the battery is terrible and it's overpriced" is not simply "positive" or "negative" — it is positive about the camera, negative about battery and price. Aspect-based sentiment attributes feeling to <b>specific aspects</b> (camera, battery, price, service), which is what a product team actually needs — not "reviews are 60% positive" but "praise for the camera, complaints about battery life". Pairing this with <b>aggregation</b> — sentiment trends over time, broken down by product, feature and source — is where sentiment analysis stops being a classifier and becomes business intelligence.</p>
+<p>The honesty this project requires is about the ways <b>language defeats naïve models</b>, and they are not edge cases — they are everywhere in real text. <b>Sarcasm and irony</b> invert surface sentiment ("oh great, another crash" is negative despite "great"), and are genuinely hard even for strong models. <b>Negation</b> flips polarity ("not bad" is positive; "I can't say I love it" is negative) and trips up lexicon and bag-of-words methods that miss the "not". <b>Context and domain</b> shift meaning ("this vacuum really sucks" is praise). Real text has <b>mixed sentiment</b>, informal spelling, emoji and code-switching, and models inherit <b>bias</b> from their training data. So accuracy, while good, is <b>never perfect</b>, and the engine should <b>inform judgement, not replace it</b> — aggregate signals are trustworthy at scale even when individual classifications occasionally err. Built with a model matched to the need, aspect awareness where it matters, sensible aggregation, and clear eyes about sarcasm, negation and bias, the engine delivers exactly what its users want — a scalable, quantified pulse of public opinion — while teaching the central skills and the central humility of NLP text classification.</p>
+
+<h3>The maths behind it</h3><h4>Sentiment classification</h4><div class="codeblock tall" data-file="Sentiment classification">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Sentiment classification</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Sentiment classification to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Sentiment classification" type="button" aria-label="Download Sentiment classification">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>model(text) → sentiment label (+ confidence)
+
+  {positive, negative, neutral}  (or finer emotions)
+
+Lexicon → bag-of-words (TF-IDF) → transformer
+(rising context-awareness and accuracy).</code></pre>
+  
+</div>
+<h4>Aspect-based sentiment</h4><div class="codeblock tall" data-file="Aspect-based sentiment">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Aspect-based sentiment</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Aspect-based sentiment to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Aspect-based sentiment" type="button" aria-label="Download Aspect-based sentiment">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>For a review mentioning aspects {camera, battery, price}:
+
+  sentiment(aspect) for each aspect
+  → "positive camera, negative battery/price"
+
+Far more actionable than one overall label.</code></pre>
+  
+</div>
+<h4>Aggregation (the value)</h4><div class="codeblock tall" data-file="Aggregation (the value)">
+  <div class="code-head">
+    <span class="fname"><span class="lang">plain</span><span class="nm">Aggregation (the value)</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy Aggregation (the value) to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="Aggregation (the value)" type="button" aria-label="Download Aggregation (the value)">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>pulse = aggregate(labels) over time / product / source
+
+  trend(t), share_positive, top complaints/praises
+
+Individual errors wash out at scale; the AGGREGATE signal
+is trustworthy. Inform judgement, do not replace it.</code></pre>
+  
+</div>
+</section>
+
+<section id="flowchart" aria-labelledby="h-flowchart"><h2 id="h-flowchart">Program Flowchart</h2><p>The firmware is a single cooperative loop. Nothing blocks for long, so networking, sensing and the user interface all stay responsive.</p>
+<figure class="diagram diagram-flow">
+  <svg viewBox="0 0 560 756" role="img" aria-labelledby="td948 sd948" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td948">Sentiment Analysis Engine — firmware flowchart</title><desc id="sd948">Control flow through the main program loop.</desc>
+    <defs>
+    <marker id="ar-d948" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d948" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d948" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d948" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="85" y="30" width="250" height="56" rx="28"
+          fill="url(#ga-d948)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="58" text-anchor="middle"><tspan x="210" y="58.0">Ingest a text item</tspan></text><path d="M210 86 L210 110" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d948)"/><rect x="85" y="116" width="250" height="56" rx="10"
+          fill="url(#gb-d948)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="144" text-anchor="middle"><tspan x="210" y="144.0">Preprocess (clean/tokenise)</tspan></text><path d="M210 172 L210 196" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d948)"/><rect x="85" y="202" width="250" height="56" rx="10"
+          fill="url(#gb-d948)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="230" text-anchor="middle"><tspan x="210" y="230.0">Classify overall sentiment</tspan></text><path d="M210 258 L210 282" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d948)"/><path d="M210 288 L349 330 L210 372 L71 330 z"
+          fill="url(#ga-d948)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="330" text-anchor="middle"><tspan x="210" y="330.0">Aspect-based needed?</tspan></text><path d="M210 372 L210 396" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d948)"/><text class="dg-e" x="220" y="391">Sentiment per aspect</text><path d="M349 330 H397 V286 H218"
+          stroke="var(--dg-line)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ar-d948)"/><text class="dg-e" x="403" y="324">Store label</text><rect x="85" y="402" width="250" height="56" rx="10"
+          fill="url(#gb-d948)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="430" text-anchor="middle"><tspan x="210" y="430.0">Sentiment per aspect</tspan></text><path d="M210 458 L210 482" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d948)"/><path d="M101 488 L335 488 L319 544 L85 544 z"
+          fill="url(#gb-d948)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="516" text-anchor="middle"><tspan x="210" y="516.0">Store label</tspan></text><path d="M210 544 L210 568" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d948)"/><rect x="85" y="574" width="250" height="56" rx="10"
+          fill="url(#gb-d948)" stroke="var(--dg-stroke)" stroke-width="1.2"/><text class="dg-b" x="210" y="602" text-anchor="middle"><tspan x="210" y="602.0">Aggregate trends/segments</tspan></text><path d="M210 630 L210 654" stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d948)"/><rect x="85" y="660" width="250" height="56" rx="28"
+          fill="url(#ga-d948)" stroke="var(--dg-accent)" stroke-width="1.2"/><text class="dg-b" x="210" y="688" text-anchor="middle"><tspan x="210" y="688.0">Report the pulse</tspan></text>
+  </svg>
+  <figcaption>Sentiment Analysis Engine — firmware flowchart</figcaption>
+</figure></section>
+
+<section id="assembly" aria-labelledby="h-assembly"><h2 id="h-assembly">Assembly Instructions</h2><p>Build on a breadboard first and only commit to solder once the whole system has run for an hour without a fault.</p>
+<ol class="steps"><li><h4>Choose and set up a sentiment model</h4><p>Pick a model for the need (lexicon/TF-IDF for simple/transparent, transformer for accuracy) and classify text into sentiment.</p><aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Watch out</span><p>Language defeats naïve models: sarcasm ("oh great, another crash"), negation ("not bad" = positive) and context flip surface sentiment. Accuracy is good but never perfect — trust aggregates at scale and inform judgement, do not replace it.</p></div>
+  </aside></li><li><h4>Add aspect-based sentiment</h4><p>Where it matters, attribute sentiment to specific aspects (camera, battery, price) rather than one overall label.</p></li><li><h4>Aggregate into a pulse</h4><p>Aggregate sentiment over time, product and source into trends and reports — where the value lives.</p></li></ol></section>
+
+<section id="implementation" aria-labelledby="h-implementation"><h2 id="h-implementation">Step-by-Step Implementation Guide</h2><p>Work through these in order. Each step ends in something you can observe, so a failure is always localised to the step you just finished.</p>
+<ol class="steps"><li><h4>Classify sentiment and per aspect</h4><p>Classify overall sentiment, and where useful attribute sentiment to specific aspects of the text.</p><div class="codeblock tall" data-file="analyse.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">analyse.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy analyse.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="analyse.py" type="button" aria-label="Download analyse.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">def</span> <span class="tok-f">classify</span><span class="tok-o">(</span>text<span class="tok-o">,</span> model<span class="tok-o">):</span>
+    out <span class="tok-o">=</span> <span class="tok-f">model</span><span class="tok-o">(</span>text<span class="tok-o">)</span>                    <span class="tok-c"># contextual sentiment (transformer)</span>
+    <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"label"</span><span class="tok-o">:</span> out<span class="tok-o">.</span>label<span class="tok-o">,</span> <span class="tok-s">"confidence"</span><span class="tok-o">:</span> <span class="tok-f">float</span><span class="tok-o">(</span>out<span class="tok-o">.</span>score<span class="tok-o">)}</span>
+
+<span class="tok-k">def</span> <span class="tok-f">aspect_sentiment</span><span class="tok-o">(</span>text<span class="tok-o">,</span> model<span class="tok-o">,</span> aspects<span class="tok-o">):</span>
+    result <span class="tok-o">=</span> <span class="tok-o">{}</span>
+    <span class="tok-k">for</span> a <span class="tok-k">in</span> aspects<span class="tok-o">:</span>                    <span class="tok-c"># per-feature opinion, not just overall</span>
+        span <span class="tok-o">=</span> <span class="tok-f">sentence_about</span><span class="tok-o">(</span>text<span class="tok-o">,</span> a<span class="tok-o">)</span>   <span class="tok-c"># the clause discussing this aspect</span>
+        <span class="tok-k">if</span> span<span class="tok-o">:</span>
+            result<span class="tok-o">[</span>a<span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-f">classify</span><span class="tok-o">(</span>span<span class="tok-o">,</span> model<span class="tok-o">)[</span><span class="tok-s">"label"</span><span class="tok-o">]</span>
+    <span class="tok-k">return</span> result                        <span class="tok-c"># {"camera": "pos", "battery": "neg"}</span></code></pre>
+  
+</div>
+<div class="code-explain"><div><span class="ref">out = model(text)                    # contextual sentiment (transformer)</span><span class="txt">A context-aware model reads the text in context, handling much of what lexicon/bag-of-words methods miss.</span></div><div><span class="ref">for a in aspects:                    # per-feature opinion, not just overall</span><span class="txt">Aspect-based sentiment attributes feeling to specific aspects — the actionable form a product team needs.</span></div><div><span class="ref">result[a] = classify(span, model)["label"]</span><span class="txt">Each aspect gets its own sentiment from the clause about it, so "great camera, bad battery" is captured faithfully.</span></div></div></li><li><h4>Aggregate into trends</h4><p>Aggregate individual labels over time, product and source into a readable pulse, where individual errors wash out at scale.</p><aside class="callout tip">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2ZM9 21h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Tip</span><p>Trust the aggregate, not every single label. Sarcasm and negation cause individual misclassifications, but over thousands of texts the trend is reliable — which is exactly what the business decision needs.</p></div>
+  </aside></li></ol></section>
+
+<section id="source" aria-labelledby="h-source"><h2 id="h-source">Complete Source Code</h2><p>The listing below is complete and compiles as written — there are no elided sections. Read the annotations under each block before you upload it.</p>
+<div class="codeblock" data-file="sentiment_engine.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">sentiment_engine.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy sentiment_engine.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="sentiment_engine.py" type="button" aria-label="Download sentiment_engine.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-c">#!/usr/bin/env python3</span>
+<span class="tok-s">"""</span>
+<span class="tok-s">Sentiment Analysis Engine</span>
+<span class="tok-s"></span>
+<span class="tok-s">Classifies text sentiment (and per-aspect), at scale, from classic to</span>
+<span class="tok-s">transformer models, and AGGREGATES into a quantified pulse over time,</span>
+<span class="tok-s">product and source. Sarcasm/negation are hard — accuracy is good, not</span>
+<span class="tok-s">perfect; trust aggregates at scale and inform judgement, don't replace it.</span>
+<span class="tok-s">"""</span>
+<span class="tok-k">from</span> collections <span class="tok-k">import</span> <span class="tok-t">Counter</span><span class="tok-o">,</span> defaultdict
+
+<span class="tok-k">class</span> <span class="tok-t">SentimentEngine</span><span class="tok-o">:</span>
+    <span class="tok-k">def</span> <span class="tok-f">__init__</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> model<span class="tok-o">,</span> aspects<span class="tok-o">=</span><span class="tok-k">None</span><span class="tok-o">):</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>model <span class="tok-o">=</span> model               <span class="tok-c"># lexicon / TF-IDF / transformer</span>
+        <span class="tok-k">self</span><span class="tok-o">.</span>aspects <span class="tok-o">=</span> aspects <span class="tok-k">or</span> <span class="tok-o">[]</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">classify</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> text<span class="tok-o">):</span>
+        out <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">model</span><span class="tok-o">(</span>text<span class="tok-o">)</span>           <span class="tok-c"># sentiment + confidence</span>
+        <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"label"</span><span class="tok-o">:</span> out<span class="tok-o">.</span>label<span class="tok-o">,</span> <span class="tok-s">"confidence"</span><span class="tok-o">:</span> <span class="tok-f">float</span><span class="tok-o">(</span>out<span class="tok-o">.</span>score<span class="tok-o">)}</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">aspects_of</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> text<span class="tok-o">):</span>
+        <span class="tok-c"># per-aspect sentiment (the actionable form)</span>
+        res <span class="tok-o">=</span> <span class="tok-o">{}</span>
+        <span class="tok-k">for</span> a <span class="tok-k">in</span> <span class="tok-k">self</span><span class="tok-o">.</span>aspects<span class="tok-o">:</span>
+            span <span class="tok-o">=</span> <span class="tok-f">sentence_about</span><span class="tok-o">(</span>text<span class="tok-o">,</span> a<span class="tok-o">)</span>
+            <span class="tok-k">if</span> span<span class="tok-o">:</span>
+                res<span class="tok-o">[</span>a<span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">classify</span><span class="tok-o">(</span>span<span class="tok-o">)[</span><span class="tok-s">"label"</span><span class="tok-o">]</span>
+        <span class="tok-k">return</span> res
+
+    <span class="tok-k">def</span> <span class="tok-f">analyse</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> item<span class="tok-o">):</span>
+        <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"overall"</span><span class="tok-o">:</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">classify</span><span class="tok-o">(</span>item<span class="tok-o">.</span>text<span class="tok-o">),</span>
+                <span class="tok-s">"aspects"</span><span class="tok-o">:</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">aspects_of</span><span class="tok-o">(</span>item<span class="tok-o">.</span>text<span class="tok-o">),</span>
+                <span class="tok-s">"source"</span><span class="tok-o">:</span> item<span class="tok-o">.</span>source<span class="tok-o">,</span> <span class="tok-s">"ts"</span><span class="tok-o">:</span> item<span class="tok-o">.</span>ts<span class="tok-o">}</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">pulse</span><span class="tok-o">(</span><span class="tok-k">self</span><span class="tok-o">,</span> items<span class="tok-o">):</span>
+        <span class="tok-c"># THE VALUE: quantified sentiment across many texts</span>
+        overall <span class="tok-o">=</span> <span class="tok-f">Counter</span><span class="tok-o">()</span>
+        by_aspect <span class="tok-o">=</span> <span class="tok-f">defaultdict</span><span class="tok-o">(</span><span class="tok-t">Counter</span><span class="tok-o">)</span>
+        <span class="tok-k">for</span> it <span class="tok-k">in</span> items<span class="tok-o">:</span>
+            a <span class="tok-o">=</span> <span class="tok-k">self</span><span class="tok-o">.</span><span class="tok-f">analyse</span><span class="tok-o">(</span>it<span class="tok-o">)</span>
+            overall<span class="tok-o">[</span>a<span class="tok-o">[</span><span class="tok-s">"overall"</span><span class="tok-o">][</span><span class="tok-s">"label"</span><span class="tok-o">]]</span> <span class="tok-o">+=</span> <span class="tok-n">1</span>
+            <span class="tok-k">for</span> asp<span class="tok-o">,</span> lab <span class="tok-k">in</span> a<span class="tok-o">[</span><span class="tok-s">"aspects"</span><span class="tok-o">].</span><span class="tok-f">items</span><span class="tok-o">():</span>
+                by_aspect<span class="tok-o">[</span>asp<span class="tok-o">][</span>lab<span class="tok-o">]</span> <span class="tok-o">+=</span> <span class="tok-n">1</span>
+        <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"overall"</span><span class="tok-o">:</span> overall<span class="tok-o">,</span> <span class="tok-s">"by_aspect"</span><span class="tok-o">:</span> by_aspect<span class="tok-o">}</span>
+        <span class="tok-c"># Individual errors (sarcasm/negation) wash out; the trend is reliable.</span>
+
+<span class="tok-k">if</span> __name__ <span class="tok-o">==</span> <span class="tok-s">"__main__"</span><span class="tok-o">:</span>
+    engine <span class="tok-o">=</span> <span class="tok-f">SentimentEngine</span><span class="tok-o">(</span>sentiment_model<span class="tok-o">,</span> aspects<span class="tok-o">=[</span><span class="tok-s">"camera"</span><span class="tok-o">,</span><span class="tok-s">"battery"</span><span class="tok-o">,</span><span class="tok-s">"price"</span><span class="tok-o">])</span>
+    report <span class="tok-o">=</span> engine<span class="tok-o">.</span><span class="tok-f">pulse</span><span class="tok-o">(</span><span class="tok-t">REVIEWS</span><span class="tok-o">)</span>
+    <span class="tok-c"># A quantified pulse of opinion — informs decisions, doesn't replace judgement.</span></code></pre>
+  <button class="code-expand" type="button" aria-expanded="false">Expand full listing (50 lines)</button>
+</div>
+<div class="code-explain"><div><span class="ref">self.model = model               # lexicon / TF-IDF / transformer</span><span class="txt">The engine is model-agnostic across the sophistication spectrum — pick the point matching accuracy needs and compute.</span></div><div><span class="ref">def aspects_of(self, text):</span><span class="txt">Aspect-based sentiment turns a coarse overall label into per-feature opinion — praise for the camera, complaints about battery.</span></div><div><span class="ref">def pulse(self, items):</span><span class="txt">Aggregation across many texts is where the value lives — a quantified pulse, not a pile of individual labels.</span></div><div><span class="ref"># Individual errors (sarcasm/negation) wash out; the trend is reliable.</span><span class="txt">The honest principle: individual misclassifications from sarcasm/negation average out, so the aggregate trend is trustworthy even when single labels err.</span></div></div>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">Licence</span><p>This code is published for learning. Reuse it freely in your own projects and course work; a link back to this page is appreciated when you publish something derived from it.</p></div>
+  </aside></section>
+
+<section id="configuration" aria-labelledby="h-configuration"><h2 id="h-configuration">Configuration &amp; Calibration</h2><h3>Configuration steps</h3><ul class="plain"><li>Configure the sentiment model (classic/transformer) and classes/emotions.</li><li>Configure aspects for aspect-based sentiment.</li><li>Configure aggregation windows and segments (product/source/time).</li><li>Configure confidence gating and hard-case handling.</li></ul>
+<h3>Calibration procedure</h3><p>An uncalibrated sensor produces confident, precise, wrong numbers. Do this once per physical unit and record the constants.</p><ol class="steps"><li><h4>Model choice</h4><p>Pick the model matching accuracy needs and available labelled data/compute.</p></li><li><h4>Hard cases</h4><p>Evaluate on sarcasm/negation/mixed examples; set expectations honestly.</p></li><li><h4>Aggregation</h4><p>Verify aggregate trends are stable and meaningful over your volumes.</p></li></ol></section>
+
+<section id="model" aria-labelledby="h-model"><h2 id="h-model">Dataset, Model &amp; Training</h2><h3>Dataset</h3><p>Sentiment-labelled text; domain-matched data matters (product reviews differ from tweets). Transformers can be fine-tuned; classic models train on TF-IDF features.</p>
+<p>Coverage of sarcasm, negation, mixed sentiment and informal text improves robustness.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Dataset</th><th scope="col">Size</th><th scope="col">Licence</th><th scope="col">Use here</th></tr></thead>
+    <tbody><tr><td><b>Review/sentiment corpora</b></td><td>Large</td><td>Varies</td><td>Train/fine-tune sentiment</td></tr><tr><td><b>Domain-labelled data</b></td><td>Your domain</td><td>Lawful</td><td>Domain accuracy</td></tr><tr><td><b>Aspect-annotated data</b></td><td>Optional</td><td>Varies</td><td>Aspect-based sentiment</td></tr><tr><td><b>Hard-case set (sarcasm/negation)</b></td><td>Targeted</td><td>Varies</td><td>Robustness testing</td></tr></tbody>
+  </table></div>
+<h3>Data preprocessing</h3><ul class="plain"><li>Clean and tokenise text; handle emoji, informal spelling, negation cues.</li><li>For transformers, use the model tokeniser; for classic, build TF-IDF features.</li><li>Segment aspects/sentences for aspect-based sentiment.</li></ul>
+
+<div class="diagram-scroll"><figure class="diagram diagram-pipeline">
+  <svg viewBox="0 0 772 250" role="img" aria-labelledby="td949 sd949" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td949">Sentiment Analysis Engine — ML pipeline</title><desc id="sd949">From raw data through training to deployed inference.</desc>
+    <defs>
+    <marker id="ar-d949" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d949" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d949" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d949" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <rect x="20" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d949)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="38" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="58" text-anchor="middle">1</text><text class="dg-b" x="95" y="82" text-anchor="middle"><tspan x="95" y="82.0">Text</tspan></text><text class="dg-s" x="95" y="104" text-anchor="middle"><tspan x="95" y="104.0">reviews/social</tspan></text><path d="M174 77 H206" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d949)"/><rect x="214" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d949)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="232" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="232" y="58" text-anchor="middle">2</text><text class="dg-b" x="289" y="82" text-anchor="middle"><tspan x="289" y="82.0">Preprocess</tspan></text><text class="dg-s" x="289" y="104" text-anchor="middle"><tspan x="289" y="104.0">clean/tokenise</tspan></text><path d="M368 77 H400" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d949)"/><rect x="408" y="36" width="150" height="82" rx="12"
+        fill="url(#ga-d949)" stroke="var(--dg-accent)" stroke-width="1.2"/><circle cx="426" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="426" y="58" text-anchor="middle">3</text><text class="dg-b" x="483" y="82" text-anchor="middle"><tspan x="483" y="82.0">Classify</tspan></text><text class="dg-s" x="483" y="104" text-anchor="middle"><tspan x="483" y="104.0">sentiment</tspan></text><path d="M562 77 H594" stroke="var(--dg-line)" stroke-width="1.5" marker-end="url(#ar-d949)"/><rect x="602" y="36" width="150" height="82" rx="12"
+        fill="url(#gb-d949)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="620" cy="54" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="620" y="58" text-anchor="middle">4</text><text class="dg-b" x="677" y="82" text-anchor="middle"><tspan x="677" y="82.0">Aspects</tspan></text><text class="dg-s" x="677" y="104" text-anchor="middle"><tspan x="677" y="104.0">per feature</tspan></text><path d="M677 122 V136 H95 V148"
+            stroke="var(--dg-line)" stroke-width="1.5" fill="none" marker-end="url(#ar-d949)"/><rect x="20" y="152" width="150" height="82" rx="12"
+        fill="url(#gb-d949)" stroke="var(--dg-stroke)" stroke-width="1.2"/><circle cx="38" cy="170" r="11" fill="var(--dg-chip)"/><text class="dg-n" x="38" y="174" text-anchor="middle">5</text><text class="dg-b" x="95" y="198" text-anchor="middle"><tspan x="95" y="198.0">Aggregate</tspan></text><text class="dg-s" x="95" y="220" text-anchor="middle"><tspan x="95" y="220.0">trends</tspan></text>
+  </svg>
+  <figcaption>Sentiment Analysis Engine — ML pipeline</figcaption>
+</figure></div>
+
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Layer / stage</th><th scope="col">Shape or configuration</th><th scope="col">Purpose</th></tr></thead>
+    <tbody><tr><td><b>Lexicon</b></td><td><code>sentiment word scores</code></td><td>Fast, transparent baseline</td></tr><tr><td><b>Bag-of-words</b></td><td><code>TF-IDF + classifier</code></td><td>Learned, order-blind</td></tr><tr><td><b>Transformer</b></td><td><code>fine-tuned contextual model</code></td><td>Context-aware, best accuracy</td></tr><tr><td><b>Aspect module</b></td><td><code>aspect extraction + sentiment</code></td><td>Per-feature opinion</td></tr><tr><td><b>Aggregator</b></td><td><code>trends by time/product/source</code></td><td>Business intelligence</td></tr></tbody>
+  </table></div>
+
+<h3>Hyperparameters</h3><div class="table-wrap"><table>
+    <thead><tr><th scope="col">Hyperparameter</th><th scope="col">Value</th><th scope="col">Why</th></tr></thead>
+    <tbody><tr><td><b>Model type</b></td><td><code>lexicon…transformer</code></td><td>Accuracy vs compute/data</td></tr><tr><td><b>Classes</b></td><td><code>3-way / emotions</code></td><td>Granularity needed</td></tr><tr><td><b>Confidence gate</b></td><td><code>app-specific</code></td><td>Flag uncertain items</td></tr><tr><td><b>Aggregation window</b></td><td><code>per report</code></td><td>Trend smoothing</td></tr></tbody>
+  </table></div>
+<h3>Training process</h3><ul class="plain"><li>Fine-tune a transformer (or train a TF-IDF classifier) on domain-matched labelled data.</li><li>Include sarcasm/negation/mixed examples; validate on a hard-case set.</li><li>Check for bias; evaluate on held-out real text, not just clean benchmarks.</li></ul></section>
+
+<section id="evaluation" aria-labelledby="h-evaluation"><h2 id="h-evaluation">Evaluation, Metrics &amp; Deployment</h2><p>Accuracy/F1 per class matters, but so does honest evaluation on hard cases (sarcasm, negation) and the reliability of aggregate trends.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">What it tells you</th></tr></thead>
+    <tbody><tr><td><b>Accuracy / F1</b></td><td><code>model/domain-dependent</code></td><td>Per-class quality</td></tr><tr><td><b>Hard-case accuracy</b></td><td><code>lower (honest)</code></td><td>Sarcasm/negation</td></tr><tr><td><b>Aggregate reliability</b></td><td><code>high at scale</code></td><td>Trends wash out errors</td></tr><tr><td><b>Aspect accuracy</b></td><td><code>if used</code></td><td>Per-feature sentiment</td></tr></tbody>
+  </table></div><p class="tbl-caption">Figures from the reference training run described above — reproduce them before trusting your own changes.</p>
+<figure class="diagram diagram-chart">
+  <svg viewBox="0 0 620 192" role="img" aria-labelledby="td950 sd950" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td950">Accuracy by text difficulty</title><desc id="sd950">Straightforward sentiment is easy; sarcasm and heavy negation are genuinely hard — accuracy is good, not perfect (illustrative).</desc>
+    <defs>
+    <marker id="ar-d950" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-line)"/>
+    </marker>
+    <marker id="arh-d950" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0.6 L10 5 L0 9.4 z" fill="var(--dg-accent)"/>
+    </marker>
+    <linearGradient id="gb-d950" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-box-a)"/><stop offset="100%" stop-color="var(--dg-box-b)"/>
+    </linearGradient>
+    <linearGradient id="ga-d950" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--dg-acc-a)"/><stop offset="100%" stop-color="var(--dg-acc-b)"/>
+    </linearGradient>
+  </defs>
+    <line x1="190" y1="26" x2="190" y2="178" stroke="var(--dg-stroke)" stroke-width="1"/><text class="dg-b" x="178" y="45" text-anchor="end">Clear sentiment</text><rect x="191" y="33" width="316.5217391304348" height="20" rx="5" fill="url(#ga-d950)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="516.5217391304348" y="47">92 %</text><text class="dg-b" x="178" y="83" text-anchor="end">Mixed sentiment</text><rect x="191" y="71" width="268.3553875236295" height="20" rx="5" fill="url(#ga-d950)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="468.3553875236295" y="85">78 %</text><text class="dg-b" x="178" y="121" text-anchor="end">Negation</text><rect x="191" y="109" width="247.71266540642722" height="20" rx="5" fill="url(#ga-d950)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="447.7126654064272" y="123">72 %</text><text class="dg-b" x="178" y="159" text-anchor="end">Sarcasm/irony</text><rect x="191" y="147" width="189.2249527410208" height="20" rx="5" fill="url(#ga-d950)" stroke="var(--dg-accent)" stroke-width=".9"/><text class="dg-s" x="389.2249527410208" y="161">55 %</text>
+  </svg>
+  <figcaption>Accuracy by text difficulty</figcaption>
+</figure>
+
+
+<h3>Inference example</h3><div class="codeblock tall" data-file="sentiment.py">
+  <div class="code-head">
+    <span class="fname"><span class="lang">python</span><span class="nm">sentiment.py</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy sentiment.py to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="sentiment.py" type="button" aria-label="Download sentiment.py">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code><span class="tok-k">from</span> collections <span class="tok-k">import</span> <span class="tok-t">Counter</span>
+
+<span class="tok-k">def</span> <span class="tok-f">classify</span><span class="tok-o">(</span>text<span class="tok-o">,</span> model<span class="tok-o">):</span>
+    out <span class="tok-o">=</span> <span class="tok-f">model</span><span class="tok-o">(</span>text<span class="tok-o">)</span>                    <span class="tok-c"># transformer/classic sentiment</span>
+    <span class="tok-k">return</span> <span class="tok-o">{</span><span class="tok-s">"label"</span><span class="tok-o">:</span> out<span class="tok-o">.</span>label<span class="tok-o">,</span> <span class="tok-s">"confidence"</span><span class="tok-o">:</span> <span class="tok-f">float</span><span class="tok-o">(</span>out<span class="tok-o">.</span>score<span class="tok-o">)}</span>
+
+<span class="tok-k">def</span> <span class="tok-f">aspect_sentiment</span><span class="tok-o">(</span>text<span class="tok-o">,</span> model<span class="tok-o">,</span> aspects<span class="tok-o">):</span>
+    <span class="tok-c"># sentiment per aspect (camera/battery/price), not just overall</span>
+    result <span class="tok-o">=</span> <span class="tok-o">{}</span>
+    <span class="tok-k">for</span> a <span class="tok-k">in</span> aspects<span class="tok-o">:</span>
+        span <span class="tok-o">=</span> <span class="tok-f">sentence_about</span><span class="tok-o">(</span>text<span class="tok-o">,</span> a<span class="tok-o">)</span>   <span class="tok-c"># the part discussing this aspect</span>
+        <span class="tok-k">if</span> span<span class="tok-o">:</span>
+            result<span class="tok-o">[</span>a<span class="tok-o">]</span> <span class="tok-o">=</span> <span class="tok-f">classify</span><span class="tok-o">(</span>span<span class="tok-o">,</span> model<span class="tok-o">)[</span><span class="tok-s">"label"</span><span class="tok-o">]</span>
+    <span class="tok-k">return</span> result                        <span class="tok-c"># e.g. {camera: pos, battery: neg}</span>
+
+<span class="tok-k">def</span> <span class="tok-f">aggregate</span><span class="tok-o">(</span>items<span class="tok-o">,</span> model<span class="tok-o">):</span>
+    <span class="tok-c"># the value: a quantified pulse over many texts</span>
+    labels <span class="tok-o">=</span> <span class="tok-o">[</span><span class="tok-f">classify</span><span class="tok-o">(</span>t<span class="tok-o">,</span> model<span class="tok-o">)[</span><span class="tok-s">"label"</span><span class="tok-o">]</span> <span class="tok-k">for</span> t <span class="tok-k">in</span> items<span class="tok-o">]</span>
+    <span class="tok-k">return</span> <span class="tok-f">Counter</span><span class="tok-o">(</span>labels<span class="tok-o">)</span>               <span class="tok-c"># individual errors wash out at scale</span>
+    <span class="tok-c"># Sarcasm/negation are hard; accuracy is good, not perfect — inform, don't replace.</span></code></pre>
+  
+</div>
+
+<aside class="callout warn">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Zm0 6v5m0 3v.5" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="bd"><span class="tt">Known limitations</span><p>Sarcasm/irony and negation are genuinely hard — accuracy is good, not perfect.</p>
+<p>Context and domain shift meaning; models inherit bias from data.</p>
+<p>Individual classifications can err; trust the AGGREGATE at scale.</p>
+<p>Inform judgement, do not replace it.</p></div>
+  </aside></section>
+
+<section id="testing" aria-labelledby="h-testing"><h2 id="h-testing">Testing Procedure &amp; Expected Output</h2><p>Test from the bottom up. Confirm power, then each sensor in isolation, then the integrated loop — the first failing step tells you exactly where to look.</p>
+<div class="table-wrap"><table>
+    <thead><tr><th scope="col">Test</th><th scope="col">What you should see</th></tr></thead>
+    <tbody><tr><td><b>Clear positive/negative text</b></td><td>Correct sentiment</td></tr><tr><td><b>Negation ("not bad")</b></td><td>Correct (positive) — mind naïve models</td></tr><tr><td><b>Sarcasm ("oh great, a crash")</b></td><td>Often hard — note the limit</td></tr><tr><td><b>Mixed review</b></td><td>Aspect-based captures both sides</td></tr><tr><td><b>Aggregate many texts</b></td><td>Stable, reliable trend</td></tr><tr><td><b>Change domain</b></td><td>May need domain data — meaning shifts</td></tr></tbody>
+  </table></div><p class="tbl-caption">Bench-test checklist. If a row fails, stop and fix it before moving on.</p>
+<h3>Expected output</h3><p>Per-text sentiment (overall and per aspect) and an aggregated pulse over time, product and source.</p>
+<div class="codeblock tall" data-file="sentiment-pulse.json">
+  <div class="code-head">
+    <span class="fname"><span class="lang">json</span><span class="nm">sentiment-pulse.json</span></span>
+    <span class="code-actions">
+      <button class="code-btn" data-copy type="button" aria-label="Copy sentiment-pulse.json to clipboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-6A3.5 3.5 0 0 0 3 6.5v6A2.5 2.5 0 0 0 5.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span class="lbl">Copy</span></button>
+      <button class="code-btn" data-download="sentiment-pulse.json" type="button" aria-label="Download sentiment-pulse.json">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Download</span></button>
+    </span>
+  </div>
+  <pre><code>{
+  "overall": { "positive": <span class="tok-n">612</span>, "neutral": <span class="tok-n">190</span>, "negative": <span class="tok-n">198</span> },
+  "by_aspect": {
+    "camera": { "positive": <span class="tok-n">410</span>, "negative": <span class="tok-n">60</span> },
+    "battery": { "positive": <span class="tok-n">90</span>, "negative": <span class="tok-n">280</span> },
+    "price": { "positive": <span class="tok-n">70</span>, "negative": <span class="tok-n">210</span> }
+  },
+  "note": "trust the aggregate; sarcasm/negation err individually"
+}</code></pre>
+  
+</div>
+
+<p>Across a thousand reviews: broadly positive overall, but aspect-based sentiment reveals the real story — the camera is loved while battery and price draw complaints, exactly the actionable insight aggregation provides.</p>
+<figure class="photo">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Supermarket%20shelves.jpg?width=900" alt="Stocked shelves in a supermarket aisle" loading="lazy" decoding="async" width="900" height="600" />
+  <template class="fallback"><figure class="diagram diagram-illus">
+  <svg viewBox="0 0 400 260" role="img" aria-labelledby="td951" preserveAspectRatio="xMidYMid meet" class="dg">
+    <title id="td951">Sarcasm and negation defeat naïve models — accuracy is good but never perfect, so trust aggregates at scale.</title>
+    <rect width="400" height="260" rx="14" fill="var(--dg-illus-bg)"/>
+    
+    <rect x="30" y="34" width="340" height="192" rx="10" fill="var(--dg-box-b)" stroke="var(--dg-stroke)"/>
+    <rect x="30" y="34" width="340" height="28" rx="10" fill="var(--dg-chip)"/>
+    <circle cx="48" cy="48" r="4" fill="#e05f5f"/><circle cx="62" cy="48" r="4" fill="#e0b45f"/><circle cx="76" cy="48" r="4" fill="#5fe08a"/>
+    <rect x="44" y="76" width="140" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <text x="58" y="98" font-size="10" fill="var(--dg-muted)">TEMPERATURE</text>
+    <text x="58" y="126" font-size="24" fill="var(--dg-accent)" font-family="monospace">27.4°</text>
+    <rect x="198" y="76" width="158" height="62" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="210,126 236,110 262,118 288,94 314,104 340,86" fill="none" stroke="var(--dg-accent)" stroke-width="2"/>
+    <rect x="44" y="152" width="312" height="60" rx="7" fill="var(--dg-box-a)" stroke="var(--dg-stroke)"/>
+    <polyline points="56,196 86,180 116,188 146,160 176,172 206,146 236,158 266,138 296,150 340,128"
+      fill="none" stroke="var(--dg-accent)" stroke-width="2" opacity=".8"/>
+  </svg>
+  <figcaption>Sarcasm and negation defeat naïve models — accuracy is good but never perfect, so trust aggregates at scale.</figcaption>
+</figure></template>
+  <figcaption>Sarcasm and negation defeat naïve models — accuracy is good but never perfect, so trust aggregates at scale.
+    <span class="credit">Photograph sourced from <a href="https://commons.wikimedia.org/wiki/File:Supermarket_shelves.jpg" rel="noopener nofollow" target="_blank">Wikimedia Commons — Supermarket shelves.jpg</a>. Reused under the licence stated on that page; please check it before republishing.</span>
+  </figcaption>
+</figure></section>
+
+<section id="troubleshooting" aria-labelledby="h-troubleshooting"><h2 id="h-troubleshooting">Troubleshooting: Common Errors &amp; Fixes</h2><div class="faq"><details class="expand"><summary>Misses negation</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Lexicon/bag-of-words</p>
+        <p><strong>Fix.</strong> Use a context-aware (transformer) model</p></div></details><details class="expand"><summary>Fooled by sarcasm</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Inherent difficulty</p>
+        <p><strong>Fix.</strong> Best-effort model; trust aggregates; flag low confidence</p></div></details><details class="expand"><summary>Wrong in a domain</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Domain shift</p>
+        <p><strong>Fix.</strong> Fine-tune on domain-matched data</p></div></details><details class="expand"><summary>Coarse insight</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Overall-only</p>
+        <p><strong>Fix.</strong> Add aspect-based sentiment</p></div></details><details class="expand"><summary>Noisy per-item labels</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Individual errors</p>
+        <p><strong>Fix.</strong> Report aggregates; they are reliable at scale</p></div></details><details class="expand"><summary>Biased outputs</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Biased data</p>
+        <p><strong>Fix.</strong> Audit/mitigate bias; evaluate fairly</p></div></details><details class="expand"><summary>The sketch will not upload — "Failed to connect" or "avrdude: stk500_recv()"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The bootloader is not being reached: wrong port, wrong board, a serial monitor holding the port open, or a USB cable that only carries power.</p>
+        <p><strong>Fix.</strong> Close every serial monitor, confirm <b>Tools → Board</b> and <b>Port</b>, and swap to a known data-capable USB cable. On an ESP32 hold <b>BOOT</b> while the IDE prints "Connecting…", then release. If a peripheral is wired to the UART pins (GPIO 1/3 on ESP32, D0/D1 on Uno) unplug it — it fights the programmer.</p></div></details><details class="expand"><summary>The board resets in a loop, or the serial monitor prints "Brownout detector was triggered"</summary><div class="inner">
+        <p><strong>Likely cause.</strong> The supply cannot deliver peak current. Wi-Fi transmit bursts, relay coils and servos all pull far more than their average draw.</p>
+        <p><strong>Fix.</strong> Power peripherals from a separate regulated supply with a common ground rather than from the board 5 V pin. Add a 470–1000 µF electrolytic capacitor across the supply near the load, and use a real power adapter rather than a laptop USB port.</p></div></details><details class="expand"><summary>Serial monitor shows garbage characters</summary><div class="inner">
+        <p><strong>Likely cause.</strong> Baud rate mismatch between <code>Serial.begin()</code> and the monitor, or a floating/shared UART line.</p>
+        <p><strong>Fix.</strong> Set the monitor to <b>115200</b> to match the sketch. If it still garbles, the crystal or the USB bridge is being confused by noise — shorten the cable and keep motor wiring away from the USB lead.</p></div></details></div></section>
+
+<section id="optimisation" aria-labelledby="h-optimisation"><h2 id="h-optimisation">Performance Optimisation</h2>
+<ul class="check"><li>Match the model to accuracy needs, data and compute.</li><li>Add aspect-based sentiment for actionable insight.</li><li>Aggregate at scale — trends are reliable even when items err.</li><li>Handle negation/context with a context-aware model.</li><li>Replace every <code>delay()</code> with a <code>millis()</code> comparison — blocking delays are the single most common cause of dropped readings.</li><li>Sample sensors on a fixed cadence and publish on a slower one; you almost never need to transmit at the sampling rate.</li><li>Move networking into its own FreeRTOS task so a slow DNS lookup cannot stall the control loop.</li><li>Use <code>uint8_t</code> / <code>uint16_t</code> where the range allows; on an 8-bit AVR a 32-bit add costs four times as much.</li><li>Profile before optimising — print <code>micros()</code> deltas around each stage and fix the slowest one first.</li></ul></section>
+
+<section id="safety" aria-labelledby="h-safety"><h2 id="h-safety">Safety Precautions</h2>
+<ul class="plain"><li>Accuracy is never perfect (sarcasm/negation) — inform judgement, do not replace it.</li><li>Trust aggregate trends over individual classifications for decisions.</li><li>Watch for and mitigate bias inherited from training data.</li><li>Analysing user text raises privacy obligations — handle lawfully.</li><li>Wear eye protection when soldering or cutting, and solder in a ventilated space — rosin flux fumes are a respiratory irritant.</li><li>Power the circuit through a bench supply with a current limit while you are testing. A 300 mA limit turns a wiring mistake into a beep instead of a dead board.</li><li>Disconnect power before changing any wiring. Hot-plugging a sensor onto a live bus is the fastest way to lose a controller.</li></ul></section>
+
+<section id="maintenance" aria-labelledby="h-maintenance"><h2 id="h-maintenance">Maintenance</h2><ul class="plain"><li>Refresh models/data as language and domains evolve.</li><li>Re-test on hard cases (sarcasm/negation) and for bias.</li><li>Update aspects and aggregation as products change.</li><li>Monitor drift in sources and vocabulary.</li><li>Re-check every screw terminal and header after the first week — thermal cycling loosens connections that felt tight on day one.</li><li>Recalibrate at the interval given in the calibration section, and keep the constants in a text file next to the firmware — not only in flash.</li><li>Keep a short logbook of firmware versions and what changed. Six months later you will not remember why that constant is 1.083.</li></ul></section>
+
+<section id="future" aria-labelledby="h-future"><h2 id="h-future">Future Improvements &amp; Upgrades</h2><p>A working v1 is a platform, not a finish line. These are the upgrades that add the most capability for the least rework.</p>
+<ul class="check"><li>Add emotion granularity (joy/anger/fear, etc.).</li><li>Add multilingual and code-switching support.</li><li>Add sarcasm-aware modelling and stance detection.</li><li>Add real-time streaming sentiment and alerting.</li><li>Design a proper PCB. Once the breadboard version has run for a month, moving to a two-layer board removes the intermittent-contact failures that dominate prototype faults.</li><li>Add connectivity — an ESP32 and an MQTT publish turn a local gadget into something you can graph, alert on and analyse over months.</li><li>Add persistent local storage (microSD or the on-chip flash) so a network outage does not create a hole in your data.</li><li>Move configuration out of the source: a captive-portal setup page or a JSON config file makes the build reusable without a recompile.</li><li>Add a battery and solar option so the unit survives a power cut and can be sited away from a socket.</li><li>Write a small test harness that feeds synthetic sensor values through the decision logic, so you can validate thresholds without physically triggering the event.</li></ul></section>
+
+<section id="faq" aria-labelledby="h-faq"><h2 id="h-faq">Frequently Asked Questions</h2><div class="faq"><details class="expand"><summary>What is sentiment analysis, technically?</summary><div class="inner"><p>A text-classification task: map a piece of text to a sentiment label (positive/negative/neutral, or finer emotions). The value comes from doing it at scale and aggregating the results.</p></div></details><details class="expand"><summary>What is aspect-based sentiment?</summary><div class="inner"><p>Attributing sentiment to specific aspects rather than the whole text. "Great camera, terrible battery, overpriced" is positive about the camera and negative about battery and price — far more actionable than one overall label.</p></div></details><details class="expand"><summary>Why does it struggle with sarcasm and negation?</summary><div class="inner"><p>Sarcasm inverts surface sentiment ("oh great, another crash" is negative despite "great"), and negation flips polarity ("not bad" is positive). Lexicon and bag-of-words methods especially miss these; context-aware models handle them better but not perfectly.</p></div></details><details class="expand"><summary>Can I trust the results if individual labels err?</summary><div class="inner"><p>Trust the aggregate. Individual misclassifications from sarcasm or negation wash out over thousands of texts, so the trend — which is what most decisions need — is reliable even when single labels occasionally miss.</p></div></details><details class="expand"><summary>Which model should I use?</summary><div class="inner"><p>It depends on the trade-off: lexicon methods are fast and transparent but shallow; TF-IDF classifiers learn from data but ignore context; fine-tuned transformers are most accurate on hard cases but need more compute and data. Match the choice to your accuracy needs and resources.</p></div></details></div></section>
+
+<section id="references" aria-labelledby="h-references"><h2 id="h-references">References &amp; Learning Resources</h2><p>These are the primary sources worth reading in full. Manufacturer datasheets always outrank forum posts when the two disagree.</p>
+<ol class="reflist"><li><a href="https://en.wikipedia.org/wiki/Sentiment_analysis" rel="noopener nofollow" target="_blank">Sentiment analysis</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Document_classification" rel="noopener nofollow" target="_blank">Text classification</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Sentiment_analysis#Feature/aspect-based" rel="noopener nofollow" target="_blank">Aspect-based sentiment analysis</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)" rel="noopener nofollow" target="_blank">Transformers (NLP)</a><span class="src">Reference</span></li><li><a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf" rel="noopener nofollow" target="_blank">TF-IDF</a><span class="src">Reference</span></li></ol>
+<aside class="callout note">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5m0-8v.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <div class="bd"><span class="tt">On originality</span><p>This guide was written from first principles against the datasheets and official documentation listed above. Where a technique is standard practice in the maker community it is described in the author's own words rather than reproduced, and any photograph carries a link to its source.</p></div>
+  </aside></section>
+
+      <nav class="pagenav" aria-label="Previous and next project">
+        <a class="prev" href="ai-resume-screener.html"><span class="dir">← Previous project</span><span class="ttl">AI Resume Screener</span></a>
+        <span class="next disabled"></span>
+      </nav>
+    </article>
+
+    <aside class="doc-aside-right" aria-label="Project summary">
+      <div class="rail-card">
+        <h4>At a glance</h4>
+        <div class="rail-stat"><span>Level</span><b>Intermediate</b></div>
+        <div class="rail-stat"><span>Time</span><b>10–16 hours</b></div>
+        <div class="rail-stat"><span>Parts</span><b>4</b></div>
+        <div class="rail-stat"><span>Cost</span><b>Software; compute-light to moderate</b></div>
+        <div class="rail-stat"><span>Sections</span><b>26</b></div>
+      </div>
+      <div class="rail-card">
+        <h4>Related builds</h4>
+        <ul><li><a href="ai-resume-screener.html">AI Resume Screener</a></li><li><a href="sleep-apnea-tracker.html">Sleep Apnea Tracker</a></li><li><a href="pocket-ecg-monitor.html">Pocket ECG Monitor</a></li></ul>
+      </div>
+      <div class="rail-card">
+        <h4>Shortcuts</h4>
+        <p class="meta"><code>Ctrl</code>+<code>F</code> search this page · <code>←</code> <code>→</code> previous / next project · <code>/</code> quick find</p>
+      </div>
+    </aside>
+  </div>
+
+  <section class="container" style="padding:2.4rem 0 1rem" aria-labelledby="h-related">
+    <h2 id="h-related" style="font-family:var(--f-display);font-size:1.55rem;margin-bottom:1rem">Related Projects</h2>
+    <div class="relgrid">
+      <a class="relcard" href="ai-resume-screener.html">
+        <span class="rc">NLP &amp; LLM</span>
+        <h4>AI Resume Screener</h4>
+        <p>Ranks resumes against a job description using NLP relevance scoring.</p></a><a class="relcard" href="sleep-apnea-tracker.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Sleep Apnea Tracker</h4>
+        <p>Monitors breathing and snoring patterns to flag possible apnea events.</p></a><a class="relcard" href="pocket-ecg-monitor.html">
+        <span class="rc">Health &amp; Wearables</span>
+        <h4>Pocket ECG Monitor</h4>
+        <p>Captures single-lead heart rhythm and syncs traces to the cloud.</p></a>
+    </div>
+  </section>
+
+</main>
+
+<div id="findbar" role="search" aria-label="Find on page">
+  <input type="search" placeholder="Find in this guide…" aria-label="Find text in this guide" />
+  <span class="fcount" aria-live="polite"></span>
+  <button type="button" data-find-prev aria-label="Previous match">↑</button>
+  <button type="button" data-find-next aria-label="Next match">↓</button>
+  <button type="button" data-find-close aria-label="Close find bar">✕</button>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 20 20" fill="none" width="20" height="20" aria-hidden="true"><path d="M10 15V5M6 9l4-4 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<footer class="doc-footer">
+  <div class="container">
+    <div class="mono" aria-hidden="true">SK</div>
+    <p><strong>Sentiment Analysis Engine</strong> — part of the 125-project engineering documentation library by Siddhant Kumar.</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="../index.html">All Projects</a>
+      <a href="index.html">Docs Index</a>
+      <a href="../iot.html">IoT</a>
+      <a href="../ai.html">AI &amp; Advanced</a>
+      <a href="../../journal/index.html">Journal</a>
+      <a href="../../index.html#contact">Contact</a>
+    </nav>
+    <p>&copy; <span class="yr">2026</span> Siddhant Kumar. Documentation published for educational use.</p>
+  </div>
+</footer>
+
+<script src="../doc.js" defer></script>
+</body>
+</html>
