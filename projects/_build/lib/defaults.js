@@ -246,11 +246,35 @@ function normalise(spec) {
   d.keywords = d.keywords || [
     spec.title.toLowerCase(), spec.title.toLowerCase() + ' project',
     'how to build ' + spec.title.toLowerCase(),
+    spec.title.toLowerCase() + ' tutorial',
+    spec.title.toLowerCase() + ' source code',
+    spec.title.toLowerCase() + ' circuit diagram',
     d.platformName.split('(')[0].trim().toLowerCase() + ' project',
-    spec.cat.toLowerCase() + ' project', 'circuit diagram', 'source code', 'tutorial',
+    spec.cat.toLowerCase() + ' project', spec.cat.toLowerCase() + ' build guide',
+    ...(spec.tags || []).map(t => String(t).toLowerCase()),
+    'circuit diagram', 'wiring diagram', 'source code', 'bill of materials',
+    'step by step tutorial', 'DIY electronics', 'documentation',
   ];
   d.seoTitle = d.seoTitle || `${spec.title} — Circuit, Code & Full Build Guide | ${spec.cat}`;
-  d.seoDesc = d.seoDesc || `Complete ${spec.difficulty.toLowerCase()}-level build guide for a ${spec.title}: bill of materials, wiring diagram, working principle, full annotated source code, calibration, testing and troubleshooting.`;
+
+  /* A richer, UNIQUE meta description per page: lead with the project's own
+     tagline (specific + compelling, so the search snippet reads well even
+     when truncated), then spell out the depth of the guide with the terms
+     people actually search for. Falls back gracefully with no tagline. */
+  const _tag = String(spec.tagline || '')
+    .replace(/\s+/g, ' ')
+    .replace(/\s+[—–-]\s+/g, ' — ')      // normalise spaced dash separators only
+    .replace(/[.\s]+$/, '')              // drop trailing period/space
+    .trim();
+  const _lead = _tag ? _tag.charAt(0).toUpperCase() + _tag.slice(1) + '. ' : '';
+  d.seoDesc = d.seoDesc || (
+    _lead +
+    `A complete, in-depth ${spec.difficulty.toLowerCase()}-level ${spec.cat} ` +
+    `build guide for the ${spec.title}, covering the bill of materials, wiring ` +
+    `and circuit diagram, block diagram, working principle, step-by-step ` +
+    `assembly, full annotated source code, configuration and calibration, ` +
+    `testing, troubleshooting, safety and FAQs.`
+  );
   d.iso8601 = d.iso8601 || 'PT8H';
 
   return d;
