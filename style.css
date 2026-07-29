@@ -2079,11 +2079,45 @@ a.c-value:hover { color: var(--gold-hi); }
   .modal-card { padding: 2rem 1.5rem; }
 }
 
+/* ── Phone: testimonials become ONE clean swipeable slideshow ─────
+   On desktop the "Voices" section is a grid of featured cards plus an
+   auto-scrolling ticker — too busy and cramped on a phone. On phones we
+   turn the featured testimonials into a single, swipe-through slideshow
+   (one card per view, scroll-snap) and hide the ticker. */
+@media (max-width: 600px) {
+  .voices-featured {
+    display: flex;
+    grid-template-columns: none;      /* drop the grid */
+    gap: 0.85rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.3rem;
+  }
+  .voices-featured::-webkit-scrollbar { display: none; }
+  .voices-featured > .voice {
+    flex: 0 0 88%;                     /* one testimonial per view, next peeks */
+    scroll-snap-align: start;
+    scroll-snap-stop: always;         /* advance one at a time */
+    margin-bottom: 0;
+  }
+  /* one slideshow, not two — hide the busy auto-scrolling ticker on phones */
+  .voices-flow { display: none; }
+  /* nudge the section sub-copy to say how to browse */
+  .voices .chapter-sub::after {
+    content: " Swipe to browse.";
+    color: var(--gold);
+  }
+}
+
 @media (max-width: 460px) {
   .hero-eyebrow { letter-spacing: 0.2em; font-size: 0.66rem; gap: 0.6rem; }
   .eyebrow-line { width: 26px; }
   .chapter-title { font-size: 2rem; }
   .book-actions .btn { width: 100%; justify-content: center; }
+  .voices-featured > .voice { flex-basis: 90%; }
 }
 
 /* ═══════════════ Motion preferences & print ═══════════════ */
