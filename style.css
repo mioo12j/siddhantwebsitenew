@@ -48,6 +48,12 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 88px;
   -webkit-text-size-adjust: 100%;
+  /* Fixed-position elements (.nav, .nav-menu, .scroll-progress) are anchored
+     to the viewport, so body{overflow-x:hidden} cannot contain them and they
+     caused a ~22px horizontal scroll on mobile. Clip at the html level too.
+     `clip` (not `hidden`) avoids creating a scroll container, preserving
+     smooth scrolling and scroll-padding. */
+  overflow-x: clip;
 }
 
 body {
