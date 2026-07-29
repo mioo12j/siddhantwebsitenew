@@ -1534,4 +1534,10 @@ add({
   related:['1962-sino-indian-war','arun-khetarpal-basantar','param-vir-chakra']
 });
 
+// ---- geopolitics batch (hand-authored pages, registered for index) ----
+require('./articles-geopolitics.js').forEach(add);
+
+// ---- 2026 "latest happenings" batch (appended) ----------------
+require('./articles-latest.js').forEach(add);
+
 module.exports = A;
