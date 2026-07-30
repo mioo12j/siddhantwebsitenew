@@ -1540,4 +1540,7 @@ require('./articles-geopolitics.js').forEach(add);
 // ---- 2026 "latest happenings" batch (appended) ----------------
 require('./articles-latest.js').forEach(add);
 
+// ---- 2026 extended deep-dives (~10k words each) ---------------
+require('./articles-latest2.js').forEach(add);
+
 module.exports = A;
