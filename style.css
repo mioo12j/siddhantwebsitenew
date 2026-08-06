@@ -639,6 +639,14 @@ html.js .in-view { opacity: 1; transform: none; filter: none; }
   .hero-tag { border-left: none; border-top: 2px solid var(--gold); padding: 0.6rem 0 0; }
   .hero-book { order: -1; margin-top: 1rem; }
   .book-scene { width: min(240px, 56vw); }
+  /* Face the cover more front-on: at -24deg the rotated spine and page
+     block push the visual mass to one side, so the book reads as
+     off-centre on a narrow screen even though its box is centred. */
+  .book3d { transform: rotateY(-12deg) rotateX(3deg); }
+  @keyframes book-idle {
+    0%, 100% { transform: rotateY(-12deg) rotateX(3deg) translateY(0); }
+    50% { transform: rotateY(-7deg) rotateX(2deg) translateY(-10px); }
+  }
   .poem-grid, .honour-row { grid-template-columns: repeat(2, 1fr); }
   .author-layout { grid-template-columns: 1fr; }
   .author-portrait { max-width: 300px; margin: 0 auto; }
