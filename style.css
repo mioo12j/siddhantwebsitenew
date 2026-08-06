@@ -1369,55 +1369,35 @@ html.js .role-word {
   margin-bottom: 1.5rem;
 }
 
-/* magazine mock */
-.mag-mock {
+/* the real magazine cover */
+.mag-cover {
   flex: 0 0 236px;
-  aspect-ratio: 3 / 4.1;
-  border-radius: 6px;
-  border: 1px solid rgba(201, 168, 76, 0.3);
-  background:
-    linear-gradient(160deg, rgba(96, 150, 210, 0.25), transparent 55%),
-    linear-gradient(200deg, #14304f, #0a1a30 75%);
-  box-shadow: -14px 20px 40px rgba(2, 5, 12, 0.6);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  text-align: center;
-  padding: 1.4rem;
+  margin: 0;
   position: relative;
   transform: rotate(-2deg);
-  transition: transform 0.5s var(--ease), box-shadow 0.5s ease;
+  transition: transform 0.5s var(--ease);
 }
-.mc-mag:hover .mag-mock { transform: rotate(0deg) translateY(-6px); box-shadow: -16px 26px 50px rgba(2, 5, 12, 0.7); }
-.mag-band {
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.3em;
+.mag-cover img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid rgba(201, 168, 76, 0.32);
+  box-shadow: -14px 20px 44px rgba(2, 5, 12, 0.66);
+  transition: box-shadow 0.5s ease;
+}
+.mc-mag:hover .mag-cover { transform: rotate(0deg) translateY(-6px); }
+.mc-mag:hover .mag-cover img { box-shadow: -16px 28px 56px rgba(2, 5, 12, 0.78); }
+.mag-cover figcaption {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-family: var(--f-ui);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #9cc4ea;
-  border: 1px solid rgba(156, 196, 234, 0.4);
-  padding: 0.32rem 0.8rem;
-  border-radius: 3px;
+  color: var(--slate-dim);
+  line-height: 1.5;
 }
-.mag-headline {
-  font-family: var(--f-display);
-  font-weight: 600;
-  font-size: 1.9rem;
-  line-height: 1.15;
-  color: #eef4fb;
-  letter-spacing: 0.04em;
-}
-.mag-byline { font-family: var(--f-body); font-size: 0.85rem; color: #b9cfe6; }
-.mag-foot {
-  position: absolute;
-  bottom: 0.9rem;
-  font-size: 0.58rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(185, 207, 230, 0.7);
-}
+.mag-cover figcaption em { font-style: italic; color: var(--gold-hi); text-transform: none; letter-spacing: 0; }
 .mag-info { flex: 1; min-width: 0; }
 .mag-quote {
   margin: 1.1rem 0 0;
@@ -2080,11 +2060,12 @@ a.c-value:hover { color: var(--gold-hi); }
   .modal-card { padding: 2rem 1.5rem; }
 }
 
-/* ── Phone: testimonials become ONE clean swipeable slideshow ─────
-   On desktop the "Voices" section is a grid of featured cards plus an
-   auto-scrolling ticker — too busy and cramped on a phone. On phones we
-   turn the featured testimonials into a single, swipe-through slideshow
-   (one card per view, scroll-snap) and hide the ticker. */
+/* ── Phone: horizontal swipe rows ────────────────────────────────
+   On a phone, stacking every card vertically buries the content. The
+   featured testimonials, the flowing testimonials and the bookshelf all
+   become single-row, scroll-snapped swipe rails: one card per view,
+   centred, with the next peeking to signal there is more. Crucially the
+   flowing rows stay VISIBLE — hiding them hid 18 of the 21 voices. */
 @media (max-width: 600px) {
   .voices-featured {
     display: flex;
@@ -2096,21 +2077,62 @@ a.c-value:hover { color: var(--gold-hi); }
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding-bottom: 0.3rem;
+    margin-bottom: 1.4rem;
+    /* side padding equals the card's side gap so the first and last card
+       can sit dead-centre when snapped, not flush against an edge */
+    padding-inline: 6%;
+    scroll-padding-inline: 6%;
   }
   .voices-featured::-webkit-scrollbar { display: none; }
   .voices-featured > .voice {
     flex: 0 0 88%;                     /* one testimonial per view, next peeks */
-    scroll-snap-align: start;
+    scroll-snap-align: center;
     scroll-snap-stop: always;         /* advance one at a time */
     margin-bottom: 0;
   }
-  /* one slideshow, not two — hide the busy auto-scrolling ticker on phones */
-  .voices-flow { display: none; }
-  /* nudge the section sub-copy to say how to browse */
+  /* Keep every remaining voice reachable: the marquee rows stay on, just
+     calmer and swipeable by hand as well as auto-scrolling. */
+  .voices-flow { display: flex; gap: 1rem; }
+  .voices-flow .marquee {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  }
+  .voices-flow .marquee-track { gap: 1rem; }
+  .voice-sm { width: min(300px, 82vw); }
   .voices .chapter-sub::after {
     content: " Swipe to browse.";
     color: var(--gold);
   }
+
+  /* Bookshelf: one horizontal, swipeable rail instead of a tall stack */
+  .shelf {
+    display: flex;
+    grid-template-columns: none;
+    max-width: none;
+    gap: 1rem;
+    row-gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.6rem;
+    padding-inline: 8%;
+    scroll-padding-inline: 8%;
+  }
+  .shelf::-webkit-scrollbar { display: none; }
+  .shelf > .book {
+    flex: 0 0 84%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+  .books .chapter-sub::after {
+    content: " Swipe through the shelf.";
+    color: var(--gold);
+  }
+
+  /* The four "threads" were locked to 2 cramped 162px columns on a phone */
+  .about-threads { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 460px) {
