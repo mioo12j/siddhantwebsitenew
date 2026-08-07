@@ -1346,6 +1346,12 @@ html.js .role-word {
   filter: drop-shadow(0 0 18px rgba(201, 168, 76, 0.3));
   animation: seal-turn 14s linear infinite;
   transform-origin: center;
+  line-height: 0;
+}
+.seal img {
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
 }
 @keyframes seal-turn {
   0%, 100% { transform: rotate(-3deg); }
@@ -1358,15 +1364,34 @@ html.js .role-word {
   border: 1px dashed rgba(201, 168, 76, 0.35);
   animation: orn-spin 26s linear infinite;
 }
-.launch-icon {
-  display: grid;
-  place-items: center;
-  width: 84px; height: 84px;
+.launch-portrait {
+  margin: 0 0 1.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+.launch-portrait img {
+  width: 108px;
+  height: 108px;
   border-radius: 50%;
-  border: 1px solid var(--line-gold);
-  color: var(--gold);
-  background: radial-gradient(circle at 30% 25%, rgba(201, 168, 76, 0.14), transparent 70%);
-  margin-bottom: 1.5rem;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid var(--line-gold);
+  box-shadow: 0 0 0 5px rgba(201, 168, 76, 0.08), 0 12px 30px rgba(2, 5, 12, 0.55);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s ease;
+}
+.mc-launch:hover .launch-portrait img {
+  transform: scale(1.05);
+  box-shadow: 0 0 0 6px rgba(201, 168, 76, 0.14), 0 16px 38px rgba(2, 5, 12, 0.65);
+}
+.launch-portrait figcaption {
+  font-family: var(--f-ui);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-hi);
 }
 
 /* the real magazine cover */
