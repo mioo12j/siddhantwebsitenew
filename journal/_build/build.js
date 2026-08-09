@@ -127,7 +127,7 @@ function articleHtml(a) {
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a0f1e'/><text x='50' y='68' text-anchor='middle' font-family='serif' font-size='54' font-weight='700' fill='%23c9a84c'>SK</text></svg>" />
 
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"BlogPosting","headline":${JSON.stringify(a.plainTitle || a.title)},"image":${JSON.stringify(img)},"datePublished":"${a.date}","dateModified":"${a.date}","author":{"@type":"Person","name":"Siddhant Kumar","url":"${SITE}/"},"publisher":{"@type":"Person","name":"Siddhant Kumar"},"mainEntityOfPage":"${url}","articleSection":${JSON.stringify(a.category || 'History')},"description":${JSON.stringify(a.desc)}}
+  {"@context":"https://schema.org","@type":"BlogPosting","headline":${JSON.stringify(a.plainTitle || a.title)},"image":${JSON.stringify(img)},"datePublished":"${a.date}T09:00:00+05:30","dateModified":"${a.date}T09:00:00+05:30","author":{"@type":"Person","name":"Siddhant Kumar","url":"${SITE}/"},"publisher":{"@type":"Person","name":"Siddhant Kumar"},"mainEntityOfPage":"${url}","articleSection":${JSON.stringify(a.category || 'History')},"description":${JSON.stringify(a.desc)}}
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Siddhant Kumar","item":"${SITE}/"},{"@type":"ListItem","position":2,"name":"Journal","item":"${SITE}/journal/"},{"@type":"ListItem","position":3,"name":${JSON.stringify(a.plainTitle || a.cardTitle || a.title)}}]}
