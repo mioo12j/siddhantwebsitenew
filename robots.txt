@@ -1,3 +1,10 @@
 User-agent: *
 Allow: /
+
+# ——— Policies (hosted on the author's main site) ———
+# Privacy Policy:  https://siddhantkumar.in/legal/privacy/
+# Cookie Policy:   https://siddhantkumar.in/legal/cookies/
+# Terms of Use:    https://siddhantkumar.in/legal/terms/
+# This site sets no cookies and runs no analytics or tracking.
+
 Sitemap: https://guardians.siddhantkumar.in/sitemap.xml
