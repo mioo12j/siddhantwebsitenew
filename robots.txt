@@ -59,4 +59,13 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
+# ——— Policies ———
+# Privacy Policy:  https://siddhantkumar.in/legal/privacy/
+# Cookie Policy:   https://siddhantkumar.in/legal/cookies/
+# Terms of Use:    https://siddhantkumar.in/legal/terms/
+# Crawling and indexing — including by AI and answer engines — is welcome.
+# Conditions for reproducing the poetry, essays and guides are in the Terms.
+# This site sets no cookies and runs no analytics or tracking.
+Allow: /legal/
+
 Sitemap: https://siddhantkumar.in/sitemap.xml

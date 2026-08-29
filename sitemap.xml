@@ -1302,4 +1302,22 @@
     <priority>0.8</priority>
   </url>
   <!-- docs:end -->
+  <url>
+    <loc>https://siddhantkumar.in/legal/privacy/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkumar.in/legal/cookies/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://siddhantkumar.in/legal/terms/</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>

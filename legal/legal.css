@@ -1,0 +1,56 @@
+/* Legal documents — readable, quiet, same palette as the rest of the site. */
+:root{
+  --ink-950:#04080f; --ink-900:#060d1a; --ink-850:#0a1326;
+  --gold:#c9a84c; --gold-hi:#e8cf8a; --ivory:#f2ecda;
+  --slate:#a7b4d0; --slate-dim:#7484a6;
+  --line-gold:rgba(201,168,76,.2); --line-dim:rgba(167,180,208,.11);
+  --f-display:'Cormorant Garamond',Georgia,serif;
+  --f-body:'EB Garamond',Georgia,serif;
+  --f-ui:'Inter',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px;-webkit-text-size-adjust:100%}
+body{background:var(--ink-950);color:var(--slate);font-family:var(--f-ui);line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--gold-hi);text-decoration:none;border-bottom:1px solid var(--line-gold)}
+a:hover{color:var(--gold)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
+.skip-link{position:fixed;top:-60px;left:16px;z-index:300;padding:.6rem 1.1rem;background:var(--gold);color:var(--ink-950);font-weight:600;font-size:.85rem;border-radius:4px;border:0;transition:top .25s}
+.skip-link:focus{top:12px}
+
+.lnav{position:sticky;top:0;z-index:50;background:rgba(5,9,18,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-dim)}
+.lnav-in{max-width:900px;margin:0 auto;padding:0 1.4rem;height:64px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.lbrand{display:flex;align-items:center;gap:.65rem;border:0}
+.lmark{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line-gold);border-radius:8px;color:var(--gold);font-family:var(--f-display);font-weight:600}
+.lbrand span:last-child{font-family:var(--f-display);font-size:1.05rem;color:var(--ivory)}
+.lnav nav{display:flex;gap:1.2rem;flex-wrap:wrap}
+.lnav nav a{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);border:0}
+.lnav nav a:hover,.lnav nav a[aria-current]{color:var(--gold-hi)}
+
+.wrap{max-width:900px;margin:0 auto;padding:3.5rem 1.4rem 4rem}
+.eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--f-display);font-weight:600;font-size:clamp(2.1rem,5vw,3rem);line-height:1.12;color:var(--ivory);margin:.7rem 0 .6rem}
+.updated{font-size:.8rem;color:var(--slate-dim)}
+.tldr{margin:2rem 0 2.6rem;padding:1.4rem 1.6rem;border:1px solid var(--line-gold);border-radius:12px;background:linear-gradient(168deg,rgba(14,26,51,.55),rgba(6,13,26,.5))}
+.tldr h2{font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;font-family:var(--f-ui);font-weight:600}
+.tldr p,.tldr li{font-family:var(--f-body);font-size:1.05rem;color:var(--ivory)}
+.tldr ul{margin:.5rem 0 0 1.1rem}
+.tldr li{margin:.25rem 0}
+h2{font-family:var(--f-display);font-weight:600;font-size:1.65rem;color:var(--ivory);margin:2.4rem 0 .7rem;padding-top:1.4rem;border-top:1px solid var(--line-dim)}
+h3{font-family:var(--f-display);font-weight:600;font-size:1.2rem;color:var(--gold-hi);margin:1.4rem 0 .4rem}
+p,li{font-family:var(--f-body);font-size:1.08rem;color:var(--slate)}
+p+p{margin-top:.9rem}
+ul,ol{margin:.7rem 0 .7rem 1.3rem}
+li{margin:.4rem 0}
+strong{color:var(--ivory);font-weight:600}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;color:var(--gold-hi);background:rgba(201,168,76,.08);padding:.1rem .35rem;border-radius:4px}
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.98rem}
+th,td{text-align:left;padding:.7rem .8rem;border:1px solid var(--line-dim);font-family:var(--f-body)}
+th{color:var(--gold-hi);font-family:var(--f-ui);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+.note{margin-top:2.6rem;padding:1.2rem 1.4rem;border-left:2px solid var(--gold);background:rgba(201,168,76,.04);border-radius:0 8px 8px 0}
+.note p{font-size:1rem;color:var(--slate-dim)}
+.lfoot{border-top:1px solid var(--line-gold);background:var(--ink-900);padding:2.4rem 1.4rem;text-align:center}
+.lfoot nav{display:flex;flex-wrap:wrap;justify-content:center;gap:1.3rem;margin-bottom:1rem}
+.lfoot a{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--slate);border:0}
+.lfoot a:hover{color:var(--gold-hi)}
+.lfoot p{font-size:.8rem;color:var(--slate-dim);font-family:var(--f-ui)}
+@media(max-width:640px){.lnav-in{height:auto;padding:.7rem 1.1rem;flex-direction:column;align-items:flex-start}.wrap{padding-top:2.4rem}}

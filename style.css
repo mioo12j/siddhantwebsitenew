@@ -2145,3 +2145,7 @@ a.c-value:hover { color: var(--gold-hi); }
   .nav, .hero-dust, .hero-aurora, .to-top, .scroll-progress, .hero-scroll { display: none !important; }
   body { background: #fff; color: #222; }
 }
+
+/* consent/notice line under forms */
+.form-privacy{font-family:var(--f-ui);font-size:.78rem;line-height:1.6;color:var(--slate-dim);margin-top:.2rem}
+.form-privacy a{color:var(--gold-hi);border-bottom:1px solid var(--line-gold)}

@@ -88,3 +88,8 @@ footer.foot{padding:3rem 0;text-align:center;border-top:1px solid rgba(255,255,2
 .back-to-top.visible{opacity:1;transform:none;pointer-events:auto}
 
 @media(prefers-reduced-motion:reduce){.read-progress,.back-to-top{transition:none}}
+
+/* legal links in the footer */
+.legal-links{margin-top:.9rem;font-size:.78rem;letter-spacing:.06em;opacity:.75;text-align:center}
+.legal-links a{margin:0 .5rem;white-space:nowrap}
+.form-privacy{font-size:.78rem;line-height:1.6;opacity:.75;margin-top:.4rem}
