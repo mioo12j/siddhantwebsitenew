@@ -1,0 +1,5 @@
+# Node / npm — dependencies for the planned interactive upgrade.
+# The live site is static; these must never be committed or deployed.
+node_modules/
+npm-debug.log*
+.npm/

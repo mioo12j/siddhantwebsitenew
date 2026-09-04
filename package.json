@@ -1,0 +1,10 @@
+{
+  "name": "siddhantkumar-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dependencies for the planned interactive upgrade of siddhantkumar.in. The live site is currently static HTML/CSS/JS and does not load these.",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "framer-motion": "^13.2.0"
+  }
+}
