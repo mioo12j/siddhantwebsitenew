@@ -196,7 +196,7 @@
         var alpha = p.a * (0.6 + 0.4 * Math.sin(p.tw));
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(220, 190, 110,' + alpha.toFixed(3) + ')';
+        ctx.fillStyle = 'rgba(120, 96, 54,' + (alpha * 0.8).toFixed(3) + ')';
         ctx.fill();
       });
       requestAnimationFrame(drawDust);
@@ -363,6 +363,28 @@
         button.disabled = false;
       });
     });
+  }
+
+  /* ── Scroll parallax for mounted plates ── */
+  var parallaxEls = $$('[data-parallax]');
+  if (parallaxEls.length && !reducedMotion && 'requestAnimationFrame' in window) {
+    var pTick = false;
+    function parallax() {
+      var vh = window.innerHeight;
+      parallaxEls.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) return;
+        var factor = parseFloat(el.getAttribute('data-parallax')) || 0.1;
+        var off = ((r.top + r.height / 2) - vh / 2) * -factor;
+        el.style.setProperty('--py', off.toFixed(1) + 'px');
+      });
+      pTick = false;
+    }
+    window.addEventListener('scroll', function () {
+      if (!pTick) { pTick = true; requestAnimationFrame(parallax); }
+    }, { passive: true });
+    window.addEventListener('resize', parallax);
+    parallax();
   }
 
   /* ── Footer year ── */
