@@ -532,6 +532,29 @@
     flySections.forEach(function (s) { if (s.querySelector(':scope > .flyover')) flyObs.observe(s); });
   }
 
+  /* ── Scroll-guide bird glides down the page as you scroll ── */
+  var guide = $('#scrollGuide');
+  if (guide && !reducedMotion && window.matchMedia('(min-width: 961px)').matches) {
+    var gIdle = null, gPending = false;
+    function moveGuide() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+      var vh = window.innerHeight;
+      var y = vh * 0.12 + p * vh * 0.7;
+      var x = Math.sin(p * Math.PI * 6) * 42;
+      var rot = Math.cos(p * Math.PI * 6) * 12;
+      guide.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + rot.toFixed(1) + 'deg)';
+      gPending = false;
+    }
+    window.addEventListener('scroll', function () {
+      guide.classList.add('active');
+      if (!gPending) { gPending = true; requestAnimationFrame(moveGuide); }
+      clearTimeout(gIdle);
+      gIdle = setTimeout(function () { guide.classList.remove('active'); }, 1400);
+    }, { passive: true });
+    moveGuide();
+  }
+
   /* ── Footer year ── */
   var year = $('#year');
   if (year) year.textContent = String(new Date().getFullYear());

@@ -108,7 +108,7 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
 }
 
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
 [hidden] { display: none !important; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; cursor: pointer; background: none; border: none; }
@@ -137,7 +137,7 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
 /* ── Layout ──────────────────────────────────────────────────────────────── */
 .container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
 .container-narrow { max-width: var(--narrow); }
-.section { position: relative; padding-block: var(--section-y); }
+.section { position: relative; padding-block: var(--section-y); overflow-x: clip; }
 
 /* Hairline separators between chapters */
 .section + .section::before {
@@ -398,7 +398,7 @@ em { font-style: italic; }
 
 .hero-stats { display: grid; grid-template-columns: repeat(4, auto); gap: clamp(1.1rem, 3vw, 2.4rem); margin: 0; }
 .hstat-num { font-family: var(--f-display); font-weight: 600; font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem); color: var(--teal-deep); line-height: 1; }
-.hstat dd { margin: .35rem 0 0; font-family: var(--f-mono); font-size: .62rem; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3); }
+.hstat dd { margin: .35rem 0 0; font-family: var(--f-mono); font-size: .62rem; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-2); font-weight: 500; }
 
 /* Hero feature plate (real bird illustration, mounted) */
 .hero-figure { position: relative; justify-self: center; width: min(100%, 420px); }
@@ -415,7 +415,7 @@ em { font-style: italic; }
 .hero-scroll {
   position: absolute; left: 50%; bottom: 1.6rem; transform: translateX(-50%); z-index: 4;
   display: flex; flex-direction: column; align-items: center; gap: .6rem;
-  font-family: var(--f-mono); font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3);
+  font-family: var(--f-mono); font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2);
 }
 .scroll-line { width: 1px; height: 46px; background: linear-gradient(var(--line-2), transparent); position: relative; overflow: hidden; }
 .scroll-line::after { content: ""; position: absolute; top: -50%; left: 0; width: 100%; height: 50%; background: var(--teal); animation: scrolldown 2.2s ease-in-out infinite; }
@@ -790,6 +790,11 @@ a.c-value:hover { color: var(--teal-deep); }
 /* ── Layered scenery behind the hero ── */
 .hero-scene { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 .hero-scene svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Fade the lower scene into solid parchment so content below the plate is always legible */
+.hero-scene::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, transparent 38%, rgba(236,226,200,.55) 64%, var(--paper) 86%);
+}
 .hero-scene .layer { will-change: transform; }
 .scene-sun { transform-box: view-box; transform-origin: center; animation: sunPulse 12s ease-in-out infinite; }
 @keyframes sunPulse { 0%,100% { opacity:.55; } 50% { opacity:.85; } }
@@ -885,3 +890,12 @@ a.c-value:hover { color: var(--teal-deep); }
   .fly-bird, .section > .flyover { opacity: .8; }
   .branch-draw path { stroke-dashoffset: 0 !important; }
 }
+
+/* ── Scroll-guide bird: glides down the page as you scroll ── */
+.scroll-guide { position: fixed; left: 2.2vw; top: 0; z-index: 78; width: 42px; color: var(--teal-deep); opacity: 0; pointer-events: none; will-change: transform, opacity; transition: opacity .5s var(--ease); }
+.scroll-guide.active { opacity: .5; }
+.scroll-guide svg { overflow: visible; }
+.scroll-guide .wl { transform-box: fill-box; transform-origin: 90% 60%; animation: beatL .4s ease-in-out infinite; }
+.scroll-guide .wr { transform-box: fill-box; transform-origin: 10% 60%; animation: beatR .4s ease-in-out infinite; }
+@media (max-width: 960px) { .scroll-guide { display: none; } }
+@media (prefers-reduced-motion: reduce) { .scroll-guide { display: none; } }
