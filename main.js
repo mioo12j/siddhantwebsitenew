@@ -51,17 +51,22 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  var scrim = $('#navScrim');
+  function setMenu(open) {
+    menu.classList.toggle('is-open', open);
+    if (scrim) scrim.classList.toggle('is-open', open);
+    document.body.classList.toggle('nav-open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
   if (burger && menu) {
-    burger.addEventListener('click', function () {
-      var open = menu.classList.toggle('is-open');
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    });
+    burger.addEventListener('click', function () { setMenu(!menu.classList.contains('is-open')); });
+    if (scrim) scrim.addEventListener('click', function () { setMenu(false); });
     $$('.nav-link, .nav-cta', menu).forEach(function (link) {
-      link.addEventListener('click', function () {
-        menu.classList.remove('is-open');
-        burger.setAttribute('aria-expanded', 'false');
-      });
+      link.addEventListener('click', function () { setMenu(false); });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.classList.contains('is-open')) setMenu(false);
     });
   }
 
