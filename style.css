@@ -782,3 +782,106 @@ a.c-value:hover { color: var(--teal-deep); }
   .marquee-track { animation: none !important; }
   .rv, .rv-left, .rv-right { opacity: 1 !important; transform: none !important; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HIGH-ANIMATION LAYER — living hero scene, flight paths, birdsong control
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Layered scenery behind the hero ── */
+.hero-scene { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.hero-scene svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-scene .layer { will-change: transform; }
+.scene-sun { transform-box: view-box; transform-origin: center; animation: sunPulse 12s ease-in-out infinite; }
+@keyframes sunPulse { 0%,100% { opacity:.55; } 50% { opacity:.85; } }
+.scene-mist { animation: mistDrift 26s ease-in-out infinite; }
+@keyframes mistDrift { 0%,100% { transform: translateX(0); } 50% { transform: translateX(40px); } }
+.blossom { transform-box: fill-box; transform-origin: center; animation: sway 7s ease-in-out infinite; }
+.blossom:nth-of-type(2n){ animation-duration: 9s; animation-delay: -2s; }
+.blossom:nth-of-type(3n){ animation-duration: 6s; animation-delay: -4s; }
+@keyframes sway { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+.branch-draw path { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: drawBranch 2.6s var(--ease-out) forwards .2s; }
+@keyframes drawBranch { to { stroke-dashoffset: 0; } }
+.foliage-fore { transform-box: view-box; transform-origin: bottom; animation: breathe 10s ease-in-out infinite; }
+@keyframes breathe { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(1.03); } }
+
+/* ── Flying flock (SVG birds on motion paths, flapping wings) ── */
+.hero-flock, .flock { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+.fly-bird {
+  position: absolute; top: 0; left: 0; width: 54px; color: var(--ink);
+  offset-rotate: auto; opacity: 0;
+  animation: flyAcross 26s linear infinite, birdFade 26s linear infinite;
+}
+.fly-bird svg { width: 100%; height: auto; display: block; overflow: visible; }
+.fly-bird .wl, .fly-bird .wr { transform-box: fill-box; }
+.fly-bird .wl { transform-origin: 90% 60%; animation: beatL .5s ease-in-out infinite; }
+.fly-bird .wr { transform-origin: 10% 60%; animation: beatR .5s ease-in-out infinite; }
+@keyframes beatL { 0%,100% { transform: rotate(20deg); } 50% { transform: rotate(-26deg); } }
+@keyframes beatR { 0%,100% { transform: rotate(-20deg); } 50% { transform: rotate(26deg); } }
+@keyframes birdFade { 0% { opacity:0; } 6% { opacity:.92; } 92% { opacity:.92; } 100% { opacity:0; } }
+
+/* Distinct flight paths, sizes, tempos */
+.fly-bird.b1 { width: 62px; offset-path: path('M -140 180 C 260 60, 620 300, 1040 150 S 1720 120, 2000 240'); animation-duration: 30s; }
+.fly-bird.b2 { width: 40px; offset-path: path('M -120 380 C 300 300, 680 480, 1080 340 S 1660 360, 2000 300'); animation-duration: 38s; animation-delay: -6s; }
+.fly-bird.b3 { width: 30px; offset-path: path('M -160 120 C 320 220, 720 60, 1120 200 S 1700 240, 2000 120'); animation-duration: 44s; animation-delay: -14s; }
+.fly-bird.b4 { width: 48px; offset-path: path('M 2100 500 C 1600 360, 1100 560, 640 420 S -40 460, -220 380'); animation-duration: 34s; animation-delay: -3s; }
+.fly-bird.b5 { width: 24px; offset-path: path('M -120 620 C 360 560, 780 700, 1180 560 S 1720 600, 2000 520'); animation-duration: 50s; animation-delay: -20s; }
+.fly-bird.b6 { width: 34px; offset-path: path('M 2100 220 C 1560 320, 1040 140, 560 260 S -60 220, -240 300'); animation-duration: 42s; animation-delay: -10s; }
+.fly-bird.b1 .wl, .fly-bird.b1 .wr { animation-duration: .46s; }
+.fly-bird.b3 .wl, .fly-bird.b3 .wr { animation-duration: .38s; }
+.fly-bird.b5 .wl, .fly-bird.b5 .wr { animation-duration: .34s; }
+@keyframes flyAcross { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+
+/* Entrance orchestration for hero copy */
+.js .hero .rv { will-change: transform, opacity; }
+
+/* Perched bird on the hero figure that occasionally takes off — subtle life */
+.perch-bird { position: absolute; top: -26px; right: 12%; width: 40px; z-index: 4; color: var(--ink); }
+.perch-bird .wl { transform-box: fill-box; transform-origin: 90% 60%; }
+.perch-bird .wr { transform-box: fill-box; transform-origin: 10% 60%; }
+.perch-bird.takeoff { animation: takeoff 3.4s var(--ease-out) forwards; }
+.perch-bird.takeoff .wl { animation: beatL .34s ease-in-out infinite; }
+.perch-bird.takeoff .wr { animation: beatR .34s ease-in-out infinite; }
+@keyframes takeoff { 0% { transform: translate(0,0) rotate(0); opacity:1; } 100% { transform: translate(60vw,-70vh) rotate(-16deg); opacity:0; } }
+
+/* ── Birdsong / sound toggle ── */
+.sound-toggle {
+  position: fixed; bottom: 1.6rem; left: 1.6rem; z-index: 90;
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .6rem .9rem; border-radius: 46px;
+  font-family: var(--f-mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink); background: rgba(245,239,221,.86); border: 1px solid var(--line-2);
+  box-shadow: var(--sh-sm); backdrop-filter: blur(6px);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), color .25s var(--ease);
+}
+.sound-toggle:hover { transform: translateY(-2px); box-shadow: var(--sh-md); color: var(--teal-deep); }
+.sound-toggle .st-ico { width: 16px; height: 16px; color: var(--teal-deep); }
+.sound-toggle .st-wave { opacity: 0; transition: opacity .3s var(--ease); }
+.sound-toggle.is-on .st-wave { opacity: 1; animation: songwave 1.6s ease-in-out infinite; }
+@keyframes songwave { 0%,100% { opacity:.35; } 50% { opacity:1; } }
+.sound-toggle .st-label-on { display: none; }
+.sound-toggle.is-on .st-label-on { display: inline; }
+.sound-toggle.is-on .st-label-off { display: none; }
+
+/* Section flyover — a lone bird drifts across as a section enters */
+.section > .flyover { position: absolute; top: 8%; left: 0; z-index: 3; width: 44px; color: var(--ink-3); pointer-events: none; opacity: 0; }
+.section.seen > .flyover { animation: flyoverPath 9s var(--ease-out) forwards; }
+.section > .flyover .wl { transform-box: fill-box; transform-origin: 90% 60%; animation: beatL .5s ease-in-out infinite; }
+.section > .flyover .wr { transform-box: fill-box; transform-origin: 10% 60%; animation: beatR .5s ease-in-out infinite; }
+@keyframes flyoverPath {
+  0% { transform: translate(-10vw, 40px) rotate(-4deg); opacity: 0; }
+  12% { opacity: .8; }
+  88% { opacity: .8; }
+  100% { transform: translate(110vw, -30px) rotate(3deg); opacity: 0; }
+}
+
+@media (max-width: 700px) {
+  .fly-bird.b3, .fly-bird.b5, .fly-bird.b6 { display: none; }
+  .sound-toggle { bottom: 1rem; left: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fly-bird, .perch-bird, .section > .flyover,
+  .blossom, .scene-mist, .scene-sun, .foliage-fore { animation: none !important; }
+  .fly-bird, .section > .flyover { opacity: .8; }
+  .branch-draw path { stroke-dashoffset: 0 !important; }
+}

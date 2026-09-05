@@ -387,6 +387,151 @@
     parallax();
   }
 
+  /* ── Living scene: parallax the hero scenery on scroll + pointer ── */
+  var sceneLayers = $$('.hero-scene .layer:not(.scene-mist):not(.foliage-fore)');
+  if (sceneLayers.length && !reducedMotion) {
+    var smx = 0, smy = 0, ssy = 0, sPending = false;
+    function applyScene() {
+      sceneLayers.forEach(function (l) {
+        var d = parseFloat(l.getAttribute('data-depth')) || 0.1;
+        var tx = (smx * d * 60).toFixed(1);
+        var ty = (smy * d * 42 + ssy * d).toFixed(1);
+        l.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
+      });
+      sPending = false;
+    }
+    function queueScene() { if (!sPending) { sPending = true; requestAnimationFrame(applyScene); } }
+    window.addEventListener('scroll', function () { ssy = window.scrollY * 0.16; queueScene(); }, { passive: true });
+    if (window.matchMedia('(pointer: fine)').matches) {
+      window.addEventListener('pointermove', function (e) {
+        smx = e.clientX / window.innerWidth - 0.5;
+        smy = e.clientY / window.innerHeight - 0.5;
+        queueScene();
+      }, { passive: true });
+    }
+    applyScene();
+  }
+
+  /* ── Birdsong — synthesised in the browser (Web Audio), off by default ── */
+  var song = (function () {
+    var ctx = null, master = null, on = false, timer = null;
+    function ensure() {
+      if (!ctx) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        ctx = new AC();
+        master = ctx.createGain();
+        master.gain.value = 0.5;
+        var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 6500;
+        master.connect(lp).connect(ctx.destination);
+      }
+      if (ctx.state === 'suspended') ctx.resume();
+      return ctx;
+    }
+    function chirp(delay) {
+      if (!ensure()) return;
+      var t0 = ctx.currentTime + (delay || 0);
+      var notes = 2 + Math.floor(Math.random() * 4);
+      var base = 1700 + Math.random() * 1700;
+      var gap = 0.055 + Math.random() * 0.05;
+      for (var i = 0; i < notes; i++) {
+        var t = t0 + i * gap;
+        var f = base * (1 + (Math.random() * 0.2 - 0.08)) - i * 70;
+        var o = ctx.createOscillator(); o.type = 'sine';
+        o.frequency.setValueAtTime(f * 0.82, t);
+        o.frequency.exponentialRampToValueAtTime(f * 1.32, t + 0.018);
+        o.frequency.exponentialRampToValueAtTime(f * 0.92, t + 0.05);
+        var g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.linearRampToValueAtTime(0.16, t + 0.008);
+        g.gain.exponentialRampToValueAtTime(0.0006, t + 0.06);
+        var o2 = ctx.createOscillator(); o2.type = 'triangle'; o2.frequency.setValueAtTime(f * 2, t);
+        var g2 = ctx.createGain();
+        g2.gain.setValueAtTime(0.0001, t);
+        g2.gain.linearRampToValueAtTime(0.03, t + 0.008);
+        g2.gain.exponentialRampToValueAtTime(0.0004, t + 0.045);
+        o.connect(g).connect(master); o2.connect(g2).connect(master);
+        o.start(t); o.stop(t + 0.09); o2.start(t); o2.stop(t + 0.07);
+      }
+    }
+    function schedule() {
+      clearTimeout(timer);
+      if (!on) return;
+      timer = setTimeout(function () {
+        if (on && !document.hidden) chirp();
+        schedule();
+      }, 2200 + Math.random() * 5200);
+    }
+    return {
+      isOn: function () { return on; },
+      set: function (v) {
+        on = v;
+        if (on) { ensure(); chirp(0.05); schedule(); }
+        else { clearTimeout(timer); }
+      },
+      chirp: function () { if (on) chirp(); }
+    };
+  })();
+
+  var soundBtn = $('#soundToggle');
+  if (soundBtn) {
+    var stored = null;
+    try { stored = localStorage.getItem('sk-birdsong'); } catch (e) {}
+    function paintSound() {
+      soundBtn.classList.toggle('is-on', song.isOn());
+      soundBtn.setAttribute('aria-pressed', song.isOn() ? 'true' : 'false');
+    }
+    soundBtn.addEventListener('click', function () {
+      song.set(!song.isOn());
+      try { localStorage.setItem('sk-birdsong', song.isOn() ? 'on' : 'off'); } catch (e) {}
+      paintSound();
+    });
+    /* Honour a returning visitor who had it on — but only start after a gesture */
+    if (stored === 'on' && !reducedMotion) {
+      var arm = function () {
+        song.set(true); paintSound();
+        window.removeEventListener('pointerdown', arm); window.removeEventListener('keydown', arm);
+      };
+      window.addEventListener('pointerdown', arm); window.addEventListener('keydown', arm);
+    }
+    paintSound();
+  }
+
+  /* ── Perched bird takes flight (on tap, and now and then) ── */
+  var perch = $('#perchBird');
+  if (perch && !reducedMotion) {
+    var perchBusy = false;
+    function launch() {
+      if (perchBusy) return;
+      perchBusy = true;
+      perch.classList.add('takeoff');
+      song.chirp();
+      setTimeout(function () {
+        perch.classList.remove('takeoff');
+        perch.style.opacity = '0';
+        setTimeout(function () { perch.style.opacity = ''; perchBusy = false; }, 7000 + Math.random() * 7000);
+      }, 3400);
+    }
+    var fig = perch.closest('.hero-figure');
+    if (fig) fig.addEventListener('click', launch);
+    setInterval(function () { if (Math.random() < 0.5) launch(); }, 16000);
+  }
+
+  /* ── Section flyover — a bird crosses as each marked section appears ── */
+  var flySections = $$('.section');
+  if ('IntersectionObserver' in window && !reducedMotion) {
+    var flyObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && entry.target.querySelector(':scope > .flyover')) {
+          entry.target.classList.add('seen');
+          song.chirp();
+          flyObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    flySections.forEach(function (s) { if (s.querySelector(':scope > .flyover')) flyObs.observe(s); });
+  }
+
   /* ── Footer year ── */
   var year = $('#year');
   if (year) year.textContent = String(new Date().getFullYear());
