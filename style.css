@@ -981,3 +981,14 @@ html.reduce-motion .bird-art .b-body,
 html.reduce-motion .bird-art .b-wing,
 html.reduce-motion .bird-art .b-tail,
 html.reduce-motion .bird-art .b-head { animation: none !important; }
+
+/* ── Ken Burns motion inside the mounted vintage plates ── */
+.plate-win { display: block; position: relative; overflow: hidden; border-radius: 1px; line-height: 0; height: 100%; }
+.plate-win img { width: 100%; height: 100%; object-fit: cover; will-change: transform; animation: kbA 24s ease-in-out infinite alternate; }
+.hero-figure .plate-win { aspect-ratio: 3 / 4; }
+.hero-figure .plate-win img { aspect-ratio: auto; animation-duration: 20s; }
+.sp-tr .plate-win img { animation-name: kbB; animation-duration: 30s; }
+.sp-tl .plate-win img { animation-name: kbA; animation-duration: 32s; }
+@keyframes kbA { 0% { transform: scale(1.03) translate(0,0); } 100% { transform: scale(1.13) translate(-2.2%, -2.2%); } }
+@keyframes kbB { 0% { transform: scale(1.03) translate(0,0); } 100% { transform: scale(1.13) translate(2.2%, -1.4%); } }
+html.reduce-motion .plate-win img { animation: none !important; }
