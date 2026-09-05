@@ -148,14 +148,14 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
 
 /* ── Reveal on scroll ────────────────────────────────────────────────────── */
 .rv, .rv-left, .rv-right {
-  opacity: 0; transform: translateY(26px);
-  transition: opacity .8s var(--ease-out), transform .8s var(--ease-out);
+  opacity: 0; transform: translateY(42px) scale(.985); filter: blur(6px);
+  transition: opacity .9s var(--ease-out), transform 1s var(--ease-out), filter .9s var(--ease-out);
   transition-delay: var(--d, 0s);
-  will-change: opacity, transform;
+  will-change: opacity, transform, filter;
 }
-.rv-left  { transform: translateX(-34px); }
-.rv-right { transform: translateX(34px); }
-.in-view { opacity: 1 !important; transform: none !important; }
+.rv-left  { transform: translateX(-46px); }
+.rv-right { transform: translateX(46px); }
+.in-view { opacity: 1 !important; transform: none !important; filter: none !important; }
 html:not(.js) .rv, html:not(.js) .rv-left, html:not(.js) .rv-right { opacity: 1; transform: none; }
 
 /* ── Type ────────────────────────────────────────────────────────────────── */
@@ -825,12 +825,12 @@ a.c-value:hover { color: var(--teal-deep); }
 @keyframes birdFade { 0% { opacity:0; } 6% { opacity:.92; } 92% { opacity:.92; } 100% { opacity:0; } }
 
 /* Distinct flight paths, sizes, tempos */
-.fly-bird.b1 { width: 62px; offset-path: path('M -140 180 C 260 60, 620 300, 1040 150 S 1720 120, 2000 240'); animation-duration: 30s; }
-.fly-bird.b2 { width: 40px; offset-path: path('M -120 380 C 300 300, 680 480, 1080 340 S 1660 360, 2000 300'); animation-duration: 38s; animation-delay: -6s; }
-.fly-bird.b3 { width: 30px; offset-path: path('M -160 120 C 320 220, 720 60, 1120 200 S 1700 240, 2000 120'); animation-duration: 44s; animation-delay: -14s; }
-.fly-bird.b4 { width: 48px; offset-path: path('M 2100 500 C 1600 360, 1100 560, 640 420 S -40 460, -220 380'); animation-duration: 34s; animation-delay: -3s; }
-.fly-bird.b5 { width: 24px; offset-path: path('M -120 620 C 360 560, 780 700, 1180 560 S 1720 600, 2000 520'); animation-duration: 50s; animation-delay: -20s; }
-.fly-bird.b6 { width: 34px; offset-path: path('M 2100 220 C 1560 320, 1040 140, 560 260 S -60 220, -240 300'); animation-duration: 42s; animation-delay: -10s; }
+.fly-bird.b1 { width: 62px; offset-path: path('M -140 180 C 260 60, 620 300, 1040 150 S 1720 120, 2000 240'); animation-duration: 30s; animation-delay: .2s; }
+.fly-bird.b2 { width: 40px; offset-path: path('M -120 380 C 300 300, 680 480, 1080 340 S 1660 360, 2000 300'); animation-duration: 38s; animation-delay: .7s; }
+.fly-bird.b3 { width: 30px; offset-path: path('M -160 120 C 320 220, 720 60, 1120 200 S 1700 240, 2000 120'); animation-duration: 44s; animation-delay: 1.3s; }
+.fly-bird.b4 { width: 48px; offset-path: path('M 2100 500 C 1600 360, 1100 560, 640 420 S -40 460, -220 380'); animation-duration: 34s; animation-delay: .45s; }
+.fly-bird.b5 { width: 24px; offset-path: path('M -120 620 C 360 560, 780 700, 1180 560 S 1720 600, 2000 520'); animation-duration: 50s; animation-delay: 1.7s; }
+.fly-bird.b6 { width: 34px; offset-path: path('M 2100 220 C 1560 320, 1040 140, 560 260 S -60 220, -240 300'); animation-duration: 42s; animation-delay: 1s; }
 .fly-bird.b1 .wl, .fly-bird.b1 .wr { animation-duration: .46s; }
 .fly-bird.b3 .wl, .fly-bird.b3 .wr { animation-duration: .38s; }
 .fly-bird.b5 .wl, .fly-bird.b5 .wr { animation-duration: .34s; }
@@ -899,3 +899,49 @@ a.c-value:hover { color: var(--teal-deep); }
 .scroll-guide .wr { transform-box: fill-box; transform-origin: 10% 60%; animation: beatR .4s ease-in-out infinite; }
 @media (max-width: 960px) { .scroll-guide { display: none; } }
 @media (prefers-reduced-motion: reduce) { .scroll-guide { display: none; } }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STAGE 2 — cinematic intro, scroll-scrubbed daybreak, ambient life
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Intro veil: a parchment wash that lifts on load */
+.intro-veil {
+  position: fixed; inset: 0; z-index: 300; pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 40%, var(--paper-hi), var(--paper) 60%, var(--paper-3));
+  opacity: 1; transition: opacity 1s var(--ease-out) .1s;
+}
+.intro-veil.lift { opacity: 0; }
+.intro-veil .iv-mark {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-family: var(--f-display); font-weight: 700; font-size: clamp(2rem,7vw,3.4rem);
+  color: var(--teal-deep); letter-spacing: .04em;
+  transition: opacity .5s var(--ease), transform .8s var(--ease-out);
+}
+.intro-veil.lift .iv-mark { opacity: 0; transform: scale(1.15); }
+html.reduce-motion .intro-veil { display: none; }
+
+/* Scroll-driven daybreak overlay in the hero scene */
+.scene-day {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: linear-gradient(180deg, rgba(246,232,196,.9), rgba(233,224,196,.5) 60%, transparent);
+  mix-blend-mode: soft-light;
+}
+
+/* Falling petals / leaves canvas (foreground, subtle) */
+.petals { position: fixed; inset: 0; z-index: 70; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .petals { display: none; } }
+
+/* Cursor companion — a little bird that follows the pointer */
+.cursor-flit {
+  position: fixed; left: 0; top: 0; z-index: 88; width: 30px; pointer-events: none;
+  opacity: 0; margin: -15px 0 0 -15px; color: var(--teal-deep);
+  transition: opacity .5s var(--ease); will-change: transform;
+}
+.cursor-flit.show { opacity: .7; }
+.cursor-flit svg { overflow: visible; }
+.cursor-flit .wl { transform-box: fill-box; transform-origin: 90% 60%; animation: beatL .28s ease-in-out infinite; }
+.cursor-flit .wr { transform-box: fill-box; transform-origin: 10% 60%; animation: beatR .28s ease-in-out infinite; }
+@media (max-width: 960px), (pointer: coarse) { .cursor-flit { display: none; } }
+@media (prefers-reduced-motion: reduce) { .cursor-flit { display: none; } }
+
+html.reduce-motion .intro-veil { display: none; }

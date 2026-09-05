@@ -555,6 +555,92 @@
     moveGuide();
   }
 
+  /* ── Cinematic intro veil ── */
+  var veil = $('#introVeil');
+  if (veil) {
+    if (reducedMotion) {
+      document.documentElement.classList.add('reduce-motion');
+      if (veil.parentNode) veil.remove();
+    } else {
+      var lifted = false;
+      function lift() {
+        if (lifted) return; lifted = true;
+        veil.classList.add('lift');
+        setTimeout(function () { if (veil.parentNode) veil.remove(); }, 1300);
+      }
+      window.addEventListener('load', function () { setTimeout(lift, 260); });
+      setTimeout(lift, 2600); /* safety */
+    }
+  }
+
+  /* ── Daybreak: the hero scene brightens as you scroll through it ── */
+  var sceneDay = $('#sceneDay');
+  if (sceneDay && !reducedMotion) {
+    var dTick = false;
+    function daybreak() {
+      var p = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.9), 0), 1);
+      sceneDay.style.opacity = (p * 0.9).toFixed(3);
+      dTick = false;
+    }
+    window.addEventListener('scroll', function () { if (!dTick) { dTick = true; requestAnimationFrame(daybreak); } }, { passive: true });
+    daybreak();
+  }
+
+  /* ── Falling petals & leaves (subtle foreground life) ── */
+  var petals = $('#petals');
+  if (petals && !reducedMotion && petals.getContext) {
+    var pc = petals.getContext('2d');
+    var pdpr = Math.min(window.devicePixelRatio || 1, 2);
+    var flakes = [], pw = 0, ph = 0, pRun = true;
+    var COL = ['rgba(176,106,92,', 'rgba(201,162,76,', 'rgba(111,125,78,', 'rgba(207,154,139,'];
+    function sizeP() {
+      pw = petals.width = window.innerWidth * pdpr;
+      ph = petals.height = window.innerHeight * pdpr;
+      petals.style.width = window.innerWidth + 'px';
+      petals.style.height = window.innerHeight + 'px';
+    }
+    function mk() {
+      return { x: Math.random() * pw, y: Math.random() * -ph, r: (4 + Math.random() * 6) * pdpr,
+        vy: (0.3 + Math.random() * 0.6) * pdpr, vx: (Math.random() - 0.5) * 0.3 * pdpr,
+        a: 0.16 + Math.random() * 0.28, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.03,
+        sw: Math.random() * 6.28, col: COL[Math.floor(Math.random() * COL.length)] };
+    }
+    function initP() { flakes = []; var n = Math.min(18, Math.floor(window.innerWidth / 90)); for (var i = 0; i < n; i++) { var f = mk(); f.y = Math.random() * ph; flakes.push(f); } }
+    function drawP() {
+      if (!pRun) return;
+      pc.clearRect(0, 0, pw, ph);
+      flakes.forEach(function (f) {
+        f.sw += 0.02; f.x += f.vx + Math.sin(f.sw) * 0.3 * pdpr; f.y += f.vy; f.rot += f.vr;
+        if (f.y > ph + 20) { var nf = mk(); nf.y = -20; for (var k in nf) f[k] = nf[k]; }
+        pc.save(); pc.translate(f.x, f.y); pc.rotate(f.rot);
+        pc.beginPath(); pc.ellipse(0, 0, f.r, f.r * 0.55, 0, 0, 6.28);
+        pc.fillStyle = f.col + f.a.toFixed(2) + ')'; pc.fill(); pc.restore();
+      });
+      requestAnimationFrame(drawP);
+    }
+    sizeP(); initP(); requestAnimationFrame(drawP);
+    window.addEventListener('resize', function () { sizeP(); initP(); });
+    document.addEventListener('visibilitychange', function () { pRun = !document.hidden; if (pRun) requestAnimationFrame(drawP); });
+  }
+
+  /* ── Cursor companion — a little bird that trails the pointer ── */
+  var flit = $('#cursorFlit');
+  if (flit && !reducedMotion && window.matchMedia('(pointer: fine)').matches && window.innerWidth > 960) {
+    var fx = window.innerWidth / 2, fy = window.innerHeight / 2, tx = fx, ty = fy, fShown = false, fHide = null;
+    window.addEventListener('pointermove', function (e) {
+      tx = e.clientX + 26; ty = e.clientY + 12;
+      if (!fShown) { fShown = true; flit.classList.add('show'); }
+      clearTimeout(fHide);
+      fHide = setTimeout(function () { fShown = false; flit.classList.remove('show'); }, 2500);
+    }, { passive: true });
+    (function flitLoop() {
+      fx += (tx - fx) * 0.08; fy += (ty - fy) * 0.08;
+      var ang = Math.atan2(ty - fy, tx - fx) * 0.18;
+      flit.style.transform = 'translate(' + fx.toFixed(1) + 'px,' + fy.toFixed(1) + 'px) rotate(' + ang.toFixed(3) + 'rad)';
+      requestAnimationFrame(flitLoop);
+    })();
+  }
+
   /* ── Footer year ── */
   var year = $('#year');
   if (year) year.textContent = String(new Date().getFullYear());
