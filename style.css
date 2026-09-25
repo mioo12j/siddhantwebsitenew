@@ -828,6 +828,21 @@ html.js .role-word {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-9px); }
 }
+.edu-crest-mono {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 2.6rem;
+  letter-spacing: 0.08em;
+  color: var(--gold-hi);
+  background: radial-gradient(circle at 50% 34%, rgba(201, 168, 76, 0.16), rgba(24, 5, 9, 0.9));
+  border: 1px solid var(--line-gold);
+  box-shadow: var(--shadow-card), inset 0 0 30px rgba(201, 168, 76, 0.12);
+  animation: crest-float 7s ease-in-out infinite;
+}
 .edu-name {
   font-family: var(--f-display);
   font-size: clamp(1.7rem, 3.4vw, 2.3rem);
