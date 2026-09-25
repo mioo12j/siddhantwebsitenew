@@ -51,22 +51,17 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  var scrim = $('#navScrim');
-  function setMenu(open) {
-    menu.classList.toggle('is-open', open);
-    if (scrim) scrim.classList.toggle('is-open', open);
-    document.body.classList.toggle('nav-open', open);
-    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-  }
   if (burger && menu) {
-    burger.addEventListener('click', function () { setMenu(!menu.classList.contains('is-open')); });
-    if (scrim) scrim.addEventListener('click', function () { setMenu(false); });
-    $$('.nav-link, .nav-cta', menu).forEach(function (link) {
-      link.addEventListener('click', function () { setMenu(false); });
+    burger.addEventListener('click', function () {
+      var open = menu.classList.toggle('is-open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && menu.classList.contains('is-open')) setMenu(false);
+    $$('.nav-link, .nav-cta', menu).forEach(function (link) {
+      link.addEventListener('click', function () {
+        menu.classList.remove('is-open');
+        burger.setAttribute('aria-expanded', 'false');
+      });
     });
   }
 
@@ -201,7 +196,7 @@
         var alpha = p.a * (0.6 + 0.4 * Math.sin(p.tw));
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(120, 96, 54,' + (alpha * 0.8).toFixed(3) + ')';
+        ctx.fillStyle = 'rgba(220, 190, 110,' + alpha.toFixed(3) + ')';
         ctx.fill();
       });
       requestAnimationFrame(drawDust);
@@ -368,282 +363,6 @@
         button.disabled = false;
       });
     });
-  }
-
-  /* ── Scroll parallax for mounted plates ── */
-  var parallaxEls = $$('[data-parallax]');
-  if (parallaxEls.length && !reducedMotion && 'requestAnimationFrame' in window) {
-    var pTick = false;
-    function parallax() {
-      var vh = window.innerHeight;
-      parallaxEls.forEach(function (el) {
-        var r = el.getBoundingClientRect();
-        if (r.bottom < -200 || r.top > vh + 200) return;
-        var factor = parseFloat(el.getAttribute('data-parallax')) || 0.1;
-        var off = ((r.top + r.height / 2) - vh / 2) * -factor;
-        el.style.setProperty('--py', off.toFixed(1) + 'px');
-      });
-      pTick = false;
-    }
-    window.addEventListener('scroll', function () {
-      if (!pTick) { pTick = true; requestAnimationFrame(parallax); }
-    }, { passive: true });
-    window.addEventListener('resize', parallax);
-    parallax();
-  }
-
-  /* ── Living scene: parallax the hero scenery on scroll + pointer ── */
-  var sceneLayers = $$('.hero-scene .layer:not(.scene-mist):not(.foliage-fore)');
-  if (sceneLayers.length && !reducedMotion) {
-    var smx = 0, smy = 0, ssy = 0, sPending = false;
-    function applyScene() {
-      sceneLayers.forEach(function (l) {
-        var d = parseFloat(l.getAttribute('data-depth')) || 0.1;
-        var tx = (smx * d * 60).toFixed(1);
-        var ty = (smy * d * 42 + ssy * d).toFixed(1);
-        l.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
-      });
-      sPending = false;
-    }
-    function queueScene() { if (!sPending) { sPending = true; requestAnimationFrame(applyScene); } }
-    window.addEventListener('scroll', function () { ssy = window.scrollY * 0.16; queueScene(); }, { passive: true });
-    if (window.matchMedia('(pointer: fine)').matches) {
-      window.addEventListener('pointermove', function (e) {
-        smx = e.clientX / window.innerWidth - 0.5;
-        smy = e.clientY / window.innerHeight - 0.5;
-        queueScene();
-      }, { passive: true });
-    }
-    applyScene();
-  }
-
-  /* ── Birdsong — synthesised in the browser (Web Audio), off by default ── */
-  var song = (function () {
-    var ctx = null, master = null, on = false, timer = null;
-    function ensure() {
-      if (!ctx) {
-        var AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return null;
-        ctx = new AC();
-        master = ctx.createGain();
-        master.gain.value = 0.5;
-        var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 6500;
-        master.connect(lp).connect(ctx.destination);
-      }
-      if (ctx.state === 'suspended') ctx.resume();
-      return ctx;
-    }
-    function chirp(delay) {
-      if (!ensure()) return;
-      var t0 = ctx.currentTime + (delay || 0);
-      var notes = 2 + Math.floor(Math.random() * 4);
-      var base = 1700 + Math.random() * 1700;
-      var gap = 0.055 + Math.random() * 0.05;
-      for (var i = 0; i < notes; i++) {
-        var t = t0 + i * gap;
-        var f = base * (1 + (Math.random() * 0.2 - 0.08)) - i * 70;
-        var o = ctx.createOscillator(); o.type = 'sine';
-        o.frequency.setValueAtTime(f * 0.82, t);
-        o.frequency.exponentialRampToValueAtTime(f * 1.32, t + 0.018);
-        o.frequency.exponentialRampToValueAtTime(f * 0.92, t + 0.05);
-        var g = ctx.createGain();
-        g.gain.setValueAtTime(0.0001, t);
-        g.gain.linearRampToValueAtTime(0.16, t + 0.008);
-        g.gain.exponentialRampToValueAtTime(0.0006, t + 0.06);
-        var o2 = ctx.createOscillator(); o2.type = 'triangle'; o2.frequency.setValueAtTime(f * 2, t);
-        var g2 = ctx.createGain();
-        g2.gain.setValueAtTime(0.0001, t);
-        g2.gain.linearRampToValueAtTime(0.03, t + 0.008);
-        g2.gain.exponentialRampToValueAtTime(0.0004, t + 0.045);
-        o.connect(g).connect(master); o2.connect(g2).connect(master);
-        o.start(t); o.stop(t + 0.09); o2.start(t); o2.stop(t + 0.07);
-      }
-    }
-    function schedule() {
-      clearTimeout(timer);
-      if (!on) return;
-      timer = setTimeout(function () {
-        if (on && !document.hidden) chirp();
-        schedule();
-      }, 2200 + Math.random() * 5200);
-    }
-    return {
-      isOn: function () { return on; },
-      set: function (v) {
-        on = v;
-        if (on) { ensure(); chirp(0.05); schedule(); }
-        else { clearTimeout(timer); }
-      },
-      chirp: function () { if (on) chirp(); }
-    };
-  })();
-
-  var soundBtn = $('#soundToggle');
-  if (soundBtn) {
-    var stored = null;
-    try { stored = localStorage.getItem('sk-birdsong'); } catch (e) {}
-    function paintSound() {
-      soundBtn.classList.toggle('is-on', song.isOn());
-      soundBtn.setAttribute('aria-pressed', song.isOn() ? 'true' : 'false');
-    }
-    soundBtn.addEventListener('click', function () {
-      song.set(!song.isOn());
-      try { localStorage.setItem('sk-birdsong', song.isOn() ? 'on' : 'off'); } catch (e) {}
-      paintSound();
-    });
-    /* Honour a returning visitor who had it on — but only start after a gesture */
-    if (stored === 'on' && !reducedMotion) {
-      var arm = function () {
-        song.set(true); paintSound();
-        window.removeEventListener('pointerdown', arm); window.removeEventListener('keydown', arm);
-      };
-      window.addEventListener('pointerdown', arm); window.addEventListener('keydown', arm);
-    }
-    paintSound();
-  }
-
-  /* ── Perched bird takes flight (on tap, and now and then) ── */
-  var perch = $('#perchBird');
-  if (perch && !reducedMotion) {
-    var perchBusy = false;
-    function launch() {
-      if (perchBusy) return;
-      perchBusy = true;
-      perch.classList.add('takeoff');
-      song.chirp();
-      setTimeout(function () {
-        perch.classList.remove('takeoff');
-        perch.style.opacity = '0';
-        setTimeout(function () { perch.style.opacity = ''; perchBusy = false; }, 7000 + Math.random() * 7000);
-      }, 3400);
-    }
-    var fig = perch.closest('.hero-figure');
-    if (fig) fig.addEventListener('click', launch);
-    setInterval(function () { if (Math.random() < 0.5) launch(); }, 16000);
-  }
-
-  /* ── Section flyover — a bird crosses as each marked section appears ── */
-  var flySections = $$('.section');
-  if ('IntersectionObserver' in window && !reducedMotion) {
-    var flyObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting && entry.target.querySelector(':scope > .flyover')) {
-          entry.target.classList.add('seen');
-          song.chirp();
-          flyObs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    flySections.forEach(function (s) { if (s.querySelector(':scope > .flyover')) flyObs.observe(s); });
-  }
-
-  /* ── Scroll-guide bird glides down the page as you scroll ── */
-  var guide = $('#scrollGuide');
-  if (guide && !reducedMotion && window.matchMedia('(min-width: 961px)').matches) {
-    var gIdle = null, gPending = false;
-    function moveGuide() {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      var p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
-      var vh = window.innerHeight;
-      var y = vh * 0.12 + p * vh * 0.7;
-      var x = Math.sin(p * Math.PI * 6) * 42;
-      var rot = Math.cos(p * Math.PI * 6) * 12;
-      guide.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + rot.toFixed(1) + 'deg)';
-      gPending = false;
-    }
-    window.addEventListener('scroll', function () {
-      guide.classList.add('active');
-      if (!gPending) { gPending = true; requestAnimationFrame(moveGuide); }
-      clearTimeout(gIdle);
-      gIdle = setTimeout(function () { guide.classList.remove('active'); }, 1400);
-    }, { passive: true });
-    moveGuide();
-  }
-
-  /* ── Cinematic intro veil ── */
-  var veil = $('#introVeil');
-  if (veil) {
-    if (reducedMotion) {
-      document.documentElement.classList.add('reduce-motion');
-      if (veil.parentNode) veil.remove();
-    } else {
-      var lifted = false;
-      function lift() {
-        if (lifted) return; lifted = true;
-        veil.classList.add('lift');
-        setTimeout(function () { if (veil.parentNode) veil.remove(); }, 1300);
-      }
-      window.addEventListener('load', function () { setTimeout(lift, 260); });
-      setTimeout(lift, 2600); /* safety */
-    }
-  }
-
-  /* ── Daybreak: the hero scene brightens as you scroll through it ── */
-  var sceneDay = $('#sceneDay');
-  if (sceneDay && !reducedMotion) {
-    var dTick = false;
-    function daybreak() {
-      var p = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.9), 0), 1);
-      sceneDay.style.opacity = (p * 0.9).toFixed(3);
-      dTick = false;
-    }
-    window.addEventListener('scroll', function () { if (!dTick) { dTick = true; requestAnimationFrame(daybreak); } }, { passive: true });
-    daybreak();
-  }
-
-  /* ── Falling petals & leaves (subtle foreground life) ── */
-  var petals = $('#petals');
-  if (petals && !reducedMotion && petals.getContext) {
-    var pc = petals.getContext('2d');
-    var pdpr = Math.min(window.devicePixelRatio || 1, 2);
-    var flakes = [], pw = 0, ph = 0, pRun = true;
-    var COL = ['rgba(176,106,92,', 'rgba(201,162,76,', 'rgba(111,125,78,', 'rgba(207,154,139,'];
-    function sizeP() {
-      pw = petals.width = window.innerWidth * pdpr;
-      ph = petals.height = window.innerHeight * pdpr;
-      petals.style.width = window.innerWidth + 'px';
-      petals.style.height = window.innerHeight + 'px';
-    }
-    function mk() {
-      return { x: Math.random() * pw, y: Math.random() * -ph, r: (4 + Math.random() * 6) * pdpr,
-        vy: (0.3 + Math.random() * 0.6) * pdpr, vx: (Math.random() - 0.5) * 0.3 * pdpr,
-        a: 0.16 + Math.random() * 0.28, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.03,
-        sw: Math.random() * 6.28, col: COL[Math.floor(Math.random() * COL.length)] };
-    }
-    function initP() { flakes = []; var n = Math.min(18, Math.floor(window.innerWidth / 90)); for (var i = 0; i < n; i++) { var f = mk(); f.y = Math.random() * ph; flakes.push(f); } }
-    function drawP() {
-      if (!pRun) return;
-      pc.clearRect(0, 0, pw, ph);
-      flakes.forEach(function (f) {
-        f.sw += 0.02; f.x += f.vx + Math.sin(f.sw) * 0.3 * pdpr; f.y += f.vy; f.rot += f.vr;
-        if (f.y > ph + 20) { var nf = mk(); nf.y = -20; for (var k in nf) f[k] = nf[k]; }
-        pc.save(); pc.translate(f.x, f.y); pc.rotate(f.rot);
-        pc.beginPath(); pc.ellipse(0, 0, f.r, f.r * 0.55, 0, 0, 6.28);
-        pc.fillStyle = f.col + f.a.toFixed(2) + ')'; pc.fill(); pc.restore();
-      });
-      requestAnimationFrame(drawP);
-    }
-    sizeP(); initP(); requestAnimationFrame(drawP);
-    window.addEventListener('resize', function () { sizeP(); initP(); });
-    document.addEventListener('visibilitychange', function () { pRun = !document.hidden; if (pRun) requestAnimationFrame(drawP); });
-  }
-
-  /* ── Cursor companion — a little bird that trails the pointer ── */
-  var flit = $('#cursorFlit');
-  if (flit && !reducedMotion && window.matchMedia('(pointer: fine)').matches && window.innerWidth > 960) {
-    var fx = window.innerWidth / 2, fy = window.innerHeight / 2, tx = fx, ty = fy, fShown = false, fHide = null;
-    window.addEventListener('pointermove', function (e) {
-      tx = e.clientX + 26; ty = e.clientY + 12;
-      if (!fShown) { fShown = true; flit.classList.add('show'); }
-      clearTimeout(fHide);
-      fHide = setTimeout(function () { fShown = false; flit.classList.remove('show'); }, 2500);
-    }, { passive: true });
-    (function flitLoop() {
-      fx += (tx - fx) * 0.08; fy += (ty - fy) * 0.08;
-      var ang = Math.atan2(ty - fy, tx - fx) * 0.18;
-      flit.style.transform = 'translate(' + fx.toFixed(1) + 'px,' + fy.toFixed(1) + 'px) rotate(' + ang.toFixed(3) + 'rad)';
-      requestAnimationFrame(flitLoop);
-    })();
   }
 
   /* ── Footer year ── */
