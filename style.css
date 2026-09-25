@@ -22,9 +22,9 @@
   --gold: #c9a84c;
   --gold-hi: #e8cf8a;
   --gold-deep: #93732c;
-  --ivory: #f2ecda;
-  --slate: #d0b2b9;
-  --slate-dim: #a07f87;
+  --ivory: #f6f0e0;
+  --slate: #e2d0ca;
+  --slate-dim: #bd9ba1;
   --line-gold: rgba(201, 168, 76, 0.18);
   --line-dim: rgba(208, 170, 178, 0.1);
 
@@ -2164,3 +2164,95 @@ a.c-value:hover { color: var(--gold-hi); }
 /* consent/notice line under forms */
 .form-privacy{font-family:var(--f-ui);font-size:.78rem;line-height:1.6;color:var(--slate-dim);margin-top:.2rem}
 .form-privacy a{color:var(--gold-hi);border-bottom:1px solid var(--line-gold)}
+
+/* ═══════════════════════════════════════════════════════════
+   REFINEMENT + MOTION PASS
+   Cleaner typography rhythm, a gilded portrait emblem, and
+   richer scroll / hover life across the homepage.
+   ═══════════════════════════════════════════════════════════ */
+
+/* --- Gentler, springier reveals with a soft blur-in --- */
+html.js .rv,
+html.js .rv-left,
+html.js .rv-right { will-change: opacity, transform, filter; }
+html.js .rv:not(.in-view) { filter: blur(6px); }
+html.js .rv-left:not(.in-view),
+html.js .rv-right:not(.in-view) { filter: blur(4px); }
+
+/* --- Gilded emblem for the (missing) portrait --- */
+.portrait-frame.is-empty {
+  background:
+    radial-gradient(120% 85% at 50% 16%, rgba(201, 168, 76, 0.18), transparent 62%),
+    linear-gradient(160deg, #340d1a, #180509);
+}
+.portrait-frame.is-empty::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(135deg, rgba(201, 168, 76, 0.045) 0 2px, transparent 2px 10px);
+  opacity: 0.6;
+  mask-image: radial-gradient(80% 80% at 50% 40%, #000 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(80% 80% at 50% 40%, #000 30%, transparent 85%);
+}
+.portrait-frame.is-empty .portrait-mono {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.55rem; opacity: 1;
+  color: transparent;
+  background: linear-gradient(180deg, #f4e3ad 0%, #d9b768 55%, #b0863a 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 3px 26px rgba(201, 168, 76, 0.35));
+  animation: emblemFloat 6.5s ease-in-out infinite;
+}
+.portrait-frame.is-empty .portrait-mono::before {
+  content: '✦'; font-size: 1rem; -webkit-text-fill-color: var(--gold-deep); color: var(--gold-deep);
+  filter: none; opacity: 0.9;
+}
+.portrait-frame.is-empty .portrait-mono::after {
+  content: 'AUTHOR · POET · FOUNDER';
+  font-family: var(--f-ui); font-size: 0.56rem; font-weight: 600; letter-spacing: 0.34em;
+  -webkit-text-fill-color: var(--gold-deep); color: var(--gold-deep);
+  filter: none; padding-left: 0.34em;
+}
+@keyframes emblemFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+
+.portrait-frame { box-shadow: var(--shadow-card), inset 0 0 0 1px rgba(201, 168, 76, 0.06); }
+
+/* --- Hover life: lift + gilt ring on interactive cards --- */
+.thread, .stat, .venture, .portal, .voice, .book, .edu-card {
+  transition: transform 0.5s var(--ease), box-shadow 0.5s ease, border-color 0.5s ease;
+}
+.thread:hover, .stat:hover {
+  transform: translateY(-6px);
+  border-color: rgba(201, 168, 76, 0.42);
+  box-shadow: var(--shadow-card), 0 0 0 1px rgba(201, 168, 76, 0.12), 0 22px 50px -26px rgba(201, 168, 76, 0.35);
+}
+.edu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card), 0 26px 60px -30px rgba(201, 168, 76, 0.4);
+}
+
+/* --- Chapter labels: quiet shimmer to draw the eye --- */
+.chapter-index {
+  background: linear-gradient(100deg, var(--gold-deep) 0%, var(--gold-hi) 45%, var(--gold-deep) 90%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: labelSheen 6s linear infinite;
+}
+@keyframes labelSheen { 0% { background-position: 0% 0; } 100% { background-position: 220% 0; } }
+
+/* --- Buttons: a slow breathing glow on the primary CTA --- */
+.btn-gold { animation: goldPulse 4.5s ease-in-out infinite; }
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 8px 28px rgba(201, 168, 76, 0.24); }
+  50% { box-shadow: 0 10px 40px rgba(201, 168, 76, 0.42); }
+}
+.btn-gold:hover { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait-frame.is-empty .portrait-mono,
+  .btn-gold, .chapter-index { animation: none; }
+  html.js .rv:not(.in-view),
+  html.js .rv-left:not(.in-view),
+  html.js .rv-right:not(.in-view) { filter: none; }
+}
