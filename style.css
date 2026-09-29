@@ -2264,3 +2264,40 @@ html.js .rv-right:not(.in-view) { filter: blur(4px); }
   html.js .rv-left:not(.in-view),
   html.js .rv-right:not(.in-view) { filter: none; }
 }
+
+/* ── Indian Army (ADGPI) feature card ── */
+.mc-army {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  gap: 2.4rem;
+  align-items: center;
+  background: linear-gradient(120deg, rgba(74, 22, 38, 0.7), rgba(24, 7, 13, 0.6));
+  border-color: rgba(201, 168, 76, 0.3);
+}
+.army-emblem { flex-shrink: 0; width: 118px; }
+.army-emblem svg {
+  width: 100%; height: auto;
+  filter: drop-shadow(0 8px 22px rgba(201, 168, 76, 0.28));
+  animation: emblemFloat 6.5s ease-in-out infinite;
+}
+.army-info { display: flex; flex-direction: column; align-items: flex-start; }
+.media-links { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.25rem; }
+.media-link {
+  font-family: var(--f-ui); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em;
+  color: var(--ink-950);
+  background: linear-gradient(180deg, #e8cf8a, #c9a84c);
+  padding: 0.55rem 1.1rem; border-radius: 999px;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+.media-link:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(201, 168, 76, 0.38); }
+.media-link-ghost {
+  background: transparent; color: var(--gold-hi);
+  border: 1px solid var(--line-gold);
+}
+.media-link-ghost:hover { background: rgba(201, 168, 76, 0.1); color: var(--gold-hi); box-shadow: none; }
+@media (max-width: 720px) {
+  .mc-army { flex-direction: column; text-align: center; align-items: center; }
+  .army-info { align-items: center; }
+  .army-emblem { width: 94px; }
+  .media-links { justify-content: center; }
+}
