@@ -2276,8 +2276,14 @@ html.js .rv-right:not(.in-view) { filter: blur(4px); }
   box-shadow: var(--shadow-card), inset 0 0 0 1px rgba(201, 168, 76, 0.05);
 }
 .army-head { display: flex; align-items: center; gap: 1.15rem; margin-bottom: 1.1rem; }
-.army-badge { flex-shrink: 0; width: 54px; height: 54px; }
-.army-badge svg { width: 100%; height: 100%; filter: drop-shadow(0 4px 14px rgba(201, 168, 76, 0.35)); }
+.army-badge {
+  flex-shrink: 0; width: 76px; height: 76px;
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--line-gold);
+  background: #d21f27;
+  box-shadow: 0 6px 20px rgba(8, 3, 5, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.army-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .army-head .media-kicker { margin-bottom: 0.35rem; }
 .army-head .media-title { margin: 0; }
 .mc-army .media-desc { margin: 0 0 1.6rem; }
