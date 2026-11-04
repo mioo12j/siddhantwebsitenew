@@ -48,13 +48,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
-    <loc>https://siddhantkumar.in/book%202/</loc>
-    <lastmod>2026-06-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <!--JOURNAL_ARTICLES_START-->
+<!--JOURNAL_ARTICLES_START-->
   <url>
     <loc>https://siddhantkumar.in/journal/the-history-of-indian-sovereignty.html</loc>
     <lastmod>2026-08-15</lastmod>
@@ -542,15 +536,7 @@
     <priority>0.6</priority>
   </url>
   <!--JOURNAL_ARTICLES_END-->
-  <!-- Add the Book 2 teaser once its final URL is decided, e.g.:
-  <url>
-    <loc>https://siddhantkumar.in/in-the-absence-of-gunfire/</loc>
-    <lastmod>2026-06-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  -->
-  <!-- docs:start -->
+<!-- docs:start -->
   <url>
     <loc>https://siddhantkumar.in/projects/docs/</loc>
     <lastmod>2026-07-28</lastmod>

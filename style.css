@@ -2351,3 +2351,5 @@ html.js .rv-right:not(.in-view) { filter: blur(4px); }
 .books .book-stage { min-height: 420px; align-items: flex-end; }
 .books .pdf-cover { aspect-ratio: auto; }
 .books .pdf-cover img { display: block; width: 100%; height: auto; object-fit: contain; }
+
+.books .books-in-progress { max-width: 38rem; margin: 2.8rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--line-gold); color: var(--slate-dim); text-align: center; font-size: .84rem; line-height: 1.8; }
