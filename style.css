@@ -2336,3 +2336,18 @@ html.js .rv-right:not(.in-view) { filter: blur(4px); }
   .army-head { flex-direction: row; text-align: left; }
   .media-links { justify-content: flex-start; }
 }
+
+
+/* Book covers extracted from the supplied manuscripts. Preserve the complete artwork. */
+.books .books-status {
+  text-align: center;
+  color: var(--slate);
+  font-size: .78rem;
+  letter-spacing: .04em;
+  line-height: 1.9;
+  margin: -1rem auto 2rem;
+}
+.books-status span { color: var(--gold); margin-inline: .5rem; }
+.books .book-stage { min-height: 420px; align-items: flex-end; }
+.books .pdf-cover { aspect-ratio: auto; }
+.books .pdf-cover img { display: block; width: 100%; height: auto; object-fit: contain; }
