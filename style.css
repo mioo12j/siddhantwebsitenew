@@ -627,6 +627,9 @@ html.js .role-word {
 }
 .marquee[data-reverse] .marquee-track { animation-direction: reverse; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee.is-scrolling { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; cursor: grab; }
+.marquee.is-scrolling::-webkit-scrollbar { height: 0; }
+.marquee.is-scrolling .marquee-track { animation: none !important; transform: none !important; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 .rec-item {

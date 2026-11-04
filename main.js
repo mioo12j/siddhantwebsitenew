@@ -153,6 +153,28 @@
     pace();
     window.addEventListener('resize', pace);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(pace);
+
+    /* Stop the auto-scroll the moment a visitor interacts, and hand them a
+       real scrollable rail so they can browse the cards at their own pace. */
+    var frozen = false;
+    function freeze() {
+      if (frozen) return;
+      if (getComputedStyle(track).flexWrap === 'wrap') return; // stacked grid (mobile): already interactive
+      var tx = 0;
+      try { tx = -(new DOMMatrixReadOnly(getComputedStyle(track).transform).m41); } catch (e) {}
+      track.style.animation = 'none';
+      track.style.transform = 'none';
+      marquee.classList.add('is-scrolling');
+      marquee.scrollLeft = tx > 0 ? tx : 0;
+      frozen = true;
+    }
+    marquee.addEventListener('pointerdown', freeze);
+    marquee.addEventListener('touchstart', freeze, { passive: true });
+    marquee.addEventListener('focusin', freeze);
+    marquee.addEventListener('wheel', function (e) {
+      if (!frozen) return;
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { marquee.scrollLeft += e.deltaY; e.preventDefault(); }
+    }, { passive: false });
   });
 
   /* ── Hero dust: drifting gold particles ── */
