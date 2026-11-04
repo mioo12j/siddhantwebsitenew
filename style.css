@@ -627,7 +627,7 @@ html.js .role-word {
 }
 .marquee[data-reverse] .marquee-track { animation-direction: reverse; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
-.marquee.is-scrolling { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; cursor: grab; }
+.marquee.is-scrolling { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; cursor: grab; touch-action: pan-x; overscroll-behavior-x: contain; }
 .marquee.is-scrolling::-webkit-scrollbar { height: 0; }
 .marquee.is-scrolling .marquee-track { animation: none !important; transform: none !important; }
 @keyframes marquee { to { transform: translateX(-50%); } }
@@ -2119,19 +2119,20 @@ a.c-value:hover { color: var(--gold-hi); }
     gap: 1rem;
     row-gap: 0;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding-bottom: 0.6rem;
     padding-inline: 8%;
     scroll-padding-inline: 8%;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
   }
   .shelf::-webkit-scrollbar { display: none; }
   .shelf > .book {
     flex: 0 0 84%;
     scroll-snap-align: center;
-    scroll-snap-stop: always;
   }
   .books .chapter-sub::after {
     content: " Swipe through the shelf.";
